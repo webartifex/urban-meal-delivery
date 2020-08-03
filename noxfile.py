@@ -35,8 +35,27 @@ nox.options.sessions = (
 
 @nox.session(name='format', python=MAIN_PYTHON)
 def format_(session: Session):
-    """Format source files."""
+    """Format source files with autoflake, black, and isort."""
     _begin(session)
+    _install_packages(session, 'autoflake', 'black', 'isort')
+    # Interpret extra arguments as locations of source files.
+    locations = session.posargs or SRC_LOCATIONS
+    session.run('autoflake', '--version')
+    session.run(
+        'autoflake',
+        '--in-place',
+        '--recursive',
+        '--expand-star-imports',
+        '--remove-all-unused-imports',
+        '--ignore-init-module-imports',  # modifies --remove-all-unused-imports
+        '--remove-duplicate-keys',
+        '--remove-unused-variables',
+        *locations,
+    )
+    session.run('black', '--version')
+    session.run('black', *locations)
+    session.run('isort', '--version')
+    session.run('isort', *locations)
 
 
 @nox.session(python=MAIN_PYTHON)
