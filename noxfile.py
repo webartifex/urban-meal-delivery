@@ -14,8 +14,11 @@ MAIN_PYTHON = '3.8'
 # Keep the project is forward compatible.
 NEXT_PYTHON = '3.9'
 
+# Path to the test suite.
+PYTEST_LOCATION = 'tests/'
+
 # Paths with *.py files.
-SRC_LOCATIONS = 'noxfile.py', 'src/'
+SRC_LOCATIONS = 'noxfile.py', 'src/', PYTEST_LOCATION
 
 
 # Use a unified .cache/ folder for all tools.
@@ -70,6 +73,7 @@ def lint(session: Session) -> None:
         'flake8-annotations',
         'flake8-black',
         'flake8-expression-complexity',
+        'flake8-pytest-style',
         'mypy',
         'pylint',
         'wemake-python-styleguide',
@@ -96,7 +100,27 @@ def lint(session: Session) -> None:
 @nox.session(python=[MAIN_PYTHON, NEXT_PYTHON])
 def test(session: Session) -> None:
     """Test the code base."""
+    # Re-using an old environment is not so easy here as
+    # `poetry install --no-dev` removes previously installed packages.
+    # We keep things simple and forbid such usage.
+    if session.virtualenv.reuse_existing:
+        raise RuntimeError('The "test" session must be run with the "-r" option')
+
     _begin(session)
+    # Install only the non-develop dependencies
+    # and the testing tool chain.
+    session.run('poetry', 'install', '--no-dev', external=True)
+    _install_packages(session, 'pytest', 'pytest-cov')
+    # Interpret extra arguments as options for pytest.
+    args = session.posargs or (
+        '--cov',
+        '--no-cov-on-fail',
+        '--cov-branch',
+        '--cov-fail-under=100',
+        '--cov-report=term-missing:skip-covered',
+        PYTEST_LOCATION,
+    )
+    session.run('pytest', *args)
 
 
 @nox.session(name='pre-commit', python=MAIN_PYTHON, venv_backend='none')
