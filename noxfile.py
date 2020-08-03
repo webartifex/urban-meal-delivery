@@ -1,8 +1,9 @@
 """Configure nox for the isolated test and lint environments."""
 
+import contextlib
 import os
 import tempfile
-from typing import Any
+from typing import Any, Generator
 
 import nox
 from nox.sessions import Session
@@ -34,7 +35,7 @@ nox.options.sessions = (
 
 
 @nox.session(name='format', python=MAIN_PYTHON)
-def format_(session: Session):
+def format_(session: Session) -> None:
     """Format source files with autoflake, black, and isort."""
     _begin(session)
     _install_packages(session, 'autoflake', 'black', 'isort')
@@ -54,24 +55,52 @@ def format_(session: Session):
     )
     session.run('black', '--version')
     session.run('black', *locations)
-    session.run('isort', '--version')
-    session.run('isort', *locations)
+    with _isort_fix(session):  # TODO (isort): Remove after upgrading
+        session.run('isort', '--version')
+        session.run('isort', *locations)
 
 
 @nox.session(python=MAIN_PYTHON)
-def lint(session: Session):
-    """Lint source files."""
+def lint(session: Session) -> None:
+    """Lint source files with flake8, mypy, and pylint."""
     _begin(session)
+    _install_packages(
+        session,
+        'flake8',
+        'flake8-annotations',
+        'flake8-black',
+        'flake8-expression-complexity',
+        'mypy',
+        'pylint',
+        'wemake-python-styleguide',
+    )
+    # Interpret extra arguments as locations of source files.
+    locations = session.posargs or SRC_LOCATIONS
+    session.run('flake8', '--version')
+    session.run('flake8', '--ignore=I0', *locations)  # TODO (isort): Remove flag
+    with _isort_fix(session):  # TODO (isort): Remove after upgrading
+        session.run('isort', '--version')
+        session.run('isort', '--check-only', *locations)
+    session.run('mypy', '--version')
+    session.run('mypy', *locations)
+    # Ignore errors where pylint cannot import a third-party package due its
+    # being run in an isolated environment. One way to fix this is to install
+    # all develop dependencies in this nox session, which we do not do. The
+    # whole point of static linting tools is to not rely on any package be
+    # importable at runtime. Instead, these imports are validated implicitly
+    # when the test suite is run.
+    session.run('pylint', '--version')
+    session.run('pylint', '--disable=import-error', *locations)
 
 
 @nox.session(python=[MAIN_PYTHON, NEXT_PYTHON])
-def test(session: Session):
+def test(session: Session) -> None:
     """Test the code base."""
     _begin(session)
 
 
 @nox.session(name='pre-commit', python=MAIN_PYTHON, venv_backend='none')
-def pre_commit(session: Session):
+def pre_commit(session: Session) -> None:
     """Source files must be well-formed before they enter git."""
     _begin(session)
     session.notify('format')
@@ -79,7 +108,7 @@ def pre_commit(session: Session):
 
 
 @nox.session(name='pre-merge', python=MAIN_PYTHON, venv_backend='none')
-def pre_merge(session: Session):
+def pre_merge(session: Session) -> None:
     """The test suite must pass before merges are made."""
     _begin(session)
     session.notify('test')
@@ -88,17 +117,17 @@ def pre_merge(session: Session):
 def _begin(session: Session) -> None:
     """Show generic info about a session."""
     if session.posargs:
-        print('extra arguments:', *session.posargs)
+        print('extra arguments:', *session.posargs)  # noqa:WPS421
 
     session.run('python', '--version')
 
     # Fake GNU's pwd.
     session.log('pwd')
-    print(os.getcwd())
+    print(os.getcwd())  # noqa:WPS421
 
 
 def _install_packages(
-    session: Session, *packages_or_pip_args: str, **kwargs: Any
+    session: Session, *packages_or_pip_args: str, **kwargs: Any,
 ) -> None:
     """Install packages respecting the poetry.lock file.
 
@@ -110,7 +139,7 @@ def _install_packages(
         session: the Session object
         *packages_or_pip_args: the packages to be installed or pip options
         **kwargs: passed on to nox.sessions.Session.install()
-    """
+    """  # noqa:RST210,RST213
     if session.virtualenv.reuse_existing:
         session.log(
             'No dependencies are installed as an existing environment is re-used',
@@ -131,3 +160,15 @@ def _install_packages(
         session.install(
             f'--constraint={requirements_txt.name}', *packages_or_pip_args, **kwargs,
         )
+
+
+# TODO (isort): Remove this fix after
+# upgrading to isort ^5.2.2 in pyproject.toml.
+@contextlib.contextmanager
+def _isort_fix(session: Session) -> Generator:
+    """Temporarily upgrade to isort 5.2.2."""
+    session.install('isort==5.2.2')
+    try:
+        yield
+    finally:
+        session.install('isort==4.3.21')

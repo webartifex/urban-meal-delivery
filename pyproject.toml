@@ -4,7 +4,7 @@ requires = ["poetry>=0.12"]
 
 [tool.black]
 line-length = 88
-skip-string-normalization = true
+skip-string-normalization = true  # wemake-python-styleguide enforces single quotes
 target-version = ["py38"]
 
 [tool.poetry]
@@ -34,4 +34,13 @@ nox = "^2020.5.24"
 # Code Formatters
 autoflake = "^1.3.1"
 black = "^19.10b0"
-isort = "^5.2.2"
+isort = "^4.3.21"  # TODO (isort): not ^5.2.2 due to pylint and wemake-python-styleguide
+
+# (Static) Code Analyzers
+flake8 = "^3.8.3"
+flake8-annotations = "^2.3.0"
+flake8-black = "^0.2.1"
+flake8-expression-complexity = "^0.0.8"
+mypy = "^0.782"
+pylint = "^2.5.3"
+wemake-python-styleguide = "^0.14.1"  # flake8 plug-in
