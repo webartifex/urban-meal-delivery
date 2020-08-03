@@ -23,3 +23,5 @@ repository = "https://github.com/webartifex/urban-meal-delivery"
 python = "^3.8"
 
 [tool.poetry.dev-dependencies]
+# Task Runners
+nox = "^2020.5.24"
