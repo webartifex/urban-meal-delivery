@@ -96,13 +96,16 @@ def lint(session: Session) -> None:
     session.run('mypy', '--version')
     session.run('mypy', *locations)
     # Ignore errors where pylint cannot import a third-party package due its
-    # being run in an isolated environment. One way to fix this is to install
-    # all develop dependencies in this nox session, which we do not do. The
-    # whole point of static linting tools is to not rely on any package be
-    # importable at runtime. Instead, these imports are validated implicitly
-    # when the test suite is run.
+    # being run in an isolated environment. For the same reason, pylint is
+    # also not able to determine the correct order of imports.
+    # One way to fix this is to install all develop dependencies in this nox
+    # session, which we do not do. The whole point of static linting tools is
+    # to not rely on any package be importable at runtime. Instead, these
+    # imports are validated implicitly when the test suite is run.
     session.run('pylint', '--version')
-    session.run('pylint', '--disable=import-error', *locations)
+    session.run(
+        'pylint', '--disable=import-error', '--disable=wrong-import-order', *locations,
+    )
 
 
 @nox.session(python=[MAIN_PYTHON, NEXT_PYTHON])

@@ -27,6 +27,8 @@ repository = "https://github.com/webartifex/urban-meal-delivery"
 [tool.poetry.dependencies]
 python = "^3.8"
 
+click = "^7.1.2"
+
 [tool.poetry.dev-dependencies]
 # Task Runners
 nox = "^2020.5.24"
@@ -51,3 +53,6 @@ wemake-python-styleguide = "^0.14.1"  # flake8 plug-in
 packaging = "^20.4"  # used to test the packaged version
 pytest = "^6.0.1"
 pytest-cov = "^2.10.0"
+
+[tool.poetry.scripts]
+umd = "urban_meal_delivery.console:main"
