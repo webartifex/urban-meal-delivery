@@ -13,15 +13,8 @@ import re
 
 import pytest
 from packaging import version as pkg_version
-from packaging.version import Version
 
 import urban_meal_delivery
-
-
-@pytest.fixture
-def parsed_version() -> str:
-    """The packaged version."""
-    return pkg_version.Version(urban_meal_delivery.__version__)  # noqa:WPS609
 
 
 class TestPEP404Compliance:
@@ -29,19 +22,24 @@ class TestPEP404Compliance:
 
     # pylint:disable=no-self-use
 
-    def test_parsed_version_has_no_epoch(self, parsed_version: Version) -> None:
+    @pytest.fixture
+    def parsed_version(self) -> str:
+        """The packaged version."""
+        return pkg_version.Version(urban_meal_delivery.__version__)  # noqa:WPS609
+
+    def test_parsed_version_has_no_epoch(self, parsed_version):
         """PEP440 compliant subset of semantic versioning: no epoch."""
         assert parsed_version.epoch == 0
 
-    def test_parsed_version_is_non_local(self, parsed_version: Version) -> None:
+    def test_parsed_version_is_non_local(self, parsed_version):
         """PEP440 compliant subset of semantic versioning: no local version."""
         assert parsed_version.local is None
 
-    def test_parsed_version_is_no_post_release(self, parsed_version: Version) -> None:
+    def test_parsed_version_is_no_post_release(self, parsed_version):
         """PEP440 compliant subset of semantic versioning: no post releases."""
         assert parsed_version.is_postrelease is False
 
-    def test_parsed_version_is_all_public(self, parsed_version: Version) -> None:
+    def test_parsed_version_is_all_public(self, parsed_version):
         """PEP440 compliant subset of semantic versioning: all public parts."""
         assert parsed_version.public == urban_meal_delivery.__version__  # noqa:WPS609
 
@@ -55,7 +53,7 @@ class TestSemanticVersioning:
         r'^(0|([1-9]\d*))\.(0|([1-9]\d*))\.(0|([1-9]\d*))(\.dev(0|([1-9]\d*)))?$',
     )
 
-    def test_version_is_semantic(self) -> None:
+    def test_version_is_semantic(self):
         """Packaged version follows semantic versioning."""
         result = self.version_pattern.fullmatch(
             urban_meal_delivery.__version__,  # noqa:WPS609
@@ -79,7 +77,7 @@ class TestSemanticVersioning:
             '1.2.3.dev10',
         ],
     )
-    def test_valid_semantic_versioning(self, version: str) -> None:
+    def test_valid_semantic_versioning(self, version):
         """Versions follow the x.y.z or x.y.z.devN format."""
         result = self.version_pattern.fullmatch(version)
 
@@ -109,7 +107,7 @@ class TestSemanticVersioning:
             '1.2..3',
         ],
     )
-    def test_invalid_semantic_versioning(self, version: str) -> None:
+    def test_invalid_semantic_versioning(self, version):
         """Versions follow the x.y.z or x.y.z.devN format."""
         result = self.version_pattern.fullmatch(version)
 

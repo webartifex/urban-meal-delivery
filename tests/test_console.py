@@ -2,17 +2,9 @@
 
 import click
 import pytest
-from _pytest.capture import CaptureFixture  # noqa:WPS436
-from _pytest.monkeypatch import MonkeyPatch  # noqa:WPS436
 from click import testing as click_testing
 
 from urban_meal_delivery import console
-
-
-@pytest.fixture
-def ctx() -> click.Context:
-    """Context around the console.main Command."""
-    return click.Context(console.main)
 
 
 class TestShowVersion:
@@ -29,7 +21,12 @@ class TestShowVersion:
 
     # pylint:disable=no-self-use
 
-    def test_no_version(self, capsys: CaptureFixture, ctx: click.Context) -> None:
+    @pytest.fixture
+    def ctx(self) -> click.Context:
+        """Context around the console.main Command."""
+        return click.Context(console.main)
+
+    def test_no_version(self, capsys, ctx):
         """The the early exit branch without any output."""
         console.show_version(ctx, _param='discarded', value=False)
 
@@ -37,9 +34,7 @@ class TestShowVersion:
 
         assert captured.out == ''
 
-    def test_final_version(
-        self, capsys: CaptureFixture, ctx: click.Context, monkeypatch: MonkeyPatch,
-    ) -> None:
+    def test_final_version(self, capsys, ctx, monkeypatch):
         """For final versions, NO "development" warning is emitted."""
         version = '1.2.3'
         monkeypatch.setattr(console.urban_meal_delivery, '__version__', version)
@@ -51,9 +46,7 @@ class TestShowVersion:
 
         assert captured.out.endswith(f', version {version}\n')
 
-    def test_develop_version(
-        self, capsys: CaptureFixture, ctx: click.Context, monkeypatch: MonkeyPatch,
-    ) -> None:
+    def test_develop_version(self, capsys, ctx, monkeypatch):
         """For develop versions, a warning thereof is emitted."""
         version = '1.2.3.dev0'
         monkeypatch.setattr(console.urban_meal_delivery, '__version__', version)
@@ -66,12 +59,6 @@ class TestShowVersion:
         assert captured.out.strip().endswith(f', version {version} (development)')
 
 
-@pytest.fixture
-def cli() -> click_testing.CliRunner:
-    """Initialize Click's CLI Test Runner."""
-    return click_testing.CliRunner()
-
-
 class TestCLI:
     """Test the `umd` CLI utility.
 
@@ -81,8 +68,13 @@ class TestCLI:
 
     # pylint:disable=no-self-use
 
+    @pytest.fixture
+    def cli(self) -> click_testing.CliRunner:
+        """Initialize Click's CLI Test Runner."""
+        return click_testing.CliRunner()
+
     @pytest.mark.no_cover
-    def test_no_options(self, cli: click_testing.CliRunner) -> None:
+    def test_no_options(self, cli):
         """Exit with 0 status code and no output if run without options."""
         result = cli.invoke(console.main)
 
@@ -94,12 +86,8 @@ class TestCLI:
     version_options = ('--version', '-V')
 
     @pytest.mark.no_cover
-    @pytest.mark.parametrize(
-        'option', version_options,
-    )
-    def test_final_version(
-        self, cli: click_testing.CliRunner, monkeypatch: MonkeyPatch, option: str,
-    ) -> None:
+    @pytest.mark.parametrize('option', version_options)
+    def test_final_version(self, cli, monkeypatch, option):
         """For final versions, NO "development" warning is emitted."""
         version = '1.2.3'
         monkeypatch.setattr(console.urban_meal_delivery, '__version__', version)
@@ -110,12 +98,8 @@ class TestCLI:
         assert result.output.strip().endswith(f', version {version}')
 
     @pytest.mark.no_cover
-    @pytest.mark.parametrize(
-        'option', version_options,
-    )
-    def test_develop_version(
-        self, cli: click_testing.CliRunner, monkeypatch: MonkeyPatch, option: str,
-    ) -> None:
+    @pytest.mark.parametrize('option', version_options)
+    def test_develop_version(self, cli, monkeypatch, option):
         """For develop versions, a warning thereof is emitted."""
         version = '1.2.3.dev0'
         monkeypatch.setattr(console.urban_meal_delivery, '__version__', version)

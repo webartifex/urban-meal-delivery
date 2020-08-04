@@ -3,7 +3,6 @@
 import contextlib
 import os
 import tempfile
-from typing import Any, Generator
 
 import nox
 from nox.sessions import Session
@@ -14,11 +13,14 @@ MAIN_PYTHON = '3.8'
 # Keep the project is forward compatible.
 NEXT_PYTHON = '3.9'
 
+# Path to the *.py files to be packaged.
+PACKAGE_SOURCE_LOCATION = 'src/'
+
 # Path to the test suite.
 PYTEST_LOCATION = 'tests/'
 
-# Paths with *.py files.
-SRC_LOCATIONS = 'noxfile.py', 'src/', PYTEST_LOCATION
+# Paths with all *.py files.
+SRC_LOCATIONS = 'noxfile.py', PACKAGE_SOURCE_LOCATION, PYTEST_LOCATION
 
 
 # Use a unified .cache/ folder for all tools.
@@ -38,7 +40,7 @@ nox.options.sessions = (
 
 
 @nox.session(name='format', python=MAIN_PYTHON)
-def format_(session: Session) -> None:
+def format_(session):
     """Format source files with autoflake, black, and isort.
 
     If no extra arguments are provided, all source files are formatted.
@@ -68,7 +70,7 @@ def format_(session: Session) -> None:
 
 
 @nox.session(python=MAIN_PYTHON)
-def lint(session: Session) -> None:
+def lint(session):
     """Lint source files with flake8, mypy, and pylint.
 
     If no extra arguments are provided, all source files are linted.
@@ -93,8 +95,15 @@ def lint(session: Session) -> None:
     with _isort_fix(session):  # TODO (isort): Remove after upgrading
         session.run('isort', '--version')
         session.run('isort', '--check-only', *locations)
-    session.run('mypy', '--version')
-    session.run('mypy', *locations)
+    # For mypy, only lint *.py files to be packaged.
+    mypy_locations = [
+        path for path in locations if path.startswith(PACKAGE_SOURCE_LOCATION)
+    ]
+    if mypy_locations:
+        session.run('mypy', '--version')
+        session.run('mypy', *mypy_locations)
+    else:
+        session.log('No paths to be checked with mypy')
     # Ignore errors where pylint cannot import a third-party package due its
     # being run in an isolated environment. For the same reason, pylint is
     # also not able to determine the correct order of imports.
@@ -109,7 +118,7 @@ def lint(session: Session) -> None:
 
 
 @nox.session(python=[MAIN_PYTHON, NEXT_PYTHON])
-def test(session: Session) -> None:
+def test(session):
     """Test the code base.
 
     Runs the unit and integration tests (written with pytest).
@@ -148,7 +157,7 @@ def test(session: Session) -> None:
 
 
 @nox.session(name='pre-commit', python=MAIN_PYTHON, venv_backend='none')
-def pre_commit(session: Session) -> None:
+def pre_commit(session):
     """Source files must be well-formed before they enter git.
 
     Intended to be run as a pre-commit hook.
@@ -165,7 +174,7 @@ def pre_commit(session: Session) -> None:
 
 
 @nox.session(name='pre-merge', python=MAIN_PYTHON)
-def pre_merge(session: Session) -> None:
+def pre_merge(session):
     """The test suite must pass before merges are made.
 
     Intended to be run either as a pre-merge or pre-push hook.
@@ -188,7 +197,7 @@ def pre_merge(session: Session) -> None:
     test(session)
 
 
-def _begin(session: Session) -> None:
+def _begin(session):
     """Show generic info about a session."""
     if session.posargs:
         # Part of the hack in pre_merge() to "drop" the extra arguments.
@@ -205,9 +214,7 @@ def _begin(session: Session) -> None:
     print(os.getcwd())  # noqa:WPS421
 
 
-def _install_packages(
-    session: Session, *packages_or_pip_args: str, **kwargs: Any,
-) -> None:
+def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) -> None:
     """Install packages respecting the poetry.lock file.
 
     This function wraps nox.sessions.Session.install() such that it installs
@@ -251,7 +258,7 @@ def _install_packages(
 # TODO (isort): Remove this fix after
 # upgrading to isort ^5.2.2 in pyproject.toml.
 @contextlib.contextmanager
-def _isort_fix(session: Session) -> Generator:
+def _isort_fix(session):
     """Temporarily upgrade to isort 5.2.2."""
     session.install('isort==5.2.2')
     try:
