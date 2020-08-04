@@ -1,17 +1,64 @@
-"""Configure nox for the isolated test and lint environments."""
+"""Configure nox as the task runner, including CI and pre-commit hooks.
+
+Generic maintainance tasks:
+
+- "init-project": set up the pre-commit hooks
+
+- "clean-pwd": ~ `git clean -X` with minor exceptions
+
+
+For local development, use the "format", "lint", and "test" sessions
+as unified tasks to assure the quality of the source code:
+
+- "format" (autoflake, black, isort):
+
+  + check all source files [default]
+  + accept extra arguments, e.g., `poetry run nox -s format -- noxfile.py`,
+    that are then interpreted as the paths the formatters and linters work
+    on recursively
+
+- "lint" (flake8, mypy, pylint): same as "format"
+
+- "test" (pytest, xdoctest):
+
+  + run the entire test suite [default]
+  + accepts extra arguments, e.g., `poetry run nox -s test -- --no-cov`,
+    that are passed on to `pytest` and `xdoctest` with no changes
+    => may be paths or options
+
+
+GitHub Actions implements a CI workflow:
+
+- "format", "lint", and "test" as above
+
+- "safety": check if dependencies contain known security vulnerabilites
+
+- "docs": build the documentation with sphinx
+
+
+The pre-commit framework invokes the "pre-commit" and "pre-merge" sessions:
+
+- "pre-commit" before all commits:
+
+  + triggers "format" and "lint" on staged source files
+  + => test coverage may be < 100%
+
+- "pre-merge" before all merges and pushes:
+
+  + same as "pre-commit"
+  + plus: triggers "test", "safety", and "docs" (that ignore extra arguments)
+  + => test coverage is enforced to be 100%
+
+"""
 
 import contextlib
+import glob
 import os
 import tempfile
 
 import nox
 from nox.sessions import Session
 
-
-MAIN_PYTHON = '3.8'
-
-# Keep the project is forward compatible.
-NEXT_PYTHON = '3.9'
 
 PACKAGE_IMPORT_NAME = 'urban_meal_delivery'
 
@@ -33,6 +80,8 @@ SRC_LOCATIONS = (
     PYTEST_LOCATION,
 )
 
+PYTHON = '3.8'
+
 # Use a unified .cache/ folder for all tools.
 nox.options.envdir = '.cache/nox'
 
@@ -44,14 +93,13 @@ nox.options.error_on_external_run = True
 nox.options.sessions = (
     'format',
     'lint',
-    f'test-{MAIN_PYTHON}',
-    f'test-{NEXT_PYTHON}',
+    'test',
     'safety',
     'docs',
 )
 
 
-@nox.session(name='format', python=MAIN_PYTHON)
+@nox.session(name='format', python=PYTHON)
 def format_(session):
     """Format source files with autoflake, black, and isort.
 
@@ -59,11 +107,14 @@ def format_(session):
     Otherwise, they are interpreted as paths the formatters work on recursively.
     """
     _begin(session)
+
     # The formatting tools do not require the developed
     # package be installed in the virtual environment.
     _install_packages(session, 'autoflake', 'black', 'isort')
+
     # Interpret extra arguments as locations of source files.
     locations = session.posargs or SRC_LOCATIONS
+
     session.run('autoflake', '--version')
     session.run(
         'autoflake',
@@ -76,14 +127,16 @@ def format_(session):
         '--remove-unused-variables',
         *locations,
     )
+
     session.run('black', '--version')
     session.run('black', *locations)
+
     with _isort_fix(session):  # TODO (isort): Remove after upgrading
         session.run('isort', '--version')
         session.run('isort', *locations)
 
 
-@nox.session(python=MAIN_PYTHON)
+@nox.session(python=PYTHON)
 def lint(session):
     """Lint source files with flake8, mypy, and pylint.
 
@@ -91,6 +144,7 @@ def lint(session):
     Otherwise, they are interpreted as paths the linters work on recursively.
     """
     _begin(session)
+
     # The linting tools do not require the developed
     # package be installed in the virtual environment.
     _install_packages(
@@ -104,13 +158,17 @@ def lint(session):
         'pylint',
         'wemake-python-styleguide',
     )
+
     # Interpret extra arguments as locations of source files.
     locations = session.posargs or SRC_LOCATIONS
+
     session.run('flake8', '--version')
     session.run('flake8', '--ignore=I0', *locations)  # TODO (isort): Remove flag
+
     with _isort_fix(session):  # TODO (isort): Remove after upgrading
         session.run('isort', '--version')
         session.run('isort', '--check-only', *locations)
+
     # For mypy, only lint *.py files to be packaged.
     mypy_locations = [
         path for path in locations if path.startswith(PACKAGE_SOURCE_LOCATION)
@@ -120,6 +178,7 @@ def lint(session):
         session.run('mypy', *mypy_locations)
     else:
         session.log('No paths to be checked with mypy')
+
     # Ignore errors where pylint cannot import a third-party package due its
     # being run in an isolated environment. For the same reason, pylint is
     # also not able to determine the correct order of imports.
@@ -133,7 +192,24 @@ def lint(session):
     )
 
 
-@nox.session(python=[MAIN_PYTHON, NEXT_PYTHON])
+@nox.session(name='pre-commit', python=PYTHON, venv_backend='none')
+def pre_commit(session):
+    """Run the format and lint sessions.
+
+    Source files must be well-formed before they enter git.
+
+    Intended to be run as a pre-commit hook.
+
+    Passed in extra arguments are forwarded. So, if it is run as a pre-commit
+    hook, only the currently staged source files are formatted and linted.
+    """
+    # "format" and "lint" are run in sessions on their own as
+    # session.notify() creates new Session objects.
+    session.notify('format')
+    session.notify('lint')
+
+
+@nox.session(python=PYTHON)
 def test(session):
     """Test the code base.
 
@@ -151,21 +227,22 @@ def test(session):
     # `poetry install --no-dev` removes previously installed packages.
     # We keep things simple and forbid such usage.
     if session.virtualenv.reuse_existing:
-        raise RuntimeError(
-            'The "test" and "pre-merge" sessions must be run without the "-r" option',
-        )
+        raise RuntimeError('The "test" session must be run without the "-r" option')
 
     _begin(session)
+
     # The testing tools require the developed package and its
     # non-develop dependencies be installed in the virtual environment.
     session.run('poetry', 'install', '--no-dev', external=True)
     _install_packages(
         session, 'packaging', 'pytest', 'pytest-cov', 'xdoctest[optional]',
     )
+
     # Interpret extra arguments as options for pytest.
     # They are "dropped" by the hack in the pre_merge() function
     # if this function is run within the "pre-merge" session.
     posargs = () if session.env.get('_drop_posargs') else session.posargs
+
     args = posargs or (
         '--cov',
         '--no-cov-on-fail',
@@ -176,60 +253,22 @@ def test(session):
     )
     session.run('pytest', '--version')
     session.run('pytest', *args)
+
     # For xdoctest, the default arguments are different from pytest.
     args = posargs or [PACKAGE_IMPORT_NAME]
     session.run('xdoctest', '--version')
     session.run('xdoctest', '--quiet', *args)  # --quiet => less verbose output
 
 
-@nox.session(name='pre-commit', python=MAIN_PYTHON, venv_backend='none')
-def pre_commit(session):
-    """Source files must be well-formed before they enter git.
-
-    Intended to be run as a pre-commit hook.
-
-    This session is a wrapper that triggers the "format" and "lint" sessions.
-
-    Passed in extra arguments are forwarded. So, if it is run as a pre-commit
-    hook, only the currently staged source files are formatted and linted.
-    """
-    # "format" and "lint" are run in sessions on their own as
-    # session.notify() creates new Session objects.
-    session.notify('format')
-    session.notify('lint')
-
-
-@nox.session(name='pre-merge', python=MAIN_PYTHON)
-def pre_merge(session):
-    """The test suite must pass before merges are made.
-
-    Intended to be run either as a pre-merge or pre-push hook.
-
-    First, this session triggers the "format" and "lint" sessions via
-    the "pre-commit" session.
-
-    Then, it runs the "test" session ignoring any extra arguments passed in
-    so that the entire test suite is executed.
-    """
-    session.notify('pre-commit')
-    # Little hack to not work with the extra arguments provided
-    # by the pre-commit framework. Create a flag in the
-    # env(ironment) that must contain only `str`-like objects.
-    session.env['_drop_posargs'] = 'true'
-    # Cannot use session.notify() to trigger the "test" session
-    # as that would create a new Session object without the flag
-    # in the env(ironment). Instead, run the test() function within
-    # the "pre-merge" session.
-    test(session)
-
-
-@nox.session(python=MAIN_PYTHON)
+@nox.session(python=PYTHON)
 def safety(session):
     """Check the dependencies for known security vulnerabilities."""
     _begin(session)
+
     # We do not pin the version of `safety` to always check with
     # the latest version. The risk this breaks the CI is rather low.
     session.install('safety')
+
     with tempfile.NamedTemporaryFile() as requirements_txt:
         session.run(
             'poetry',
@@ -244,7 +283,7 @@ def safety(session):
         )
 
 
-@nox.session(python=MAIN_PYTHON)
+@nox.session(python=PYTHON)
 def docs(session):
     """Build the documentation with sphinx."""
     # The latest version of the package needs to be installed
@@ -265,6 +304,69 @@ def docs(session):
     session.run('sphinx-build', '-b', 'linkcheck', DOCS_SRC, DOCS_BUILD)
 
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
+
+
+@nox.session(name='pre-merge', python=PYTHON)
+def pre_merge(session):
+    """Run the format, lint, test, safety, and docs sessions.
+
+    Intended to be run either as a pre-merge or pre-push hook.
+
+    Ignores the paths passed in by the pre-commit framework
+    for the test, safety, and docs sessions so that the
+    entire test suite is executed.
+    """
+    # Re-using an old environment is not so easy here as the "test" session
+    # runs `poetry install --no-dev`, which removes previously installed packages.
+    if session.virtualenv.reuse_existing:
+        raise RuntimeError(
+            'The "pre-merge" session must be run without the "-r" option',
+        )
+
+    session.notify('format')
+    session.notify('lint')
+    session.notify('safety')
+    session.notify('docs')
+
+    # Little hack to not work with the extra arguments provided
+    # by the pre-commit framework. Create a flag in the
+    # env(ironment) that must contain only `str`-like objects.
+    session.env['_drop_posargs'] = 'true'
+
+    # Cannot use session.notify() to trigger the "test" session
+    # as that would create a new Session object without the flag
+    # in the env(ironment). Instead, run the test() function within
+    # the "pre-merge" session.
+    test(session)
+
+
+@nox.session(name='init-project', python=PYTHON, venv_backend='none')
+def init_project(session):
+    """Install the pre-commit hooks."""
+    for type_ in ('pre-commit', 'pre-merge-commit', 'pre-push'):
+        session.run('poetry', 'run', 'pre-commit', 'install', f'--hook-type={type_}')
+
+
+@nox.session(name='clean-pwd', python=PYTHON, venv_backend='none')
+def clean_pwd(session):
+    """Remove (almost) all glob patterns listed in .gitignore.
+
+    The difference compared to `git clean -X` is that this task
+    does not remove pyenv's .python-version file and poetry's
+    virtual environment.
+    """
+    exclude = frozenset(('.python-version', '.venv', 'venv'))
+
+    with open('.gitignore') as file_handle:
+        paths = file_handle.readlines()
+
+    for path in paths:
+        path = path.strip()
+        if path.startswith('#') or path in exclude:
+            continue
+
+        for expanded in glob.glob(path):
+            session.run(f'rm -rf {expanded}')
 
 
 def _begin(session):
@@ -326,11 +428,11 @@ def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) ->
 
 
 # TODO (isort): Remove this fix after
-# upgrading to isort ^5.2.2 in pyproject.toml.
+# upgrading to isort ^5.3.0 in pyproject.toml.
 @contextlib.contextmanager
 def _isort_fix(session):
-    """Temporarily upgrade to isort 5.2.2."""
-    session.install('isort==5.2.2')
+    """Temporarily upgrade to isort 5.3.0."""
+    session.install('isort==5.3.0')
     try:
         yield
     finally:
