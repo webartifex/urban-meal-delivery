@@ -39,7 +39,11 @@ nox.options.sessions = (
 
 @nox.session(name='format', python=MAIN_PYTHON)
 def format_(session: Session) -> None:
-    """Format source files with autoflake, black, and isort."""
+    """Format source files with autoflake, black, and isort.
+
+    If no extra arguments are provided, all source files are formatted.
+    Otherwise, they are interpreted as paths the formatters work on recursively.
+    """
     _begin(session)
     _install_packages(session, 'autoflake', 'black', 'isort')
     # Interpret extra arguments as locations of source files.
@@ -65,7 +69,11 @@ def format_(session: Session) -> None:
 
 @nox.session(python=MAIN_PYTHON)
 def lint(session: Session) -> None:
-    """Lint source files with flake8, mypy, and pylint."""
+    """Lint source files with flake8, mypy, and pylint.
+
+    If no extra arguments are provided, all source files are linted.
+    Otherwise, they are interpreted as paths the linters work on recursively.
+    """
     _begin(session)
     _install_packages(
         session,
@@ -99,20 +107,33 @@ def lint(session: Session) -> None:
 
 @nox.session(python=[MAIN_PYTHON, NEXT_PYTHON])
 def test(session: Session) -> None:
-    """Test the code base."""
+    """Test the code base.
+
+    Runs the unit and integration tests (written with pytest).
+
+    If no extra arguments are provided, the entire test suite
+    is exexcuted and succeeds only with 100% coverage.
+
+    If extra arguments are provided, they are
+    forwarded to pytest without any changes.
+    """
     # Re-using an old environment is not so easy here as
     # `poetry install --no-dev` removes previously installed packages.
     # We keep things simple and forbid such usage.
     if session.virtualenv.reuse_existing:
-        raise RuntimeError('The "test" session must be run with the "-r" option')
+        raise RuntimeError(
+            'The "test" and "pre-merge" sessions must be run without the "-r" option',
+        )
 
     _begin(session)
-    # Install only the non-develop dependencies
-    # and the testing tool chain.
+    # Install only the non-develop dependencies and the testing tool chain.
     session.run('poetry', 'install', '--no-dev', external=True)
     _install_packages(session, 'pytest', 'pytest-cov')
     # Interpret extra arguments as options for pytest.
-    args = session.posargs or (
+    # They are "dropped" by the hack in the pre_merge() function
+    # if this function is run within the "pre-merge" session.
+    posargs = () if session.env.get('_drop_posargs') else session.posargs
+    args = posargs or (
         '--cov',
         '--no-cov-on-fail',
         '--cov-branch',
@@ -125,23 +146,54 @@ def test(session: Session) -> None:
 
 @nox.session(name='pre-commit', python=MAIN_PYTHON, venv_backend='none')
 def pre_commit(session: Session) -> None:
-    """Source files must be well-formed before they enter git."""
-    _begin(session)
+    """Source files must be well-formed before they enter git.
+
+    Intended to be run as a pre-commit hook.
+
+    This session is a wrapper that triggers the "format" and "lint" sessions.
+
+    Passed in extra arguments are forwarded. So, if it is run as a pre-commit
+    hook, only the currently staged source files are formatted and linted.
+    """
+    # "format" and "lint" are run in sessions on their own as
+    # session.notify() creates new Session objects.
     session.notify('format')
     session.notify('lint')
 
 
-@nox.session(name='pre-merge', python=MAIN_PYTHON, venv_backend='none')
+@nox.session(name='pre-merge', python=MAIN_PYTHON)
 def pre_merge(session: Session) -> None:
-    """The test suite must pass before merges are made."""
-    _begin(session)
-    session.notify('test')
+    """The test suite must pass before merges are made.
+
+    Intended to be run either as a pre-merge or pre-push hook.
+
+    First, this session triggers the "format" and "lint" sessions via
+    the "pre-commit" session.
+
+    Then, it runs the "test" session ignoring any extra arguments passed in
+    so that the entire test suite is executed.
+    """
+    session.notify('pre-commit')
+    # Little hack to not work with the extra arguments provided
+    # by the pre-commit framework. Create a flag in the
+    # env(ironment) that must contain only `str`-like objects.
+    session.env['_drop_posargs'] = 'true'
+    # Cannot use session.notify() to trigger the "test" session
+    # as that would create a new Session object without the flag
+    # in the env(ironment). Instead, run the test() function within
+    # the "pre-merge" session.
+    test(session)
 
 
 def _begin(session: Session) -> None:
     """Show generic info about a session."""
     if session.posargs:
-        print('extra arguments:', *session.posargs)  # noqa:WPS421
+        # Part of the hack in pre_merge() to "drop" the extra arguments.
+        # Indicate to stdout that the passed in extra arguments are ignored.
+        if session.env.get('_drop_posargs') is None:
+            print('Provided extra argument(s):', *session.posargs)  # noqa:WPS421
+        else:
+            print('The provided extra arguments are ignored')  # noqa:WPS421
 
     session.run('python', '--version')
 
@@ -158,6 +210,13 @@ def _install_packages(
     This function wraps nox.sessions.Session.install() such that it installs
     packages respecting the pinnned versions specified in poetry's lock file.
     This makes nox sessions even more deterministic.
+
+    IMPORTANT: This function skips installation if the current nox session
+    is run with the "-r" flag to re-use an existing virtual environment.
+    That turns nox into a fast task runner provided that a virtual
+    environment actually existed and does not need to be changed (e.g.,
+    new dependencies added in the meantime). Do not use the "-r" flag on CI
+    or as part of pre-commit hooks!
 
     Args:
         session: the Session object

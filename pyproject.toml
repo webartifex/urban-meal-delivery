@@ -30,6 +30,7 @@ python = "^3.8"
 [tool.poetry.dev-dependencies]
 # Task Runners
 nox = "^2020.5.24"
+pre-commit = "^2.6.0"
 
 # Code Formatters
 autoflake = "^1.3.1"
