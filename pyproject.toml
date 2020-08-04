@@ -53,6 +53,7 @@ wemake-python-styleguide = "^0.14.1"  # flake8 plug-in
 packaging = "^20.4"  # used to test the packaged version
 pytest = "^6.0.1"
 pytest-cov = "^2.10.0"
+xdoctest = { version="^0.13.0", extras=["optional"] }
 
 [tool.poetry.scripts]
 umd = "urban_meal_delivery.console:main"

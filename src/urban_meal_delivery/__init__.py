@@ -1,4 +1,10 @@
-"""Source code for the urban-meal-delivery research project."""
+"""Source code for the urban-meal-delivery research project.
+
+Example:
+    >>> import urban_meal_delivery as umd
+    >>> umd.__version__ != '0.0.0'
+    True
+"""
 
 from importlib import metadata as _metadata
 

@@ -13,6 +13,8 @@ MAIN_PYTHON = '3.8'
 # Keep the project is forward compatible.
 NEXT_PYTHON = '3.9'
 
+PACKAGE_IMPORT_NAME = 'urban_meal_delivery'
+
 # Path to the *.py files to be packaged.
 PACKAGE_SOURCE_LOCATION = 'src/'
 
@@ -48,6 +50,8 @@ def format_(session):
     Otherwise, they are interpreted as paths the formatters work on recursively.
     """
     _begin(session)
+    # The formatting tools do not require the developed
+    # package be installed in the virtual environment.
     _install_packages(session, 'autoflake', 'black', 'isort')
     # Interpret extra arguments as locations of source files.
     locations = session.posargs or SRC_LOCATIONS
@@ -78,6 +82,8 @@ def lint(session):
     Otherwise, they are interpreted as paths the linters work on recursively.
     """
     _begin(session)
+    # The linting tools do not require the developed
+    # package be installed in the virtual environment.
     _install_packages(
         session,
         'flake8',
@@ -122,13 +128,15 @@ def lint(session):
 def test(session):
     """Test the code base.
 
-    Runs the unit and integration tests (written with pytest).
+    Runs the unit and integration tests with pytest and
+    validate that all code snippets in docstrings work with xdoctest.
 
     If no extra arguments are provided, the entire test suite
     is exexcuted and succeeds only with 100% coverage.
 
     If extra arguments are provided, they are
-    forwarded to pytest without any changes.
+    forwarded to pytest and xdoctest without any changes.
+    xdoctest ignores arguments it does not understand.
     """
     # Re-using an old environment is not so easy here as
     # `poetry install --no-dev` removes previously installed packages.
@@ -139,9 +147,12 @@ def test(session):
         )
 
     _begin(session)
-    # Install only the non-develop dependencies and the testing tool chain.
+    # The testing tools require the developed package and its
+    # non-develop dependencies be installed in the virtual environment.
     session.run('poetry', 'install', '--no-dev', external=True)
-    _install_packages(session, 'pytest', 'pytest-cov')
+    _install_packages(
+        session, 'packaging', 'pytest', 'pytest-cov', 'xdoctest[optional]',
+    )
     # Interpret extra arguments as options for pytest.
     # They are "dropped" by the hack in the pre_merge() function
     # if this function is run within the "pre-merge" session.
@@ -154,7 +165,12 @@ def test(session):
         '--cov-report=term-missing:skip-covered',
         PYTEST_LOCATION,
     )
+    session.run('pytest', '--version')
     session.run('pytest', *args)
+    # For xdoctest, the default arguments are different from pytest.
+    args = posargs or [PACKAGE_IMPORT_NAME]
+    session.run('xdoctest', '--version')
+    session.run('xdoctest', '--quiet', *args)  # --quiet => less verbose output
 
 
 @nox.session(name='pre-commit', python=MAIN_PYTHON, venv_backend='none')
