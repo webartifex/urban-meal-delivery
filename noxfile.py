@@ -15,6 +15,10 @@ NEXT_PYTHON = '3.9'
 
 PACKAGE_IMPORT_NAME = 'urban_meal_delivery'
 
+# Docs/sphinx locations.
+DOCS_SRC = 'docs/'
+DOCS_BUILD = '.cache/docs/'
+
 # Path to the *.py files to be packaged.
 PACKAGE_SOURCE_LOCATION = 'src/'
 
@@ -22,8 +26,12 @@ PACKAGE_SOURCE_LOCATION = 'src/'
 PYTEST_LOCATION = 'tests/'
 
 # Paths with all *.py files.
-SRC_LOCATIONS = 'noxfile.py', PACKAGE_SOURCE_LOCATION, PYTEST_LOCATION
-
+SRC_LOCATIONS = (
+    f'{DOCS_SRC}/conf.py',
+    'noxfile.py',
+    PACKAGE_SOURCE_LOCATION,
+    PYTEST_LOCATION,
+)
 
 # Use a unified .cache/ folder for all tools.
 nox.options.envdir = '.cache/nox'
@@ -39,6 +47,7 @@ nox.options.sessions = (
     f'test-{MAIN_PYTHON}',
     f'test-{NEXT_PYTHON}',
     'safety',
+    'docs',
 )
 
 
@@ -233,6 +242,29 @@ def safety(session):
         session.run(
             'safety', 'check', f'--file={requirements_txt.name}', '--full-report',
         )
+
+
+@nox.session(python=MAIN_PYTHON)
+def docs(session):
+    """Build the documentation with sphinx."""
+    # The latest version of the package needs to be installed
+    # so that sphinx's autodoc can include the latest docstrings.
+    if session.virtualenv.reuse_existing:
+        raise RuntimeError('The "docs" session must be run without the "-r" option')
+
+    _begin(session)
+
+    # The documentation tools require the developed package and its
+    # non-develop dependencies be installed in the virtual environment.
+    # Otherwise, sphinx's autodoc could not include the docstrings.
+    session.run('poetry', 'install', '--no-dev', external=True)
+    _install_packages(session, 'sphinx', 'sphinx-autodoc-typehints')
+
+    session.run('sphinx-build', DOCS_SRC, DOCS_BUILD)
+    # Verify all external links return 200 OK.
+    session.run('sphinx-build', '-b', 'linkcheck', DOCS_SRC, DOCS_BUILD)
+
+    print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
 def _begin(session):
