@@ -36,6 +36,7 @@ nox.options.sessions = (
     'lint',
     f'test-{MAIN_PYTHON}',
     f'test-{NEXT_PYTHON}',
+    'safety',
 )
 
 
@@ -195,6 +196,27 @@ def pre_merge(session):
     # in the env(ironment). Instead, run the test() function within
     # the "pre-merge" session.
     test(session)
+
+
+@nox.session(python=MAIN_PYTHON)
+def safety(session):
+    """Check the dependencies for known security vulnerabilities."""
+    _begin(session)
+    # We do not pin the version of `safety` to always check with
+    # the latest version. The risk this breaks the CI is rather low.
+    session.install('safety')
+    with tempfile.NamedTemporaryFile() as requirements_txt:
+        session.run(
+            'poetry',
+            'export',
+            '--dev',
+            '--format=requirements.txt',
+            f'--output={requirements_txt.name}',
+            external=True,
+        )
+        session.run(
+            'safety', 'check', f'--file={requirements_txt.name}', '--full-report',
+        )
 
 
 def _begin(session):
