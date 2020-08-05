@@ -1,0 +1,38 @@
+default_stages: [commit]  # only used if a hook does not specify stages
+fail_fast: true
+repos:
+# Run the local formatting, linting, and testing tool chains.
+- repo: local
+  hooks:
+  - id: local-pre-commit-checks
+    name: Run code formatters and linters
+    entry: poetry run nox -s pre-commit --
+    language: system
+    stages: [commit]
+    types: [python]
+  - id: local-pre-merge-checks
+    name: Run the entire test suite
+    entry: poetry run nox -s pre-merge --
+    language: system
+    stages: [merge-commit, push]
+    types: [python]
+# Enable hooks provided by the pre-commit project to
+# enforce rules that local tools could not that easily.
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.2.0
+  hooks:
+  - id: check-added-large-files
+    args: [--maxkb=100]
+  - id: check-case-conflict
+  - id: check-builtin-literals
+  - id: check-merge-conflict
+  - id: check-toml
+  - id: check-yaml
+  - id: end-of-file-fixer
+    stages: [commit]  # overwrite the default
+  - id: mixed-line-ending
+    args: [--fix=no]
+  - id: no-commit-to-branch
+    args: [--branch, main]
+  - id: trailing-whitespace
+    stages: [commit]  # overwrite the default

@@ -2,9 +2,14 @@
 build-backend = "poetry.masonry.api"
 requires = ["poetry>=0.12"]
 
+[tool.black]
+line-length = 88
+skip-string-normalization = true  # wemake-python-styleguide enforces single quotes
+target-version = ["py38"]
+
 [tool.poetry]
 name = "urban-meal-delivery"
-version = "0.1.0.dev0"
+version = "0.1.0"
 
 authors = ["Alexander Hess <alexander@webartifex.biz>"]
 description = "Optimizing an urban meal delivery platform"
@@ -22,4 +27,37 @@ repository = "https://github.com/webartifex/urban-meal-delivery"
 [tool.poetry.dependencies]
 python = "^3.8"
 
+click = "^7.1.2"
+
 [tool.poetry.dev-dependencies]
+# Task Runners
+nox = "^2020.5.24"
+pre-commit = "^2.6.0"
+
+# Code Formatters
+autoflake = "^1.3.1"
+black = "^19.10b0"
+isort = "^4.3.21"  # TODO (isort): not ^5.2.2 due to pylint and wemake-python-styleguide
+
+# (Static) Code Analyzers
+flake8 = "^3.8.3"
+flake8-annotations = "^2.3.0"
+flake8-black = "^0.2.1"
+flake8-expression-complexity = "^0.0.8"
+flake8-pytest-style = "^1.2.2"
+mypy = "^0.782"
+pylint = "^2.5.3"
+wemake-python-styleguide = "^0.14.1"  # flake8 plug-in
+
+# Test Suite
+packaging = "^20.4"  # used to test the packaged version
+pytest = "^6.0.1"
+pytest-cov = "^2.10.0"
+xdoctest = { version="^0.13.0", extras=["optional"] }
+
+# Documentation
+sphinx = "^3.1.2"
+sphinx-autodoc-typehints = "^1.11.0"
+
+[tool.poetry.scripts]
+umd = "urban_meal_delivery.console:main"
