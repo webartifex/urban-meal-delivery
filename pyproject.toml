@@ -9,7 +9,7 @@ target-version = ["py38"]
 
 [tool.poetry]
 name = "urban-meal-delivery"
-version = "0.1.0.dev0"
+version = "0.1.0"
 
 authors = ["Alexander Hess <alexander@webartifex.biz>"]
 description = "Optimizing an urban meal delivery platform"
