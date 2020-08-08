@@ -28,6 +28,7 @@ repository = "https://github.com/webartifex/urban-meal-delivery"
 python = "^3.8"
 
 click = "^7.1.2"
+python-dotenv = "^0.14.0"
 
 [tool.poetry.dev-dependencies]
 # Task Runners
