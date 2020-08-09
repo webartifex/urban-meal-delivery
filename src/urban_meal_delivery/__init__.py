@@ -27,4 +27,11 @@ else:
 
 
 # Little Hack: "Overwrites" the config module so that the environment is already set.
-config = _config.get_config('testing' if _os.getenv('TESTING') else 'production')
+config: _config.Config = _config.get_config(
+    'testing' if _os.getenv('TESTING') else 'production',
+)
+
+
+# Import `db` down here as it depends on `config`.
+# pylint:disable=wrong-import-position
+from urban_meal_delivery import db  # noqa:E402,F401 isort:skip

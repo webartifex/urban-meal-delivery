@@ -249,6 +249,8 @@ def test(session):
         '--cov-branch',
         '--cov-fail-under=100',
         '--cov-report=term-missing:skip-covered',
+        '-k',
+        'not e2e',
         PYTEST_LOCATION,
     )
     session.run('pytest', '--version')

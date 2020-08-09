@@ -6,15 +6,23 @@ via the `config` proxy at the package's top level.
 That already loads the correct configuration
 depending on the current environment.
 """
-
 import datetime
 import os
+import random
+import string
 import warnings
 
 import dotenv
 
 
 dotenv.load_dotenv()
+
+
+def random_schema_name() -> str:
+    """Generate a random PostgreSQL schema name for testing."""
+    return ''.join(
+        random.choice(string.ascii_lowercase) for _ in range(10)  # noqa:S311
+    )
 
 
 class Config:
@@ -57,7 +65,7 @@ class TestingConfig(Config):
     TESTING = True
 
     DATABASE_URI = os.getenv('DATABASE_URI_TESTING') or Config.DATABASE_URI
-    CLEAN_SCHEMA = os.getenv('CLEAN_SCHEMA_TESTING') or Config.CLEAN_SCHEMA
+    CLEAN_SCHEMA = os.getenv('CLEAN_SCHEMA_TESTING') or random_schema_name()
 
 
 def get_config(env: str = 'production') -> Config:

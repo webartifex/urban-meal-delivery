@@ -43,3 +43,11 @@ def test_no_database_uri_set(env, monkeypatch):
 
     with pytest.warns(UserWarning, match='no DATABASE_URI'):
         config_mod.get_config(env)
+
+
+def test_random_testing_schema():
+    """CLEAN_SCHEMA is randomized if not seti explicitly."""
+    result = config_mod.random_schema_name()
+
+    assert isinstance(result, str)
+    assert len(result) <= 10
