@@ -357,25 +357,29 @@ def init_project(session):
 
 
 @nox.session(name='clean-pwd', python=PYTHON, venv_backend='none')
-def clean_pwd(session):
+def clean_pwd(session):  # noqa:WPS210,WPS231
     """Remove (almost) all glob patterns listed in .gitignore.
 
     The difference compared to `git clean -X` is that this task
     does not remove pyenv's .python-version file and poetry's
     virtual environment.
     """
-    exclude = frozenset(('.python-version', '.venv', 'venv'))
+    exclude = frozenset(('.env', '.python-version', '.venv/', 'venv/'))
 
     with open('.gitignore') as file_handle:
         paths = file_handle.readlines()
 
     for path in paths:
         path = path.strip()
-        if path.startswith('#') or path in exclude:
+        if path.startswith('#'):
             continue
 
         for expanded in glob.glob(path):
-            session.run(f'rm -rf {expanded}')
+            for excluded in exclude:
+                if expanded.startswith(excluded):
+                    break
+            else:
+                session.run('rm', '-rf', expanded)
 
 
 def _begin(session):
