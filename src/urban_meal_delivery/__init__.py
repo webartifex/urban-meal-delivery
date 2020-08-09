@@ -9,7 +9,7 @@ Example:
 import os as _os
 from importlib import metadata as _metadata
 
-from urban_meal_delivery import _config  # noqa:WPS450
+from urban_meal_delivery import configuration as _configuration
 
 
 try:
@@ -26,8 +26,8 @@ else:
     __version__ = _pkg_info['version']
 
 
-# Little Hack: "Overwrites" the config module so that the environment is already set.
-config: _config.Config = _config.get_config(
+# Global `config` object to be used in the package.
+config: _configuration.Config = _configuration.make_config(
     'testing' if _os.getenv('TESTING') else 'production',
 )
 

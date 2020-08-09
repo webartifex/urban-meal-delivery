@@ -27,6 +27,7 @@ repository = "https://github.com/webartifex/urban-meal-delivery"
 [tool.poetry.dependencies]
 python = "^3.8"
 
+alembic = "^1.4.2"
 click = "^7.1.2"
 psycopg2 = "^2.8.5"  # adapter for PostgreSQL
 python-dotenv = "^0.14.0"
@@ -56,6 +57,7 @@ wemake-python-styleguide = "^0.14.1"  # flake8 plug-in
 packaging = "^20.4"  # used to test the packaged version
 pytest = "^6.0.1"
 pytest-cov = "^2.10.0"
+pytest-env = "^0.6.2"
 xdoctest = { version="^0.13.0", extras=["optional"] }
 
 # Documentation

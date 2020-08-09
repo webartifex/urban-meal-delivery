@@ -3,30 +3,49 @@
 import datetime
 
 import pytest
-from sqlalchemy import schema
+from alembic import command as migrations_cmd
+from alembic import config as migrations_config
 
 from urban_meal_delivery import config
 from urban_meal_delivery import db
 
 
-@pytest.fixture(scope='session')
-def db_engine():
+@pytest.fixture(scope='session', params=['all_at_once', 'sequentially'])
+def db_engine(request):
     """Create all tables given the ORM models.
 
     The tables are put into a distinct PostgreSQL schema
     that is removed after all tests are over.
 
     The engine used to do that is yielded.
+
+    There are two modes for this fixture:
+
+    - "all_at_once": build up the tables all at once with MetaData.create_all()
+    - "sequentially": build up the tables sequentially with `alembic upgrade head`
+
+    This ensures that Alembic's migration files are consistent.
     """
     engine = db.make_engine()
-    engine.execute(schema.CreateSchema(config.CLEAN_SCHEMA))
-    db.Base.metadata.create_all(engine)
+
+    if request.param == 'all_at_once':
+        engine.execute(f'CREATE SCHEMA {config.CLEAN_SCHEMA};')
+        db.Base.metadata.create_all(engine)
+    else:
+        cfg = migrations_config.Config('alembic.ini')
+        migrations_cmd.upgrade(cfg, 'head')
 
     try:
         yield engine
 
     finally:
-        engine.execute(schema.DropSchema(config.CLEAN_SCHEMA, cascade=True))
+        engine.execute(f'DROP SCHEMA {config.CLEAN_SCHEMA} CASCADE;')
+
+        if request.param == 'sequentially':
+            tmp_alembic_version = f'{config.ALEMBIC_TABLE}_{config.CLEAN_SCHEMA}'
+            engine.execute(
+                f'DROP TABLE {config.ALEMBIC_TABLE_SCHEMA}.{tmp_alembic_version};',
+            )
 
 
 @pytest.fixture

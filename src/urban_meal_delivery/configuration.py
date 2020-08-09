@@ -1,11 +1,12 @@
 """Provide package-wide configuration.
 
-This module is "protected" so that it is only used
-via the `config` proxy at the package's top level.
+This module provides utils to create new `Config` objects
+on the fly, mainly for testing and migrating!
 
-That already loads the correct configuration
-depending on the current environment.
+Within this package, use the `config` proxy at the package's top level
+to access the current configuration!
 """
+
 import datetime
 import os
 import random
@@ -20,8 +21,10 @@ dotenv.load_dotenv()
 
 def random_schema_name() -> str:
     """Generate a random PostgreSQL schema name for testing."""
-    return ''.join(
-        random.choice(string.ascii_lowercase) for _ in range(10)  # noqa:S311
+    return 'temp_{name}'.format(
+        name=''.join(
+            (random.choice(string.ascii_lowercase) for _ in range(10)),  # noqa:S311
+        ),
     )
 
 
@@ -43,6 +46,9 @@ class Config:
 
     # The PostgreSQL schema that holds the tables with the cleaned data.
     CLEAN_SCHEMA = os.getenv('CLEAN_SCHEMA') or 'clean'
+
+    ALEMBIC_TABLE = 'alembic_version'
+    ALEMBIC_TABLE_SCHEMA = 'public'
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
@@ -68,8 +74,8 @@ class TestingConfig(Config):
     CLEAN_SCHEMA = os.getenv('CLEAN_SCHEMA_TESTING') or random_schema_name()
 
 
-def get_config(env: str = 'production') -> Config:
-    """Get the configuration for the package.
+def make_config(env: str = 'production') -> Config:
+    """Create a new `Config` object.
 
     Args:
         env: either 'production' or 'testing'; defaults to the first

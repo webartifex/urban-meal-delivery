@@ -74,7 +74,9 @@ PYTEST_LOCATION = 'tests/'
 
 # Paths with all *.py files.
 SRC_LOCATIONS = (
-    f'{DOCS_SRC}/conf.py',
+    f'{DOCS_SRC}conf.py',
+    'migrations/env.py',
+    'migrations/versions/',
     'noxfile.py',
     PACKAGE_SOURCE_LOCATION,
     PYTEST_LOCATION,
@@ -235,7 +237,12 @@ def test(session):
     # non-develop dependencies be installed in the virtual environment.
     session.run('poetry', 'install', '--no-dev', external=True)
     _install_packages(
-        session, 'packaging', 'pytest', 'pytest-cov', 'xdoctest[optional]',
+        session,
+        'packaging',
+        'pytest',
+        'pytest-cov',
+        'pytest-env',
+        'xdoctest[optional]',
     )
 
     # Interpret extra arguments as options for pytest.
