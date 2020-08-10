@@ -54,12 +54,17 @@ The pre-commit framework invokes the "pre-commit" and "pre-merge" sessions:
 import contextlib
 import glob
 import os
+import re
+import shutil
+import subprocess  # noqa:S404
 import tempfile
+from typing import Generator, IO, Tuple
 
 import nox
 from nox.sessions import Session
 
 
+GITHUB_REPOSITORY = 'webartifex/urban-meal-delivery'
 PACKAGE_IMPORT_NAME = 'urban_meal_delivery'
 
 # Docs/sphinx locations.
@@ -349,6 +354,94 @@ def pre_merge(session):
     test(session)
 
 
+@nox.session(name='fix-branch-references', python=PYTHON, venv_backend='none')
+def fix_branch_references(_):  # noqa:WPS210
+    """Replace branch references with the current branch.
+
+    Intended to be run as a pre-commit hook.
+
+    Many files in the project (e.g., README.md) contain links to resources
+    on github.com or nbviewer.jupyter.org that contain branch labels.
+
+    This task rewrites these links such that they contain the branch reference
+    of the current branch.
+    """
+    # Adjust this to add/remove glob patterns
+    # whose links are re-written.
+    paths = ['*.md', '**/*.md', '**/*.ipynb']
+
+    branch = (
+        subprocess.check_output(  # noqa:S603
+            ('git', 'rev-parse', '--abbrev-ref', 'HEAD'),
+        )
+        .decode()
+        .strip()
+    )
+
+    rewrites = [
+        {
+            'name': 'github',
+            'pattern': re.compile(
+                fr'((((http)|(https))://github\.com/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w-]+)/)',  # noqa:E501
+            ),
+            'replacement': fr'\2{branch}/',
+        },
+        {
+            'name': 'nbviewer',
+            'pattern': re.compile(
+                fr'((((http)|(https))://nbviewer\.jupyter\.org/github/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w-]+)/)',  # noqa:E501
+            ),
+            'replacement': fr'\2{branch}/',
+        },
+    ]
+
+    for expanded in _expand(*paths):
+        with _line_by_line_replace(expanded) as (old_file, new_file):
+            for line in old_file:
+                for rewrite in rewrites:
+                    line = re.sub(rewrite['pattern'], rewrite['replacement'], line)
+                new_file.write(line)
+
+
+def _expand(*patterns: str) -> Generator[str, None, None]:
+    """Expand glob patterns into paths.
+
+    Args:
+        *patterns: the patterns to be expanded
+
+    Yields:
+        expanded: a single expanded path
+    """  # noqa:RST213
+    for pattern in patterns:
+        yield from glob.glob(pattern.strip())
+
+
+@contextlib.contextmanager
+def _line_by_line_replace(path: str) -> Generator[Tuple[IO, IO], None, None]:
+    """Replace/change the lines in a file one by one.
+
+    This generator function yields two file handles, one to the current file
+    (i.e., `old_file`) and one to its replacement (i.e., `new_file`).
+
+    Usage: loop over the lines in `old_file` and write the files to be kept
+    to `new_file`. Files not written to `new_file` are removed!
+
+    Args:
+        path: the file whose lines are to be replaced
+
+    Yields:
+        old_file, new_file: handles to a file and its replacement
+    """
+    file_handle, new_file_path = tempfile.mkstemp()
+    with os.fdopen(file_handle, 'w') as new_file:
+        with open(path) as old_file:
+            yield old_file, new_file
+
+    shutil.copymode(path, new_file_path)
+    os.remove(path)
+    shutil.move(new_file_path, path)
+
+
 @nox.session(name='init-project', python=PYTHON, venv_backend='none')
 def init_project(session):
     """Install the pre-commit hooks."""
@@ -369,17 +462,15 @@ def clean_pwd(session):  # noqa:WPS210,WPS231
     with open('.gitignore') as file_handle:
         paths = file_handle.readlines()
 
-    for path in paths:
-        path = path.strip()
+    for path in _expand(*paths):
         if path.startswith('#'):
             continue
 
-        for expanded in glob.glob(path):
-            for excluded in exclude:
-                if expanded.startswith(excluded):
-                    break
-            else:
-                session.run('rm', '-rf', expanded)
+        for excluded in exclude:
+            if path.startswith(excluded):
+                break
+        else:
+            session.run('rm', '-rf', path)
 
 
 def _begin(session):

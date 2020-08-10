@@ -10,6 +10,12 @@ repos:
     language: system
     stages: [commit]
     types: [python]
+  - id: local-fix-branch-references
+    name: Adjust the branch references
+    entry: poetry run nox -s fix-branch-references --
+    language: system
+    stages: [commit]
+    types: [text]
   - id: local-pre-merge-checks
     name: Run the entire test suite
     entry: poetry run nox -s pre-merge --
