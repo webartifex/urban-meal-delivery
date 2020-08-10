@@ -27,7 +27,7 @@ as unified tasks to assure the quality of the source code:
     => may be paths or options
 
 
-GitHub Actions implements a CI workflow:
+GitHub Actions implements the following CI workflow:
 
 - "format", "lint", and "test" as above
 
@@ -36,18 +36,14 @@ GitHub Actions implements a CI workflow:
 - "docs": build the documentation with sphinx
 
 
-The pre-commit framework invokes the "pre-commit" and "pre-merge" sessions:
+The pre-commit framework invokes the following tasks:
 
-- "pre-commit" before all commits:
+- before any commit:
 
-  + triggers "format" and "lint" on staged source files
-  + => test coverage may be < 100%
+  + "format" and "lint" as above
+  + "fix-branch-references": replace branch references with the current one
 
-- "pre-merge" before all merges and pushes:
-
-  + same as "pre-commit"
-  + plus: triggers "test", "safety", and "docs" (that ignore extra arguments)
-  + => test coverage is enforced to be 100%
+- before merges: run the entire "test-suite" independent of the file changes
 
 """
 
@@ -199,23 +195,6 @@ def lint(session):
     )
 
 
-@nox.session(name='pre-commit', python=PYTHON, venv_backend='none')
-def pre_commit(session):
-    """Run the format and lint sessions.
-
-    Source files must be well-formed before they enter git.
-
-    Intended to be run as a pre-commit hook.
-
-    Passed in extra arguments are forwarded. So, if it is run as a pre-commit
-    hook, only the currently staged source files are formatted and linted.
-    """
-    # "format" and "lint" are run in sessions on their own as
-    # session.notify() creates new Session objects.
-    session.notify('format')
-    session.notify('lint')
-
-
 @nox.session(python=PYTHON)
 def test(session):
     """Test the code base.
@@ -320,27 +299,21 @@ def docs(session):
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
-@nox.session(name='pre-merge', python=PYTHON)
-def pre_merge(session):
-    """Run the format, lint, test, safety, and docs sessions.
+@nox.session(name='test-suite', python=PYTHON)
+def test_suite(session):
+    """Run the entire test suite.
 
-    Intended to be run either as a pre-merge or pre-push hook.
+    Intended to be run as a pre-commit hook.
 
     Ignores the paths passed in by the pre-commit framework
-    for the test, safety, and docs sessions so that the
-    entire test suite is executed.
+    and runs the entire test suite.
     """
     # Re-using an old environment is not so easy here as the "test" session
     # runs `poetry install --no-dev`, which removes previously installed packages.
     if session.virtualenv.reuse_existing:
         raise RuntimeError(
-            'The "pre-merge" session must be run without the "-r" option',
+            'The "test-suite" session must be run without the "-r" option',
         )
-
-    session.notify('format')
-    session.notify('lint')
-    session.notify('safety')
-    session.notify('docs')
 
     # Little hack to not work with the extra arguments provided
     # by the pre-commit framework. Create a flag in the

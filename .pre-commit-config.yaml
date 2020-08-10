@@ -4,9 +4,15 @@ repos:
 # Run the local formatting, linting, and testing tool chains.
 - repo: local
   hooks:
-  - id: local-pre-commit-checks
-    name: Run code formatters and linters
-    entry: poetry run nox -s pre-commit --
+  - id: local-format
+    name: Format the source files
+    entry: poetry run nox -s format --
+    language: system
+    stages: [commit]
+    types: [python]
+  - id: local-lint
+    name: Lint the source files
+    entry: poetry run nox -s lint --
     language: system
     stages: [commit]
     types: [python]
@@ -16,12 +22,12 @@ repos:
     language: system
     stages: [commit]
     types: [text]
-  - id: local-pre-merge-checks
+  - id: local-test-suite
     name: Run the entire test suite
-    entry: poetry run nox -s pre-merge --
+    entry: poetry run nox -s test-suite --
     language: system
-    stages: [merge-commit, push]
-    types: [python]
+    stages: [merge-commit]
+    types: [text]
 # Enable hooks provided by the pre-commit project to
 # enforce rules that local tools could not that easily.
 - repo: https://github.com/pre-commit/pre-commit-hooks
