@@ -328,7 +328,7 @@ def test_suite(session):
 
 
 @nox.session(name='fix-branch-references', python=PYTHON, venv_backend='none')
-def fix_branch_references(_):  # noqa:WPS210
+def fix_branch_references(session):  # noqa:WPS210
     """Replace branch references with the current branch.
 
     Intended to be run as a pre-commit hook.
@@ -337,12 +337,20 @@ def fix_branch_references(_):  # noqa:WPS210
     on github.com or nbviewer.jupyter.org that contain branch labels.
 
     This task rewrites these links such that they contain the branch reference
-    of the current branch.
+    of the current branch. If the branch is only a temporary one that is to be
+    merged into the 'main' branch, all references are adjusted to 'main' as well.
+
+    This task may be called with one positional argument that is interpreted
+    as the branch to which all references are changed into.
+    The format must be "--branch=BRANCH_NAME".
     """
     # Adjust this to add/remove glob patterns
     # whose links are re-written.
     paths = ['*.md', '**/*.md', '**/*.ipynb']
 
+    # Get the branch git is currently on.
+    # This is the branch to which all references are changed into
+    # if none of the two exceptions below apply.
     branch = (
         subprocess.check_output(  # noqa:S603
             ('git', 'rev-parse', '--abbrev-ref', 'HEAD'),
@@ -350,19 +358,33 @@ def fix_branch_references(_):  # noqa:WPS210
         .decode()
         .strip()
     )
+    # If the current branch is only a temporary one that is to be merged
+    # into 'main', we adjust all branch references to 'main' as well.
+    if branch.startswith('release') or branch.startswith('research'):
+        branch = 'main'
+    # If a "--branch=BRANCH_NAME" argument is passed in
+    # as the only positional argument, we use BRANCH_NAME.
+    # Note: The --branch is required as session.posargs contains
+    # the staged files passed in by pre-commit in most cases.
+    if session.posargs and len(session.posargs) == 1:
+        match = re.match(
+            pattern=r'^--branch=([\w\.-]+)$', string=session.posargs[0].strip(),
+        )
+        if match:
+            branch = match.groups()[0]
 
     rewrites = [
         {
             'name': 'github',
             'pattern': re.compile(
-                fr'((((http)|(https))://github\.com/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w-]+)/)',  # noqa:E501
+                fr'((((http)|(https))://github\.com/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w\.-]+)/)',  # noqa:E501
             ),
             'replacement': fr'\2{branch}/',
         },
         {
             'name': 'nbviewer',
             'pattern': re.compile(
-                fr'((((http)|(https))://nbviewer\.jupyter\.org/github/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w-]+)/)',  # noqa:E501
+                fr'((((http)|(https))://nbviewer\.jupyter\.org/github/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w\.-]+)/)',  # noqa:E501
             ),
             'replacement': fr'\2{branch}/',
         },

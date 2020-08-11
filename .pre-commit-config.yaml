@@ -4,6 +4,12 @@ repos:
 # Run the local formatting, linting, and testing tool chains.
 - repo: local
   hooks:
+  - id: local-fix-branch-references
+    name: Check for wrong branch references
+    entry: poetry run nox -s fix-branch-references --
+    language: system
+    stages: [commit]
+    types: [text]
   - id: local-format
     name: Format the source files
     entry: poetry run nox -s format --
@@ -16,12 +22,6 @@ repos:
     language: system
     stages: [commit]
     types: [python]
-  - id: local-fix-branch-references
-    name: Adjust the branch references
-    entry: poetry run nox -s fix-branch-references --
-    language: system
-    stages: [commit]
-    types: [text]
   - id: local-test-suite
     name: Run the entire test suite
     entry: poetry run nox -s test-suite --
