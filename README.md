@@ -1,7 +1,7 @@
 # Urban Meal Delivery
 
 This repository holds code
-analyzing the data of an undisclosed urban meal delivery platform
+analyzing the data of an undisclosed urban meal delivery platform (UDP)
 operating in France from January 2016 to January 2017.
 The goal is to
 optimize the platform's delivery process involving independent couriers.
@@ -9,8 +9,24 @@ optimize the platform's delivery process involving independent couriers.
 
 ## Structure
 
-The analysis is structured into three aspects
+The analysis is structured into the following stages
 that iteratively build on each other.
+
+
+### Data Cleaning
+
+The UDP provided its raw data as a PostgreSQL dump.
+This [notebook](https://nbviewer.jupyter.org/github/webartifex/urban-meal-delivery/blob/main/notebooks/00_clean_data.ipynb)
+cleans the data extensively
+and maps them onto the [ORM models](https://github.com/webartifex/urban-meal-delivery/tree/main/src/urban_meal_delivery/db)
+defined in the `urban-meal-delivery` package
+that is developed in the [src/](https://github.com/webartifex/urban-meal-delivery/tree/main/src) folder
+and contains all source code to drive the analyses.
+
+Due to a non-disclosure agreement with the UDP,
+neither the raw nor the cleaned data are published as of now.
+However, previews of the data can be seen throughout the [notebooks/](https://github.com/webartifex/urban-meal-delivery/tree/main/notebooks) folders.
+
 
 ### Real-time Demand Forecasting
 
