@@ -27,7 +27,7 @@ as unified tasks to assure the quality of the source code:
     => may be paths or options
 
 
-GitHub Actions implements a CI workflow:
+GitHub Actions implements the following CI workflow:
 
 - "format", "lint", and "test" as above
 
@@ -36,30 +36,31 @@ GitHub Actions implements a CI workflow:
 - "docs": build the documentation with sphinx
 
 
-The pre-commit framework invokes the "pre-commit" and "pre-merge" sessions:
+The pre-commit framework invokes the following tasks:
 
-- "pre-commit" before all commits:
+- before any commit:
 
-  + triggers "format" and "lint" on staged source files
-  + => test coverage may be < 100%
+  + "format" and "lint" as above
+  + "fix-branch-references": replace branch references with the current one
 
-- "pre-merge" before all merges and pushes:
-
-  + same as "pre-commit"
-  + plus: triggers "test", "safety", and "docs" (that ignore extra arguments)
-  + => test coverage is enforced to be 100%
+- before merges: run the entire "test-suite" independent of the file changes
 
 """
 
 import contextlib
 import glob
 import os
+import re
+import shutil
+import subprocess  # noqa:S404
 import tempfile
+from typing import Generator, IO, Tuple
 
 import nox
 from nox.sessions import Session
 
 
+GITHUB_REPOSITORY = 'webartifex/urban-meal-delivery'
 PACKAGE_IMPORT_NAME = 'urban_meal_delivery'
 
 # Docs/sphinx locations.
@@ -74,7 +75,9 @@ PYTEST_LOCATION = 'tests/'
 
 # Paths with all *.py files.
 SRC_LOCATIONS = (
-    f'{DOCS_SRC}/conf.py',
+    f'{DOCS_SRC}conf.py',
+    'migrations/env.py',
+    'migrations/versions/',
     'noxfile.py',
     PACKAGE_SOURCE_LOCATION,
     PYTEST_LOCATION,
@@ -192,23 +195,6 @@ def lint(session):
     )
 
 
-@nox.session(name='pre-commit', python=PYTHON, venv_backend='none')
-def pre_commit(session):
-    """Run the format and lint sessions.
-
-    Source files must be well-formed before they enter git.
-
-    Intended to be run as a pre-commit hook.
-
-    Passed in extra arguments are forwarded. So, if it is run as a pre-commit
-    hook, only the currently staged source files are formatted and linted.
-    """
-    # "format" and "lint" are run in sessions on their own as
-    # session.notify() creates new Session objects.
-    session.notify('format')
-    session.notify('lint')
-
-
 @nox.session(python=PYTHON)
 def test(session):
     """Test the code base.
@@ -235,7 +221,12 @@ def test(session):
     # non-develop dependencies be installed in the virtual environment.
     session.run('poetry', 'install', '--no-dev', external=True)
     _install_packages(
-        session, 'packaging', 'pytest', 'pytest-cov', 'xdoctest[optional]',
+        session,
+        'packaging',
+        'pytest',
+        'pytest-cov',
+        'pytest-env',
+        'xdoctest[optional]',
     )
 
     # Interpret extra arguments as options for pytest.
@@ -249,6 +240,8 @@ def test(session):
         '--cov-branch',
         '--cov-fail-under=100',
         '--cov-report=term-missing:skip-covered',
+        '-k',
+        'not e2e',
         PYTEST_LOCATION,
     )
     session.run('pytest', '--version')
@@ -306,27 +299,21 @@ def docs(session):
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
-@nox.session(name='pre-merge', python=PYTHON)
-def pre_merge(session):
-    """Run the format, lint, test, safety, and docs sessions.
+@nox.session(name='test-suite', python=PYTHON)
+def test_suite(session):
+    """Run the entire test suite.
 
-    Intended to be run either as a pre-merge or pre-push hook.
+    Intended to be run as a pre-commit hook.
 
     Ignores the paths passed in by the pre-commit framework
-    for the test, safety, and docs sessions so that the
-    entire test suite is executed.
+    and runs the entire test suite.
     """
     # Re-using an old environment is not so easy here as the "test" session
     # runs `poetry install --no-dev`, which removes previously installed packages.
     if session.virtualenv.reuse_existing:
         raise RuntimeError(
-            'The "pre-merge" session must be run without the "-r" option',
+            'The "test-suite" session must be run without the "-r" option',
         )
-
-    session.notify('format')
-    session.notify('lint')
-    session.notify('safety')
-    session.notify('docs')
 
     # Little hack to not work with the extra arguments provided
     # by the pre-commit framework. Create a flag in the
@@ -340,6 +327,116 @@ def pre_merge(session):
     test(session)
 
 
+@nox.session(name='fix-branch-references', python=PYTHON, venv_backend='none')
+def fix_branch_references(session):  # noqa:WPS210
+    """Replace branch references with the current branch.
+
+    Intended to be run as a pre-commit hook.
+
+    Many files in the project (e.g., README.md) contain links to resources
+    on github.com or nbviewer.jupyter.org that contain branch labels.
+
+    This task rewrites these links such that they contain the branch reference
+    of the current branch. If the branch is only a temporary one that is to be
+    merged into the 'main' branch, all references are adjusted to 'main' as well.
+
+    This task may be called with one positional argument that is interpreted
+    as the branch to which all references are changed into.
+    The format must be "--branch=BRANCH_NAME".
+    """
+    # Adjust this to add/remove glob patterns
+    # whose links are re-written.
+    paths = ['*.md', '**/*.md', '**/*.ipynb']
+
+    # Get the branch git is currently on.
+    # This is the branch to which all references are changed into
+    # if none of the two exceptions below apply.
+    branch = (
+        subprocess.check_output(  # noqa:S603
+            ('git', 'rev-parse', '--abbrev-ref', 'HEAD'),
+        )
+        .decode()
+        .strip()
+    )
+    # If the current branch is only a temporary one that is to be merged
+    # into 'main', we adjust all branch references to 'main' as well.
+    if branch.startswith('release') or branch.startswith('research'):
+        branch = 'main'
+    # If a "--branch=BRANCH_NAME" argument is passed in
+    # as the only positional argument, we use BRANCH_NAME.
+    # Note: The --branch is required as session.posargs contains
+    # the staged files passed in by pre-commit in most cases.
+    if session.posargs and len(session.posargs) == 1:
+        match = re.match(
+            pattern=r'^--branch=([\w\.-]+)$', string=session.posargs[0].strip(),
+        )
+        if match:
+            branch = match.groups()[0]
+
+    rewrites = [
+        {
+            'name': 'github',
+            'pattern': re.compile(
+                fr'((((http)|(https))://github\.com/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w\.-]+)/)',  # noqa:E501
+            ),
+            'replacement': fr'\2{branch}/',
+        },
+        {
+            'name': 'nbviewer',
+            'pattern': re.compile(
+                fr'((((http)|(https))://nbviewer\.jupyter\.org/github/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w\.-]+)/)',  # noqa:E501
+            ),
+            'replacement': fr'\2{branch}/',
+        },
+    ]
+
+    for expanded in _expand(*paths):
+        with _line_by_line_replace(expanded) as (old_file, new_file):
+            for line in old_file:
+                for rewrite in rewrites:
+                    line = re.sub(rewrite['pattern'], rewrite['replacement'], line)
+                new_file.write(line)
+
+
+def _expand(*patterns: str) -> Generator[str, None, None]:
+    """Expand glob patterns into paths.
+
+    Args:
+        *patterns: the patterns to be expanded
+
+    Yields:
+        expanded: a single expanded path
+    """  # noqa:RST213
+    for pattern in patterns:
+        yield from glob.glob(pattern.strip())
+
+
+@contextlib.contextmanager
+def _line_by_line_replace(path: str) -> Generator[Tuple[IO, IO], None, None]:
+    """Replace/change the lines in a file one by one.
+
+    This generator function yields two file handles, one to the current file
+    (i.e., `old_file`) and one to its replacement (i.e., `new_file`).
+
+    Usage: loop over the lines in `old_file` and write the files to be kept
+    to `new_file`. Files not written to `new_file` are removed!
+
+    Args:
+        path: the file whose lines are to be replaced
+
+    Yields:
+        old_file, new_file: handles to a file and its replacement
+    """
+    file_handle, new_file_path = tempfile.mkstemp()
+    with os.fdopen(file_handle, 'w') as new_file:
+        with open(path) as old_file:
+            yield old_file, new_file
+
+    shutil.copymode(path, new_file_path)
+    os.remove(path)
+    shutil.move(new_file_path, path)
+
+
 @nox.session(name='init-project', python=PYTHON, venv_backend='none')
 def init_project(session):
     """Install the pre-commit hooks."""
@@ -348,25 +445,27 @@ def init_project(session):
 
 
 @nox.session(name='clean-pwd', python=PYTHON, venv_backend='none')
-def clean_pwd(session):
+def clean_pwd(session):  # noqa:WPS210,WPS231
     """Remove (almost) all glob patterns listed in .gitignore.
 
     The difference compared to `git clean -X` is that this task
     does not remove pyenv's .python-version file and poetry's
     virtual environment.
     """
-    exclude = frozenset(('.python-version', '.venv', 'venv'))
+    exclude = frozenset(('.env', '.python-version', '.venv/', 'venv/'))
 
     with open('.gitignore') as file_handle:
         paths = file_handle.readlines()
 
-    for path in paths:
-        path = path.strip()
-        if path.startswith('#') or path in exclude:
+    for path in _expand(*paths):
+        if path.startswith('#'):
             continue
 
-        for expanded in glob.glob(path):
-            session.run(f'rm -rf {expanded}')
+        for excluded in exclude:
+            if path.startswith(excluded):
+                break
+        else:
+            session.run('rm', '-rf', path)
 
 
 def _begin(session):
@@ -428,11 +527,11 @@ def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) ->
 
 
 # TODO (isort): Remove this fix after
-# upgrading to isort ^5.3.0 in pyproject.toml.
+# upgrading to isort ^5.5.4 in pyproject.toml.
 @contextlib.contextmanager
 def _isort_fix(session):
-    """Temporarily upgrade to isort 5.3.0."""
-    session.install('isort==5.3.0')
+    """Temporarily upgrade to isort 5.5.4."""
+    session.install('isort==5.5.4')
     try:
         yield
     finally:

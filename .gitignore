@@ -1,4 +1,6 @@
 .cache/
-*.egg-info/
+**/*.egg-info/
+.env
+**/.ipynb_checkpoints/
 .python-version
 .venv/
