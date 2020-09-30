@@ -527,11 +527,11 @@ def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) ->
 
 
 # TODO (isort): Remove this fix after
-# upgrading to isort ^5.3.0 in pyproject.toml.
+# upgrading to isort ^5.5.4 in pyproject.toml.
 @contextlib.contextmanager
 def _isort_fix(session):
-    """Temporarily upgrade to isort 5.3.0."""
-    session.install('isort==5.3.0')
+    """Temporarily upgrade to isort 5.5.4."""
+    session.install('isort==5.5.4')
     try:
         yield
     finally:
