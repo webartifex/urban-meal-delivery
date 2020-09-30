@@ -35,11 +35,11 @@ and
 `poetry install --extras research`
 
 The `--extras` option is necessary as the non-develop dependencies
-are structured in the [pyproject.toml](https://github.com/webartifex/urban-meal-delivery/blob/develop/pyproject.toml) file
+are structured in the [pyproject.toml](https://github.com/webartifex/urban-meal-delivery/blob/main/pyproject.toml) file
 into dependencies related to only the `urban-meal-delivery` source code package
 and dependencies used to run the [Jupyter](https://jupyter.org/) environment
 with the analyses.
 
 Contributions are welcome.
 Use the [issues](https://github.com/webartifex/urban-meal-delivery/issues) tab.
-The project is licensed under the [MIT license](https://github.com/webartifex/urban-meal-delivery/blob/develop/LICENSE.txt).
+The project is licensed under the [MIT license](https://github.com/webartifex/urban-meal-delivery/blob/main/LICENSE.txt).
