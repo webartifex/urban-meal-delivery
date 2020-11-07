@@ -328,7 +328,7 @@ def test_suite(session):
 
 
 @nox.session(name='fix-branch-references', python=PYTHON, venv_backend='none')
-def fix_branch_references(session):  # noqa:WPS210
+def fix_branch_references(session):  # noqa:WPS210,WPS231
     """Replace branch references with the current branch.
 
     Intended to be run as a pre-commit hook.
@@ -336,9 +336,15 @@ def fix_branch_references(session):  # noqa:WPS210
     Many files in the project (e.g., README.md) contain links to resources
     on github.com or nbviewer.jupyter.org that contain branch labels.
 
-    This task rewrites these links such that they contain the branch reference
-    of the current branch. If the branch is only a temporary one that is to be
-    merged into the 'main' branch, all references are adjusted to 'main' as well.
+    This task rewrites these links such that they contain branch references
+    that make sense given the context:
+
+    - If the branch is only a temporary one that is to be merged into
+      the 'main' branch, all references are adjusted to 'main' as well.
+
+    - If the branch is not named after a default branch in the GitFlow
+      model, it is interpreted as a feature branch and the references
+      are adjusted into 'develop'.
 
     This task may be called with one positional argument that is interpreted
     as the branch to which all references are changed into.
@@ -362,6 +368,10 @@ def fix_branch_references(session):  # noqa:WPS210
     # into 'main', we adjust all branch references to 'main' as well.
     if branch.startswith('release') or branch.startswith('research'):
         branch = 'main'
+    # If the current branch appears to be a feature branch, we adjust
+    # all branch references to 'develop'.
+    elif branch != 'main':
+        branch = 'develop'
     # If a "--branch=BRANCH_NAME" argument is passed in
     # as the only positional argument, we use BRANCH_NAME.
     # Note: The --branch is required as session.posargs contains
