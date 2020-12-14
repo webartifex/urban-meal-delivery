@@ -13,11 +13,6 @@ import random
 import string
 import warnings
 
-import dotenv
-
-
-dotenv.load_dotenv()
-
 
 def random_schema_name() -> str:
     """Generate a random PostgreSQL schema name for testing."""
