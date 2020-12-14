@@ -5,11 +5,12 @@ Example:
     >>> umd.__version__ != '0.0.0'
     True
 """
+# The config object must come before all other project-internal imports.
+from urban_meal_delivery.configuration import config  # noqa:F401 isort:skip
 
-import os as _os
 from importlib import metadata as _metadata
 
-from urban_meal_delivery import configuration as _configuration
+from urban_meal_delivery import db  # noqa:F401
 
 
 try:
@@ -24,14 +25,3 @@ else:
     __author__ = _pkg_info['author']
     __pkg_name__ = _pkg_info['name']
     __version__ = _pkg_info['version']
-
-
-# Global `config` object to be used in the package.
-config: _configuration.Config = _configuration.make_config(
-    'testing' if _os.getenv('TESTING') else 'production',
-)
-
-
-# Import `db` down here as it depends on `config`.
-# pylint:disable=wrong-import-position
-from urban_meal_delivery import db  # noqa:E402,F401 isort:skip

@@ -73,7 +73,7 @@ def make_config(env: str = 'production') -> Config:
     """Create a new `Config` object.
 
     Args:
-        env: either 'production' or 'testing'; defaults to the first
+        env: either 'production' or 'testing'
 
     Returns:
         config: a namespace with all configurations
@@ -81,7 +81,8 @@ def make_config(env: str = 'production') -> Config:
     Raises:
         ValueError: if `env` is not as specified
     """  # noqa:DAR203
-    config: Config
+    config: Config  # otherwise mypy is confused
+
     if env.strip().lower() == 'production':
         config = ProductionConfig()
     elif env.strip().lower() == 'testing':
@@ -94,3 +95,6 @@ def make_config(env: str = 'production') -> Config:
         warnings.warn('Bad configurartion: no DATABASE_URI set in the environment')
 
     return config
+
+
+config = make_config('testing' if os.getenv('TESTING') else 'production')
