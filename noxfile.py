@@ -529,6 +529,7 @@ def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) ->
             '--dev',
             '--format=requirements.txt',
             f'--output={requirements_txt.name}',
+            '--without-hashes',
             external=True,
         )
         session.install(
