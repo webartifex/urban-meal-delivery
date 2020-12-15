@@ -226,6 +226,7 @@ def test(session):
         'pytest',
         'pytest-cov',
         'pytest-env',
+        'pytest-randomly',
         'xdoctest[optional]',
     )
 
@@ -240,6 +241,7 @@ def test(session):
         '--cov-branch',
         '--cov-fail-under=100',
         '--cov-report=term-missing:skip-covered',
+        '--randomly-seed=4287',
         '-k',
         'not e2e',
         PYTEST_LOCATION,
