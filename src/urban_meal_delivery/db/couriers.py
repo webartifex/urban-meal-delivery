@@ -10,8 +10,6 @@ from urban_meal_delivery.db import meta
 class Courier(meta.Base):
     """A Courier working for the UDP."""
 
-    # pylint:disable=too-few-public-methods
-
     __tablename__ = 'couriers'
 
     # Columns

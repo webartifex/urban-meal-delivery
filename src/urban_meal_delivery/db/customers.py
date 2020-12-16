@@ -9,8 +9,6 @@ from urban_meal_delivery.db import meta
 class Customer(meta.Base):
     """A Customer of the UDP."""
 
-    # pylint:disable=too-few-public-methods
-
     __tablename__ = 'customers'
 
     # Columns

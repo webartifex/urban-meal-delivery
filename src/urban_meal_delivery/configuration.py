@@ -26,8 +26,6 @@ def random_schema_name() -> str:
 class Config:
     """Configuration that applies in all situations."""
 
-    # pylint:disable=too-few-public-methods
-
     CUTOFF_DAY = datetime.datetime(2017, 2, 1)
 
     # If a scheduled pre-order is made within this
@@ -53,15 +51,11 @@ class Config:
 class ProductionConfig(Config):
     """Configuration for the real dataset."""
 
-    # pylint:disable=too-few-public-methods
-
     TESTING = False
 
 
 class TestingConfig(Config):
     """Configuration for the test suite."""
-
-    # pylint:disable=too-few-public-methods
 
     TESTING = True
 
