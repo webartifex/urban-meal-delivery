@@ -222,6 +222,9 @@ def test(session):
     session.run('poetry', 'install', '--no-dev', external=True)
     _install_packages(
         session,
+        'Faker',
+        'factory-boy',
+        'geopy',
         'packaging',
         'pytest',
         'pytest-cov',
@@ -242,8 +245,8 @@ def test(session):
         '--cov-fail-under=100',
         '--cov-report=term-missing:skip-covered',
         '--randomly-seed=4287',
-        '-k',
-        'not e2e',
+        '-m',
+        'not (db or e2e)',
         PYTEST_LOCATION,
     )
     session.run('pytest', '--version')

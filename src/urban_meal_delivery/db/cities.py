@@ -1,4 +1,4 @@
-"""Provide the ORM's City model."""
+"""Provide the ORM's `City` model."""
 
 from typing import Dict
 
@@ -10,7 +10,7 @@ from urban_meal_delivery.db import meta
 
 
 class City(meta.Base):
-    """A City where the UDP operates in."""
+    """A city where the UDP operates in."""
 
     __tablename__ = 'cities'
 

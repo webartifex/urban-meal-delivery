@@ -1,140 +1,123 @@
-"""Test the ORM's Address model."""
+"""Test the ORM's `Address` model."""
+# pylint:disable=no-self-use,protected-access
 
 import pytest
+import sqlalchemy as sqla
 from sqlalchemy import exc as sa_exc
-from sqlalchemy.orm import exc as orm_exc
 
 from urban_meal_delivery import db
 
 
 class TestSpecialMethods:
-    """Test special methods in Address."""
+    """Test special methods in `Address`."""
 
-    # pylint:disable=no-self-use
+    def test_create_address(self, address):
+        """Test instantiation of a new `Address` object."""
+        assert address is not None
 
-    def test_create_address(self, address_data):
-        """Test instantiation of a new Address object."""
-        result = db.Address(**address_data)
-
-        assert result is not None
-
-    def test_text_representation(self, address_data):
-        """Address has a non-literal text representation."""
-        address = db.Address(**address_data)
-        street = address_data['street']
-        city_name = address_data['city_name']
-
+    def test_text_representation(self, address):
+        """`Address` has a non-literal text representation."""
         result = repr(address)
 
-        assert result == f'<Address({street} in {city_name})>'
+        assert result == f'<Address({address.street} in {address.city_name})>'
 
 
-@pytest.mark.e2e
+@pytest.mark.db
 @pytest.mark.no_cover
 class TestConstraints:
-    """Test the database constraints defined in Address."""
+    """Test the database constraints defined in `Address`."""
 
-    # pylint:disable=no-self-use
+    def test_insert_into_database(self, db_session, address):
+        """Insert an instance into the (empty) database."""
+        assert db_session.query(db.Address).count() == 0
 
-    def test_insert_into_database(self, address, db_session):
-        """Insert an instance into the database."""
         db_session.add(address)
         db_session.commit()
 
-    def test_dublicate_primary_key(self, address, address_data, city, db_session):
-        """Can only add a record once."""
+        assert db_session.query(db.Address).count() == 1
+
+    def test_delete_a_referenced_address(self, db_session, address, make_address):
+        """Remove a record that is referenced with a FK."""
         db_session.add(address)
+        # Fake another_address that has the same `._primary_id` as `address`.
+        db_session.add(make_address(_primary_id=address.id))
         db_session.commit()
 
-        another_address = db.Address(**address_data)
-        another_address.city = city
-        db_session.add(another_address)
+        db_session.delete(address)
 
-        with pytest.raises(orm_exc.FlushError):
+        with pytest.raises(
+            sa_exc.IntegrityError, match='fk_addresses_to_addresses_via_primary_id',
+        ):
             db_session.commit()
 
-    def test_delete_a_referenced_address(self, address, address_data, db_session):
+    def test_delete_a_referenced_city(self, db_session, address):
         """Remove a record that is referenced with a FK."""
         db_session.add(address)
         db_session.commit()
 
-        # Fake a second address that belongs to the same primary address.
-        address_data['id'] += 1
-        another_address = db.Address(**address_data)
-        db_session.add(another_address)
-        db_session.commit()
+        # Must delete without ORM as otherwise an UPDATE statement is emitted.
+        stmt = sqla.delete(db.City).where(db.City.id == address.city.id)
 
-        with pytest.raises(sa_exc.IntegrityError):
-            db_session.execute(
-                db.Address.__table__.delete().where(  # noqa:WPS609
-                    db.Address.id == address.id,
-                ),
-            )
-
-    def test_delete_a_referenced_city(self, address, city, db_session):
-        """Remove a record that is referenced with a FK."""
-        db_session.add(address)
-        db_session.commit()
-
-        with pytest.raises(sa_exc.IntegrityError):
-            db_session.execute(
-                db.City.__table__.delete().where(db.City.id == city.id),  # noqa:WPS609
-            )
+        with pytest.raises(
+            sa_exc.IntegrityError, match='fk_addresses_to_cities_via_city_id',
+        ):
+            db_session.execute(stmt)
 
     @pytest.mark.parametrize('latitude', [-91, 91])
-    def test_invalid_latitude(self, address, db_session, latitude):
+    def test_invalid_latitude(self, db_session, address, latitude):
         """Insert an instance with invalid data."""
         address.latitude = latitude
         db_session.add(address)
 
-        with pytest.raises(sa_exc.IntegrityError):
+        with pytest.raises(
+            sa_exc.IntegrityError, match='latitude_between_90_degrees',
+        ):
             db_session.commit()
 
     @pytest.mark.parametrize('longitude', [-181, 181])
-    def test_invalid_longitude(self, address, db_session, longitude):
+    def test_invalid_longitude(self, db_session, address, longitude):
         """Insert an instance with invalid data."""
         address.longitude = longitude
         db_session.add(address)
 
-        with pytest.raises(sa_exc.IntegrityError):
+        with pytest.raises(
+            sa_exc.IntegrityError, match='longitude_between_180_degrees',
+        ):
             db_session.commit()
 
     @pytest.mark.parametrize('zip_code', [-1, 0, 9999, 100000])
-    def test_invalid_zip_code(self, address, db_session, zip_code):
+    def test_invalid_zip_code(self, db_session, address, zip_code):
         """Insert an instance with invalid data."""
         address.zip_code = zip_code
         db_session.add(address)
 
-        with pytest.raises(sa_exc.IntegrityError):
+        with pytest.raises(sa_exc.IntegrityError, match='valid_zip_code'):
             db_session.commit()
 
     @pytest.mark.parametrize('floor', [-1, 41])
-    def test_invalid_floor(self, address, db_session, floor):
+    def test_invalid_floor(self, db_session, address, floor):
         """Insert an instance with invalid data."""
         address.floor = floor
         db_session.add(address)
 
-        with pytest.raises(sa_exc.IntegrityError):
+        with pytest.raises(sa_exc.IntegrityError, match='realistic_floor'):
             db_session.commit()
 
 
 class TestProperties:
-    """Test properties in Address."""
+    """Test properties in `Address`."""
 
-    # pylint:disable=no-self-use
-
-    def test_is_primary(self, address_data):
-        """Test Address.is_primary property."""
-        address = db.Address(**address_data)
+    def test_is_primary(self, address):
+        """Test `Address.is_primary` property."""
+        assert address.id == address._primary_id  # noqa:WPS437
 
         result = address.is_primary
 
         assert result is True
 
-    def test_is_not_primary(self, address_data):
-        """Test Address.is_primary property."""
-        address_data['_primary_id'] = 999
-        address = db.Address(**address_data)
+    def test_is_not_primary(self, address):
+        """Test `Address.is_primary` property."""
+        address._primary_id = 999  # noqa:WPS437
 
         result = address.is_primary
 

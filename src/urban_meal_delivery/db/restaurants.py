@@ -1,4 +1,4 @@
-"""Provide the ORM's Restaurant model."""
+"""Provide the ORM's `Restaurant` model."""
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -7,7 +7,12 @@ from urban_meal_delivery.db import meta
 
 
 class Restaurant(meta.Base):
-    """A Restaurant selling meals on the UDP."""
+    """A restaurant selling meals on the UDP.
+
+    In the historic dataset, a `Restaurant` may have changed its `Address`
+    throughout its life time. The ORM model only stores the current one,
+    which in most cases is also the only one.
+    """
 
     __tablename__ = 'restaurants'
 

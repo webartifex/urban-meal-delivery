@@ -1,4 +1,4 @@
-"""Provide the ORM's Customer model."""
+"""Provide the ORM's `Customer` model."""
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -7,7 +7,7 @@ from urban_meal_delivery.db import meta
 
 
 class Customer(meta.Base):
-    """A Customer of the UDP."""
+    """A customer of the UDP."""
 
     __tablename__ = 'customers'
 

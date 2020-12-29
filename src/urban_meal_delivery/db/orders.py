@@ -1,4 +1,4 @@
-"""Provide the ORM's Order model."""
+"""Provide the ORM's `Order` model."""
 
 import datetime
 
@@ -10,7 +10,7 @@ from urban_meal_delivery.db import meta
 
 
 class Order(meta.Base):  # noqa:WPS214
-    """An Order by a Customer of the UDP."""
+    """An order by a `Customer` of the UDP."""
 
     __tablename__ = 'orders'
 
@@ -325,12 +325,12 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def scheduled(self) -> bool:
-        """Inverse of Order.ad_hoc."""
+        """Inverse of `.ad_hoc`."""
         return not self.ad_hoc
 
     @property
     def completed(self) -> bool:
-        """Inverse of Order.cancelled."""
+        """Inverse of `.cancelled`."""
         return not self.cancelled
 
     @property
@@ -353,9 +353,9 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_to_accept(self) -> datetime.timedelta:
-        """Time until a courier accepted an order.
+        """Time until the `.courier` accepted the order.
 
-        This adds the time it took the UDP to notify a courier.
+        This measures the time it took the UDP to notify the `.courier` after dispatch.
         """
         if not self.dispatch_at:
             raise RuntimeError('dispatch_at is not set')
@@ -365,9 +365,9 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_to_react(self) -> datetime.timedelta:
-        """Time a courier took to accept an order.
+        """Time the `.courier` took to accept an order.
 
-        This time is a subset of Order.time_to_accept.
+        A subset of `.time_to_accept`.
         """
         if not self.courier_notified_at:
             raise RuntimeError('courier_notified_at is not set')
@@ -377,7 +377,7 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_to_pickup(self) -> datetime.timedelta:
-        """Time from a courier's acceptance to arrival at the pickup location."""
+        """Time from the `.courier`'s acceptance to arrival at `.pickup_address`."""
         if not self.courier_accepted_at:
             raise RuntimeError('courier_accepted_at is not set')
         if not self.reached_pickup_at:
@@ -386,7 +386,7 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_at_pickup(self) -> datetime.timedelta:
-        """Time a courier stayed at the pickup location."""
+        """Time the `.courier` stayed at the `.pickup_address`."""
         if not self.reached_pickup_at:
             raise RuntimeError('reached_pickup_at is not set')
         if not self.pickup_at:
@@ -405,13 +405,13 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def courier_early(self) -> datetime.timedelta:
-        """Time by which a courier is early for pickup.
+        """Time by which the `.courier` is early for pickup.
 
-        Measured relative to Order.scheduled_pickup_at.
+        Measured relative to `.scheduled_pickup_at`.
 
-        0 if the courier is on time or late.
+        `datetime.timedelta(seconds=0)` if the `.courier` is on time or late.
 
-        Goes together with Order.courier_late.
+        Goes together with `.courier_late`.
         """
         return max(
             datetime.timedelta(), self.scheduled_pickup_at - self.reached_pickup_at,
@@ -419,13 +419,13 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def courier_late(self) -> datetime.timedelta:
-        """Time by which a courier is late for pickup.
+        """Time by which the `.courier` is late for pickup.
 
-        Measured relative to Order.scheduled_pickup_at.
+        Measured relative to `.scheduled_pickup_at`.
 
-        0 if the courier is on time or early.
+        `datetime.timedelta(seconds=0)` if the `.courier` is on time or early.
 
-        Goes together with Order.courier_early.
+        Goes together with `.courier_early`.
         """
         return max(
             datetime.timedelta(), self.reached_pickup_at - self.scheduled_pickup_at,
@@ -433,31 +433,31 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def restaurant_early(self) -> datetime.timedelta:
-        """Time by which a restaurant is early for pickup.
+        """Time by which the `.restaurant` is early for pickup.
 
-        Measured relative to Order.scheduled_pickup_at.
+        Measured relative to `.scheduled_pickup_at`.
 
-        0 if the restaurant is on time or late.
+        `datetime.timedelta(seconds=0)` if the `.restaurant` is on time or late.
 
-        Goes together with Order.restaurant_late.
+        Goes together with `.restaurant_late`.
         """
         return max(datetime.timedelta(), self.scheduled_pickup_at - self.pickup_at)
 
     @property
     def restaurant_late(self) -> datetime.timedelta:
-        """Time by which a restaurant is late for pickup.
+        """Time by which the `.restaurant` is late for pickup.
 
-        Measured relative to Order.scheduled_pickup_at.
+        Measured relative to `.scheduled_pickup_at`.
 
-        0 if the restaurant is on time or early.
+        `datetime.timedelta(seconds=0)` if the `.restaurant` is on time or early.
 
-        Goes together with Order.restaurant_early.
+        Goes together with `.restaurant_early`.
         """
         return max(datetime.timedelta(), self.pickup_at - self.scheduled_pickup_at)
 
     @property
     def time_to_delivery(self) -> datetime.timedelta:
-        """Time a courier took from pickup to delivery location."""
+        """Time the `.courier` took from `.pickup_address` to `.delivery_address`."""
         if not self.pickup_at:
             raise RuntimeError('pickup_at is not set')
         if not self.reached_delivery_at:
@@ -466,7 +466,7 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_at_delivery(self) -> datetime.timedelta:
-        """Time a courier stayed at the delivery location."""
+        """Time the `.courier` stayed at the `.delivery_address`."""
         if not self.reached_delivery_at:
             raise RuntimeError('reached_delivery_at is not set')
         if not self.delivery_at:
@@ -475,20 +475,20 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def courier_waited_at_delivery(self) -> datetime.timedelta:
-        """Time a courier waited at the delivery location."""
+        """Time the `.courier` waited at the `.delivery_address`."""
         if self._courier_waited_at_delivery:
             return self.time_at_delivery
         return datetime.timedelta()
 
     @property
     def delivery_early(self) -> datetime.timedelta:
-        """Time by which a scheduled order was early.
+        """Time by which a `.scheduled` order was early.
 
-        Measured relative to Order.scheduled_delivery_at.
+        Measured relative to `.scheduled_delivery_at`.
 
-        0 if the delivery is on time or late.
+        `datetime.timedelta(seconds=0)` if the delivery is on time or late.
 
-        Goes together with Order.delivery_late.
+        Goes together with `.delivery_late`.
         """
         if not self.scheduled:
             raise AttributeError('Makes sense only for scheduled orders')
@@ -496,13 +496,13 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def delivery_late(self) -> datetime.timedelta:
-        """Time by which a scheduled order was late.
+        """Time by which a `.scheduled` order was late.
 
-        Measured relative to Order.scheduled_delivery_at.
+        Measured relative to `.scheduled_delivery_at`.
 
-        0 if the delivery is on time or early.
+        `datetime.timedelta(seconds=0)` if the delivery is on time or early.
 
-        Goes together with Order.delivery_early.
+        Goes together with `.delivery_early`.
         """
         if not self.scheduled:
             raise AttributeError('Makes sense only for scheduled orders')
@@ -510,7 +510,7 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def total_time(self) -> datetime.timedelta:
-        """Time from order placement to delivery for an ad-hoc order."""
+        """Time from order placement to delivery for an `.ad_hoc` order."""
         if self.scheduled:
             raise AttributeError('Scheduled orders have no total_time')
         if self.cancelled:

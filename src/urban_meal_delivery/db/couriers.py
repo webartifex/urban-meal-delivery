@@ -1,4 +1,4 @@
-"""Provide the ORM's Courier model."""
+"""Provide the ORM's `Courier` model."""
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -8,7 +8,7 @@ from urban_meal_delivery.db import meta
 
 
 class Courier(meta.Base):
-    """A Courier working for the UDP."""
+    """A courier working for the UDP."""
 
     __tablename__ = 'couriers'
 

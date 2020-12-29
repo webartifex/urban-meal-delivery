@@ -1,4 +1,4 @@
-"""Provide the ORM's Address model."""
+"""Provide the ORM's `Address` model."""
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -9,7 +9,7 @@ from urban_meal_delivery.db import meta
 
 
 class Address(meta.Base):
-    """An Address of a Customer or a Restaurant on the UDP."""
+    """An address of a `Customer` or a `Restaurant` on the UDP."""
 
     __tablename__ = 'addresses'
 
@@ -72,11 +72,11 @@ class Address(meta.Base):
 
     @hybrid.hybrid_property
     def is_primary(self) -> bool:
-        """If an Address object is the earliest one entered at its location.
+        """If an `Address` object is the earliest one entered at its location.
 
         Street addresses may have been entered several times with different
         versions/spellings of the street name and/or different floors.
 
-        `is_primary` indicates the first in a group of addresses.
+        `.is_primary` indicates the first in a group of `Address` objects.
         """
         return self.id == self._primary_id
