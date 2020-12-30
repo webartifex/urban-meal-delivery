@@ -28,6 +28,7 @@ repository = "https://github.com/webartifex/urban-meal-delivery"
 python = "^3.8"
 
 # Package => code developed in *.py files and packaged under src/urban_meal_delivery
+Shapely = "^1.7.1"
 alembic = "^1.4.2"
 click = "^7.1.2"
 psycopg2 = "^2.8.5"  # adapter for PostgreSQL
