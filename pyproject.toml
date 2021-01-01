@@ -33,6 +33,7 @@ alembic = "^1.4.2"
 click = "^7.1.2"
 psycopg2 = "^2.8.5"  # adapter for PostgreSQL
 sqlalchemy = "^1.3.18"
+utm = "^0.7.0"
 
 # Jupyter Lab => notebooks with analyses using the developed package
 # IMPORTANT: must be kept in sync with the "research" extra below
