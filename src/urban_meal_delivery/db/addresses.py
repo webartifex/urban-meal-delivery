@@ -1,11 +1,14 @@
 """Provide the ORM's `Address` model."""
 
+from typing import Any
+
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.ext import hybrid
 
 from urban_meal_delivery.db import meta
+from urban_meal_delivery.db import utils
 
 
 class Address(meta.Base):
@@ -64,6 +67,15 @@ class Address(meta.Base):
         foreign_keys='[Order._delivery_address_id]',
     )
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Create a new address."""
+        # Call SQLAlchemy's default `.__init__()` method.
+        super().__init__(*args, **kwargs)
+
+        self._utm_coordinates = utils.UTMCoordinate(
+            self.latitude, self.longitude, relative_to=self.city.as_origin,
+        )
+
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}({street} in {city})>'.format(
@@ -80,3 +92,13 @@ class Address(meta.Base):
         `.is_primary` indicates the first in a group of `Address` objects.
         """
         return self.id == self._primary_id
+
+    @property
+    def x(self) -> int:  # noqa=WPS111
+        """The `.easting` of the address in meters, relative to the `.city`."""
+        return self._utm_coordinates.x
+
+    @property
+    def y(self) -> int:  # noqa=WPS111
+        """The `.northing` of the address in meters, relative to the `.city`."""
+        return self._utm_coordinates.y

@@ -1,12 +1,13 @@
 """Provide the ORM's `City` model."""
 
-from typing import Dict
+from typing import Any, Dict
 
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
 
 from urban_meal_delivery.db import meta
+from urban_meal_delivery.db import utils
 
 
 class City(meta.Base):
@@ -45,6 +46,18 @@ class City(meta.Base):
     # Relationships
     addresses = orm.relationship('Address', back_populates='city')
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Create a new city."""
+        # Call SQLAlchemy's default `.__init__()` method.
+        super().__init__(*args, **kwargs)
+
+        # Take the "lower left" of the viewport as the origin
+        # of a Cartesian coordinate system.
+        lower_left = self.viewport['southwest']
+        self._origin = utils.UTMCoordinate(
+            lower_left['latitude'], lower_left['longitude'],
+        )
+
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}({name})>'.format(cls=self.__class__.__name__, name=self.name)
@@ -81,3 +94,12 @@ class City(meta.Base):
                 'longitude': self._southwest_longitude,
             },
         }
+
+    @property
+    def as_origin(self) -> utils.UTMCoordinate:
+        """The lower left corner of the `.viewport` in UTM coordinates.
+
+        This property serves as the `relative_to` argument to the
+        `UTMConstructor` when representing an `Address` in the x-y plane.
+        """
+        return self._origin

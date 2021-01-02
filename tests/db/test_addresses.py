@@ -122,3 +122,15 @@ class TestProperties:
         result = address.is_primary
 
         assert result is False
+
+    def test_x_is_positive(self, address):
+        """Test `Address.x` property."""
+        result = address.x
+
+        assert result > 0
+
+    def test_y_is_positive(self, address):
+        """Test `Address.y` property."""
+        result = address.y
+
+        assert result > 0

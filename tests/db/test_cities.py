@@ -3,6 +3,7 @@
 
 import pytest
 
+from tests.db.utils import test_coordinates as consts
 from urban_meal_delivery import db
 
 
@@ -63,3 +64,11 @@ class TestProperties:
         assert len(result) == 2
         assert result['latitude'] == pytest.approx(city_data[f'_{corner}_latitude'])
         assert result['longitude'] == pytest.approx(city_data[f'_{corner}_longitude'])
+
+    def test_city_in_utm_coordinates(self, city):
+        """Test `City.as_origin` property."""
+        result = city.as_origin
+
+        assert result.zone == consts.ZONE
+        assert consts.MIN_EASTING < result.easting < consts.MAX_EASTING
+        assert consts.MIN_NORTHING < result.northing < consts.MAX_NORTHING
