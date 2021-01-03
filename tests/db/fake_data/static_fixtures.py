@@ -56,3 +56,15 @@ def restaurant(address, make_restaurant):
 def order(make_order, restaurant):
     """An `Order` object for the `restaurant`."""
     return make_order(restaurant=restaurant)
+
+
+@pytest.fixture
+def grid(city):
+    """A `Grid` with a pixel area of 1 square kilometer."""
+    return db.Grid(city=city, side_length=1000)
+
+
+@pytest.fixture
+def pixel(grid):
+    """The `Pixel` in the lower-left corner of the `grid`."""
+    return db.Pixel(grid=grid, n_x=0, n_y=0)

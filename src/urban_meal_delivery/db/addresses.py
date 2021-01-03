@@ -46,6 +46,8 @@ class Address(meta.Base):
             '-180 <= longitude AND longitude <= 180',
             name='longitude_between_180_degrees',
         ),
+        # Needed by a `ForeignKeyConstraint` in `AddressPixelAssociation`.
+        sa.UniqueConstraint('id', 'city_id'),
         sa.CheckConstraint(
             '30000 <= zip_code AND zip_code <= 99999', name='valid_zip_code',
         ),
@@ -60,12 +62,12 @@ class Address(meta.Base):
         back_populates='pickup_address',
         foreign_keys='[Order._pickup_address_id]',
     )
-
     orders_delivered = orm.relationship(
         'Order',
         back_populates='delivery_address',
         foreign_keys='[Order._delivery_address_id]',
     )
+    pixels = orm.relationship('AddressPixelAssociation', back_populates='address')
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Create a new address."""

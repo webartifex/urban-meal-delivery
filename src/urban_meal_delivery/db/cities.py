@@ -45,6 +45,7 @@ class City(meta.Base):
 
     # Relationships
     addresses = orm.relationship('Address', back_populates='city')
+    grids = orm.relationship('Grid', back_populates='city')
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Create a new city."""

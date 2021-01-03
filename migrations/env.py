@@ -21,7 +21,7 @@ log_config.fileConfig(context.config.config_file_name)
 
 def include_object(obj, _name, type_, _reflected, _compare_to):
     """Only include the clean schema into --autogenerate migrations."""
-    if type_ in {'table', 'column'} and obj.schema != umd_config.DATABASE_SCHEMA:
+    if type_ in {'table', 'column'} and obj.schema != umd_config.CLEAN_SCHEMA:
         return False
 
     return True

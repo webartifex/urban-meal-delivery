@@ -85,3 +85,5 @@ courier = fake_data.courier
 customer = fake_data.customer
 order = fake_data.order
 restaurant = fake_data.restaurant
+grid = fake_data.grid
+pixel = fake_data.pixel
