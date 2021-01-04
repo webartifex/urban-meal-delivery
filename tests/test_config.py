@@ -36,10 +36,26 @@ def test_database_uri_set(env, monkeypatch):
 
 
 @pytest.mark.parametrize('env', envs)
-def test_no_database_uri_set(env, monkeypatch):
+def test_no_database_uri_set_with_testing_env_var(env, monkeypatch):
     """Package does not work without DATABASE_URI set in the environment."""
     monkeypatch.setattr(configuration.ProductionConfig, 'DATABASE_URI', None)
     monkeypatch.setattr(configuration.TestingConfig, 'DATABASE_URI', None)
+
+    monkeypatch.setenv('TESTING', 'true')
+
+    with pytest.warns(None) as record:
+        configuration.make_config(env)
+
+    assert len(record) == 0  # noqa:WPS441,WPS507
+
+
+@pytest.mark.parametrize('env', envs)
+def test_no_database_uri_set_without_testing_env_var(env, monkeypatch):
+    """Package does not work without DATABASE_URI set in the environment."""
+    monkeypatch.setattr(configuration.ProductionConfig, 'DATABASE_URI', None)
+    monkeypatch.setattr(configuration.TestingConfig, 'DATABASE_URI', None)
+
+    monkeypatch.delenv('TESTING', raising=False)
 
     with pytest.warns(UserWarning, match='no DATABASE_URI'):
         configuration.make_config(env)

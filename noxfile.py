@@ -254,6 +254,12 @@ def test(session):
 
     # For xdoctest, the default arguments are different from pytest.
     args = posargs or [PACKAGE_IMPORT_NAME]
+
+    # The "TESTING" environment variable forces the global `engine`, `connection`,
+    # and `session` objects to be set to `None` and avoid any database connection.
+    # For pytest above this is not necessary as pytest sets this variable itself.
+    session.env['TESTING'] = 'true'
+
     session.run('xdoctest', '--version')
     session.run('xdoctest', '--quiet', *args)  # --quiet => less verbose output
 
@@ -296,6 +302,10 @@ def docs(session):
     # Otherwise, sphinx's autodoc could not include the docstrings.
     session.run('poetry', 'install', '--no-dev', external=True)
     _install_packages(session, 'sphinx', 'sphinx-autodoc-typehints')
+
+    # The "TESTING" environment variable forces the global `engine`, `connection`,
+    # and `session` objects to be set to `None` and avoid any database connection.
+    session.env['TESTING'] = 'true'
 
     session.run('sphinx-build', DOCS_SRC, DOCS_BUILD)
     # Verify all external links return 200 OK.

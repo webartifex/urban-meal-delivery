@@ -1,6 +1,7 @@
 """Utils for testing the ORM layer."""
 
 import pytest
+import sqlalchemy as sa
 from alembic import command as migrations_cmd
 from alembic import config as migrations_config
 from sqlalchemy import orm
@@ -26,11 +27,18 @@ def db_connection(request):
 
     This ensures that Alembic's migration files are consistent.
     """
-    engine = db.make_engine()
+    # We need a fresh database connection for each of the two `params`.
+    # Otherwise, the first test of the parameter run second will fail.
+    engine = sa.create_engine(config.DATABASE_URI)
     connection = engine.connect()
 
+    # Monkey patch the package's global `engine` and `connection` objects,
+    # just in case if it is used somewhere in the code base.
+    db.engine = engine
+    db.connection = connection
+
     if request.param == 'all_at_once':
-        engine.execute(f'CREATE SCHEMA {config.CLEAN_SCHEMA};')
+        connection.execute(f'CREATE SCHEMA {config.CLEAN_SCHEMA};')
         db.Base.metadata.create_all(connection)
     else:
         cfg = migrations_config.Config('alembic.ini')
@@ -54,13 +62,17 @@ def db_connection(request):
 @pytest.fixture
 def db_session(db_connection):
     """A SQLAlchemy session that rolls back everything after a test case."""
-    # Begin the outer most transaction
-    # that is rolled back at the end of the test.
+    # Begin the outermost transaction
+    # that is rolled back at the end of each test case.
     transaction = db_connection.begin()
-    # Create a session bound on the same connection as the transaction.
-    # Using any other session would not work.
-    session_factory = orm.sessionmaker()
-    session = session_factory(bind=db_connection)
+
+    # Create a session bound to the same connection as the `transaction`.
+    # Using any other session would not result in the roll back.
+    session = orm.sessionmaker()(bind=db_connection)
+
+    # Monkey patch the package's global `session` object,
+    # which is used heavily in the code base.
+    db.session = session
 
     try:
         yield session

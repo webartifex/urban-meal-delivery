@@ -85,7 +85,10 @@ def make_config(env: str = 'production') -> Config:
         raise ValueError("Must be either 'production' or 'testing'")
 
     # Without a PostgreSQL database the package cannot work.
-    if config.DATABASE_URI is None:
+    # As pytest sets the "TESTING" environment variable explicitly,
+    # the warning is only emitted if the code is not run by pytest.
+    # We see the bad configuration immediately as all "db" tests fail.
+    if config.DATABASE_URI is None and not os.getenv('TESTING'):
         warnings.warn('Bad configurartion: no DATABASE_URI set in the environment')
 
     return config
