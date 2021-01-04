@@ -1,6 +1,5 @@
 """Provide the ORM's `Address` model."""
 
-from typing import Any
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -69,14 +68,9 @@ class Address(meta.Base):
     )
     pixels = orm.relationship('AddressPixelAssociation', back_populates='address')
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Create a new address."""
-        # Call SQLAlchemy's default `.__init__()` method.
-        super().__init__(*args, **kwargs)
-
-        self._utm_coordinates = utils.UTMCoordinate(
-            self.latitude, self.longitude, relative_to=self.city.as_origin,
-        )
+    # We do not implement a `.__init__()` method and leave that to SQLAlchemy.
+    # Instead, we use `hasattr()` to check for uninitialized attributes.
+    # grep:b1f68d24  pylint:disable=attribute-defined-outside-init
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
@@ -96,11 +90,38 @@ class Address(meta.Base):
         return self.id == self._primary_id
 
     @property
+    def location(self) -> utils.Location:
+        """The location of the address.
+
+        The returned `Location` object relates to `.city.viewport.southwest`.
+
+        See also the `.x` and `.y` properties that are shortcuts for
+        `.location.x` and `.location.y`.
+
+        Implementation detail: This property is cached as none of the
+        underlying attributes to calculate the value are to be changed.
+        """
+        if not hasattr(self, '_location'):  # noqa:WPS421  note:b1f68d24
+            self._location = utils.Location(self.latitude, self.longitude)
+            self._location.relate_to(self.city.as_xy_origin)
+        return self._location
+
+    @property
     def x(self) -> int:  # noqa=WPS111
-        """The `.easting` of the address in meters, relative to the `.city`."""
-        return self._utm_coordinates.x
+        """The relative x-coordinate within the `.city` in meters.
+
+        On the implied x-y plane, the `.city`'s southwest corner is the origin.
+
+        Shortcut for `.location.x`.
+        """
+        return self.location.x
 
     @property
     def y(self) -> int:  # noqa=WPS111
-        """The `.northing` of the address in meters, relative to the `.city`."""
-        return self._utm_coordinates.y
+        """The relative y-coordinate within the `.city` in meters.
+
+        On the implied x-y plane, the `.city`'s southwest corner is the origin.
+
+        Shortcut for `.location.y`.
+        """
+        return self.location.y

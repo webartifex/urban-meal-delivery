@@ -1,4 +1,4 @@
-"""A `UTMCoordinate` class to unify working with coordinates."""
+"""A `Location` class to unify working with coordinates."""
 
 from __future__ import annotations
 
@@ -7,19 +7,27 @@ from typing import Optional
 import utm
 
 
-class UTMCoordinate:
-    """A GPS location represented in UTM coordinates.
+class Location:
+    """A location represented in WGS84 and UTM coordinates.
 
-    For further info, we refer to this comprehensive article on the UTM system:
-    https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
+    WGS84:
+        - "conventional" system with latitude-longitude pairs
+        - assumes earth is a sphere and models the location in 3D
+
+    UTM:
+        - the Universal Transverse Mercator sytem
+        - projects WGS84 coordinates onto a 2D map
+        - can be used for visualizations and calculations directly
+        - distances are in meters
+
+    Further info how WGS84 and UTM are related:
+        https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
     """
 
     # pylint:disable=too-many-instance-attributes
 
-    def __init__(
-        self, latitude: float, longitude: float, relative_to: UTMCoordinate = None,
-    ) -> None:
-        """Cast a WGS84-conforming `latitude`-`longitude` pair as UTM coordinates."""
+    def __init__(self, latitude: float, longitude: float) -> None:
+        """Create a location from a WGS84-conforming `latitude`-`longitude` pair."""
         # The SQLAlchemy columns come as `Decimal`s due to the `DOUBLE_PRECISION`.
         self._latitude = float(latitude)
         self._longitude = float(longitude)
@@ -35,36 +43,40 @@ class UTMCoordinate:
         self._normalized_easting: Optional[int] = None
         self._normalized_northing: Optional[int] = None
 
-        if relative_to:
-            try:
-                self.relate_to(relative_to)
-            except TypeError:
-                raise TypeError(
-                    '`relative_to` must be a `UTMCoordinate` object',
-                ) from None
-            except ValueError:
-                raise ValueError(
-                    '`relative_to` must be in the same UTM zone as the `latitude`-`longitude` pair',  # noqa:E501
-                ) from None
-
     def __repr__(self) -> str:
-        """A non-literal text representation.
+        """A non-literal text representation in the UTM system.
 
         Convention is {ZONE} {EASTING} {NORTHING}.
 
         Example:
-            `<UTM: 17T 630084 4833438>'`
+            `<Location: 17T 630084 4833438>'`
         """
-        return f'<UTM: {self.zone} {self.easting} {self.northing}>'  # noqa:WPS221
+        return f'<Location: {self.zone} {self.easting} {self.northing}>'  # noqa:WPS221
+
+    @property
+    def latitude(self) -> float:
+        """The latitude of the location in degrees (WGS84).
+
+        Between -90 and +90 degrees.
+        """
+        return self._latitude
+
+    @property
+    def longitude(self) -> float:
+        """The longitude of the location in degrees (WGS84).
+
+        Between -180 and +180 degrees.
+        """
+        return self._longitude
 
     @property
     def easting(self) -> int:
-        """The easting of the location in meters."""
+        """The easting of the location in meters (UTM)."""
         return self._easting
 
     @property
     def northing(self) -> int:
-        """The northing of the location in meters."""
+        """The northing of the location in meters (UTM)."""
         return self._northing
 
     @property
@@ -73,8 +85,8 @@ class UTMCoordinate:
         return f'{self._zone}{self._band}'
 
     def __eq__(self, other: object) -> bool:
-        """Check if two `UTMCoordinate` objects are the same location."""
-        if not isinstance(other, UTMCoordinate):
+        """Check if two `Location` objects are the same location."""
+        if not isinstance(other, Location):
             return NotImplemented
 
         if self.zone != other.zone:
@@ -104,15 +116,12 @@ class UTMCoordinate:
 
         return self._normalized_northing
 
-    def relate_to(self, other: UTMCoordinate) -> None:
+    def relate_to(self, other: Location) -> None:
         """Make the origin in the lower-left corner relative to `other`.
 
         The `.x` and `.y` properties are the `.easting` and `.northing` values
         of `self` minus the ones from `other`. So, `.x` and `.y` make up a
         Cartesian coordinate system where the `other` origin is `(0, 0)`.
-
-        This method is implicitly called by `.__init__()` if that is called
-        with a `relative_to` argument.
 
         To prevent semantic errors in calculations based on the `.x` and `.y`
         properties, the `other` origin may only be set once!
@@ -120,8 +129,8 @@ class UTMCoordinate:
         if self._normalized_easting is not None:
             raise RuntimeError('the `other` origin may only be set once')
 
-        if not isinstance(other, UTMCoordinate):
-            raise TypeError('`other` is not a `UTMCoordinate` object')
+        if not isinstance(other, Location):
+            raise TypeError('`other` is not a `Location` object')
 
         if self.zone != other.zone:
             raise ValueError('`other` must be in the same zone, including the band')

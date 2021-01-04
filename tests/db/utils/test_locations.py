@@ -1,4 +1,4 @@
-"""Test the `UTMCoordinate` class."""
+"""Test the `Location` class."""
 # pylint:disable=no-self-use
 
 import pytest
@@ -14,8 +14,8 @@ ZONE = '31U'
 
 @pytest.fixture
 def location(address):
-    """A `UTMCoordinate` object based off the `address` fixture."""
-    obj = utils.UTMCoordinate(address.latitude, address.longitude)
+    """A `Location` object based off the `address` fixture."""
+    obj = utils.Location(address.latitude, address.longitude)
 
     assert obj.zone == ZONE  # sanity check
 
@@ -24,8 +24,8 @@ def location(address):
 
 @pytest.fixture
 def faraway_location():
-    """A `UTMCoordinate` object far away from the `location`."""
-    obj = utils.UTMCoordinate(latitude=0, longitude=0)
+    """A `Location` object far away from the `location`."""
+    obj = utils.Location(latitude=0, longitude=0)
 
     assert obj.zone != ZONE  # sanity check
 
@@ -34,10 +34,8 @@ def faraway_location():
 
 @pytest.fixture
 def origin(city):
-    """A `UTMCoordinate` object based off the one and only `city`."""
-    # Use the `city`'s lower left viewport corner as the `(0, 0)` origin.
-    lower_left = city.viewport['southwest']
-    obj = utils.UTMCoordinate(lower_left['latitude'], lower_left['longitude'])
+    """A `Location` object based off the one and only `city`."""
+    obj = city.as_xy_origin
 
     assert obj.zone == ZONE  # sanity check
 
@@ -45,43 +43,17 @@ def origin(city):
 
 
 class TestSpecialMethods:
-    """Test special methods in `UTMCoordinate`."""
+    """Test special methods in `Location`."""
 
     def test_create_utm_coordinates(self, location):
-        """Test instantiation of a new `UTMCoordinate` object."""
+        """Test instantiation of a new `Location` object."""
         assert location is not None
-
-    def test_create_utm_coordinates_with_origin(self, address, origin):
-        """Test instantiation with a `relate_to` argument."""
-        result = utils.UTMCoordinate(
-            latitude=address.latitude, longitude=address.longitude, relative_to=origin,
-        )
-
-        assert result is not None
-
-    def test_create_utm_coordinates_with_non_utm_origin(self):
-        """Test instantiation with a `relate_to` argument of the wrong type."""
-        with pytest.raises(TypeError, match='UTMCoordinate'):
-            utils.UTMCoordinate(
-                latitude=0, longitude=0, relative_to=object(),
-            )
-
-    def test_create_utm_coordinates_with_invalid_origin(
-        self, address, faraway_location,
-    ):
-        """Test instantiation with a `relate_to` argument at an invalid location."""
-        with pytest.raises(ValueError, match='must be in the same UTM zone'):
-            utils.UTMCoordinate(
-                latitude=address.latitude,
-                longitude=address.longitude,
-                relative_to=faraway_location,
-            )
 
     def test_text_representation(self, location):
         """The text representation is a non-literal."""
         result = repr(location)
 
-        assert result.startswith('<UTM:')
+        assert result.startswith('<Location:')
         assert result.endswith('>')
 
     @pytest.mark.e2e
@@ -103,7 +75,7 @@ class TestSpecialMethods:
         assert MIN_NORTHING < northing < MAX_NORTHING
 
     def test_compare_utm_coordinates_to_different_data_type(self, location):
-        """Test `UTMCoordinate.__eq__()`."""
+        """Test `Location.__eq__()`."""
         result = location == object()
 
         assert result is False
@@ -111,56 +83,68 @@ class TestSpecialMethods:
     def test_compare_utm_coordinates_to_far_away_coordinates(
         self, location, faraway_location,
     ):
-        """Test `UTMCoordinate.__eq__()`."""
+        """Test `Location.__eq__()`."""
         with pytest.raises(ValueError, match='must be in the same zone'):
             bool(location == faraway_location)
 
     def test_compare_utm_coordinates_to_equal_coordinates(self, location, address):
-        """Test `UTMCoordinate.__eq__()`."""
-        same_location = utils.UTMCoordinate(address.latitude, address.longitude)
+        """Test `Location.__eq__()`."""
+        same_location = utils.Location(address.latitude, address.longitude)
 
         result = location == same_location
 
         assert result is True
 
     def test_compare_utm_coordinates_to_themselves(self, location):
-        """Test `UTMCoordinate.__eq__()`."""
+        """Test `Location.__eq__()`."""
         # pylint:disable=comparison-with-itself
         result = location == location  # noqa:WPS312
 
         assert result is True
 
     def test_compare_utm_coordinates_to_different_coordinates(self, location, origin):
-        """Test `UTMCoordinate.__eq__()`."""
+        """Test `Location.__eq__()`."""
         result = location == origin
 
         assert result is False
 
 
 class TestProperties:
-    """Test properties in `UTMCoordinate`."""
+    """Test properties in `Location`."""
+
+    def test_latitude(self, location, address):
+        """Test `Location.latitude` property."""
+        result = location.latitude
+
+        assert result == pytest.approx(float(address.latitude))
+
+    def test_longitude(self, location, address):
+        """Test `Location.longitude` property."""
+        result = location.longitude
+
+        assert result == pytest.approx(float(address.longitude))
 
     def test_easting(self, location):
-        """Test `UTMCoordinate.easting` property."""
+        """Test `Location.easting` property."""
         result = location.easting
 
         assert MIN_EASTING < result < MAX_EASTING
 
     def test_northing(self, location):
-        """Test `UTMCoordinate.northing` property."""
+        """Test `Location.northing` property."""
         result = location.northing
 
         assert MIN_NORTHING < result < MAX_NORTHING
 
     def test_zone(self, location):
-        """Test `UTMCoordinate.zone` property."""
+        """Test `Location.zone` property."""
         result = location.zone
 
         assert result == ZONE
 
 
 class TestRelateTo:
-    """Test the `UTMCoordinate.relate_to()` method and the `.x` and `.y` properties."""
+    """Test the `Location.relate_to()` method and the `.x` and `.y` properties."""
 
     def test_run_relate_to_twice(self, location, origin):
         """The `.relate_to()` method must only be run once."""
@@ -170,8 +154,8 @@ class TestRelateTo:
             location.relate_to(origin)
 
     def test_call_relate_to_with_wrong_other_type(self, location):
-        """`other` must be another `UTMCoordinate`."""
-        with pytest.raises(TypeError, match='UTMCoordinate'):
+        """`other` must be another `Location`."""
+        with pytest.raises(TypeError, match='Location'):
             location.relate_to(object())
 
     def test_call_relate_to_with_far_away_other(

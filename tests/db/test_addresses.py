@@ -6,6 +6,7 @@ import sqlalchemy as sqla
 from sqlalchemy import exc as sa_exc
 
 from urban_meal_delivery import db
+from urban_meal_delivery.db import utils
 
 
 class TestSpecialMethods:
@@ -122,6 +123,24 @@ class TestProperties:
         result = address.is_primary
 
         assert result is False
+
+    def test_location(self, address):
+        """Test `Address.location` property."""
+        latitude = float(address.latitude)
+        longitude = float(address.longitude)
+
+        result = address.location
+
+        assert isinstance(result, utils.Location)
+        assert result.latitude == pytest.approx(latitude)
+        assert result.longitude == pytest.approx(longitude)
+
+    def test_location_is_cached(self, address):
+        """Test `Address.location` property."""
+        result1 = address.location
+        result2 = address.location
+
+        assert result1 is result2
 
     def test_x_is_positive(self, address):
         """Test `Address.x` property."""

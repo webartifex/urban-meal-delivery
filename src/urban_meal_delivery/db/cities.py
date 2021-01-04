@@ -1,6 +1,6 @@
 """Provide the ORM's `City` model."""
 
-from typing import Any, Dict
+from typing import Dict
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -47,60 +47,52 @@ class City(meta.Base):
     addresses = orm.relationship('Address', back_populates='city')
     grids = orm.relationship('Grid', back_populates='city')
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Create a new city."""
-        # Call SQLAlchemy's default `.__init__()` method.
-        super().__init__(*args, **kwargs)
-
-        # Take the "lower left" of the viewport as the origin
-        # of a Cartesian coordinate system.
-        lower_left = self.viewport['southwest']
-        self._origin = utils.UTMCoordinate(
-            lower_left['latitude'], lower_left['longitude'],
-        )
+    # We do not implement a `.__init__()` method and leave that to SQLAlchemy.
+    # Instead, we use `hasattr()` to check for uninitialized attributes.
+    # grep:d334120e  pylint:disable=attribute-defined-outside-init
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}({name})>'.format(cls=self.__class__.__name__, name=self.name)
 
     @property
-    def location(self) -> Dict[str, float]:
-        """GPS location of the city's center.
+    def center(self) -> utils.Location:
+        """Location of the city's center.
 
-        Example:
-            {"latitude": 48.856614, "longitude": 2.3522219}
+        Implementation detail: This property is cached as none of the
+        underlying attributes to calculate the value are to be changed.
         """
-        return {
-            'latitude': self._center_latitude,
-            'longitude': self._center_longitude,
-        }
+        if not hasattr(self, '_center'):  # noqa:WPS421  note:d334120e
+            self._center = utils.Location(
+                self._center_latitude, self._center_longitude,
+            )
+        return self._center
 
     @property
-    def viewport(self) -> Dict[str, Dict[str, float]]:
+    def viewport(self) -> Dict[str, utils.Location]:
         """Google Maps viewport of the city.
 
-        Example:
-            {
-                'northeast': {'latitude': 48.9021449, 'longitude': 2.4699208},
-                'southwest': {'latitude': 48.815573, 'longitude': 2.225193},
+        Implementation detail: This property is cached as none of the
+        underlying attributes to calculate the value are to be changed.
+        """
+        if not hasattr(self, '_viewport'):  # noqa:WPS421  note:d334120e
+            self._viewport = {
+                'northeast': utils.Location(
+                    self._northeast_latitude, self._northeast_longitude,
+                ),
+                'southwest': utils.Location(
+                    self._southwest_latitude, self._southwest_longitude,
+                ),
             }
-        """  # noqa:RST203
-        return {
-            'northeast': {
-                'latitude': self._northeast_latitude,
-                'longitude': self._northeast_longitude,
-            },
-            'southwest': {
-                'latitude': self._southwest_latitude,
-                'longitude': self._southwest_longitude,
-            },
-        }
+
+        return self._viewport
 
     @property
-    def as_origin(self) -> utils.UTMCoordinate:
-        """The lower left corner of the `.viewport` in UTM coordinates.
+    def as_xy_origin(self) -> utils.Location:
+        """The southwest corner of the `.viewport`.
 
-        This property serves as the `relative_to` argument to the
-        `UTMConstructor` when representing an `Address` in the x-y plane.
+        This property serves, for example, as the `other` argument to the
+        `Location.relate_to()` method when representing an `Address`
+        in the x-y plane.
         """
-        return self._origin
+        return self.viewport['southwest']
