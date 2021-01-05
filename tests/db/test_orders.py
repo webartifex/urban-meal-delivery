@@ -336,7 +336,7 @@ class TestProperties:
 
     def test_courier_waited_at_delviery(self, order):
         """Test `Order.courier_waited_at_delivery` property."""
-        order._courier_waited_at_delivery = True  # noqa:WPS437
+        order._courier_waited_at_delivery = True
 
         result = order.courier_waited_at_delivery.total_seconds()
 
@@ -344,7 +344,7 @@ class TestProperties:
 
     def test_courier_did_not_wait_at_delivery(self, order):
         """Test `Order.courier_waited_at_delivery` property."""
-        order._courier_waited_at_delivery = False  # noqa:WPS437
+        order._courier_waited_at_delivery = False
 
         result = order.courier_waited_at_delivery.total_seconds()
 

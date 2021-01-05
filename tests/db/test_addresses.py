@@ -110,7 +110,7 @@ class TestProperties:
 
     def test_is_primary(self, address):
         """Test `Address.is_primary` property."""
-        assert address.id == address._primary_id  # noqa:WPS437
+        assert address.id == address._primary_id
 
         result = address.is_primary
 
@@ -118,7 +118,7 @@ class TestProperties:
 
     def test_is_not_primary(self, address):
         """Test `Address.is_primary` property."""
-        address._primary_id = 999  # noqa:WPS437
+        address._primary_id = 999
 
         result = address.is_primary
 

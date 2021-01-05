@@ -317,7 +317,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
                 obj.delivery_at = None
                 obj.delivery_at_corrected = None
                 obj.delivery_not_confirmed = None
-                obj._courier_waited_at_delivery = None  # noqa:WPS437
+                obj._courier_waited_at_delivery = None
 
 
 class ScheduledOrderFactory(AdHocOrderFactory):
