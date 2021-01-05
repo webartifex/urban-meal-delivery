@@ -19,10 +19,10 @@ class AddressPixelAssociation(meta.Base):
     __tablename__ = 'addresses_pixels'
 
     # Columns
-    _address_id = sa.Column('address_id', sa.Integer, primary_key=True)
-    _city_id = sa.Column('city_id', sa.SmallInteger, nullable=False)
-    _grid_id = sa.Column('grid_id', sa.SmallInteger, nullable=False)
-    _pixel_id = sa.Column('pixel_id', sa.Integer, primary_key=True)
+    address_id = sa.Column(sa.Integer, primary_key=True)
+    city_id = sa.Column(sa.SmallInteger, nullable=False)
+    grid_id = sa.Column(sa.SmallInteger, nullable=False)
+    pixel_id = sa.Column(sa.Integer, primary_key=True)
 
     # Constraints
     __table_args__ = (

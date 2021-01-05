@@ -23,7 +23,7 @@ class Address(meta.Base):
     )
     latitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
     longitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
-    _city_id = sa.Column('city_id', sa.SmallInteger, nullable=False, index=True)
+    city_id = sa.Column(sa.SmallInteger, nullable=False, index=True)
     city_name = sa.Column('city', sa.Unicode(length=25), nullable=False)  # noqa:WPS432
     zip_code = sa.Column(sa.Integer, nullable=False, index=True)
     street = sa.Column(sa.Unicode(length=80), nullable=False)  # noqa:WPS432
@@ -58,12 +58,12 @@ class Address(meta.Base):
     orders_picked_up = orm.relationship(
         'Order',
         back_populates='pickup_address',
-        foreign_keys='[Order._pickup_address_id]',
+        foreign_keys='[Order.pickup_address_id]',
     )
     orders_delivered = orm.relationship(
         'Order',
         back_populates='delivery_address',
-        foreign_keys='[Order._delivery_address_id]',
+        foreign_keys='[Order.delivery_address_id]',
     )
     pixels = orm.relationship('AddressPixelAssociation', back_populates='address')
 

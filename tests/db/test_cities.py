@@ -44,8 +44,8 @@ class TestProperties:
         result = city.center
 
         assert isinstance(result, utils.Location)
-        assert result.latitude == pytest.approx(city_data['_center_latitude'])
-        assert result.longitude == pytest.approx(city_data['_center_longitude'])
+        assert result.latitude == pytest.approx(city_data['center_latitude'])
+        assert result.longitude == pytest.approx(city_data['center_longitude'])
 
     def test_center_is_cached(self, city):
         """Test `City.center` property."""
@@ -59,8 +59,8 @@ class TestProperties:
         result = city.northeast
 
         assert isinstance(result, utils.Location)
-        assert result.latitude == pytest.approx(city_data['_northeast_latitude'])
-        assert result.longitude == pytest.approx(city_data['_northeast_longitude'])
+        assert result.latitude == pytest.approx(city_data['northeast_latitude'])
+        assert result.longitude == pytest.approx(city_data['northeast_longitude'])
 
     def test_northeast_is_cached(self, city):
         """Test `City.northeast` property."""
@@ -74,8 +74,8 @@ class TestProperties:
         result = city.southwest
 
         assert isinstance(result, utils.Location)
-        assert result.latitude == pytest.approx(city_data['_southwest_latitude'])
-        assert result.longitude == pytest.approx(city_data['_southwest_longitude'])
+        assert result.latitude == pytest.approx(city_data['southwest_latitude'])
+        assert result.longitude == pytest.approx(city_data['southwest_longitude'])
 
     def test_southwest_is_cached(self, city):
         """Test `City.southwest` property."""

@@ -22,24 +22,12 @@ class City(meta.Base):
     kml = sa.Column(sa.UnicodeText, nullable=False)
 
     # Google Maps related columns
-    _center_latitude = sa.Column(
-        'center_latitude', postgresql.DOUBLE_PRECISION, nullable=False,
-    )
-    _center_longitude = sa.Column(
-        'center_longitude', postgresql.DOUBLE_PRECISION, nullable=False,
-    )
-    _northeast_latitude = sa.Column(
-        'northeast_latitude', postgresql.DOUBLE_PRECISION, nullable=False,
-    )
-    _northeast_longitude = sa.Column(
-        'northeast_longitude', postgresql.DOUBLE_PRECISION, nullable=False,
-    )
-    _southwest_latitude = sa.Column(
-        'southwest_latitude', postgresql.DOUBLE_PRECISION, nullable=False,
-    )
-    _southwest_longitude = sa.Column(
-        'southwest_longitude', postgresql.DOUBLE_PRECISION, nullable=False,
-    )
+    center_latitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
+    center_longitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
+    northeast_latitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
+    northeast_longitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
+    southwest_latitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
+    southwest_longitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
     initial_zoom = sa.Column(sa.SmallInteger, nullable=False)
 
     # Relationships
@@ -62,9 +50,7 @@ class City(meta.Base):
         underlying attributes to calculate the value are to be changed.
         """
         if not hasattr(self, '_center'):  # noqa:WPS421  note:d334120e
-            self._center = utils.Location(
-                self._center_latitude, self._center_longitude,
-            )
+            self._center = utils.Location(self.center_latitude, self.center_longitude)
         return self._center
 
     @property
@@ -76,7 +62,7 @@ class City(meta.Base):
         """
         if not hasattr(self, '_northeast'):  # noqa:WPS421  note:d334120e
             self._northeast = utils.Location(
-                self._northeast_latitude, self._northeast_longitude,
+                self.northeast_latitude, self.northeast_longitude,
             )
 
         return self._northeast
@@ -90,7 +76,7 @@ class City(meta.Base):
         """
         if not hasattr(self, '_southwest'):  # noqa:WPS421  note:d334120e
             self._southwest = utils.Location(
-                self._southwest_latitude, self._southwest_longitude,
+                self.southwest_latitude, self.southwest_longitude,
             )
 
         return self._southwest

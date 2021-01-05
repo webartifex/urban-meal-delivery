@@ -22,7 +22,7 @@ class Grid(meta.Base):
     id = sa.Column(  # noqa:WPS125
         sa.SmallInteger, primary_key=True, autoincrement=True,
     )
-    _city_id = sa.Column('city_id', sa.SmallInteger, nullable=False)
+    city_id = sa.Column(sa.SmallInteger, nullable=False)
     side_length = sa.Column(sa.SmallInteger, nullable=False, unique=True)
 
     # Constraints

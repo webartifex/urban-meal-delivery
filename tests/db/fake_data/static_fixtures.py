@@ -12,12 +12,12 @@ def city_data():
         'id': 1,
         'name': 'Paris',
         'kml': "<?xml version='1.0' encoding='UTF-8'?> ...",
-        '_center_latitude': 48.856614,
-        '_center_longitude': 2.3522219,
-        '_northeast_latitude': 48.9021449,
-        '_northeast_longitude': 2.4699208,
-        '_southwest_latitude': 48.815573,
-        '_southwest_longitude': 2.225193,
+        'center_latitude': 48.856614,
+        'center_longitude': 2.3522219,
+        'northeast_latitude': 48.9021449,
+        'northeast_longitude': 2.4699208,
+        'southwest_latitude': 48.815573,
+        'southwest_longitude': 2.225193,
         'initial_zoom': 12,
     }
 

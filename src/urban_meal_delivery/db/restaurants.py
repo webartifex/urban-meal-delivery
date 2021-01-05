@@ -22,7 +22,7 @@ class Restaurant(meta.Base):
     )
     created_at = sa.Column(sa.DateTime, nullable=False)
     name = sa.Column(sa.Unicode(length=45), nullable=False)  # noqa:WPS432
-    _address_id = sa.Column('address_id', sa.Integer, nullable=False, index=True)
+    address_id = sa.Column(sa.Integer, nullable=False, index=True)
     estimated_prep_duration = sa.Column(sa.SmallInteger, nullable=False)
 
     # Constraints

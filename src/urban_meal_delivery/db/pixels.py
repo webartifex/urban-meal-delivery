@@ -19,7 +19,7 @@ class Pixel(meta.Base):
 
     # Columns
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)  # noqa:WPS125
-    _grid_id = sa.Column('grid_id', sa.SmallInteger, nullable=False, index=True)
+    grid_id = sa.Column(sa.SmallInteger, nullable=False, index=True)
     n_x = sa.Column(sa.SmallInteger, nullable=False, index=True)
     n_y = sa.Column(sa.SmallInteger, nullable=False, index=True)
 

@@ -17,7 +17,7 @@ class Order(meta.Base):  # noqa:WPS214
     # Generic columns
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
     _delivery_id = sa.Column('delivery_id', sa.Integer, index=True, unique=True)
-    _customer_id = sa.Column('customer_id', sa.Integer, nullable=False, index=True)
+    customer_id = sa.Column(sa.Integer, nullable=False, index=True)
     placed_at = sa.Column(sa.DateTime, nullable=False, index=True)
     ad_hoc = sa.Column(sa.Boolean, nullable=False)
     scheduled_delivery_at = sa.Column(sa.DateTime, index=True)
@@ -33,9 +33,7 @@ class Order(meta.Base):  # noqa:WPS214
     total = sa.Column(sa.Integer, nullable=False)
 
     # Restaurant-related columns
-    _restaurant_id = sa.Column(
-        'restaurant_id', sa.SmallInteger, nullable=False, index=True,
-    )
+    restaurant_id = sa.Column(sa.SmallInteger, nullable=False, index=True)
     restaurant_notified_at = sa.Column(sa.DateTime)
     restaurant_notified_at_corrected = sa.Column(sa.Boolean, index=True)
     restaurant_confirmed_at = sa.Column(sa.DateTime)
@@ -45,7 +43,7 @@ class Order(meta.Base):  # noqa:WPS214
     estimated_prep_buffer = sa.Column(sa.Integer, nullable=False, index=True)
 
     # Dispatch-related columns
-    _courier_id = sa.Column('courier_id', sa.Integer, index=True)
+    courier_id = sa.Column(sa.Integer, index=True)
     dispatch_at = sa.Column(sa.DateTime)
     dispatch_at_corrected = sa.Column(sa.Boolean, index=True)
     courier_notified_at = sa.Column(sa.DateTime)
@@ -55,9 +53,7 @@ class Order(meta.Base):  # noqa:WPS214
     utilization = sa.Column(sa.SmallInteger, nullable=False)
 
     # Pickup-related columns
-    _pickup_address_id = sa.Column(
-        'pickup_address_id', sa.Integer, nullable=False, index=True,
-    )
+    pickup_address_id = sa.Column(sa.Integer, nullable=False, index=True)
     reached_pickup_at = sa.Column(sa.DateTime)
     pickup_at = sa.Column(sa.DateTime)
     pickup_at_corrected = sa.Column(sa.Boolean, index=True)
@@ -66,9 +62,7 @@ class Order(meta.Base):  # noqa:WPS214
     left_pickup_at_corrected = sa.Column(sa.Boolean, index=True)
 
     # Delivery-related columns
-    _delivery_address_id = sa.Column(
-        'delivery_address_id', sa.Integer, nullable=False, index=True,
-    )
+    delivery_address_id = sa.Column(sa.Integer, nullable=False, index=True)
     reached_delivery_at = sa.Column(sa.DateTime)
     delivery_at = sa.Column(sa.DateTime)
     delivery_at_corrected = sa.Column(sa.Boolean, index=True)
@@ -313,12 +307,12 @@ class Order(meta.Base):  # noqa:WPS214
     pickup_address = orm.relationship(
         'Address',
         back_populates='orders_picked_up',
-        foreign_keys='[Order._pickup_address_id]',
+        foreign_keys='[Order.pickup_address_id]',
     )
     delivery_address = orm.relationship(
         'Address',
         back_populates='orders_delivered',
-        foreign_keys='[Order._delivery_address_id]',
+        foreign_keys='[Order.delivery_address_id]',
     )
 
     # Convenience properties
