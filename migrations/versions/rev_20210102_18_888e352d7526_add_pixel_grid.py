@@ -36,7 +36,11 @@ def upgrade():
             onupdate='RESTRICT',
             ondelete='RESTRICT',
         ),
-        sa.UniqueConstraint('side_length', name=op.f('uq_grids_on_side_length')),
+        sa.UniqueConstraint(
+            'city_id', 'side_length', name=op.f('uq_grids_on_city_id_side_length'),
+        ),
+        # This `UniqueConstraint` is needed by the `addresses_pixels` table below.
+        sa.UniqueConstraint('id', 'city_id', name=op.f('uq_grids_on_id_city_id')),
         schema=config.CLEAN_SCHEMA,
     )
 
@@ -85,16 +89,10 @@ def upgrade():
         schema=config.CLEAN_SCHEMA,
     )
 
-    # These `UniqueConstraints`s are needed by the `addresses_pixels` table below.
+    # This `UniqueConstraint` is needed by the `addresses_pixels` table below.
     op.create_unique_constraint(
         'uq_addresses_on_id_city_id',
         'addresses',
-        ['id', 'city_id'],
-        schema=config.CLEAN_SCHEMA,
-    )
-    op.create_unique_constraint(
-        'uq_grids_on_id_city_id',
-        'grids',
         ['id', 'city_id'],
         schema=config.CLEAN_SCHEMA,
     )

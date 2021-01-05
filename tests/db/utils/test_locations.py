@@ -35,7 +35,7 @@ def faraway_location():
 @pytest.fixture
 def origin(city):
     """A `Location` object based off the one and only `city`."""
-    obj = city.as_xy_origin
+    obj = city.southwest
 
     assert obj.zone == ZONE  # sanity check
 

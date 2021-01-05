@@ -1,8 +1,11 @@
 """Provide the ORM's `Grid` model."""
 
+from __future__ import annotations
+
 import sqlalchemy as sa
 from sqlalchemy import orm
 
+from urban_meal_delivery import db
 from urban_meal_delivery.db import meta
 
 
@@ -27,6 +30,9 @@ class Grid(meta.Base):
         sa.ForeignKeyConstraint(
             ['city_id'], ['cities.id'], onupdate='RESTRICT', ondelete='RESTRICT',
         ),
+        # Each `Grid`, characterized by its `.side_length`,
+        # may only exists once for a given `.city`.
+        sa.UniqueConstraint('city_id', 'side_length'),
         # Needed by a `ForeignKeyConstraint` in `address_pixel_association`.
         sa.UniqueConstraint('id', 'city_id'),
     )
@@ -46,3 +52,45 @@ class Grid(meta.Base):
     def pixel_area(self) -> float:
         """The area of a `Pixel` on the grid in square kilometers."""
         return (self.side_length ** 2) / 1_000_000  # noqa:WPS432
+
+    @classmethod
+    def gridify(cls, city: db.City, side_length: int) -> db.Grid:
+        """Create a fully populated `Grid` for a `city`.
+
+        The created `Grid` contains only the `Pixel`s for which
+        there is at least one `Address` in it.
+
+        Args:
+            city: city for which the grid is created
+            side_length: the length of a square `Pixel`'s side
+
+        Returns:
+            grid: including `grid.pixels` with the associated `city.addresses`
+        """
+        grid = cls(city=city, side_length=side_length)
+
+        # Create `Pixel` objects covering the entire `city`.
+        # Note: `+1` so that `city.northeast` corner is on the grid.
+        possible_pixels = [
+            db.Pixel(n_x=n_x, n_y=n_y)
+            for n_x in range((city.total_x // side_length) + 1)
+            for n_y in range((city.total_y // side_length) + 1)
+        ]
+
+        # For convenient lookup by `.n_x`-`.n_y` coordinates.
+        pixel_map = {(pixel.n_x, pixel.n_y): pixel for pixel in possible_pixels}
+
+        for address in city.addresses:
+            # Determine which `pixel` the `address` belongs to.
+            n_x = address.x // side_length
+            n_y = address.y // side_length
+            pixel = pixel_map[n_x, n_y]
+
+            # Create an association between the `address` and `pixel`.
+            assoc = db.AddressPixelAssociation(address=address, pixel=pixel)
+            pixel.addresses.append(assoc)
+
+        # Only keep `pixel`s that contain at least one `Address`.
+        grid.pixels = [pixel for pixel in pixel_map.values() if pixel.addresses]
+
+        return grid

@@ -1,6 +1,5 @@
 """Provide the ORM's `City` model."""
 
-from typing import Dict
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -69,30 +68,45 @@ class City(meta.Base):
         return self._center
 
     @property
-    def viewport(self) -> Dict[str, utils.Location]:
-        """Google Maps viewport of the city.
+    def northeast(self) -> utils.Location:
+        """The city's northeast corner of the Google Maps viewport.
 
         Implementation detail: This property is cached as none of the
         underlying attributes to calculate the value are to be changed.
         """
-        if not hasattr(self, '_viewport'):  # noqa:WPS421  note:d334120e
-            self._viewport = {
-                'northeast': utils.Location(
-                    self._northeast_latitude, self._northeast_longitude,
-                ),
-                'southwest': utils.Location(
-                    self._southwest_latitude, self._southwest_longitude,
-                ),
-            }
+        if not hasattr(self, '_northeast'):  # noqa:WPS421  note:d334120e
+            self._northeast = utils.Location(
+                self._northeast_latitude, self._northeast_longitude,
+            )
 
-        return self._viewport
+        return self._northeast
 
     @property
-    def as_xy_origin(self) -> utils.Location:
-        """The southwest corner of the `.viewport`.
+    def southwest(self) -> utils.Location:
+        """The city's southwest corner of the Google Maps viewport.
 
-        This property serves, for example, as the `other` argument to the
-        `Location.relate_to()` method when representing an `Address`
-        in the x-y plane.
+        Implementation detail: This property is cached as none of the
+        underlying attributes to calculate the value are to be changed.
         """
-        return self.viewport['southwest']
+        if not hasattr(self, '_southwest'):  # noqa:WPS421  note:d334120e
+            self._southwest = utils.Location(
+                self._southwest_latitude, self._southwest_longitude,
+            )
+
+        return self._southwest
+
+    @property
+    def total_x(self) -> int:
+        """The horizontal distance from the city's west to east end in meters.
+
+        The city borders refer to the Google Maps viewport.
+        """
+        return self.northeast.easting - self.southwest.easting
+
+    @property
+    def total_y(self) -> int:
+        """The vertical distance from the city's south to north end in meters.
+
+        The city borders refer to the Google Maps viewport.
+        """
+        return self.northeast.northing - self.southwest.northing

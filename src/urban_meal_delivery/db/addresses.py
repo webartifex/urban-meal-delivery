@@ -1,6 +1,5 @@
 """Provide the ORM's `Address` model."""
 
-
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
@@ -93,7 +92,7 @@ class Address(meta.Base):
     def location(self) -> utils.Location:
         """The location of the address.
 
-        The returned `Location` object relates to `.city.viewport.southwest`.
+        The returned `Location` object relates to `.city.southwest`.
 
         See also the `.x` and `.y` properties that are shortcuts for
         `.location.x` and `.location.y`.
@@ -103,7 +102,7 @@ class Address(meta.Base):
         """
         if not hasattr(self, '_location'):  # noqa:WPS421  note:b1f68d24
             self._location = utils.Location(self.latitude, self.longitude)
-            self._location.relate_to(self.city.as_xy_origin)
+            self._location.relate_to(self.city.southwest)
         return self._location
 
     @property

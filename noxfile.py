@@ -470,7 +470,7 @@ def init_project(session):
 
 
 @nox.session(name='clean-pwd', python=PYTHON, venv_backend='none')
-def clean_pwd(session):  # noqa:WPS210,WPS231
+def clean_pwd(session):  # noqa:WPS231
     """Remove (almost) all glob patterns listed in .gitignore.
 
     The difference compared to `git clean -X` is that this task

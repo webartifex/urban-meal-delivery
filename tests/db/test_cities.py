@@ -3,7 +3,6 @@
 
 import pytest
 
-from tests.db.utils import test_locations as consts
 from urban_meal_delivery import db
 from urban_meal_delivery.db import utils
 
@@ -55,33 +54,44 @@ class TestProperties:
 
         assert result1 is result2
 
-    def test_viewport_overall(self, city):
-        """Test `City.viewport` property."""
-        result = city.viewport
-
-        assert isinstance(result, dict)
-        assert len(result) == 2
-
-    @pytest.mark.parametrize('corner', ['northeast', 'southwest'])
-    def test_viewport_corners(self, city, city_data, corner):
-        """Test `City.viewport` property."""
-        result = city.viewport[corner]
+    def test_northeast(self, city, city_data):
+        """Test `City.northeast` property."""
+        result = city.northeast
 
         assert isinstance(result, utils.Location)
-        assert result.latitude == pytest.approx(city_data[f'_{corner}_latitude'])
-        assert result.longitude == pytest.approx(city_data[f'_{corner}_longitude'])
+        assert result.latitude == pytest.approx(city_data['_northeast_latitude'])
+        assert result.longitude == pytest.approx(city_data['_northeast_longitude'])
 
-    def test_viewport_is_cached(self, city):
-        """Test `City.viewport` property."""
-        result1 = city.viewport
-        result2 = city.viewport
+    def test_northeast_is_cached(self, city):
+        """Test `City.northeast` property."""
+        result1 = city.northeast
+        result2 = city.northeast
 
         assert result1 is result2
 
-    def test_city_as_xy_origin(self, city):
-        """Test `City.as_xy_origin` property."""
-        result = city.as_xy_origin
+    def test_southwest(self, city, city_data):
+        """Test `City.southwest` property."""
+        result = city.southwest
 
-        assert result.zone == consts.ZONE
-        assert consts.MIN_EASTING < result.easting < consts.MAX_EASTING
-        assert consts.MIN_NORTHING < result.northing < consts.MAX_NORTHING
+        assert isinstance(result, utils.Location)
+        assert result.latitude == pytest.approx(city_data['_southwest_latitude'])
+        assert result.longitude == pytest.approx(city_data['_southwest_longitude'])
+
+    def test_southwest_is_cached(self, city):
+        """Test `City.southwest` property."""
+        result1 = city.southwest
+        result2 = city.southwest
+
+        assert result1 is result2
+
+    def test_total_x(self, city):
+        """Test `City.total_x` property."""
+        result = city.total_x
+
+        assert result > 18_000
+
+    def test_total_y(self, city):
+        """Test `City.total_y` property."""
+        result = city.total_y
+
+        assert result > 9_000
