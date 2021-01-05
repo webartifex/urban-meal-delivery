@@ -148,6 +148,12 @@ def upgrade():
 def downgrade():
     """Downgrade to revision f11cd76d2f45."""
     op.drop_table('addresses_pixels', schema=config.CLEAN_SCHEMA)
+    op.drop_constraint(
+        'uq_addresses_on_id_city_id',
+        'addresses',
+        type_=None,
+        schema=config.CLEAN_SCHEMA,
+    )
     op.drop_index(
         op.f('ix_pixels_on_n_y'), table_name='pixels', schema=config.CLEAN_SCHEMA,
     )
