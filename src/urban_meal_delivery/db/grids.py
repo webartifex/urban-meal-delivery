@@ -57,8 +57,8 @@ class Grid(meta.Base):
     def gridify(cls, city: db.City, side_length: int) -> db.Grid:
         """Create a fully populated `Grid` for a `city`.
 
-        The created `Grid` contains only the `Pixel`s for which
-        there is at least one `Address` in it.
+        The `Grid` contains only `Pixel`s that have at least one `Address`.
+        `Address` objects outside the `city`'s viewport are discarded.
 
         Args:
             city: city for which the grid is created
@@ -69,28 +69,30 @@ class Grid(meta.Base):
         """
         grid = cls(city=city, side_length=side_length)
 
-        # Create `Pixel` objects covering the entire `city`.
-        # Note: `+1` so that `city.northeast` corner is on the grid.
-        possible_pixels = [
-            db.Pixel(n_x=n_x, n_y=n_y)
-            for n_x in range((city.total_x // side_length) + 1)
-            for n_y in range((city.total_y // side_length) + 1)
-        ]
-
-        # For convenient lookup by `.n_x`-`.n_y` coordinates.
-        pixel_map = {(pixel.n_x, pixel.n_y): pixel for pixel in possible_pixels}
+        # `Pixel`s grouped by `.n_x`-`.n_y` coordinates.
+        pixels = {}
 
         for address in city.addresses:
-            # Determine which `pixel` the `address` belongs to.
-            n_x = address.x // side_length
-            n_y = address.y // side_length
-            pixel = pixel_map[n_x, n_y]
+            # Check if an `address` is not within the `city`'s viewport, ...
+            not_within_city_viewport = (
+                address.x < 0
+                or address.x > city.total_x
+                or address.y < 0
+                or address.y > city.total_y
+            )
+            # ... and, if so, the `address` does not belong to any `Pixel`.
+            if not_within_city_viewport:
+                continue
+
+            # Determine which `pixel` the `address` belongs to ...
+            n_x, n_y = address.x // side_length, address.y // side_length
+            # ... and create a new `Pixel` object if necessary.
+            if (n_x, n_y) not in pixels:
+                pixels[(n_x, n_y)] = db.Pixel(grid=grid, n_x=n_x, n_y=n_y)
+            pixel = pixels[(n_x, n_y)]
 
             # Create an association between the `address` and `pixel`.
             assoc = db.AddressPixelAssociation(address=address, pixel=pixel)
             pixel.addresses.append(assoc)
-
-        # Only keep `pixel`s that contain at least one `Address`.
-        grid.pixels = [pixel for pixel in pixel_map.values() if pixel.addresses]
 
         return grid

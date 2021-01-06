@@ -75,11 +75,15 @@ class TestProperties:
 class TestGridification:
     """Test the `Grid.gridify()` constructor."""
 
-    def test_one_pixel_covering_entire_city_without_addresses(self, city):
+    @pytest.mark.no_cover
+    def test_one_pixel_without_addresses(self, city):
         """At the very least, there must be one `Pixel` ...
 
         ... if the `side_length` is greater than both the
         horizontal and vertical distances of the viewport.
+
+        This test case skips the `for`-loop inside `Grid.gridify()`.
+        Interestingly, coverage.py does not see this.
         """
         city.addresses = []
 
@@ -91,7 +95,7 @@ class TestGridification:
         assert isinstance(result, db.Grid)
         assert len(result.pixels) == 0  # noqa:WPS507
 
-    def test_one_pixel_covering_entire_city_with_one_address(self, city, address):
+    def test_one_pixel_with_one_address(self, city, address):
         """At the very least, there must be one `Pixel` ...
 
         ... if the `side_length` is greater than both the
@@ -107,8 +111,66 @@ class TestGridification:
         assert isinstance(result, db.Grid)
         assert len(result.pixels) == 1
 
+    def test_one_pixel_with_two_addresses(self, city, make_address):
+        """At the very least, there must be one `Pixel` ...
+
+        ... if the `side_length` is greater than both the
+        horizontal and vertical distances of the viewport.
+
+        This test case is necessary as `test_one_pixel_with_one_address`
+        does not have to re-use an already created `Pixel` object internally.
+        """
+        city.addresses = [make_address(), make_address()]
+
+        # `+1` as otherwise there would be a second pixel in one direction.
+        side_length = max(city.total_x, city.total_y) + 1
+
+        result = db.Grid.gridify(city=city, side_length=side_length)
+
+        assert isinstance(result, db.Grid)
+        assert len(result.pixels) == 1
+
+    def test_one_pixel_with_address_too_far_south(self, city, address):
+        """An `address` outside the `city`'s viewport is discarded."""
+        # Move the `address` just below `city.southwest`.
+        address.latitude = city.southwest.latitude - 0.1
+
+        city.addresses = [address]
+
+        # `+1` as otherwise there would be a second pixel in one direction.
+        side_length = max(city.total_x, city.total_y) + 1
+
+        result = db.Grid.gridify(city=city, side_length=side_length)
+
+        assert isinstance(result, db.Grid)
+        assert len(result.pixels) == 0  # noqa:WPS507
+
+    @pytest.mark.no_cover
+    def test_one_pixel_with_address_too_far_west(self, city, address):
+        """An `address` outside the `city`'s viewport is discarded.
+
+        This test is a logical sibling to `test_one_pixel_with_address_too_far_south`
+        and therefore redundant.
+        """
+        # Move the `address` just left to `city.southwest`.
+        address.longitude = city.southwest.longitude - 0.1
+
+        city.addresses = [address]
+
+        # `+1` as otherwise there would be a second pixel in one direction.
+        side_length = max(city.total_x, city.total_y) + 1
+
+        result = db.Grid.gridify(city=city, side_length=side_length)
+
+        assert isinstance(result, db.Grid)
+        assert len(result.pixels) == 0  # noqa:WPS507
+
+    @pytest.mark.no_cover
     def test_four_pixels_with_two_addresses(self, city, make_address):
-        """Two `Address` objects in distinct `Pixel` objects."""
+        """Two `Address` objects in distinct `Pixel` objects.
+
+        This test is more of a sanity check.
+        """
         # Create two `Address` objects in distinct `Pixel`s.
         city.addresses = [
             # One `Address` in the lower-left `Pixel`, ...
@@ -136,7 +198,7 @@ class TestGridification:
     def test_make_random_grids(self, db_session, city, make_address, side_length):
         """With 100 random `Address` objects, a grid must have ...
 
-        ... between 1 and a deterministic number of `Pixel` objects.
+        ... between 1 and a deterministic upper bound of `Pixel` objects.
 
         This test creates confidence that the created `Grid`
         objects adhere to the database constraints.

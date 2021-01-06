@@ -32,6 +32,8 @@ class Config:
     # time horizon, we treat it as an ad-hoc order.
     QUASI_AD_HOC_LIMIT = datetime.timedelta(minutes=45)
 
+    GRID_SIDE_LENGTHS = [707, 1000, 1414]
+
     DATABASE_URI = os.getenv('DATABASE_URI')
 
     # The PostgreSQL schema that holds the tables with the original data.
