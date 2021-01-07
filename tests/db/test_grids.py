@@ -19,7 +19,7 @@ class TestSpecialMethods:
         """`Grid` has a non-literal text representation."""
         result = repr(grid)
 
-        assert result == f'<Grid: {grid.pixel_area}>'
+        assert result == f'<Grid: {grid.pixel_area} sqr. km>'
 
 
 @pytest.mark.db

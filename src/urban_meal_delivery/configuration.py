@@ -26,13 +26,37 @@ def random_schema_name() -> str:
 class Config:
     """Configuration that applies in all situations."""
 
+    # Application-specific settings
+    # -----------------------------
+
+    # Date after which the real-life data is discarded.
     CUTOFF_DAY = datetime.datetime(2017, 2, 1)
 
     # If a scheduled pre-order is made within this
     # time horizon, we treat it as an ad-hoc order.
     QUASI_AD_HOC_LIMIT = datetime.timedelta(minutes=45)
 
+    # Operating hours of the platform.
+    SERVICE_START = 11
+    SERVICE_END = 23
+
+    # Side lengths (in meters) for which pixel grids are created.
+    # They are the basis for the aggregated demand forecasts.
     GRID_SIDE_LENGTHS = [707, 1000, 1414]
+
+    # Time steps (in minutes) used to aggregate the
+    # individual orders into time series.
+    TIME_STEPS = [60]
+
+    # Training horizons (in full weeks) used
+    # to train the forecasting models.
+    TRAINING_HORIZONS = [8]
+
+    # The demand forecasting methods used in the simulations.
+    FORECASTING_METHODS = ['hets', 'rtarima']
+
+    # Implementation-specific settings
+    # --------------------------------
 
     DATABASE_URI = os.getenv('DATABASE_URI')
 

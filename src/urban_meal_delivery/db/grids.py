@@ -43,7 +43,7 @@ class Grid(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}: {area}>'.format(
+        return '<{cls}: {area} sqr. km>'.format(
             cls=self.__class__.__name__, area=self.pixel_area,
         )
 
@@ -51,7 +51,7 @@ class Grid(meta.Base):
     @property
     def pixel_area(self) -> float:
         """The area of a `Pixel` on the grid in square kilometers."""
-        return (self.side_length ** 2) / 1_000_000  # noqa:WPS432
+        return round((self.side_length ** 2) / 1_000_000, 1)  # noqa:WPS432
 
     @classmethod
     def gridify(cls, city: db.City, side_length: int) -> db.Grid:
