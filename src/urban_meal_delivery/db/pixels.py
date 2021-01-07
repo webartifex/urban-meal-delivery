@@ -39,6 +39,7 @@ class Pixel(meta.Base):
     # Relationships
     grid = orm.relationship('Grid', back_populates='pixels')
     addresses = orm.relationship('AddressPixelAssociation', back_populates='pixel')
+    forecasts = orm.relationship('Forecast', back_populates='pixel')
 
     def __repr__(self) -> str:
         """Non-literal text representation."""

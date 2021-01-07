@@ -8,6 +8,7 @@ from urban_meal_delivery.db.connection import engine
 from urban_meal_delivery.db.connection import session
 from urban_meal_delivery.db.couriers import Courier
 from urban_meal_delivery.db.customers import Customer
+from urban_meal_delivery.db.forecasts import Forecast
 from urban_meal_delivery.db.grids import Grid
 from urban_meal_delivery.db.meta import Base
 from urban_meal_delivery.db.orders import Order
