@@ -294,3 +294,93 @@ class OrderHistory:
         ]
 
         return training_df, frequency, actuals_df
+
+    def make_real_time_time_series(  # noqa:WPS210
+        self, pixel_id: int, predict_at: dt.datetime, train_horizon: int,
+    ) -> Tuple[pd.DataFrame, int, int]:
+        """Slice a vertical real-time time series out of the `.totals`.
+
+        Create a time series covering `train_horizon` weeks that can be used
+        for training a forecasting model to predict the demand at `predict_at`.
+
+        For explanation of the terms "horizontal", "vertical", and "real-time"
+        in the context of time series, see section 3.2 in the following paper:
+        https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf
+
+        Args:
+            pixel_id: pixel in which the time series is aggregated
+            predict_at: time step (i.e., "start_at") for which a prediction is made
+            train_horizon: weeks of historic data used to predict `predict_at`
+
+        Returns:
+            training time series, frequency, actual order count at `predict_at`
+
+        Raises:
+            LookupError: `pixel_id` is not in the `grid`
+            RuntimeError: desired time series slice is not entirely in `.totals`
+        """
+        try:
+            intra_pixel = self.totals.loc[pixel_id]
+        except KeyError:
+            raise LookupError('The `pixel_id` is not in the `grid`') from None
+
+        if predict_at >= config.CUTOFF_DAY:  # pragma: no cover
+            raise RuntimeError('Internal error: cannot predict beyond the given data')
+
+        # The first and last training day are just before the `predict_at` day
+        # and span exactly `train_horizon` weeks covering all times of the day,
+        # including times on the `predict_at` day that are earlier than `predict_at`.
+        first_train_day = predict_at.date() - dt.timedelta(weeks=train_horizon)
+        first_start_at = dt.datetime(
+            first_train_day.year,
+            first_train_day.month,
+            first_train_day.day,
+            config.SERVICE_START,
+            0,
+        )
+        # Predicting the first time step on the `predict_at` day is a corner case.
+        # Then, the previous day is indeed the `last_train_day`. Predicting any
+        # other time step implies that the `predict_at` day is the `last_train_day`.
+        # `last_train_time` is the last "start_at" before the one being predicted.
+        if predict_at.hour == config.SERVICE_START:
+            last_train_day = predict_at.date() - dt.timedelta(days=1)
+            last_train_time = dt.time(config.SERVICE_END, 0)
+        else:
+            last_train_day = predict_at.date()
+            last_train_time = predict_at.time()
+        last_start_at = dt.datetime(
+            last_train_day.year,
+            last_train_day.month,
+            last_train_day.day,
+            last_train_time.hour,
+            last_train_time.minute,
+        ) - dt.timedelta(minutes=self._time_step)
+
+        # The frequency is the number of weekdays times the number of daily time steps.
+        frequency = 7 * self._n_daily_time_steps
+
+        # Take all the counts between `first_train_day` and `last_train_day`,
+        # including the ones on the `predict_at` day prior to `predict_at`.
+        training_df = intra_pixel.loc[
+            first_start_at:last_start_at  # type: ignore
+        ]
+        n_time_steps_on_predict_day = (
+            (
+                predict_at
+                - dt.datetime(
+                    predict_at.year,
+                    predict_at.month,
+                    predict_at.day,
+                    config.SERVICE_START,
+                    0,
+                )
+            ).seconds
+            // 60  # -> minutes
+            // self._time_step
+        )
+        if len(training_df) != frequency * train_horizon + n_time_steps_on_predict_day:
+            raise RuntimeError('Not enough historic data for `predict_day`')
+
+        actual_df = intra_pixel.loc[[predict_at]]
+
+        return training_df, frequency, actual_df

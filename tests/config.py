@@ -8,6 +8,9 @@ from urban_meal_delivery import config
 # The day on which most test cases take place.
 YEAR, MONTH, DAY = 2016, 7, 1
 
+# The hour when most test cases take place.
+NOON = 12
+
 # `START` and `END` constitute a 15-day time span.
 # That implies a maximum `train_horizon` of `2` as that needs full 7-day weeks.
 START = datetime.datetime(YEAR, MONTH, DAY, config.SERVICE_START, 0)
