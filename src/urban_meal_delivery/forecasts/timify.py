@@ -212,3 +212,85 @@ class OrderHistory:
         actual_df = intra_pixel.loc[[predict_at]]
 
         return training_df, frequency, actual_df
+
+    def make_vertical_time_series(  # noqa:WPS210
+        self, pixel_id: int, predict_day: dt.date, train_horizon: int,
+    ) -> Tuple[pd.DataFrame, int, pd.DataFrame]:
+        """Slice a vertical time series out of the `.totals`.
+
+        Create a time series covering `train_horizon` weeks that can be used
+        for training a forecasting model to predict the demand on the `predict_day`.
+
+        For explanation of the terms "horizontal", "vertical", and "real-time"
+        in the context of time series, see section 3.2 in the following paper:
+        https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf
+
+        Args:
+            pixel_id: pixel in which the time series is aggregated
+            predict_day: day for which predictions are made
+            train_horizon: weeks of historic data used to predict `predict_at`
+
+        Returns:
+            training time series, frequency, actual order counts on `predict_day`
+
+        Raises:
+            LookupError: `pixel_id` is not in the `grid`
+            RuntimeError: desired time series slice is not entirely in `.totals`
+        """
+        try:
+            intra_pixel = self.totals.loc[pixel_id]
+        except KeyError:
+            raise LookupError('The `pixel_id` is not in the `grid`') from None
+
+        if predict_day >= config.CUTOFF_DAY.date():  # pragma: no cover
+            raise RuntimeError('Internal error: cannot predict beyond the given data')
+
+        # The first and last training day are just before the `predict_day`
+        # and span exactly `train_horizon` weeks covering all times of the day.
+        first_train_day = predict_day - dt.timedelta(weeks=train_horizon)
+        first_start_at = dt.datetime(
+            first_train_day.year,
+            first_train_day.month,
+            first_train_day.day,
+            config.SERVICE_START,
+            0,
+        )
+        last_train_day = predict_day - dt.timedelta(days=1)
+        last_start_at = dt.datetime(
+            last_train_day.year,
+            last_train_day.month,
+            last_train_day.day,
+            config.SERVICE_END,  # subtract one `time_step` below
+            0,
+        ) - dt.timedelta(minutes=self._time_step)
+
+        # The frequency is the number of weekdays times the number of daily time steps.
+        frequency = 7 * self._n_daily_time_steps
+
+        # Take all the counts between `first_train_day` and `last_train_day`.
+        training_df = intra_pixel.loc[
+            first_start_at:last_start_at  # type: ignore
+        ]
+        if len(training_df) != frequency * train_horizon:
+            raise RuntimeError('Not enough historic data for `predict_day`')
+
+        first_prediction_at = dt.datetime(
+            predict_day.year,
+            predict_day.month,
+            predict_day.day,
+            config.SERVICE_START,
+            0,
+        )
+        last_prediction_at = dt.datetime(
+            predict_day.year,
+            predict_day.month,
+            predict_day.day,
+            config.SERVICE_END,  # subtract one `time_step` below
+            0,
+        ) - dt.timedelta(minutes=self._time_step)
+
+        actuals_df = intra_pixel.loc[
+            first_prediction_at:last_prediction_at  # type: ignore
+        ]
+
+        return training_df, frequency, actuals_df
