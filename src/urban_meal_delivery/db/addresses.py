@@ -68,8 +68,7 @@ class Address(meta.Base):
     pixels = orm.relationship('AddressPixelAssociation', back_populates='address')
 
     # We do not implement a `.__init__()` method and leave that to SQLAlchemy.
-    # Instead, we use `hasattr()` to check for uninitialized attributes.
-    # grep:b1f68d24  pylint:disable=attribute-defined-outside-init
+    # Instead, we use `hasattr()` to check for uninitialized attributes.  grep:b1f68d24
 
     def __repr__(self) -> str:
         """Non-literal text representation."""

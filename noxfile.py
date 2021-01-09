@@ -17,7 +17,7 @@ as unified tasks to assure the quality of the source code:
     that are then interpreted as the paths the formatters and linters work
     on recursively
 
-- "lint" (flake8, mypy, pylint): same as "format"
+- "lint" (flake8, mypy): same as "format"
 
 - "test" (pytest, xdoctest):
 
@@ -141,7 +141,7 @@ def format_(session):
 
 @nox.session(python=PYTHON)
 def lint(session):
-    """Lint source files with flake8, mypy, and pylint.
+    """Lint source files with flake8, and mypy.
 
     If no extra arguments are provided, all source files are linted.
     Otherwise, they are interpreted as paths the linters work on recursively.
@@ -158,7 +158,6 @@ def lint(session):
         'flake8-expression-complexity',
         'flake8-pytest-style',
         'mypy',
-        'pylint',
         'wemake-python-styleguide',
     )
 
@@ -181,18 +180,6 @@ def lint(session):
         session.run('mypy', *mypy_locations)
     else:
         session.log('No paths to be checked with mypy')
-
-    # Ignore errors where pylint cannot import a third-party package due its
-    # being run in an isolated environment. For the same reason, pylint is
-    # also not able to determine the correct order of imports.
-    # One way to fix this is to install all develop dependencies in this nox
-    # session, which we do not do. The whole point of static linting tools is
-    # to not rely on any package be importable at runtime. Instead, these
-    # imports are validated implicitly when the test suite is run.
-    session.run('pylint', '--version')
-    session.run(
-        'pylint', '--disable=import-error', '--disable=wrong-import-order', *locations,
-    )
 
 
 @nox.session(python=PYTHON)

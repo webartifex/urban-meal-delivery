@@ -1,5 +1,4 @@
 """Test the `Location` class."""
-# pylint:disable=no-self-use
 
 import pytest
 
@@ -97,7 +96,6 @@ class TestSpecialMethods:
 
     def test_compare_utm_coordinates_to_themselves(self, location):
         """Test `Location.__eq__()`."""
-        # pylint:disable=comparison-with-itself
         result = location == location  # noqa:WPS312
 
         assert result is True

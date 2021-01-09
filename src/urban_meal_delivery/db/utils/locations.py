@@ -24,8 +24,6 @@ class Location:
         https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
     """
 
-    # pylint:disable=too-many-instance-attributes
-
     def __init__(self, latitude: float, longitude: float) -> None:
         """Create a location from a WGS84-conforming `latitude`-`longitude` pair."""
         # The SQLAlchemy columns come as `Decimal`s due to the `DOUBLE_PRECISION`.

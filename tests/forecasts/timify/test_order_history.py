@@ -1,5 +1,4 @@
 """Test the basic functionalities in the `OrderHistory` class."""
-# pylint:disable=no-self-use
 
 import pytest
 

@@ -1,5 +1,4 @@
 """Test the ORM's `Grid` model."""
-# pylint:disable=no-self-use
 
 import pytest
 import sqlalchemy as sqla

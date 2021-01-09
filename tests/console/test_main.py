@@ -18,8 +18,6 @@ class TestShowVersion:
     " (development)" to the output.
     """
 
-    # pylint:disable=no-self-use
-
     @pytest.fixture
     def ctx(self) -> click.Context:
         """Context around the `main.entry_point` Command."""
@@ -64,8 +62,6 @@ class TestCLIWithoutCommand:
     The test cases are integration tests.
     Therefore, they are not considered for coverage reporting.
     """
-
-    # pylint:disable=no-self-use
 
     @pytest.mark.no_cover
     def test_no_options(self, cli):

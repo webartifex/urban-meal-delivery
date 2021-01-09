@@ -1,5 +1,4 @@
 """Test the ORM's `Order` model."""
-# pylint:disable=no-self-use,protected-access
 
 import datetime
 import random
@@ -48,8 +47,6 @@ class TestProperties:
     The `order` fixture uses the defaults specified in `factories.OrderFactory`
     and provided by the `make_order` fixture.
     """
-
-    # pylint:disable=no-self-use,too-many-public-methods
 
     def test_is_ad_hoc(self, order):
         """Test `Order.scheduled` property."""

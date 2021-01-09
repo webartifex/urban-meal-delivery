@@ -3,7 +3,6 @@
 Unless otherwise noted, each `time_step` is 60 minutes long implying
 12 time steps per day (i.e., we use `LONG_TIME_STEP` by default).
 """
-# pylint:disable=no-self-use,unused-argument
 
 import datetime
 
@@ -54,7 +53,7 @@ def order_totals(good_pixel_id):
 def order_history(order_totals, grid):
     """An `OrderHistory` object that does not need the database."""
     oh = timify.OrderHistory(grid=grid, time_step=test_config.LONG_TIME_STEP)
-    oh._data = order_totals  # pylint:disable=protected-access
+    oh._data = order_totals
 
     return oh
 

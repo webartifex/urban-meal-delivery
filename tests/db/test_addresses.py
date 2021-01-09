@@ -1,5 +1,4 @@
 """Test the ORM's `Address` model."""
-# pylint:disable=no-self-use,protected-access
 
 import pytest
 import sqlalchemy as sqla

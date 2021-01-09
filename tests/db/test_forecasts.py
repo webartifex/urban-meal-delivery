@@ -1,5 +1,4 @@
 """Test the ORM's `Forecast` model."""
-# pylint:disable=no-self-use
 
 import datetime
 

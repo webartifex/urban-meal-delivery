@@ -1,5 +1,4 @@
 """Test the ORM's `Courier` model."""
-# pylint:disable=no-self-use
 
 import pytest
 from sqlalchemy import exc as sa_exc

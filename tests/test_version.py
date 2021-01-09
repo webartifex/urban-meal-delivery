@@ -20,8 +20,6 @@ import urban_meal_delivery
 class TestPEP404Compliance:
     """Packaged version identifier is PEP440 compliant."""
 
-    # pylint:disable=no-self-use
-
     @pytest.fixture
     def parsed_version(self) -> str:
         """The packaged version."""
@@ -46,8 +44,6 @@ class TestPEP404Compliance:
 
 class TestSemanticVersioning:
     """Packaged version follows a strict subset of semantic versioning."""
-
-    # pylint:disable=no-self-use
 
     version_pattern = re.compile(
         r'^(0|([1-9]\d*))\.(0|([1-9]\d*))\.(0|([1-9]\d*))(\.dev(0|([1-9]\d*)))?$',

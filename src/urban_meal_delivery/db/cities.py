@@ -1,6 +1,5 @@
 """Provide the ORM's `City` model."""
 
-
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
@@ -35,8 +34,7 @@ class City(meta.Base):
     grids = orm.relationship('Grid', back_populates='city')
 
     # We do not implement a `.__init__()` method and leave that to SQLAlchemy.
-    # Instead, we use `hasattr()` to check for uninitialized attributes.
-    # grep:d334120e  pylint:disable=attribute-defined-outside-init
+    # Instead, we use `hasattr()` to check for uninitialized attributes.  grep:d334120e
 
     def __repr__(self) -> str:
         """Non-literal text representation."""

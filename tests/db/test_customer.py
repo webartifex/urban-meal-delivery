@@ -1,5 +1,4 @@
 """Test the ORM's `Customer` model."""
-# pylint:disable=no-self-use
 
 import pytest
 

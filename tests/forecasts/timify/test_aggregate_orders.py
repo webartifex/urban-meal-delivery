@@ -1,5 +1,4 @@
 """Test the `OrderHistory.aggregate_orders()` method."""
-# pylint:disable=no-self-use,unused-argument
 
 import datetime
 

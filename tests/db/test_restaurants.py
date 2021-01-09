@@ -1,5 +1,4 @@
 """Test the ORM's `Restaurant` model."""
-# pylint:disable=no-self-use
 
 import pytest
 import sqlalchemy as sqla

@@ -1,5 +1,4 @@
 """Test the ORM's `City` model."""
-# pylint:disable=no-self-use
 
 import pytest
 

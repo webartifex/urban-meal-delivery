@@ -121,8 +121,6 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
     flags to adapt how the `Order` is created.
     """
 
-    # pylint:disable=too-many-instance-attributes
-
     class Meta:
         model = db.Order
         sqlalchemy_get_or_create = ('id',)
@@ -282,7 +280,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
     )
 
     @factory.post_generation
-    def post(  # noqa:C901,WPS23 pylint:disable=unused-argument
+    def post(  # noqa:C901,WPS231
         obj, create, extracted, **kwargs,  # noqa:B902,N805
     ):
         """Discard timestamps that occur after cancellation."""

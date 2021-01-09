@@ -8,7 +8,6 @@ Implementation notes:
     code associated with it. Therefore, we test it here as non-e2e tests and do
     not measure its coverage.
 """
-# pylint:disable=no-self-use
 
 import pytest
 import sqlalchemy as sqla
