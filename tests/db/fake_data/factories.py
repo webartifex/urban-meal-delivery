@@ -9,6 +9,7 @@ import faker
 from factory import alchemy
 from geopy import distance
 
+from tests import config as test_config
 from urban_meal_delivery import db
 
 
@@ -27,13 +28,10 @@ def _random_timespan(  # noqa:WPS211
     return dt.timedelta(seconds=random.randint(total_min_seconds, total_max_seconds))
 
 
-# The test day.
-_YEAR, _MONTH, _DAY = 2020, 1, 1
-
-
 def _early_in_the_morning():
     """A randomized `datetime` object early in the morning."""
-    return dt.datetime(_YEAR, _MONTH, _DAY, 3, 0) + _random_timespan(max_hours=2)
+    early = dt.datetime(test_config.YEAR, test_config.MONTH, test_config.DAY, 3, 0)
+    return early + _random_timespan(max_hours=2)
 
 
 class AddressFactory(alchemy.SQLAlchemyModelFactory):
@@ -171,7 +169,9 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
     # Attributes regarding the specialization of an `Order`: ad-hoc or scheduled.
     # Ad-hoc `Order`s are placed between 11.45 and 14.15.
     placed_at = factory.LazyFunction(
-        lambda: dt.datetime(_YEAR, _MONTH, _DAY, 11, 45)
+        lambda: dt.datetime(
+            test_config.YEAR, test_config.MONTH, test_config.DAY, 11, 45,
+        )
         + _random_timespan(max_hours=2, max_minutes=30),
     )
     ad_hoc = True
@@ -337,13 +337,27 @@ class ScheduledOrderFactory(AdHocOrderFactory):
     scheduled_delivery_at = factory.LazyFunction(
         lambda: random.choice(
             [
-                dt.datetime(_YEAR, _MONTH, _DAY, 12, 0),
-                dt.datetime(_YEAR, _MONTH, _DAY, 12, 15),
-                dt.datetime(_YEAR, _MONTH, _DAY, 12, 30),
-                dt.datetime(_YEAR, _MONTH, _DAY, 12, 45),
-                dt.datetime(_YEAR, _MONTH, _DAY, 13, 0),
-                dt.datetime(_YEAR, _MONTH, _DAY, 13, 15),
-                dt.datetime(_YEAR, _MONTH, _DAY, 13, 30),
+                dt.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 0,
+                ),
+                dt.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 15,
+                ),
+                dt.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 30,
+                ),
+                dt.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 45,
+                ),
+                dt.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, 13, 0,
+                ),
+                dt.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, 13, 15,
+                ),
+                dt.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, 13, 30,
+                ),
             ],
         ),
     )

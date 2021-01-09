@@ -1,22 +1,20 @@
-"""Test the time series related code."""
+"""Test the `OrderHistory.aggregate_orders()` method."""
 # pylint:disable=no-self-use,unused-argument
 
 import datetime
 
 import pytest
 
+from tests import config as test_config
 from urban_meal_delivery import db
 from urban_meal_delivery.forecasts import timify
 
 
-YEAR, MONTH, DAY = 2020, 1, 1
-
-
 @pytest.mark.db
 class TestAggregateOrders:
-    """Test the `aggregate_orders()` function.
+    """Test the `OrderHistory.aggregate_orders()` method.
 
-    The test cases are all integration tests that model realistic scenarios.
+    The test cases are integration tests that model realistic scenarios.
     """
 
     @pytest.fixture
@@ -39,10 +37,13 @@ class TestAggregateOrders:
     def test_no_orders(self, db_session, one_pixel_grid, restaurant):
         """Edge case that does not occur for real-life data."""
         db_session.commit()
-
         assert len(restaurant.orders) == 0  # noqa:WPS507  sanity check
 
-        result = timify.aggregate_orders(grid=one_pixel_grid, time_step=60)
+        oh = timify.OrderHistory(
+            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+        )
+
+        result = oh.aggregate_orders()
 
         assert len(result) == 0  # noqa:WPS507
 
@@ -55,7 +56,9 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(YEAR, MONTH, DAY, hour, 11),
+                placed_at=datetime.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
+                ),
             )
             db_session.add(order)
 
@@ -63,7 +66,11 @@ class TestAggregateOrders:
 
         assert len(restaurant.orders) == 12  # sanity check
 
-        result = timify.aggregate_orders(grid=one_pixel_grid, time_step=60)
+        oh = timify.OrderHistory(
+            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+        )
+
+        result = oh.aggregate_orders()
 
         # The resulting `DataFrame` has 12 rows holding `1`s.
         assert len(result) == 12
@@ -80,7 +87,9 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(YEAR, MONTH, DAY, hour, 11),
+                placed_at=datetime.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
+                ),
             )
             db_session.add(order)
 
@@ -88,7 +97,11 @@ class TestAggregateOrders:
 
         assert len(restaurant.orders) == 10  # sanity check
 
-        result = timify.aggregate_orders(grid=one_pixel_grid, time_step=60)
+        oh = timify.OrderHistory(
+            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+        )
+
+        result = oh.aggregate_orders()
 
         # Even though there are only 10 orders, there are 12 rows in the `DataFrame`.
         # That is so as `0`s are filled in for hours without any demand at the end.
@@ -107,7 +120,9 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(YEAR, MONTH, DAY, hour, 11),
+                placed_at=datetime.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
+                ),
             )
             db_session.add(order)
 
@@ -115,7 +130,11 @@ class TestAggregateOrders:
 
         assert len(restaurant.orders) == 6  # sanity check
 
-        result = timify.aggregate_orders(grid=one_pixel_grid, time_step=60)
+        oh = timify.OrderHistory(
+            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+        )
+
+        result = oh.aggregate_orders()
 
         # The resulting `DataFrame` has 12 rows, 6 holding `0`s, and 6 holding `1`s.
         assert len(result) == 12
@@ -133,15 +152,21 @@ class TestAggregateOrders:
         ad_hoc_order = make_order(
             scheduled=False,
             restaurant=restaurant,
-            placed_at=datetime.datetime(YEAR, MONTH, DAY, 11, 11),
+            placed_at=datetime.datetime(
+                test_config.YEAR, test_config.MONTH, test_config.DAY, 11, 11,
+            ),
         )
         db_session.add(ad_hoc_order)
 
         pre_order = make_order(
             scheduled=True,
             restaurant=restaurant,
-            placed_at=datetime.datetime(YEAR, MONTH, DAY, 9, 0),
-            scheduled_delivery_at=datetime.datetime(YEAR, MONTH, DAY, 12, 0),
+            placed_at=datetime.datetime(
+                test_config.YEAR, test_config.MONTH, test_config.DAY, 9, 0,
+            ),
+            scheduled_delivery_at=datetime.datetime(
+                test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 0,
+            ),
         )
         db_session.add(pre_order)
 
@@ -149,7 +174,11 @@ class TestAggregateOrders:
 
         assert len(restaurant.orders) == 2  # sanity check
 
-        result = timify.aggregate_orders(grid=one_pixel_grid, time_step=60)
+        oh = timify.OrderHistory(
+            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+        )
+
+        result = oh.aggregate_orders()
 
         # The resulting `DataFrame` has 12 rows, 11 holding `0`s, and one holding a `1`.
         assert len(result) == 12
@@ -169,7 +198,9 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(YEAR, MONTH, DAY, hour, 11),
+                placed_at=datetime.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
+                ),
             )
             db_session.add(order)
 
@@ -177,7 +208,11 @@ class TestAggregateOrders:
 
         assert len(restaurant.orders) == 12  # sanity check
 
-        result = timify.aggregate_orders(grid=one_pixel_grid, time_step=30)
+        oh = timify.OrderHistory(
+            grid=one_pixel_grid, time_step=test_config.SHORT_TIME_STEP,
+        )
+
+        result = oh.aggregate_orders()
 
         # The resulting `DataFrame` has 24 rows for the 24 30-minute time steps.
         # The rows' values are `0` and `1` alternating.
@@ -200,7 +235,9 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(YEAR, MONTH, DAY, hour, 11),
+                placed_at=datetime.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
+                ),
             )
             db_session.add(order)
 
@@ -210,7 +247,11 @@ class TestAggregateOrders:
                 scheduled=False,
                 restaurant=restaurant,
                 placed_at=datetime.datetime(
-                    YEAR, MONTH, DAY + 1, hour, 11,  # noqa:WPS441
+                    test_config.YEAR,
+                    test_config.MONTH,
+                    test_config.DAY + 1,
+                    hour,  # noqa:WPS441
+                    11,
                 ),
             )
             db_session.add(order)
@@ -219,7 +260,11 @@ class TestAggregateOrders:
 
         assert len(restaurant.orders) == 18  # sanity check
 
-        result = timify.aggregate_orders(grid=one_pixel_grid, time_step=60)
+        oh = timify.OrderHistory(
+            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+        )
+
+        result = oh.aggregate_orders()
 
         # The resulting `DataFrame` has 24 rows, 12 for each day.
         assert len(result) == 24
@@ -270,7 +315,9 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant1,
-                placed_at=datetime.datetime(YEAR, MONTH, DAY, hour, 11),
+                placed_at=datetime.datetime(
+                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
+                ),
             )
             db_session.add(order)
 
@@ -279,14 +326,26 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant2,
-                placed_at=datetime.datetime(YEAR, MONTH, DAY, hour, 13),  # noqa:WPS441
+                placed_at=datetime.datetime(
+                    test_config.YEAR,
+                    test_config.MONTH,
+                    test_config.DAY,
+                    hour,  # noqa:WPS441
+                    13,
+                ),
             )
             db_session.add(order)
 
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant2,
-                placed_at=datetime.datetime(YEAR, MONTH, DAY, hour, 14),  # noqa:WPS441
+                placed_at=datetime.datetime(
+                    test_config.YEAR,
+                    test_config.MONTH,
+                    test_config.DAY,
+                    hour,  # noqa:WPS441
+                    14,
+                ),
             )
             db_session.add(order)
 
@@ -296,7 +355,11 @@ class TestAggregateOrders:
         assert len(restaurant1.orders) == 6
         assert len(restaurant2.orders) == 24
 
-        result = timify.aggregate_orders(grid=two_pixel_grid, time_step=60)
+        oh = timify.OrderHistory(
+            grid=two_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+        )
+
+        result = oh.aggregate_orders()
 
         # The resulting `DataFrame` has 24 rows, 12 for each pixel.
         assert len(result) == 24
