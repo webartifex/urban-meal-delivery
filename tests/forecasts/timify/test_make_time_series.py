@@ -101,22 +101,22 @@ class TestMakeHorizontalTimeSeries:
             )
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
-    def test_time_series_are_dataframes(
+    def test_time_series_are_series(
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
-        """The time series come in a one-column `pd.DataFrame`."""
+        """The time series come as a `pd.Series`."""
         result = order_history.make_horizontal_time_series(
             pixel_id=good_pixel_id,
             predict_at=good_predict_at,
             train_horizon=train_horizon,
         )
 
-        training_df, _, actual_df = result
+        training_ts, _, actuals_ts = result
 
-        assert isinstance(training_df, pd.DataFrame)
-        assert training_df.columns == ['total_orders']
-        assert isinstance(actual_df, pd.DataFrame)
-        assert actual_df.columns == ['total_orders']
+        assert isinstance(training_ts, pd.Series)
+        assert training_ts.name == 'total_orders'
+        assert isinstance(actuals_ts, pd.Series)
+        assert actuals_ts.name == 'total_orders'
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length(
@@ -132,10 +132,10 @@ class TestMakeHorizontalTimeSeries:
             train_horizon=train_horizon,
         )
 
-        training_df, _, actual_df = result
+        training_ts, _, actuals_ts = result
 
-        assert len(training_df) == 7 * train_horizon
-        assert len(actual_df) == 1
+        assert len(training_ts) == 7 * train_horizon
+        assert len(actuals_ts) == 1
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_of_weekdays(
@@ -194,22 +194,22 @@ class TestMakeVerticalTimeSeries:
             )
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
-    def test_time_series_are_dataframes(
+    def test_time_series_are_series(
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
-        """The time series come in a one-column `pd.DataFrame`."""
+        """The time series come as `pd.Series`."""
         result = order_history.make_vertical_time_series(
             pixel_id=good_pixel_id,
             predict_day=good_predict_at.date(),
             train_horizon=train_horizon,
         )
 
-        training_df, _, actual_df = result
+        training_ts, _, actuals_ts = result
 
-        assert isinstance(training_df, pd.DataFrame)
-        assert training_df.columns == ['total_orders']
-        assert isinstance(actual_df, pd.DataFrame)
-        assert actual_df.columns == ['total_orders']
+        assert isinstance(training_ts, pd.Series)
+        assert training_ts.name == 'total_orders'
+        assert isinstance(actuals_ts, pd.Series)
+        assert actuals_ts.name == 'total_orders'
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length(
@@ -229,7 +229,7 @@ class TestMakeVerticalTimeSeries:
             train_horizon=train_horizon,
         )
 
-        training_df, _, actual_df = result
+        training_ts, _, actuals_ts = result
 
         n_daily_time_steps = (
             60
@@ -237,8 +237,8 @@ class TestMakeVerticalTimeSeries:
             // test_config.LONG_TIME_STEP
         )
 
-        assert len(training_df) == 7 * n_daily_time_steps * train_horizon
-        assert len(actual_df) == n_daily_time_steps
+        assert len(training_ts) == 7 * n_daily_time_steps * train_horizon
+        assert len(actuals_ts) == n_daily_time_steps
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_number_of_weekly_time_steps(
@@ -305,22 +305,22 @@ class TestMakeRealTimeTimeSeries:
             )
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
-    def test_time_series_are_dataframes(
+    def test_time_series_are_series(
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
-        """The time series come in a one-column `pd.DataFrame`."""
+        """The time series come as `pd.Series`."""
         result = order_history.make_real_time_time_series(
             pixel_id=good_pixel_id,
             predict_at=good_predict_at,
             train_horizon=train_horizon,
         )
 
-        training_df, _, actual_df = result
+        training_ts, _, actuals_ts = result
 
-        assert isinstance(training_df, pd.DataFrame)
-        assert training_df.columns == ['total_orders']
-        assert isinstance(actual_df, pd.DataFrame)
-        assert actual_df.columns == ['total_orders']
+        assert isinstance(training_ts, pd.Series)
+        assert training_ts.name == 'total_orders'
+        assert isinstance(actuals_ts, pd.Series)
+        assert actuals_ts.name == 'total_orders'
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length1(
@@ -345,7 +345,7 @@ class TestMakeRealTimeTimeSeries:
             pixel_id=good_pixel_id, predict_at=predict_at, train_horizon=train_horizon,
         )
 
-        training_df, _, actual_df = result
+        training_ts, _, actuals_ts = result
 
         n_daily_time_steps = (
             60
@@ -353,8 +353,8 @@ class TestMakeRealTimeTimeSeries:
             // test_config.LONG_TIME_STEP
         )
 
-        assert len(training_df) == 7 * n_daily_time_steps * train_horizon
-        assert len(actual_df) == 1
+        assert len(training_ts) == 7 * n_daily_time_steps * train_horizon
+        assert len(actuals_ts) == 1
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length2(
@@ -378,7 +378,7 @@ class TestMakeRealTimeTimeSeries:
             train_horizon=train_horizon,
         )
 
-        training_df, _, actual_df = result
+        training_ts, _, actuals_ts = result
 
         n_daily_time_steps = (
             60
@@ -390,10 +390,10 @@ class TestMakeRealTimeTimeSeries:
         )
 
         assert (
-            len(training_df)
+            len(training_ts)
             == 7 * n_daily_time_steps * train_horizon + n_time_steps_before
         )
-        assert len(actual_df) == 1
+        assert len(actuals_ts) == 1
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_number_of_weekly_time_steps(

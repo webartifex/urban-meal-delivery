@@ -149,7 +149,7 @@ class OrderHistory:
 
     def make_horizontal_time_series(  # noqa:WPS210
         self, pixel_id: int, predict_at: dt.datetime, train_horizon: int,
-    ) -> Tuple[pd.DataFrame, int, int]:
+    ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a horizontal time series out of the `.totals`.
 
         Create a time series covering `train_horizon` weeks that can be used
@@ -203,19 +203,20 @@ class OrderHistory:
         frequency = 7
 
         # Take only the counts at the `predict_at` time.
-        training_df = intra_pixel.loc[
-            first_start_at : last_start_at : self._n_daily_time_steps  # type: ignore
+        training_ts = intra_pixel.loc[
+            first_start_at : last_start_at : self._n_daily_time_steps,  # type: ignore
+            'total_orders',
         ]
-        if len(training_df) != frequency * train_horizon:
+        if len(training_ts) != frequency * train_horizon:
             raise RuntimeError('Not enough historic data for `predict_at`')
 
-        actual_df = intra_pixel.loc[[predict_at]]
+        actuals_ts = intra_pixel.loc[[predict_at], 'total_orders']
 
-        return training_df, frequency, actual_df
+        return training_ts, frequency, actuals_ts
 
     def make_vertical_time_series(  # noqa:WPS210
         self, pixel_id: int, predict_day: dt.date, train_horizon: int,
-    ) -> Tuple[pd.DataFrame, int, pd.DataFrame]:
+    ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a vertical time series out of the `.totals`.
 
         Create a time series covering `train_horizon` weeks that can be used
@@ -268,10 +269,11 @@ class OrderHistory:
         frequency = 7 * self._n_daily_time_steps
 
         # Take all the counts between `first_train_day` and `last_train_day`.
-        training_df = intra_pixel.loc[
-            first_start_at:last_start_at  # type: ignore
+        training_ts = intra_pixel.loc[
+            first_start_at:last_start_at,  # type: ignore
+            'total_orders',
         ]
-        if len(training_df) != frequency * train_horizon:
+        if len(training_ts) != frequency * train_horizon:
             raise RuntimeError('Not enough historic data for `predict_day`')
 
         first_prediction_at = dt.datetime(
@@ -289,15 +291,16 @@ class OrderHistory:
             0,
         ) - dt.timedelta(minutes=self._time_step)
 
-        actuals_df = intra_pixel.loc[
-            first_prediction_at:last_prediction_at  # type: ignore
+        actuals_ts = intra_pixel.loc[
+            first_prediction_at:last_prediction_at,  # type: ignore
+            'total_orders',
         ]
 
-        return training_df, frequency, actuals_df
+        return training_ts, frequency, actuals_ts
 
     def make_real_time_time_series(  # noqa:WPS210
         self, pixel_id: int, predict_at: dt.datetime, train_horizon: int,
-    ) -> Tuple[pd.DataFrame, int, int]:
+    ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a vertical real-time time series out of the `.totals`.
 
         Create a time series covering `train_horizon` weeks that can be used
@@ -361,8 +364,9 @@ class OrderHistory:
 
         # Take all the counts between `first_train_day` and `last_train_day`,
         # including the ones on the `predict_at` day prior to `predict_at`.
-        training_df = intra_pixel.loc[
-            first_start_at:last_start_at  # type: ignore
+        training_ts = intra_pixel.loc[
+            first_start_at:last_start_at,  # type: ignore
+            'total_orders',
         ]
         n_time_steps_on_predict_day = (
             (
@@ -378,9 +382,9 @@ class OrderHistory:
             // 60  # -> minutes
             // self._time_step
         )
-        if len(training_df) != frequency * train_horizon + n_time_steps_on_predict_day:
+        if len(training_ts) != frequency * train_horizon + n_time_steps_on_predict_day:
             raise RuntimeError('Not enough historic data for `predict_day`')
 
-        actual_df = intra_pixel.loc[[predict_at]]
+        actuals_ts = intra_pixel.loc[[predict_at], 'total_orders']
 
-        return training_df, frequency, actual_df
+        return training_ts, frequency, actuals_ts
