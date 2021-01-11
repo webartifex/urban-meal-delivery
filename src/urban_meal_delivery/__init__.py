@@ -6,11 +6,12 @@ Example:
     True
 """
 # The config object must come before all other project-internal imports.
-from urban_meal_delivery.configuration import config  # noqa:F401 isort:skip
+from urban_meal_delivery.configuration import config  # isort:skip
 
 from importlib import metadata as _metadata
 
-from urban_meal_delivery import db  # noqa:F401
+from urban_meal_delivery import db
+from urban_meal_delivery import forecasts
 
 
 try:
