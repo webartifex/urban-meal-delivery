@@ -121,7 +121,7 @@ def format_(session):
 
 @nox.session(python=PYTHON)
 def lint(session):
-    """Lint source files with flake8, and mypy.
+    """Lint source files with flake8 and mypy.
 
     If no extra arguments are provided, all source files are linted.
     Otherwise, they are interpreted as paths the linters work on recursively.
@@ -363,9 +363,7 @@ def slow_ci_tests(session):
 
 @nox.session(name='test-suite', python=PYTHON)
 def test_suite(session):
-    """Run the entire test suite.
-
-    Intended to be run as a pre-commit hook.
+    """Run the entire test suite as a pre-commit hook.
 
     Ignores the paths passed in by the pre-commit framework
     and runs the entire test suite.

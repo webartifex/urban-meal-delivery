@@ -91,9 +91,6 @@ def stl(  # noqa:C901,WPS210,WPS211,WPS231
     Raises:
         ValueError: some argument does not adhere to the specifications above
     """
-    # Re-seed R every time the process does something.
-    robjects.r('set.seed(42)')
-
     # Validate all arguments and set default values.
 
     if time_series.isnull().any():
@@ -156,6 +153,13 @@ def stl(  # noqa:C901,WPS210,WPS211,WPS231
         robust = True
     else:
         robust = False
+
+    # Initialize R only if necessary as it is tested only in nox's
+    # "ci-tests-slow" session and "ci-tests-fast" should not fail.
+    from urban_meal_delivery import init_r  # noqa:F401,WPS433
+
+    # Re-seed R every time it is used to ensure reproducibility.
+    robjects.r('set.seed(42)')
 
     # Call the STL function in R.
     ts = robjects.r['ts'](pandas2ri.py2rpy(time_series), frequency=frequency)

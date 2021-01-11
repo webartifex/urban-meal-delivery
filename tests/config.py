@@ -14,10 +14,7 @@ NOON = 12
 # `START` and `END` constitute a 15-day time span.
 # That implies a maximum `train_horizon` of `2` as that needs full 7-day weeks.
 START = datetime.datetime(YEAR, MONTH, DAY, config.SERVICE_START, 0)
-_end_day = (START + datetime.timedelta(weeks=2)).date()
-END = datetime.datetime(
-    _end_day.year, _end_day.month, _end_day.day, config.SERVICE_END, 0,
-)
+END = datetime.datetime(YEAR, MONTH, 15, config.SERVICE_END, 0)
 
 # Default time steps, for example, for `OrderHistory` objects.
 LONG_TIME_STEP = 60
