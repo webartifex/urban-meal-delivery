@@ -69,6 +69,8 @@ class Config:
     ALEMBIC_TABLE = 'alembic_version'
     ALEMBIC_TABLE_SCHEMA = 'public'
 
+    R_LIBS_PATH = os.getenv('R_LIBS')
+
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<configuration>'
@@ -116,6 +118,12 @@ def make_config(env: str = 'production') -> Config:
     # We see the bad configuration immediately as all "db" tests fail.
     if config.DATABASE_URI is None and not os.getenv('TESTING'):
         warnings.warn('Bad configurartion: no DATABASE_URI set in the environment')
+
+    # Some functionalities require R and some packages installed.
+    # To ensure isolation and reproducibility, the projects keeps the R dependencies
+    # in a project-local folder that must be set in the environment.
+    if config.R_LIBS_PATH is None and not os.getenv('TESTING'):
+        warnings.warn('Bad configuration: no R_LIBS set in the environment')
 
     return config
 

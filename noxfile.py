@@ -25,26 +25,6 @@ as unified tasks to assure the quality of the source code:
   + accepts extra arguments, e.g., `poetry run nox -s test -- --no-cov`,
     that are passed on to `pytest` and `xdoctest` with no changes
     => may be paths or options
-
-
-GitHub Actions implements the following CI workflow:
-
-- "format", "lint", and "test" as above
-
-- "safety": check if dependencies contain known security vulnerabilites
-
-- "docs": build the documentation with sphinx
-
-
-The pre-commit framework invokes the following tasks:
-
-- before any commit:
-
-  + "format" and "lint" as above
-  + "fix-branch-references": replace branch references with the current one
-
-- before merges: run the entire "test-suite" independent of the file changes
-
 """
 
 import contextlib
@@ -92,7 +72,7 @@ nox.options.envdir = '.cache/nox'
 # Avoid accidental successes if the environment is not set up properly.
 nox.options.error_on_external_run = True
 
-# Run only CI related checks by default.
+# Run only local checks by default.
 nox.options.sessions = (
     'format',
     'lint',
@@ -220,24 +200,50 @@ def test(session):
         'xdoctest[optional]',
     )
 
+    session.run('pytest', '--version')
+
+    # When the CI server runs the slow tests, we only execute the R related
+    # test cases that require the slow installation of R and some packages.
+    if session.env.get('_slow_ci_tests'):
+        session.run(
+            'pytest', '--randomly-seed=4287', '-m', 'r', PYTEST_LOCATION,
+        )
+
+        # In the "ci-tests-slow" session, we do not run any test tool
+        # other than pytest. So, xdoctest, for example, is only run
+        # locally or in the "ci-tests-fast" session.
+        return
+
+    # When the CI server executes pytest, no database is available.
+    # Therefore, the CI server does not measure coverage.
+    elif session.env.get('_fast_ci_tests'):
+        pytest_args = (
+            '--randomly-seed=4287',
+            '-m',
+            'not (db or r)',
+            PYTEST_LOCATION,
+        )
+
+    # When pytest is executed in the local develop environment,
+    # both R and a database are available.
+    # Therefore, we require 100% coverage.
+    else:
+        pytest_args = (
+            '--cov',
+            '--no-cov-on-fail',
+            '--cov-branch',
+            '--cov-fail-under=100',
+            '--cov-report=term-missing:skip-covered',
+            '--randomly-seed=4287',
+            PYTEST_LOCATION,
+        )
+
     # Interpret extra arguments as options for pytest.
-    # They are "dropped" by the hack in the pre_merge() function
-    # if this function is run within the "pre-merge" session.
+    # They are "dropped" by the hack in the test_suite() function
+    # if this function is run within the "test-suite" session.
     posargs = () if session.env.get('_drop_posargs') else session.posargs
 
-    args = posargs or (
-        '--cov',
-        '--no-cov-on-fail',
-        '--cov-branch',
-        '--cov-fail-under=100',
-        '--cov-report=term-missing:skip-covered',
-        '--randomly-seed=4287',
-        '-m',
-        'not (db or e2e)',
-        PYTEST_LOCATION,
-    )
-    session.run('pytest', '--version')
-    session.run('pytest', *args)
+    session.run('pytest', *(posargs or pytest_args))
 
     # For xdoctest, the default arguments are different from pytest.
     args = posargs or [PACKAGE_IMPORT_NAME]
@@ -301,6 +307,60 @@ def docs(session):
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
+@nox.session(name='ci-tests-fast', python=PYTHON)
+def fast_ci_tests(session):
+    """Fast tests run by the GitHub Actions CI server.
+
+    These regards all test cases NOT involving R via `rpy2`.
+
+    Also, coverage is not measured as full coverage can only be
+    achieved by running the tests in the local develop environment
+    that has access to a database.
+    """
+    # Re-using an old environment is not so easy here as the "test" session
+    # runs `poetry install --no-dev`, which removes previously installed packages.
+    if session.virtualenv.reuse_existing:
+        raise RuntimeError(
+            'The "ci-tests-fast" session must be run without the "-r" option',
+        )
+
+    # Little hack to pass arguments to the "test" session.
+    session.env['_fast_ci_tests'] = 'true'
+
+    # Cannot use session.notify() to trigger the "test" session
+    # as that would create a new Session object without the flag
+    # in the env(ironment).
+    test(session)
+
+
+@nox.session(name='ci-tests-slow', python=PYTHON)
+def slow_ci_tests(session):
+    """Slow tests run by the GitHub Actions CI server.
+
+    These regards all test cases involving R via `rpy2`.
+    They are slow as the CI server needs to install R and some packages
+    first, which takes a couple of minutes.
+
+    Also, coverage is not measured as full coverage can only be
+    achieved by running the tests in the local develop environment
+    that has access to a database.
+    """
+    # Re-using an old environment is not so easy here as the "test" session
+    # runs `poetry install --no-dev`, which removes previously installed packages.
+    if session.virtualenv.reuse_existing:
+        raise RuntimeError(
+            'The "ci-tests-slow" session must be run without the "-r" option',
+        )
+
+    # Little hack to pass arguments to the "test" session.
+    session.env['_slow_ci_tests'] = 'true'
+
+    # Cannot use session.notify() to trigger the "test" session
+    # as that would create a new Session object without the flag
+    # in the env(ironment).
+    test(session)
+
+
 @nox.session(name='test-suite', python=PYTHON)
 def test_suite(session):
     """Run the entire test suite.
@@ -324,8 +384,7 @@ def test_suite(session):
 
     # Cannot use session.notify() to trigger the "test" session
     # as that would create a new Session object without the flag
-    # in the env(ironment). Instead, run the test() function within
-    # the "pre-merge" session.
+    # in the env(ironment).
     test(session)
 
 

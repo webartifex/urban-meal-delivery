@@ -95,7 +95,7 @@ python-versions = ">=3.5"
 name = "atomicwrites"
 version = "1.4.0"
 description = "Atomic file writes."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -204,7 +204,7 @@ name = "cffi"
 version = "1.14.4"
 description = "Foreign Function Interface for Python calling C code."
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -660,7 +660,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 name = "iniconfig"
 version = "1.1.1"
 description = "iniconfig: brain-dead simple config-ini parsing"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -1080,7 +1080,7 @@ name = "numpy"
 version = "1.19.4"
 description = "NumPy is the fundamental package for array computing with Python."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [[package]]
@@ -1179,7 +1179,7 @@ python-versions = "*"
 name = "pluggy"
 version = "0.13.1"
 description = "plugin and hook calling mechanisms for python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -1261,7 +1261,7 @@ name = "pycparser"
 version = "2.20"
 description = "C parser in Python"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
@@ -1311,7 +1311,7 @@ python-versions = ">=3.5"
 name = "pytest"
 version = "6.2.1"
 description = "pytest: simple powerful testing with Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -1464,6 +1464,21 @@ python-versions = "*"
 
 [package.dependencies]
 docutils = ">=0.11,<1.0"
+
+[[package]]
+name = "rpy2"
+version = "3.4.1"
+description = "Python interface to the R language (embedded R)"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+cffi = ">=1.10.0"
+jinja2 = "*"
+pytest = "*"
+pytz = "*"
+tzlocal = "*"
 
 [[package]]
 name = "send2trash"
@@ -1707,7 +1722,7 @@ python-versions = "*"
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -1748,6 +1763,17 @@ description = "Backported and Experimental Type Hints for Python 3.5+"
 category = "dev"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "tzlocal"
+version = "2.1"
+description = "tzinfo object for the local timezone"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pytz = "*"
 
 [[package]]
 name = "urllib3"
@@ -1857,7 +1883,7 @@ research = ["jupyterlab", "nb_black", "numpy", "pytz"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "5c0a4b37e73e0ed607cc2c46a9178f7b8e2a8364856a408a80f955a3c8b861a1"
+content-hash = "9be7d168525c85958389c8edb4686567cbb4de0e8780168b91e387e1b0581ec3"
 
 [metadata.files]
 alabaster = [
@@ -2643,6 +2669,12 @@ requests = [
 restructuredtext-lint = [
     {file = "restructuredtext_lint-1.3.2.tar.gz", hash = "sha256:d3b10a1fe2ecac537e51ae6d151b223b78de9fafdd50e5eb6b08c243df173c80"},
 ]
+rpy2 = [
+    {file = "rpy2-3.4.1-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:3f2d56bc80c2af0fe8118c53da7fd29f1809bc159a88cb10f9e2869321a21deb"},
+    {file = "rpy2-3.4.1-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:344ac89c966b2ec91bbf9e623b7ff9c121820b5e53da2ffc75fa10f158023cd7"},
+    {file = "rpy2-3.4.1-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:ebbd7fceef359279f56b481d7ea2dd60db91928abb3726010a88fbb3362213af"},
+    {file = "rpy2-3.4.1.tar.gz", hash = "sha256:644360b569656700dfe13f59878ec1cf8c116c128d4f2f0bf96144031f95d2e2"},
+]
 send2trash = [
     {file = "Send2Trash-1.5.0-py3-none-any.whl", hash = "sha256:f1691922577b6fa12821234aeb57599d887c4900b9ca537948d2dac34aea888b"},
     {file = "Send2Trash-1.5.0.tar.gz", hash = "sha256:60001cc07d707fe247c94f74ca6ac0d3255aabcb930529690897ca2a39db28b2"},
@@ -2862,6 +2894,10 @@ typing-extensions = [
     {file = "typing_extensions-3.7.4.3-py2-none-any.whl", hash = "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"},
     {file = "typing_extensions-3.7.4.3-py3-none-any.whl", hash = "sha256:7cb407020f00f7bfc3cb3e7881628838e69d8f3fcab2f64742a5e76b2f841918"},
     {file = "typing_extensions-3.7.4.3.tar.gz", hash = "sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c"},
+]
+tzlocal = [
+    {file = "tzlocal-2.1-py2.py3-none-any.whl", hash = "sha256:e2cb6c6b5b604af38597403e9852872d7f534962ae2954c7f35efcb1ccacf4a4"},
+    {file = "tzlocal-2.1.tar.gz", hash = "sha256:643c97c5294aedc737780a49d9df30889321cbe1204eac2c2ec6134035a92e44"},
 ]
 urllib3 = [
     {file = "urllib3-1.26.2-py2.py3-none-any.whl", hash = "sha256:d8ff90d979214d7b4f8ce956e80f4028fc6860e4431f731ea4a8c08f23f99473"},

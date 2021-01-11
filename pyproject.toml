@@ -42,6 +42,7 @@ jupyterlab = { version="^2.2.2", optional=true }
 nb_black = { version="^1.0.7", optional=true }
 numpy = { version="^1.19.1", optional=true }
 pytz = { version="^2020.1", optional=true }
+rpy2 = "^3.4.1"
 
 [tool.poetry.extras]
 research = [
