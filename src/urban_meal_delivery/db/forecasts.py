@@ -21,10 +21,16 @@ class Forecast(meta.Base):
     start_at = sa.Column(sa.DateTime, nullable=False)
     time_step = sa.Column(sa.SmallInteger, nullable=False)
     training_horizon = sa.Column(sa.SmallInteger, nullable=False)
-    method = sa.Column(sa.Unicode(length=20), nullable=False)  # noqa:WPS432
+    model = sa.Column(sa.Unicode(length=20), nullable=False)  # noqa:WPS432
     # Raw `.prediction`s are stored as `float`s (possibly negative).
     # The rounding is then done on the fly if required.
     prediction = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
+    # The confidence intervals are treated like the `.prediction`s
+    # but they may be nullable as some methods do not calculate them.
+    low80 = sa.Column(postgresql.DOUBLE_PRECISION, nullable=True)
+    high80 = sa.Column(postgresql.DOUBLE_PRECISION, nullable=True)
+    low95 = sa.Column(postgresql.DOUBLE_PRECISION, nullable=True)
+    high95 = sa.Column(postgresql.DOUBLE_PRECISION, nullable=True)
 
     # Constraints
     __table_args__ = (
@@ -56,9 +62,57 @@ class Forecast(meta.Base):
         sa.CheckConstraint(
             'training_horizon > 0', name='training_horizon_must_be_positive',
         ),
+        sa.CheckConstraint(
+            """
+                NOT (
+                    low80 IS NULL AND high80 IS NOT NULL
+                    OR
+                    low80 IS NOT NULL AND high80 IS NULL
+                    OR
+                    low95 IS NULL AND high95 IS NOT NULL
+                    OR
+                    low95 IS NOT NULL AND high95 IS NULL
+               )
+            """,
+            name='ci_upper_and_lower_bounds',
+        ),
+        sa.CheckConstraint(
+            """
+                NOT (
+                    prediction < low80
+                    OR
+                    prediction < low95
+                    OR
+                    prediction > high80
+                    OR
+                    prediction > high95
+                )
+            """,
+            name='prediction_must_be_within_ci',
+        ),
+        sa.CheckConstraint(
+            """
+                NOT (
+                    low80 > high80
+                    OR
+                    low95 > high95
+                )
+            """,
+            name='ci_upper_bound_greater_than_lower_bound',
+        ),
+        sa.CheckConstraint(
+            """
+                NOT (
+                    low80 < low95
+                    OR
+                    high80 > high95
+                )
+            """,
+            name='ci95_must_be_wider_than_ci80',
+        ),
         # There can be only one prediction per forecasting setting.
         sa.UniqueConstraint(
-            'pixel_id', 'start_at', 'time_step', 'training_horizon', 'method',
+            'pixel_id', 'start_at', 'time_step', 'training_horizon', 'model',
         ),
     )
 

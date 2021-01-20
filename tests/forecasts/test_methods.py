@@ -86,11 +86,11 @@ class TestMakePredictions:
 
         assert isinstance(result, pd.DataFrame)
         assert list(result.columns) == [
-            'predictions',
-            'low_80',
-            'high_80',
-            'low_95',
-            'high_95',
+            'prediction',
+            'low80',
+            'high80',
+            'low95',
+            'high95',
         ]
 
     def test_predict_horizontal_time_series_with_no_demand(

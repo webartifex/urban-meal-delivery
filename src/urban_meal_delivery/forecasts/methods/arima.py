@@ -25,8 +25,8 @@ def predict(
         seasonal_fit: if a seasonal ARIMA model should be fitted
 
     Returns:
-        predictions: point forecasts (i.e., the "predictions" column) and
-            confidence intervals (i.e, the four "low/high_80/95" columns)
+        predictions: point forecasts (i.e., the "prediction" column) and
+            confidence intervals (i.e, the four "low/high80/95" columns)
 
     Raises:
         ValueError: if `training_ts` contains `NaN` values
@@ -67,10 +67,10 @@ def predict(
 
     return forecasts.rename(
         columns={
-            'Point Forecast': 'predictions',
-            'Lo 80': 'low_80',
-            'Hi 80': 'high_80',
-            'Lo 95': 'low_95',
-            'Hi 95': 'high_95',
+            'Point Forecast': 'prediction',
+            'Lo 80': 'low80',
+            'Hi 80': 'high80',
+            'Lo 95': 'low95',
+            'Hi 95': 'high95',
         },
     )
