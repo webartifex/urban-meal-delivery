@@ -192,6 +192,17 @@ six = ">=1.9.0"
 webencodings = "*"
 
 [[package]]
+name = "branca"
+version = "0.4.2"
+description = "Generate complex HTML+JS pages with Python"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+jinja2 = "*"
+
+[[package]]
 name = "certifi"
 version = "2020.12.5"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -578,6 +589,23 @@ python-versions = "*"
 
 [package.dependencies]
 flake8 = "*"
+
+[[package]]
+name = "folium"
+version = "0.12.1"
+description = "Make beautiful maps with Leaflet.js & Python"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+branca = ">=0.3.0"
+jinja2 = ">=2.9"
+numpy = "*"
+requests = "*"
+
+[package.extras]
+testing = ["pytest"]
 
 [[package]]
 name = "geographiclib"
@@ -1883,7 +1911,7 @@ research = ["jupyterlab", "nb_black", "numpy", "pytz"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "9be7d168525c85958389c8edb4686567cbb4de0e8780168b91e387e1b0581ec3"
+content-hash = "8a85f19d497aeccaf90e3a30e30a9a92dc09f6ee7fad010972e6e7a76b08209e"
 
 [metadata.files]
 alabaster = [
@@ -1968,6 +1996,10 @@ black = [
 bleach = [
     {file = "bleach-3.2.1-py2.py3-none-any.whl", hash = "sha256:9f8ccbeb6183c6e6cddea37592dfb0167485c1e3b13b3363bc325aa8bda3adbd"},
     {file = "bleach-3.2.1.tar.gz", hash = "sha256:52b5919b81842b1854196eaae5ca29679a2f2e378905c346d3ca8227c2c66080"},
+]
+branca = [
+    {file = "branca-0.4.2-py3-none-any.whl", hash = "sha256:62c2e777f074fc1830cd40ba9e650beb941861075980babafead8d97856b1a4b"},
+    {file = "branca-0.4.2.tar.gz", hash = "sha256:c111453617b17ab2bda60a4cd71787d6f2b59c85cdf71ab160a737606ac66c31"},
 ]
 certifi = [
     {file = "certifi-2020.12.5-py2.py3-none-any.whl", hash = "sha256:719a74fb9e33b9bd44cc7f3a8d94bc35e4049deebe19ba7d8e108280cfd59830"},
@@ -2175,6 +2207,9 @@ flake8-rst-docstrings = [
 flake8-string-format = [
     {file = "flake8-string-format-0.2.3.tar.gz", hash = "sha256:774d56103d9242ed968897455ef49b7d6de272000cfa83de5814273a868832f1"},
     {file = "flake8_string_format-0.2.3-py2.py3-none-any.whl", hash = "sha256:68ea72a1a5b75e7018cae44d14f32473c798cf73d75cbaed86c6a9a907b770b2"},
+]
+folium = [
+    {file = "folium-0.12.1-py2.py3-none-any.whl", hash = "sha256:3d2c48dd6ffe5327975bbfd718468c4e81db9f2844c26e574f878adf4c08b644"},
 ]
 geographiclib = [
     {file = "geographiclib-1.50-py3-none-any.whl", hash = "sha256:51cfa698e7183792bce27d8fb63ac8e83689cd8170a730bf35e1a5c5bf8849b9"},
