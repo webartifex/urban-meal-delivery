@@ -1426,6 +1426,20 @@ python-versions = "*"
 pytest = ">=2.6.0"
 
 [[package]]
+name = "pytest-mock"
+version = "3.5.1"
+description = "Thin-wrapper around the mock package for easier use with pytest"
+category = "dev"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+pytest = ">=5.0"
+
+[package.extras]
+dev = ["pre-commit", "tox", "pytest-asyncio"]
+
+[[package]]
 name = "pytest-randomly"
 version = "3.5.0"
 description = "Pytest plugin to randomly order tests and control random.seed."
@@ -1954,7 +1968,7 @@ research = ["jupyterlab", "nb_black", "numpy", "pytz"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "5493dc22f056cf2845ac6bd480c55092b1ceca8038312a551cad9fb76761b77a"
+content-hash = "1a67cb850c9d8b35104d7429caf8f54c3fa0a2888ab4d8f54dbc3901afb14717"
 
 [metadata.files]
 alabaster = [
@@ -2706,6 +2720,10 @@ pytest-cov = [
 ]
 pytest-env = [
     {file = "pytest-env-0.6.2.tar.gz", hash = "sha256:7e94956aef7f2764f3c147d216ce066bf6c42948bb9e293169b1b1c880a580c2"},
+]
+pytest-mock = [
+    {file = "pytest-mock-3.5.1.tar.gz", hash = "sha256:a1e2aba6af9560d313c642dae7e00a2a12b022b80301d9d7fc8ec6858e1dd9fc"},
+    {file = "pytest_mock-3.5.1-py3-none-any.whl", hash = "sha256:379b391cfad22422ea2e252bdfc008edd08509029bcde3c25b2c0bd741e0424e"},
 ]
 pytest-randomly = [
     {file = "pytest-randomly-3.5.0.tar.gz", hash = "sha256:440cec143fd9b0adeb072006c71e0294402a2bc2ccd08079c2341087ba4cf2d1"},
