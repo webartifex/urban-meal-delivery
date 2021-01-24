@@ -12,7 +12,7 @@ class Pixel(meta.Base):
     Square pixels aggregate `Address` objects within a `City`.
     Every `Address` belongs to exactly one `Pixel` in a `Grid`.
 
-    Every `Pixel` has a unique "coordinate" within the `Grid`.
+    Every `Pixel` has a unique `n_x`-`n_y` coordinate within the `Grid`.
     """
 
     __tablename__ = 'pixels'

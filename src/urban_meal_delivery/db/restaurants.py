@@ -34,10 +34,12 @@ class Restaurant(meta.Base):
             '0 <= estimated_prep_duration AND estimated_prep_duration <= 2400',
             name='realistic_estimated_prep_duration',
         ),
+        # Needed by a `ForeignKeyConstraint` in `Order`.
+        sa.UniqueConstraint('id', 'address_id'),
     )
 
     # Relationships
-    address = orm.relationship('Address', back_populates='restaurant')
+    address = orm.relationship('Address', back_populates='restaurants')
     orders = orm.relationship('Order', back_populates='restaurant')
 
     def __repr__(self) -> str:

@@ -80,17 +80,19 @@ class Order(meta.Base):  # noqa:WPS214
             ['customer_id'], ['customers.id'], onupdate='RESTRICT', ondelete='RESTRICT',
         ),
         sa.ForeignKeyConstraint(
-            ['restaurant_id'],
-            ['restaurants.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
-        ),
-        sa.ForeignKeyConstraint(
             ['courier_id'], ['couriers.id'], onupdate='RESTRICT', ondelete='RESTRICT',
         ),
         sa.ForeignKeyConstraint(
             ['pickup_address_id'],
             ['addresses.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
+        ),
+        sa.ForeignKeyConstraint(
+            # This foreign key ensures that there is only
+            # one `.pickup_address` per `.restaurant`
+            ['restaurant_id', 'pickup_address_id'],
+            ['restaurants.id', 'restaurants.address_id'],
             onupdate='RESTRICT',
             ondelete='RESTRICT',
         ),
@@ -302,7 +304,11 @@ class Order(meta.Base):  # noqa:WPS214
 
     # Relationships
     customer = orm.relationship('Customer', back_populates='orders')
-    restaurant = orm.relationship('Restaurant', back_populates='orders')
+    restaurant = orm.relationship(
+        'Restaurant',
+        back_populates='orders',
+        primaryjoin='Restaurant.id == Order.restaurant_id',
+    )
     courier = orm.relationship('Courier', back_populates='orders')
     pickup_address = orm.relationship(
         'Address',

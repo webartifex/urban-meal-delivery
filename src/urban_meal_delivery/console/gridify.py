@@ -8,7 +8,7 @@ from urban_meal_delivery.console import decorators
 
 
 @click.command()
-@decorators.db_revision('888e352d7526')
+@decorators.db_revision('e86290e7305e')
 def gridify() -> None:  # pragma: no cover  note:b1f68d24
     """Create grids for all cities.
 

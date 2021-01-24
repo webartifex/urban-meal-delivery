@@ -17,16 +17,34 @@ class TestAggregateOrders:
     """
 
     @pytest.fixture
-    def one_pixel_grid(self, db_session, city, restaurant):
+    def addresses_mock(self, mocker, monkeypatch):
+        """A `Mock` whose `.return_value` are to be set ...
+
+        ... to the addresses that are gridified. The addresses are
+        all considered `Order.pickup_address` attributes for some orders.
+
+        Note: This fixture also exists in `tests.db.test_grids`.
+        """
+        mock = mocker.Mock()
+        query = (  # noqa:ECE001
+            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501,WPS219
+        )
+        monkeypatch.setattr(db, 'session', mock)
+
+        return query
+
+    @pytest.fixture
+    def one_pixel_grid(self, db_session, city, restaurant, addresses_mock):
         """A persisted `Grid` with one `Pixel`.
 
-        `restaurant` must be a dependency as otherwise
-        its `.address` is not put into the database.
+        `restaurant` must be a dependency as otherwise the `restaurant.address`
+        is not put into the database as an `Order.pickup_address`.
         """
+        addresses_mock.return_value = [restaurant.address]
+
         # `+1` as otherwise there would be a second pixel in one direction.
         side_length = max(city.total_x, city.total_y) + 1
         grid = db.Grid.gridify(city=city, side_length=side_length)
-
         db_session.add(grid)
 
         assert len(grid.pixels) == 1  # sanity check
@@ -272,16 +290,16 @@ class TestAggregateOrders:
         assert result['total_orders'].sum() == 18
 
     @pytest.fixture
-    def two_pixel_grid(self, db_session, city, make_address, make_restaurant):
-        """A persisted `Grid` with two `Pixel` objects.
-
-        `restaurant` must be a dependency as otherwise
-        its `.address` is not put into the database.
-        """
+    def two_pixel_grid(  # noqa:WPS211
+        self, db_session, city, make_address, make_restaurant, addresses_mock,
+    ):
+        """A persisted `Grid` with two `Pixel` objects."""
         # One `Address` in the lower-left `Pixel`, ...
         address1 = make_address(latitude=48.8357377, longitude=2.2517412)
         # ... and another one in the upper-right one.
         address2 = make_address(latitude=48.8898312, longitude=2.4357622)
+
+        addresses_mock.return_value = [address1, address2]
 
         # Create `Restaurant`s at the two addresses.
         make_restaurant(address=address1)
@@ -307,7 +325,8 @@ class TestAggregateOrders:
         In total, there are 30 orders.
         """
         address1, address2 = two_pixel_grid.city.addresses
-        restaurant1, restaurant2 = address1.restaurant, address2.restaurant
+        # Rarely, an `Address` may have several `Restaurant`s in the real dataset.
+        restaurant1, restaurant2 = address1.restaurants[0], address2.restaurants[0]
 
         # Create one order every other hour for `restaurant1`.
         for hour in range(11, 23, 2):

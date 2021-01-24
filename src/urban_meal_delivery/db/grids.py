@@ -54,11 +54,12 @@ class Grid(meta.Base):
         return round((self.side_length ** 2) / 1_000_000, 1)
 
     @classmethod
-    def gridify(cls, city: db.City, side_length: int) -> db.Grid:
+    def gridify(cls, city: db.City, side_length: int) -> db.Grid:  # noqa:WPS210
         """Create a fully populated `Grid` for a `city`.
 
-        The `Grid` contains only `Pixel`s that have at least one `Address`.
-        `Address` objects outside the `city`'s viewport are discarded.
+        The `Grid` contains only `Pixel`s that have at least one
+        `Order.pickup_address`. `Address` objects outside the `.city`'s
+        viewport are discarded.
 
         Args:
             city: city for which the grid is created
@@ -72,7 +73,14 @@ class Grid(meta.Base):
         # `Pixel`s grouped by `.n_x`-`.n_y` coordinates.
         pixels = {}
 
-        for address in city.addresses:
+        pickup_addresses = (  # noqa:ECE:001
+            db.session.query(db.Address)
+            .join(db.Order, db.Address.id == db.Order.pickup_address_id)
+            .filter(db.Address.city == city)
+            .all()
+        )
+
+        for address in pickup_addresses:
             # Check if an `address` is not within the `city`'s viewport, ...
             not_within_city_viewport = (
                 address.x < 0

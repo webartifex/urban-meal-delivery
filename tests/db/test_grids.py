@@ -74,18 +74,30 @@ class TestProperties:
 class TestGridification:
     """Test the `Grid.gridify()` constructor."""
 
-    @pytest.mark.no_cover
-    def test_one_pixel_without_addresses(self, city):
-        """At the very least, there must be one `Pixel` ...
+    @pytest.fixture
+    def addresses_mock(self, mocker, monkeypatch):
+        """A `Mock` whose `.return_value` are to be set ...
 
-        ... if the `side_length` is greater than both the
-        horizontal and vertical distances of the viewport.
+        ... to the addresses that are gridified. The addresses are
+        all considered `Order.pickup_address` attributes for some orders.
+        """
+        mock = mocker.Mock()
+        query = (  # noqa:ECE001
+            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501,WPS219
+        )
+        monkeypatch.setattr(db, 'session', mock)
+
+        return query
+
+    @pytest.mark.no_cover
+    def test_no_pixel_without_addresses(self, city, addresses_mock):
+        """Without orders, there are no `Pixel` objects on the `grid`.
 
         This test case skips the `for`-loop inside `Grid.gridify()`.
-        Interestingly, coverage.py does not see this.
         """
-        city.addresses = []
+        addresses_mock.return_value = []
 
+        # The chosen `side_length` would result in one `Pixel` if there were orders.
         # `+1` as otherwise there would be a second pixel in one direction.
         side_length = max(city.total_x, city.total_y) + 1
 
@@ -94,13 +106,13 @@ class TestGridification:
         assert isinstance(result, db.Grid)
         assert len(result.pixels) == 0  # noqa:WPS507
 
-    def test_one_pixel_with_one_address(self, city, address):
+    def test_one_pixel_with_one_address(self, city, order, addresses_mock):
         """At the very least, there must be one `Pixel` ...
 
         ... if the `side_length` is greater than both the
         horizontal and vertical distances of the viewport.
         """
-        city.addresses = [address]
+        addresses_mock.return_value = [order.pickup_address]
 
         # `+1` as otherwise there would be a second pixel in one direction.
         side_length = max(city.total_x, city.total_y) + 1
@@ -110,7 +122,7 @@ class TestGridification:
         assert isinstance(result, db.Grid)
         assert len(result.pixels) == 1
 
-    def test_one_pixel_with_two_addresses(self, city, make_address):
+    def test_one_pixel_with_two_addresses(self, city, make_order, addresses_mock):
         """At the very least, there must be one `Pixel` ...
 
         ... if the `side_length` is greater than both the
@@ -119,7 +131,8 @@ class TestGridification:
         This test case is necessary as `test_one_pixel_with_one_address`
         does not have to re-use an already created `Pixel` object internally.
         """
-        city.addresses = [make_address(), make_address()]
+        orders = [make_order(), make_order()]
+        addresses_mock.return_value = [order.pickup_address for order in orders]
 
         # `+1` as otherwise there would be a second pixel in one direction.
         side_length = max(city.total_x, city.total_y) + 1
@@ -129,12 +142,11 @@ class TestGridification:
         assert isinstance(result, db.Grid)
         assert len(result.pixels) == 1
 
-    def test_one_pixel_with_address_too_far_south(self, city, address):
+    def test_no_pixel_with_one_address_too_far_south(self, city, order, addresses_mock):
         """An `address` outside the `city`'s viewport is discarded."""
         # Move the `address` just below `city.southwest`.
-        address.latitude = city.southwest.latitude - 0.1
-
-        city.addresses = [address]
+        order.pickup_address.latitude = city.southwest.latitude - 0.1
+        addresses_mock.return_value = [order.pickup_address]
 
         # `+1` as otherwise there would be a second pixel in one direction.
         side_length = max(city.total_x, city.total_y) + 1
@@ -145,16 +157,15 @@ class TestGridification:
         assert len(result.pixels) == 0  # noqa:WPS507
 
     @pytest.mark.no_cover
-    def test_one_pixel_with_address_too_far_west(self, city, address):
+    def test_no_pixel_with_one_address_too_far_west(self, city, order, addresses_mock):
         """An `address` outside the `city`'s viewport is discarded.
 
-        This test is a logical sibling to `test_one_pixel_with_address_too_far_south`
-        and therefore redundant.
+        This test is a logical sibling to
+        `test_no_pixel_with_one_address_too_far_south` and therefore redundant.
         """
         # Move the `address` just left to `city.southwest`.
-        address.longitude = city.southwest.longitude - 0.1
-
-        city.addresses = [address]
+        order.pickup_address.longitude = city.southwest.longitude - 0.1
+        addresses_mock.return_value = [order.pickup_address]
 
         # `+1` as otherwise there would be a second pixel in one direction.
         side_length = max(city.total_x, city.total_y) + 1
@@ -165,13 +176,13 @@ class TestGridification:
         assert len(result.pixels) == 0  # noqa:WPS507
 
     @pytest.mark.no_cover
-    def test_four_pixels_with_two_addresses(self, city, make_address):
+    def test_two_pixels_with_two_addresses(self, city, make_address, addresses_mock):
         """Two `Address` objects in distinct `Pixel` objects.
 
         This test is more of a sanity check.
         """
         # Create two `Address` objects in distinct `Pixel`s.
-        city.addresses = [
+        addresses_mock.return_value = [
             # One `Address` in the lower-left `Pixel`, ...
             make_address(latitude=48.8357377, longitude=2.2517412),
             # ... and another one in the upper-right one.
@@ -194,7 +205,9 @@ class TestGridification:
     @pytest.mark.db
     @pytest.mark.no_cover
     @pytest.mark.parametrize('side_length', [250, 500, 1_000, 2_000, 4_000, 8_000])
-    def test_make_random_grids(self, db_session, city, make_address, side_length):
+    def test_make_random_grids(  # noqa:WPS211
+        self, db_session, city, make_address, make_restaurant, make_order, side_length,
+    ):
         """With 100 random `Address` objects, a grid must have ...
 
         ... between 1 and a deterministic upper bound of `Pixel` objects.
@@ -202,7 +215,10 @@ class TestGridification:
         This test creates confidence that the created `Grid`
         objects adhere to the database constraints.
         """
-        city.addresses = [make_address() for _ in range(100)]
+        addresses = [make_address() for _ in range(100)]
+        restaurants = [make_restaurant(address=address) for address in addresses]
+        orders = [make_order(restaurant=restaurant) for restaurant in restaurants]
+        db_session.add_all(orders)
 
         n_pixels_x = (city.total_x // side_length) + 1
         n_pixels_y = (city.total_y // side_length) + 1

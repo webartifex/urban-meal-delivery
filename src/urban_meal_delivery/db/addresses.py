@@ -52,7 +52,7 @@ class Address(meta.Base):
 
     # Relationships
     city = orm.relationship('City', back_populates='addresses')
-    restaurant = orm.relationship('Restaurant', back_populates='address', uselist=False)
+    restaurants = orm.relationship('Restaurant', back_populates='address')
     orders_picked_up = orm.relationship(
         'Order',
         back_populates='pickup_address',

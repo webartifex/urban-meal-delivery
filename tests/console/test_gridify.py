@@ -8,24 +8,31 @@ from urban_meal_delivery.console import gridify
 
 
 @pytest.mark.db
-def test_four_pixels_with_two_addresses(
-    cli, db_session, monkeypatch, city, make_address,
+def test_two_pixels_with_two_addresses(  # noqa:WPS211
+    cli, db_session, monkeypatch, city, make_address, make_restaurant, make_order,
 ):
     """Two `Address` objects in distinct `Pixel` objects.
 
     This is roughly the same test case as
-    `tests.db.test_grids.test_four_pixels_with_two_addresses`.
+    `tests.db.test_grids.test_two_pixels_with_two_addresses`.
     The difference is that the result is written to the database.
     """
     # Create two `Address` objects in distinct `Pixel`s.
-    city.addresses = [
-        # One `Address` in the lower-left `Pixel`, ...
-        make_address(latitude=48.8357377, longitude=2.2517412),
-        # ... and another one in the upper-right one.
-        make_address(latitude=48.8898312, longitude=2.4357622),
-    ]
+    # One `Address` in the lower-left `Pixel`, ...
+    address1 = make_address(latitude=48.8357377, longitude=2.2517412)
+    # ... and another one in the upper-right one.
+    address2 = make_address(latitude=48.8898312, longitude=2.4357622)
 
-    db_session.add(city)
+    # Locate a `Restaurant` at the two `Address` objects and
+    # place one `Order` for each of them so that the `Address`
+    # objects are used as `Order.pickup_address`s.
+    restaurant1 = make_restaurant(address=address1)
+    restaurant2 = make_restaurant(address=address2)
+    order1 = make_order(restaurant=restaurant1)
+    order2 = make_order(restaurant=restaurant2)
+
+    db_session.add(order1)
+    db_session.add(order2)
     db_session.commit()
 
     side_length = max(city.total_x // 2, city.total_y // 2) + 1
