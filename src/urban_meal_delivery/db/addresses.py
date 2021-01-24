@@ -18,15 +18,13 @@ class Address(meta.Base):
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
     _primary_id = sa.Column('primary_id', sa.Integer, nullable=False, index=True)
     created_at = sa.Column(sa.DateTime, nullable=False)
-    place_id = sa.Column(
-        sa.Unicode(length=120), nullable=False, index=True,  # noqa:WPS432
-    )
+    place_id = sa.Column(sa.Unicode(length=120), nullable=False, index=True)
     latitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
     longitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
     city_id = sa.Column(sa.SmallInteger, nullable=False, index=True)
-    city_name = sa.Column('city', sa.Unicode(length=25), nullable=False)  # noqa:WPS432
+    city_name = sa.Column('city', sa.Unicode(length=25), nullable=False)
     zip_code = sa.Column(sa.Integer, nullable=False, index=True)
-    street = sa.Column(sa.Unicode(length=80), nullable=False)  # noqa:WPS432
+    street = sa.Column(sa.Unicode(length=80), nullable=False)
     floor = sa.Column(sa.SmallInteger)
 
     # Constraints

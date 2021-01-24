@@ -21,7 +21,7 @@ class Forecast(meta.Base):
     start_at = sa.Column(sa.DateTime, nullable=False)
     time_step = sa.Column(sa.SmallInteger, nullable=False)
     training_horizon = sa.Column(sa.SmallInteger, nullable=False)
-    model = sa.Column(sa.Unicode(length=20), nullable=False)  # noqa:WPS432
+    model = sa.Column(sa.Unicode(length=20), nullable=False)
     # Raw `.prediction`s are stored as `float`s (possibly negative).
     # The rounding is then done on the fly if required.
     prediction = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)

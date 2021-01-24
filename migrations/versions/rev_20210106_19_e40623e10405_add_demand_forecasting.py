@@ -31,7 +31,7 @@ def upgrade():
         sa.Column('start_at', sa.DateTime(), nullable=False),
         sa.Column('time_step', sa.SmallInteger(), nullable=False),
         sa.Column('training_horizon', sa.SmallInteger(), nullable=False),
-        sa.Column('method', sa.Unicode(length=20), nullable=False),  # noqa:WPS432
+        sa.Column('method', sa.Unicode(length=20), nullable=False),
         sa.Column('prediction', postgresql.DOUBLE_PRECISION(), nullable=False),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_forecasts')),
         sa.ForeignKeyConstraint(

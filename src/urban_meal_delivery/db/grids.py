@@ -51,7 +51,7 @@ class Grid(meta.Base):
     @property
     def pixel_area(self) -> float:
         """The area of a `Pixel` on the grid in square kilometers."""
-        return round((self.side_length ** 2) / 1_000_000, 1)  # noqa:WPS432
+        return round((self.side_length ** 2) / 1_000_000, 1)
 
     @classmethod
     def gridify(cls, city: db.City, side_length: int) -> db.Grid:
