@@ -196,6 +196,7 @@ def test(session):
         'pytest',
         'pytest-cov',
         'pytest-env',
+        'pytest-mock',
         'pytest-randomly',
         'xdoctest[optional]',
     )
