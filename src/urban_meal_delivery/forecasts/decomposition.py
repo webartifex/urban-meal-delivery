@@ -99,7 +99,7 @@ def stl(  # noqa:C901,WPS210,WPS211,WPS231
     if ns % 2 == 0 or ns < 7:
         raise ValueError('`ns` must be odd and `>= 7`')
 
-    default_nt = math.ceil((1.5 * frequency) / (1 - (1.5 / ns)))  # noqa:WPS432
+    default_nt = math.ceil((1.5 * frequency) / (1 - (1.5 / ns)))
     if nt is not None:
         if nt % 2 == 0 or nt < default_nt:
             raise ValueError(

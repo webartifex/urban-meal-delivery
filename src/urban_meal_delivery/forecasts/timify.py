@@ -168,7 +168,7 @@ class OrderHistory:
             training time series, frequency, actual order count at `predict_at`
 
         Raises:
-            LookupError: `pixel_id` is not in the `grid`
+            LookupError: `pixel_id` not in `grid` or `predict_at` not in `.totals`
             RuntimeError: desired time series slice is not entirely in `.totals`
         """
         try:
@@ -211,6 +211,8 @@ class OrderHistory:
             raise RuntimeError('Not enough historic data for `predict_at`')
 
         actuals_ts = intra_pixel.loc[[predict_at], 'total_orders']
+        if not len(actuals_ts):  # pragma: no cover
+            raise LookupError('`predict_at` is not in the order history')
 
         return training_ts, frequency, actuals_ts
 
@@ -235,7 +237,7 @@ class OrderHistory:
             training time series, frequency, actual order counts on `predict_day`
 
         Raises:
-            LookupError: `pixel_id` is not in the `grid`
+            LookupError: `pixel_id` not in `grid` or `predict_day` not in `.totals`
             RuntimeError: desired time series slice is not entirely in `.totals`
         """
         try:
@@ -295,6 +297,8 @@ class OrderHistory:
             first_prediction_at:last_prediction_at,  # type: ignore
             'total_orders',
         ]
+        if not len(actuals_ts):  # pragma: no cover
+            raise LookupError('`predict_day` is not in the order history')
 
         return training_ts, frequency, actuals_ts
 
@@ -319,7 +323,7 @@ class OrderHistory:
             training time series, frequency, actual order count at `predict_at`
 
         Raises:
-            LookupError: `pixel_id` is not in the `grid`
+            LookupError: `pixel_id` not in `grid` or `predict_at` not in `.totals`
             RuntimeError: desired time series slice is not entirely in `.totals`
         """
         try:
@@ -386,5 +390,7 @@ class OrderHistory:
             raise RuntimeError('Not enough historic data for `predict_day`')
 
         actuals_ts = intra_pixel.loc[[predict_at], 'total_orders']
+        if not len(actuals_ts):  # pragma: no cover
+            raise LookupError('`predict_at` is not in the order history')
 
         return training_ts, frequency, actuals_ts
