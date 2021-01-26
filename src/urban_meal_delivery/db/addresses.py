@@ -1,5 +1,10 @@
 """Provide the ORM's `Address` model."""
 
+from __future__ import annotations
+
+from typing import Any
+
+import folium
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
@@ -16,7 +21,7 @@ class Address(meta.Base):
 
     # Columns
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
-    _primary_id = sa.Column('primary_id', sa.Integer, nullable=False, index=True)
+    primary_id = sa.Column(sa.Integer, nullable=False, index=True)
     created_at = sa.Column(sa.DateTime, nullable=False)
     place_id = sa.Column(sa.Unicode(length=120), nullable=False, index=True)
     latitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
@@ -83,7 +88,7 @@ class Address(meta.Base):
 
         `.is_primary` indicates the first in a group of `Address` objects.
         """
-        return self.id == self._primary_id
+        return self.id == self.primary_id
 
     @property
     def location(self) -> utils.Location:
@@ -121,3 +126,40 @@ class Address(meta.Base):
         Shortcut for `.location.y`.
         """
         return self.location.y
+
+    def clear_map(self) -> Address:  # pragma: no cover
+        """Shortcut to the `.city.clear_map()` method.
+
+        Returns:
+            self: enabling method chaining
+        """  # noqa:D402,DAR203
+        self.city.clear_map()
+        return self
+
+    @property  # pragma: no cover
+    def map(self) -> folium.Map:  # noqa:WPS125
+        """Shortcut to the `.city.map` object."""
+        return self.city.map
+
+    def draw(self, **kwargs: Any) -> folium.Map:  # pragma: no cover
+        """Draw the address on the `.city.map`.
+
+        By default, addresses are shown as black dots.
+        Use `**kwargs` to overwrite that.
+
+        Args:
+            **kwargs: passed on to `folium.Circle()`; overwrite default settings
+
+        Returns:
+            `.city.map` for convenience in interactive usage
+        """
+        defaults = {
+            'color': 'black',
+            'popup': f'{self.street}, {self.zip_code} {self.city_name}',
+        }
+        defaults.update(kwargs)
+
+        marker = folium.Circle((self.latitude, self.longitude), **defaults)
+        marker.add_to(self.city.map)
+
+        return self.map

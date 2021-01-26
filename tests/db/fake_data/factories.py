@@ -48,7 +48,7 @@ class AddressFactory(alchemy.SQLAlchemyModelFactory):
     # As non-primary addresses have no different behavior and
     # the property is only kept from the original dataset for
     # completeness sake, that is ok to do.
-    _primary_id = factory.LazyAttribute(lambda obj: obj.id)
+    primary_id = factory.LazyAttribute(lambda obj: obj.id)
 
     # Mimic a Google Maps Place ID with just random characters.
     place_id = factory.LazyFunction(

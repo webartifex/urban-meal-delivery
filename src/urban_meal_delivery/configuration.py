@@ -55,6 +55,10 @@ class Config:
     # The demand forecasting methods used in the simulations.
     FORECASTING_METHODS = ['hets', 'rtarima']
 
+    # Colors for the visualizations ins `folium`.
+    RESTAURANT_COLOR = 'red'
+    CUSTOMER_COLOR = 'blue'
+
     # Implementation-specific settings
     # --------------------------------
 

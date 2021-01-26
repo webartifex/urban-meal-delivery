@@ -39,8 +39,8 @@ class TestConstraints:
     def test_delete_a_referenced_address(self, db_session, address, make_address):
         """Remove a record that is referenced with a FK."""
         db_session.add(address)
-        # Fake another_address that has the same `._primary_id` as `address`.
-        db_session.add(make_address(_primary_id=address.id))
+        # Fake another_address that has the same `.primary_id` as `address`.
+        db_session.add(make_address(primary_id=address.id))
         db_session.commit()
 
         db_session.delete(address)
@@ -109,7 +109,7 @@ class TestProperties:
 
     def test_is_primary(self, address):
         """Test `Address.is_primary` property."""
-        assert address.id == address._primary_id
+        assert address.id == address.primary_id
 
         result = address.is_primary
 
@@ -117,7 +117,7 @@ class TestProperties:
 
     def test_is_not_primary(self, address):
         """Test `Address.is_primary` property."""
-        address._primary_id = 999
+        address.primary_id = 999
 
         result = address.is_primary
 

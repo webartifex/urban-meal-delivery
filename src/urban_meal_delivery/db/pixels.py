@@ -1,9 +1,14 @@
 """Provide the ORM's `Pixel` model."""
 
+from __future__ import annotations
+
+import folium
 import sqlalchemy as sa
 import utm
 from sqlalchemy import orm
 
+from urban_meal_delivery import config
+from urban_meal_delivery import db
 from urban_meal_delivery.db import meta
 from urban_meal_delivery.db import utils
 
@@ -105,3 +110,134 @@ class Pixel(meta.Base):
             self._southwest.relate_to(self.grid.city.southwest)
 
         return self._southwest
+
+    def clear_map(self) -> Pixel:  # pragma: no cover
+        """Shortcut to the `.city.clear_map()` method.
+
+        Returns:
+            self: enabling method chaining
+        """  # noqa:D402,DAR203
+        self.grid.city.clear_map()
+        return self
+
+    @property  # pragma: no cover
+    def map(self) -> folium.Map:  # noqa:WPS125
+        """Shortcut to the `.city.map` object."""
+        return self.grid.city.map
+
+    def draw(  # noqa:C901,WPS210,WPS231
+        self, restaurants: bool = True, order_counts: bool = False,  # pragma: no cover
+    ) -> folium.Map:
+        """Draw the pixel on the `.grid.city.map`.
+
+        Args:
+            restaurants: include the restaurants
+            order_counts: show the number of orders at a restaurant
+
+        Returns:
+            `.grid.city.map` for convenience in interactive usage
+        """
+        bounds = (
+            (self.southwest.latitude, self.southwest.longitude),
+            (self.northeast.latitude, self.northeast.longitude),
+        )
+        info_text = f'Pixel({self.n_x}, {self.n_y})'
+
+        # Make the `Pixel`s look like a checkerboard.
+        if (self.n_x + self.n_y) % 2:
+            color = '#808000'
+        else:
+            color = '#ff8c00'
+
+        marker = folium.Rectangle(
+            bounds=bounds,
+            color='gray',
+            opacity=0.2,
+            weight=5,
+            fill_color=color,
+            fill_opacity=0.2,
+            popup=info_text,
+            tooltip=info_text,
+        )
+        marker.add_to(self.grid.city.map)
+
+        if restaurants:
+            # Obtain all primary `Address`es in the city that host `Restaurant`s
+            # and are in the `self` `Pixel`.
+            addresses = (  # noqa:ECE001
+                db.session.query(db.Address)
+                .filter(
+                    db.Address.id.in_(
+                        (
+                            db.session.query(db.Address.primary_id)
+                            .join(
+                                db.Restaurant,
+                                db.Address.id == db.Restaurant.address_id,
+                            )
+                            .join(
+                                db.AddressPixelAssociation,
+                                db.Address.id == db.AddressPixelAssociation.address_id,
+                            )
+                            .filter(db.AddressPixelAssociation.pixel_id == self.id)
+                        )
+                        .distinct()
+                        .all(),
+                    ),
+                )
+                .all()
+            )
+
+            for address in addresses:
+                # Show the restaurant's name if there is only one.
+                # Otherwise, list all the restaurants' ID's.
+                restaurants = (  # noqa:ECE001
+                    db.session.query(db.Restaurant)
+                    .join(db.Address, db.Restaurant.address_id == db.Address.id)
+                    .filter(db.Address.primary_id == address.id)
+                    .all()
+                )
+                if len(restaurants) == 1:  # type:ignore
+                    tooltip = (
+                        f'{restaurants[0].name} (#{restaurants[0].id})'  # type:ignore
+                    )
+                else:
+                    tooltip = 'Restaurants ' + ', '.join(  # noqa:WPS336
+                        f'#{restaurant.id}' for restaurant in restaurants  # type:ignore
+                    )
+
+                if order_counts:
+                    # Calculate the number of orders for ALL restaurants ...
+                    n_orders = (  # noqa:ECE001
+                        db.session.query(db.Order.id)
+                        .join(db.Address, db.Order.pickup_address_id == db.Address.id)
+                        .filter(db.Address.primary_id == address.id)
+                        .count()
+                    )
+                    # ... and adjust the size of the red dot on the `.map`.
+                    if n_orders >= 1000:
+                        radius = 20  # noqa:WPS220
+                    elif n_orders >= 500:
+                        radius = 15  # noqa:WPS220
+                    elif n_orders >= 100:
+                        radius = 10  # noqa:WPS220
+                    elif n_orders >= 10:
+                        radius = 5  # noqa:WPS220
+                    else:
+                        radius = 1  # noqa:WPS220
+
+                    tooltip += f' | n_orders={n_orders}'  # noqa:WPS336
+
+                    address.draw(
+                        radius=radius,
+                        color=config.RESTAURANT_COLOR,
+                        fill_color=config.RESTAURANT_COLOR,
+                        fill_opacity=0.3,
+                        tooltip=tooltip,
+                    )
+
+                else:
+                    address.draw(
+                        radius=1, color=config.RESTAURANT_COLOR, tooltip=tooltip,
+                    )
+
+        return self.map

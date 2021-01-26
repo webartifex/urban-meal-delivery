@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from typing import Any
+
+import folium
 import sqlalchemy as sa
 from sqlalchemy import orm
 
@@ -104,3 +107,31 @@ class Grid(meta.Base):
             pixel.addresses.append(assoc)
 
         return grid
+
+    def clear_map(self) -> Grid:  # pragma: no cover
+        """Shortcut to the `.city.clear_map()` method.
+
+        Returns:
+            self: enabling method chaining
+        """  # noqa:D402,DAR203
+        self.city.clear_map()
+        return self
+
+    @property  # pragma: no cover
+    def map(self) -> folium.Map:  # noqa:WPS125
+        """Shortcut to the `.city.map` object."""
+        return self.city.map
+
+    def draw(self, **kwargs: Any) -> folium.Map:  # pragma: no cover
+        """Draw all pixels in the grid.
+
+        Args:
+            **kwargs: passed on to `Pixel.draw()`
+
+        Returns:
+            `.city.map` for convenience in interactive usage
+        """
+        for pixel in self.pixels:
+            pixel.draw(**kwargs)
+
+        return self.map
