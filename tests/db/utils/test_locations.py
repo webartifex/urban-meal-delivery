@@ -140,6 +140,13 @@ class TestProperties:
 
         assert result == ZONE
 
+    def test_zone_details(self, location):
+        """Test `Location.zone_details` property."""
+        result = location.zone_details
+
+        zone, band = result
+        assert ZONE == f'{zone}{band}'
+
 
 class TestRelateTo:
     """Test the `Location.relate_to()` method and the `.x` and `.y` properties."""

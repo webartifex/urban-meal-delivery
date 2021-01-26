@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Tuple
 
 import utm
 
@@ -81,6 +81,11 @@ class Location:
     def zone(self) -> str:
         """The UTM zone of the location."""
         return f'{self._zone}{self._band}'
+
+    @property
+    def zone_details(self) -> Tuple[int, str]:
+        """The UTM zone of the location as the zone number and the band."""
+        return (self._zone, self._band)
 
     def __eq__(self, other: object) -> bool:
         """Check if two `Location` objects are the same location."""

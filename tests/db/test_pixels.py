@@ -87,3 +87,31 @@ class TestProperties:
         result = pixel.area
 
         assert result == 1.0
+
+    def test_northeast(self, pixel, city):
+        """Test `Pixel.northeast` property."""
+        result = pixel.northeast
+
+        assert abs(result.x - pixel.side_length) < 2
+        assert abs(result.y - pixel.side_length) < 2
+
+    def test_northeast_is_cached(self, pixel):
+        """Test `Pixel.northeast` property."""
+        result1 = pixel.northeast
+        result2 = pixel.northeast
+
+        assert result1 is result2
+
+    def test_southwest(self, pixel, city):
+        """Test `Pixel.southwest` property."""
+        result = pixel.southwest
+
+        assert abs(result.x) < 2
+        assert abs(result.y) < 2
+
+    def test_southwest_is_cached(self, pixel):
+        """Test `Pixel.southwest` property."""
+        result1 = pixel.southwest
+        result2 = pixel.southwest
+
+        assert result1 is result2
