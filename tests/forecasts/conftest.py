@@ -42,8 +42,8 @@ def horizontal_datetime_index():
 
 @pytest.fixture
 def horizontal_no_demand(horizontal_datetime_index):
-    """A horizontal time series of order totals when there was no demand."""
-    return pd.Series(0, index=horizontal_datetime_index, name='order_totals')
+    """A horizontal time series with order totals: no demand."""
+    return pd.Series(0, index=horizontal_datetime_index, name='n_orders')
 
 
 @pytest.fixture
@@ -72,5 +72,5 @@ def vertical_datetime_index():
 
 @pytest.fixture
 def vertical_no_demand(vertical_datetime_index):
-    """A vertical time series of order totals when there was no demand."""
-    return pd.Series(0, index=vertical_datetime_index, name='order_totals')
+    """A vertical time series with order totals: no demand."""
+    return pd.Series(0, index=vertical_datetime_index, name='n_orders')

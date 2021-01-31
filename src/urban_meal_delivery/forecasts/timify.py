@@ -53,7 +53,7 @@ class OrderHistory:
         Returns:
             order_totals: a one-column `DataFrame` with a `MultiIndex` of the
                 "pixel_id"s and "start_at"s (i.e., beginnings of the intervals);
-                the column with data is "total_orders"
+                the column with data is "n_orders"
         """
         if self._data is None:
             self._data = self.aggregate_orders()
@@ -69,7 +69,7 @@ class OrderHistory:
             SELECT
                 pixel_id,
                 start_at,
-                COUNT(*) AS total_orders
+                COUNT(*) AS n_orders
             FROM (
                 SELECT
                     pixel_id,
@@ -152,7 +152,7 @@ class OrderHistory:
 
         return data.reindex(index, fill_value=0)
 
-    def make_horizontal_time_series(  # noqa:WPS210
+    def make_horizontal_ts(  # noqa:WPS210
         self, pixel_id: int, predict_at: dt.datetime, train_horizon: int,
     ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a horizontal time series out of the `.totals`.
@@ -209,19 +209,19 @@ class OrderHistory:
 
         # Take only the counts at the `predict_at` time.
         training_ts = intra_pixel.loc[
-            first_start_at : last_start_at : self._n_daily_time_steps,  # type: ignore
-            'total_orders',
+            first_start_at : last_start_at : self._n_daily_time_steps,  # type:ignore
+            'n_orders',
         ]
         if len(training_ts) != frequency * train_horizon:
             raise RuntimeError('Not enough historic data for `predict_at`')
 
-        actuals_ts = intra_pixel.loc[[predict_at], 'total_orders']
+        actuals_ts = intra_pixel.loc[[predict_at], 'n_orders']
         if not len(actuals_ts):  # pragma: no cover
             raise LookupError('`predict_at` is not in the order history')
 
         return training_ts, frequency, actuals_ts
 
-    def make_vertical_time_series(  # noqa:WPS210
+    def make_vertical_ts(  # noqa:WPS210
         self, pixel_id: int, predict_day: dt.date, train_horizon: int,
     ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a vertical time series out of the `.totals`.
@@ -277,8 +277,8 @@ class OrderHistory:
 
         # Take all the counts between `first_train_day` and `last_train_day`.
         training_ts = intra_pixel.loc[
-            first_start_at:last_start_at,  # type: ignore
-            'total_orders',
+            first_start_at:last_start_at,  # type:ignore
+            'n_orders',
         ]
         if len(training_ts) != frequency * train_horizon:
             raise RuntimeError('Not enough historic data for `predict_day`')
@@ -299,15 +299,15 @@ class OrderHistory:
         ) - dt.timedelta(minutes=self._time_step)
 
         actuals_ts = intra_pixel.loc[
-            first_prediction_at:last_prediction_at,  # type: ignore
-            'total_orders',
+            first_prediction_at:last_prediction_at,  # type:ignore
+            'n_orders',
         ]
         if not len(actuals_ts):  # pragma: no cover
             raise LookupError('`predict_day` is not in the order history')
 
         return training_ts, frequency, actuals_ts
 
-    def make_real_time_time_series(  # noqa:WPS210
+    def make_realtime_ts(  # noqa:WPS210
         self, pixel_id: int, predict_at: dt.datetime, train_horizon: int,
     ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a vertical real-time time series out of the `.totals`.
@@ -374,8 +374,8 @@ class OrderHistory:
         # Take all the counts between `first_train_day` and `last_train_day`,
         # including the ones on the `predict_at` day prior to `predict_at`.
         training_ts = intra_pixel.loc[
-            first_start_at:last_start_at,  # type: ignore
-            'total_orders',
+            first_start_at:last_start_at,  # type:ignore
+            'n_orders',
         ]
         n_time_steps_on_predict_day = (
             (
@@ -394,7 +394,7 @@ class OrderHistory:
         if len(training_ts) != frequency * train_horizon + n_time_steps_on_predict_day:
             raise RuntimeError('Not enough historic data for `predict_day`')
 
-        actuals_ts = intra_pixel.loc[[predict_at], 'total_orders']
+        actuals_ts = intra_pixel.loc[[predict_at], 'n_orders']
         if not len(actuals_ts):  # pragma: no cover
             raise LookupError('`predict_at` is not in the order history')
 

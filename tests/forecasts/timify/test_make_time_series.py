@@ -41,7 +41,7 @@ def order_totals(good_pixel_id):
     index = pd.MultiIndex.from_tuples(gen)
     index.names = ['pixel_id', 'start_at']
 
-    df = pd.DataFrame(data={'total_orders': 0}, index=index)
+    df = pd.DataFrame(data={'n_orders': 0}, index=index)
 
     # Sanity check: n_pixels * n_time_steps_per_day * n_weekdays * n_weeks.
     assert len(df) == 2 * 12 * (7 * 2 + 1)
@@ -88,13 +88,13 @@ def bad_predict_at():
 
 
 class TestMakeHorizontalTimeSeries:
-    """Test the `OrderHistory.make_horizontal_time_series()` method."""
+    """Test the `OrderHistory.make_horizontal_ts()` method."""
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_wrong_pixel(self, order_history, good_predict_at, train_horizon):
         """A `pixel_id` that is not in the `grid`."""
         with pytest.raises(LookupError):
-            order_history.make_horizontal_time_series(
+            order_history.make_horizontal_ts(
                 pixel_id=999_999,
                 predict_at=good_predict_at,
                 train_horizon=train_horizon,
@@ -105,7 +105,7 @@ class TestMakeHorizontalTimeSeries:
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
         """The time series come as a `pd.Series`."""
-        result = order_history.make_horizontal_time_series(
+        result = order_history.make_horizontal_ts(
             pixel_id=good_pixel_id,
             predict_at=good_predict_at,
             train_horizon=train_horizon,
@@ -114,9 +114,9 @@ class TestMakeHorizontalTimeSeries:
         training_ts, _, actuals_ts = result
 
         assert isinstance(training_ts, pd.Series)
-        assert training_ts.name == 'total_orders'
+        assert training_ts.name == 'n_orders'
         assert isinstance(actuals_ts, pd.Series)
-        assert actuals_ts.name == 'total_orders'
+        assert actuals_ts.name == 'n_orders'
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length(
@@ -126,7 +126,7 @@ class TestMakeHorizontalTimeSeries:
 
         ... whereas the time series with the actual order counts has only `1` value.
         """
-        result = order_history.make_horizontal_time_series(
+        result = order_history.make_horizontal_ts(
             pixel_id=good_pixel_id,
             predict_at=good_predict_at,
             train_horizon=train_horizon,
@@ -142,7 +142,7 @@ class TestMakeHorizontalTimeSeries:
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
         """The `frequency` must be `7`."""
-        result = order_history.make_horizontal_time_series(
+        result = order_history.make_horizontal_ts(
             pixel_id=good_pixel_id,
             predict_at=good_predict_at,
             train_horizon=train_horizon,
@@ -161,7 +161,7 @@ class TestMakeHorizontalTimeSeries:
         ... the history of order totals is not long enough.
         """
         with pytest.raises(RuntimeError):
-            order_history.make_horizontal_time_series(
+            order_history.make_horizontal_ts(
                 pixel_id=good_pixel_id,
                 predict_at=bad_predict_at,
                 train_horizon=train_horizon,
@@ -175,19 +175,19 @@ class TestMakeHorizontalTimeSeries:
         ... the history of order totals can never be long enough.
         """
         with pytest.raises(RuntimeError):
-            order_history.make_horizontal_time_series(
+            order_history.make_horizontal_ts(
                 pixel_id=good_pixel_id, predict_at=good_predict_at, train_horizon=999,
             )
 
 
 class TestMakeVerticalTimeSeries:
-    """Test the `OrderHistory.make_vertical_time_series()` method."""
+    """Test the `OrderHistory.make_vertical_ts()` method."""
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_wrong_pixel(self, order_history, good_predict_at, train_horizon):
         """A `pixel_id` that is not in the `grid`."""
         with pytest.raises(LookupError):
-            order_history.make_vertical_time_series(
+            order_history.make_vertical_ts(
                 pixel_id=999_999,
                 predict_day=good_predict_at.date(),
                 train_horizon=train_horizon,
@@ -198,7 +198,7 @@ class TestMakeVerticalTimeSeries:
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
         """The time series come as `pd.Series`."""
-        result = order_history.make_vertical_time_series(
+        result = order_history.make_vertical_ts(
             pixel_id=good_pixel_id,
             predict_day=good_predict_at.date(),
             train_horizon=train_horizon,
@@ -207,9 +207,9 @@ class TestMakeVerticalTimeSeries:
         training_ts, _, actuals_ts = result
 
         assert isinstance(training_ts, pd.Series)
-        assert training_ts.name == 'total_orders'
+        assert training_ts.name == 'n_orders'
         assert isinstance(actuals_ts, pd.Series)
-        assert actuals_ts.name == 'total_orders'
+        assert actuals_ts.name == 'n_orders'
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length(
@@ -223,7 +223,7 @@ class TestMakeVerticalTimeSeries:
         The time series with the actual order counts always holds one observation
         per time step of a day.
         """
-        result = order_history.make_vertical_time_series(
+        result = order_history.make_vertical_ts(
             pixel_id=good_pixel_id,
             predict_day=good_predict_at.date(),
             train_horizon=train_horizon,
@@ -245,7 +245,7 @@ class TestMakeVerticalTimeSeries:
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
         """The `frequency` is the number of weekly time steps."""
-        result = order_history.make_vertical_time_series(
+        result = order_history.make_vertical_ts(
             pixel_id=good_pixel_id,
             predict_day=good_predict_at.date(),
             train_horizon=train_horizon,
@@ -270,7 +270,7 @@ class TestMakeVerticalTimeSeries:
         ... the history of order totals is not long enough.
         """
         with pytest.raises(RuntimeError):
-            order_history.make_vertical_time_series(
+            order_history.make_vertical_ts(
                 pixel_id=good_pixel_id,
                 predict_day=bad_predict_at.date(),
                 train_horizon=train_horizon,
@@ -284,7 +284,7 @@ class TestMakeVerticalTimeSeries:
         ... the history of order totals can never be long enough.
         """
         with pytest.raises(RuntimeError):
-            order_history.make_vertical_time_series(
+            order_history.make_vertical_ts(
                 pixel_id=good_pixel_id,
                 predict_day=good_predict_at.date(),
                 train_horizon=999,
@@ -292,13 +292,13 @@ class TestMakeVerticalTimeSeries:
 
 
 class TestMakeRealTimeTimeSeries:
-    """Test the `OrderHistory.make_real_time_time_series()` method."""
+    """Test the `OrderHistory.make_realtime_ts()` method."""
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_wrong_pixel(self, order_history, good_predict_at, train_horizon):
         """A `pixel_id` that is not in the `grid`."""
         with pytest.raises(LookupError):
-            order_history.make_real_time_time_series(
+            order_history.make_realtime_ts(
                 pixel_id=999_999,
                 predict_at=good_predict_at,
                 train_horizon=train_horizon,
@@ -309,7 +309,7 @@ class TestMakeRealTimeTimeSeries:
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
         """The time series come as `pd.Series`."""
-        result = order_history.make_real_time_time_series(
+        result = order_history.make_realtime_ts(
             pixel_id=good_pixel_id,
             predict_at=good_predict_at,
             train_horizon=train_horizon,
@@ -318,9 +318,9 @@ class TestMakeRealTimeTimeSeries:
         training_ts, _, actuals_ts = result
 
         assert isinstance(training_ts, pd.Series)
-        assert training_ts.name == 'total_orders'
+        assert training_ts.name == 'n_orders'
         assert isinstance(actuals_ts, pd.Series)
-        assert actuals_ts.name == 'total_orders'
+        assert actuals_ts.name == 'n_orders'
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length1(
@@ -341,7 +341,7 @@ class TestMakeRealTimeTimeSeries:
             config.SERVICE_START,
             0,
         )
-        result = order_history.make_real_time_time_series(
+        result = order_history.make_realtime_ts(
             pixel_id=good_pixel_id, predict_at=predict_at, train_horizon=train_horizon,
         )
 
@@ -372,7 +372,7 @@ class TestMakeRealTimeTimeSeries:
         """
         assert good_predict_at.hour == test_config.NOON
 
-        result = order_history.make_real_time_time_series(
+        result = order_history.make_realtime_ts(
             pixel_id=good_pixel_id,
             predict_at=good_predict_at,
             train_horizon=train_horizon,
@@ -400,7 +400,7 @@ class TestMakeRealTimeTimeSeries:
         self, order_history, good_pixel_id, good_predict_at, train_horizon,
     ):
         """The `frequency` is the number of weekly time steps."""
-        result = order_history.make_real_time_time_series(
+        result = order_history.make_realtime_ts(
             pixel_id=good_pixel_id,
             predict_at=good_predict_at,
             train_horizon=train_horizon,
@@ -425,7 +425,7 @@ class TestMakeRealTimeTimeSeries:
         ... the history of order totals is not long enough.
         """
         with pytest.raises(RuntimeError):
-            order_history.make_real_time_time_series(
+            order_history.make_realtime_ts(
                 pixel_id=good_pixel_id,
                 predict_at=bad_predict_at,
                 train_horizon=train_horizon,
@@ -439,6 +439,6 @@ class TestMakeRealTimeTimeSeries:
         ... the history of order totals can never be long enough.
         """
         with pytest.raises(RuntimeError):
-            order_history.make_real_time_time_series(
+            order_history.make_realtime_ts(
                 pixel_id=good_pixel_id, predict_at=good_predict_at, train_horizon=999,
             )
