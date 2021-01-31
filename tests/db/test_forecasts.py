@@ -34,6 +34,15 @@ class TestSpecialMethods:
         """Test instantiation of a new `Forecast` object."""
         assert forecast is not None
 
+    def test_text_representation(self, forecast):
+        """`Forecast` has a non-literal text representation."""
+        result = repr(forecast)
+
+        assert (
+            result
+            == f'<Forecast: {forecast.prediction} for pixel ({forecast.pixel.n_x}|{forecast.pixel.n_y}) at {forecast.start_at}>'  # noqa:E501
+        )
+
 
 @pytest.mark.db
 @pytest.mark.no_cover

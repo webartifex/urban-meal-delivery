@@ -123,3 +123,13 @@ class Forecast(meta.Base):
 
     # Relationships
     pixel = orm.relationship('Pixel', back_populates='forecasts')
+
+    def __repr__(self) -> str:
+        """Non-literal text representation."""
+        return '<{cls}: {prediction} for pixel ({n_x}|{n_y}) at {start_at}>'.format(
+            cls=self.__class__.__name__,
+            prediction=self.prediction,
+            n_x=self.pixel.n_x,
+            n_y=self.pixel.n_y,
+            start_at=self.start_at,
+        )
