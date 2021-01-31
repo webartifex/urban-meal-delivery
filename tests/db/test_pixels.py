@@ -88,7 +88,7 @@ class TestProperties:
 
         assert result == 1.0
 
-    def test_northeast(self, pixel, city):
+    def test_northeast(self, pixel):
         """Test `Pixel.northeast` property."""
         result = pixel.northeast
 
@@ -102,7 +102,7 @@ class TestProperties:
 
         assert result1 is result2
 
-    def test_southwest(self, pixel, city):
+    def test_southwest(self, pixel):
         """Test `Pixel.southwest` property."""
         result = pixel.southwest
 
@@ -115,3 +115,38 @@ class TestProperties:
         result2 = pixel.southwest
 
         assert result1 is result2
+
+    @pytest.fixture
+    def _restaurants_mock(self, mocker, monkeypatch, restaurant):
+        """A `Mock` whose `.return_value` is `[restaurant]`."""
+        mock = mocker.Mock()
+        query = (  # noqa:ECE001
+            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501,WPS219
+        )
+        query.return_value = [restaurant]
+        monkeypatch.setattr(db, 'session', mock)
+
+    @pytest.mark.usefixtures('_restaurants_mock')
+    def test_restaurants(self, pixel, restaurant):
+        """Test `Pixel.restaurants` property."""
+        result = pixel.restaurants
+
+        assert result == [restaurant]
+
+    @pytest.mark.usefixtures('_restaurants_mock')
+    def test_restaurants_is_cached(self, pixel):
+        """Test `Pixel.restaurants` property."""
+        result1 = pixel.restaurants
+        result2 = pixel.restaurants
+
+        assert result1 is result2
+
+    @pytest.mark.db
+    def test_restaurants_with_db(self, pixel):
+        """Test `Pixel.restaurants` property.
+
+        This is a trivial integration test.
+        """
+        result = pixel.restaurants
+
+        assert not result  # = empty `list`

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import List
+
 import folium
 import sqlalchemy as sa
 import utm
@@ -110,6 +112,22 @@ class Pixel(meta.Base):
             self._southwest.relate_to(self.grid.city.southwest)
 
         return self._southwest
+
+    @property
+    def restaurants(self) -> List[db.Restaurant]:  # pragma: no cover
+        """Obtain all `Restaurant`s in `self`."""
+        if not hasattr(self, '_restaurants'):  # noqa:WPS421  note:d334120e
+            self._restaurants = (  # noqa:ECE001
+                db.session.query(db.Restaurant)
+                .join(
+                    db.AddressPixelAssociation,
+                    db.Restaurant.address_id == db.AddressPixelAssociation.address_id,
+                )
+                .filter(db.AddressPixelAssociation.pixel_id == self.id)
+                .all()
+            )
+
+        return self._restaurants
 
     def clear_map(self) -> Pixel:  # pragma: no cover
         """Shortcut to the `.city.clear_map()` method.
