@@ -37,6 +37,7 @@ pandas = "^1.1.0"
 psycopg2 = "^2.8.5"  # adapter for PostgreSQL
 rpy2 = "^3.4.1"
 sqlalchemy = "^1.3.18"
+statsmodels = "^0.12.1"
 utm = "^0.7.0"
 
 # Jupyter Lab => notebooks with analyses using the developed package
