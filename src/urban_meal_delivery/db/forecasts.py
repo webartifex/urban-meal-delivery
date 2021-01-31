@@ -22,6 +22,10 @@ class Forecast(meta.Base):
     time_step = sa.Column(sa.SmallInteger, nullable=False)
     training_horizon = sa.Column(sa.SmallInteger, nullable=False)
     model = sa.Column(sa.Unicode(length=20), nullable=False)
+    # We also store the actual order counts for convenient retrieval.
+    # A `UniqueConstraint` below ensures that redundant values that
+    # are to be expected are consistend across rows.
+    actual = sa.Column(sa.SmallInteger, nullable=False)
     # Raw `.prediction`s are stored as `float`s (possibly negative).
     # The rounding is then done on the fly if required.
     prediction = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
@@ -62,6 +66,7 @@ class Forecast(meta.Base):
         sa.CheckConstraint(
             'training_horizon > 0', name='training_horizon_must_be_positive',
         ),
+        sa.CheckConstraint('actual >= 0', name='actuals_must_be_non_negative'),
         sa.CheckConstraint(
             """
                 NOT (

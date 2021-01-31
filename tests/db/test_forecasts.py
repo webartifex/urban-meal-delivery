@@ -18,6 +18,7 @@ def forecast(pixel):
         time_step=60,
         training_horizon=8,
         model='hets',
+        actual=12,
         prediction=12.3,
         low80=1.23,
         high80=123.4,
@@ -128,6 +129,16 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError, match='training_horizon_must_be_positive',
+        ):
+            db_session.commit()
+
+    def test_non_negative_actuals(self, db_session, forecast):
+        """Insert an instance with invalid data."""
+        forecast.actual = -1
+        db_session.add(forecast)
+
+        with pytest.raises(
+            sa_exc.IntegrityError, match='actuals_must_be_non_negative',
         ):
             db_session.commit()
 
@@ -388,6 +399,7 @@ class TestConstraints:
             time_step=forecast.time_step,
             training_horizon=forecast.training_horizon,
             model=forecast.model,
+            actual=forecast.actual,
             prediction=2,
             low80=1,
             high80=3,
