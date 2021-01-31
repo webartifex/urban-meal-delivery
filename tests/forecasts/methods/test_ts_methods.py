@@ -1,4 +1,7 @@
-"""Test the `arima.predict()` and `ets.predict()` functions."""
+"""Test the `arima.predict()` and `ets.predict()` functions.
+
+We consider both "classical" time series prediction models.
+"""
 
 import datetime as dt
 

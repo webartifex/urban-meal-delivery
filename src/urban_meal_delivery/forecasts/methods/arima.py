@@ -14,7 +14,7 @@ def predict(
 ) -> pd.DataFrame:
     """Predict with an automatically chosen ARIMA model.
 
-    Note: The function does not check if the `forecast` interval
+    Note: The function does not check if the `forecast_interval`
     extends the `training_ts`'s interval without a gap!
 
     Args:
@@ -65,7 +65,7 @@ def predict(
     forecasts = pandas2ri.rpy2py(result)
     forecasts.index = forecast_interval
 
-    return forecasts.rename(
+    return forecasts.round(5).rename(
         columns={
             'Point Forecast': 'prediction',
             'Lo 80': 'low80',

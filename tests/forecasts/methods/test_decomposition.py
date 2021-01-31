@@ -7,7 +7,7 @@ import pytest
 
 from tests.forecasts.conftest import NS
 from tests.forecasts.conftest import VERTICAL_FREQUENCY
-from urban_meal_delivery.forecasts import decomposition
+from urban_meal_delivery.forecasts.methods import decomposition
 
 
 class TestInvalidArguments:

@@ -169,10 +169,13 @@ def stl(  # noqa:C901,WPS210,WPS211,WPS231
 
     # Unpack the result to a `pd.DataFrame`.
     result = pandas2ri.rpy2py(result[0])
-    result = {
-        'seasonal': pd.Series(result[:, 0], index=time_series.index),
-        'trend': pd.Series(result[:, 1], index=time_series.index),
-        'residual': pd.Series(result[:, 2], index=time_series.index),
-    }
+    result = pd.DataFrame(
+        data={
+            'seasonal': result[:, 0],
+            'trend': result[:, 1],
+            'residual': result[:, 2],
+        },
+        index=time_series.index,
+    )
 
-    return pd.DataFrame(result)
+    return result.round(5)
