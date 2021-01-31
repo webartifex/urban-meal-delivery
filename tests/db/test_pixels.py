@@ -18,7 +18,7 @@ class TestSpecialMethods:
         """`Pixel` has a non-literal text representation."""
         result = repr(pixel)
 
-        assert result == f'<Pixel: ({pixel.n_x}, {pixel.n_y})>'
+        assert result == f'<Pixel: ({pixel.n_x}|{pixel.n_y})>'
 
 
 @pytest.mark.db

@@ -52,7 +52,7 @@ class Pixel(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}: ({x}, {y})>'.format(
+        return '<{cls}: ({x}|{y})>'.format(
             cls=self.__class__.__name__, x=self.n_x, y=self.n_y,
         )
 
@@ -159,7 +159,7 @@ class Pixel(meta.Base):
             (self.southwest.latitude, self.southwest.longitude),
             (self.northeast.latitude, self.northeast.longitude),
         )
-        info_text = f'Pixel({self.n_x}, {self.n_y})'
+        info_text = f'Pixel({self.n_x}|{self.n_y})'
 
         # Make the `Pixel`s look like a checkerboard.
         if (self.n_x + self.n_y) % 2:
