@@ -152,6 +152,74 @@ class OrderHistory:
 
         return data.reindex(index, fill_value=0)
 
+    def first_order_at(self, pixel_id: int) -> dt.datetime:
+        """Get the time step with the first order in a pixel.
+
+        Args:
+            pixel_id: pixel for which to get the first order
+
+        Returns:
+            minimum "start_at" from when orders take place
+
+        Raises:
+            LookupError: `pixel_id` not in `grid`
+
+        # noqa:DAR401 RuntimeError
+        """
+        try:
+            intra_pixel = self.totals.loc[pixel_id]
+        except KeyError:
+            raise LookupError('The `pixel_id` is not in the `grid`') from None
+
+        first_order = intra_pixel[intra_pixel['n_orders'] > 0].index.min()
+
+        # Sanity check: without an `Order`, the `Pixel` should not exist.
+        if first_order is pd.NaT:  # pragma: no cover
+            raise RuntimeError('no orders in the pixel')
+
+        # Return a proper `datetime.datetime` object.
+        return dt.datetime(
+            first_order.year,
+            first_order.month,
+            first_order.day,
+            first_order.hour,
+            first_order.minute,
+        )
+
+    def last_order_at(self, pixel_id: int) -> dt.datetime:
+        """Get the time step with the last order in a pixel.
+
+        Args:
+            pixel_id: pixel for which to get the last order
+
+        Returns:
+            maximum "start_at" from when orders take place
+
+        Raises:
+            LookupError: `pixel_id` not in `grid`
+
+        # noqa:DAR401 RuntimeError
+        """
+        try:
+            intra_pixel = self.totals.loc[pixel_id]
+        except KeyError:
+            raise LookupError('The `pixel_id` is not in the `grid`') from None
+
+        last_order = intra_pixel[intra_pixel['n_orders'] > 0].index.max()
+
+        # Sanity check: without an `Order`, the `Pixel` should not exist.
+        if last_order is pd.NaT:  # pragma: no cover
+            raise RuntimeError('no orders in the pixel')
+
+        # Return a proper `datetime.datetime` object.
+        return dt.datetime(
+            last_order.year,
+            last_order.month,
+            last_order.day,
+            last_order.hour,
+            last_order.minute,
+        )
+
     def make_horizontal_ts(  # noqa:WPS210
         self, pixel_id: int, predict_at: dt.datetime, train_horizon: int,
     ) -> Tuple[pd.Series, int, pd.Series]:
