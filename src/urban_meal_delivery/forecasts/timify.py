@@ -40,6 +40,11 @@ class OrderHistory:
         self._data = None
 
     @property
+    def time_step(self) -> int:
+        """The length of one time step."""
+        return self._time_step
+
+    @property
     def totals(self) -> pd.DataFrame:
         """The order totals by `Pixel` and `.time_step`.
 
