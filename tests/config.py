@@ -11,10 +11,10 @@ YEAR, MONTH, DAY = 2016, 7, 1
 # The hour when most test cases take place.
 NOON = 12
 
-# `START` and `END` constitute a 15-day time span.
-# That implies a maximum `train_horizon` of `2` as that needs full 7-day weeks.
+# `START` and `END` constitute a 22-day time span.
+# That implies a maximum `train_horizon` of `3` as that needs full 7-day weeks.
 START = datetime.datetime(YEAR, MONTH, DAY, config.SERVICE_START, 0)
-END = datetime.datetime(YEAR, MONTH, 15, config.SERVICE_END, 0)
+END = datetime.datetime(YEAR, MONTH, DAY + 21, config.SERVICE_END, 0)
 
 # Default time steps (in minutes), for example, for `OrderHistory` objects.
 LONG_TIME_STEP = 60
@@ -28,6 +28,6 @@ VERTICAL_FREQUENCY_SHORT = 7 * 24
 
 # Default training horizons, for example, for
 # `OrderHistory.make_horizontal_time_series()`.
-LONG_TRAIN_HORIZON = 2
-SHORT_TRAIN_HORIZON = 1
+LONG_TRAIN_HORIZON = 3
+SHORT_TRAIN_HORIZON = 2
 TRAIN_HORIZONS = (SHORT_TRAIN_HORIZON, LONG_TRAIN_HORIZON)

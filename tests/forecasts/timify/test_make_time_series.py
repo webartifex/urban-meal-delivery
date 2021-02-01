@@ -17,8 +17,8 @@ from urban_meal_delivery import config
 def good_predict_at():
     """A `predict_at` within `START`-`END` and ...
 
-    ... a long enough history so that either `train_horizon=1`
-    or `train_horizon=2` works.
+    ... a long enough history so that either `SHORT_TRAIN_HORIZON`
+    or `LONG_TRAIN_HORIZON` works.
     """
     return datetime.datetime(
         test_config.END.year,
@@ -33,10 +33,10 @@ def good_predict_at():
 def bad_predict_at():
     """A `predict_at` within `START`-`END` but ...
 
-    ... not a long enough history so that both `train_horizon=1`
-    and `train_horizon=2` do not work.
+    ... not a long enough history so that both `SHORT_TRAIN_HORIZON`
+    and `LONG_TRAIN_HORIZON` do not work.
     """
-    predict_day = test_config.END - datetime.timedelta(weeks=1, days=1)
+    predict_day = test_config.END - datetime.timedelta(weeks=2, days=1)
     return datetime.datetime(
         predict_day.year, predict_day.month, predict_day.day, test_config.NOON, 0,
     )
