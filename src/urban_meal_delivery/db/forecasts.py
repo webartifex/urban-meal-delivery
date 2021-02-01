@@ -1,5 +1,10 @@
 """Provide the ORM's `Forecast` model."""
 
+from __future__ import annotations
+
+from typing import List
+
+import pandas as pd
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
@@ -10,7 +15,8 @@ from urban_meal_delivery.db import meta
 class Forecast(meta.Base):
     """A demand forecast for a `.pixel` and `.time_step` pair.
 
-    This table is denormalized on purpose to keep things simple.
+    This table is denormalized on purpose to keep things simple. In particular,
+    the `.model` and `.actual` hold redundant values.
     """
 
     __tablename__ = 'forecasts'
@@ -133,3 +139,59 @@ class Forecast(meta.Base):
             n_y=self.pixel.n_y,
             start_at=self.start_at,
         )
+
+    @classmethod
+    def from_dataframe(  # noqa:WPS211
+        cls,
+        pixel: db.Pixel,
+        time_step: int,
+        training_horizon: int,
+        model: str,
+        data: pd.Dataframe,
+    ) -> List[db.Forecast]:
+        """Convert results from the forecasting `*Model`s into `Forecast` objects.
+
+        This is an alternative constructor method.
+
+        Background: The functions in `urban_meal_delivery.forecasts.methods`
+        return `pd.Dataframe`s with "start_at" (i.e., `pd.Timestamp` objects)
+        values in the index and five columns "prediction", "low80", "high80",
+        "low95", and "high95" with `np.float` values. The `*Model.predic()`
+        methods in `urban_meal_delivery.forecasts.models` then add an "actual"
+        column. This constructor converts these results into ORM models.
+        Also, the `np.float` values are cast as plain `float` ones as
+        otherwise SQLAlchemy and the database would complain.
+
+        Args:
+            pixel: in which the forecast is made
+            time_step: length of one time step in minutes
+            training_horizon: length of the training horizon in weeks
+            model: name of the forecasting model
+            data: a `pd.Dataframe` as described above (i.e.,
+                with the six columns holding `float`s)
+
+        Returns:
+            forecasts: the `data` as `Forecast` objects
+        """  # noqa:RST215
+        forecasts = []
+
+        for timestamp_idx in data.index:
+            forecast = cls(
+                pixel=pixel,
+                start_at=timestamp_idx.to_pydatetime(),
+                time_step=time_step,
+                training_horizon=training_horizon,
+                model=model,
+                actual=int(data.loc[timestamp_idx, 'actual']),
+                prediction=round(data.loc[timestamp_idx, 'prediction'], 5),
+                low80=round(data.loc[timestamp_idx, 'low80'], 5),
+                high80=round(data.loc[timestamp_idx, 'high80'], 5),
+                low95=round(data.loc[timestamp_idx, 'low95'], 5),
+                high95=round(data.loc[timestamp_idx, 'high95'], 5),
+            )
+            forecasts.append(forecast)
+
+        return forecasts
+
+
+from urban_meal_delivery import db  # noqa:E402  isort:skip

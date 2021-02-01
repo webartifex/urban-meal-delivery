@@ -1,23 +1,35 @@
 """Test the ORM's `Forecast` model."""
 
-import datetime
+import datetime as dt
 
+import pandas as pd
 import pytest
 import sqlalchemy as sqla
 from sqlalchemy import exc as sa_exc
 
+from tests import config as test_config
 from urban_meal_delivery import db
+
+
+MODEL = 'hets'
 
 
 @pytest.fixture
 def forecast(pixel):
-    """A `forecast` made in the `pixel`."""
+    """A `forecast` made in the `pixel` at `NOON`."""
+    start_at = dt.datetime(
+        test_config.END.year,
+        test_config.END.month,
+        test_config.END.day,
+        test_config.NOON,
+    )
+
     return db.Forecast(
         pixel=pixel,
-        start_at=datetime.datetime(2020, 1, 1, 12, 0),
-        time_step=60,
-        training_horizon=8,
-        model='hets',
+        start_at=start_at,
+        time_step=test_config.LONG_TIME_STEP,
+        training_horizon=test_config.LONG_TRAIN_HORIZON,
+        model=MODEL,
         actual=12,
         prediction=12.3,
         low80=1.23,
@@ -76,7 +88,7 @@ class TestConstraints:
         self, db_session, forecast, hour,
     ):
         """Insert an instance with invalid data."""
-        forecast.start_at = datetime.datetime(
+        forecast.start_at = dt.datetime(
             forecast.start_at.year,
             forecast.start_at.month,
             forecast.start_at.day,
@@ -91,7 +103,7 @@ class TestConstraints:
 
     def test_invalid_start_at_not_quarter_of_hour(self, db_session, forecast):
         """Insert an instance with invalid data."""
-        forecast.start_at += datetime.timedelta(minutes=1)
+        forecast.start_at += dt.timedelta(minutes=1)
         db_session.add(forecast)
 
         with pytest.raises(
@@ -101,7 +113,7 @@ class TestConstraints:
 
     def test_invalid_start_at_seconds_set(self, db_session, forecast):
         """Insert an instance with invalid data."""
-        forecast.start_at += datetime.timedelta(seconds=1)
+        forecast.start_at += dt.timedelta(seconds=1)
         db_session.add(forecast)
 
         with pytest.raises(
@@ -111,7 +123,7 @@ class TestConstraints:
 
     def test_invalid_start_at_microseconds_set(self, db_session, forecast):
         """Insert an instance with invalid data."""
-        forecast.start_at += datetime.timedelta(microseconds=1)
+        forecast.start_at += dt.timedelta(microseconds=1)
         db_session.add(forecast)
 
         with pytest.raises(
@@ -419,3 +431,75 @@ class TestConstraints:
 
         with pytest.raises(sa_exc.IntegrityError, match='duplicate key value'):
             db_session.commit()
+
+
+class TestFromDataFrameConstructor:
+    """Test the alternative `Forecast.from_dataframe()` constructor."""
+
+    @pytest.fixture
+    def prediction_data(self):
+        """A `pd.DataFrame` as returned by `*Model.predict()` ...
+
+        ... and used as the `data` argument to `Forecast.from_dataframe()`.
+
+        We assume the `data` come from some vertical forecasting `*Model`
+        and contain several rows (= `3` in this example) corresponding
+        to different time steps centered around `NOON`.
+        """
+        noon_start_at = dt.datetime(
+            test_config.END.year,
+            test_config.END.month,
+            test_config.END.day,
+            test_config.NOON,
+        )
+
+        index = pd.Index(
+            [
+                noon_start_at - dt.timedelta(minutes=test_config.LONG_TIME_STEP),
+                noon_start_at,
+                noon_start_at + dt.timedelta(minutes=test_config.LONG_TIME_STEP),
+            ],
+        )
+        index.name = 'start_at'
+
+        return pd.DataFrame(
+            data={
+                'actual': (11, 12, 13),
+                'prediction': (11.3, 12.3, 13.3),
+                'low80': (1.123, 1.23, 1.323),
+                'high80': (112.34, 123.4, 132.34),
+                'low95': (0.1123, 0.123, 0.1323),
+                'high95': (1123.45, 1234.5, 1323.45),
+            },
+            index=index,
+        )
+
+    def test_convert_dataframe_into_orm_objects(self, pixel, prediction_data):
+        """Call `Forecast.from_dataframe()`."""
+        forecasts = db.Forecast.from_dataframe(
+            pixel=pixel,
+            time_step=test_config.LONG_TIME_STEP,
+            training_horizon=test_config.LONG_TRAIN_HORIZON,
+            model=MODEL,
+            data=prediction_data,
+        )
+
+        assert len(forecasts) == 3
+        for forecast in forecasts:
+            assert isinstance(forecast, db.Forecast)
+
+    @pytest.mark.db
+    def test_persist_predictions_into_database(
+        self, db_session, pixel, prediction_data,
+    ):
+        """Call `Forecast.from_dataframe()` and persist the results."""
+        forecasts = db.Forecast.from_dataframe(
+            pixel=pixel,
+            time_step=test_config.LONG_TIME_STEP,
+            training_horizon=test_config.LONG_TRAIN_HORIZON,
+            model=MODEL,
+            data=prediction_data,
+        )
+
+        db_session.add_all(forecasts)
+        db_session.commit()
