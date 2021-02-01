@@ -1,6 +1,5 @@
 """Tests for the `urban_meal_delivery.forecasts.models` sub-package."""
 
-import datetime as dt
 
 import pandas as pd
 import pytest
@@ -58,16 +57,6 @@ class TestGenericForecastingModelProperties:
         assert model.name not in self.unique_model_names
 
         self.unique_model_names.add(model.name)
-
-    @pytest.fixture
-    def predict_at(self) -> dt.datetime:
-        """`NOON` on the day to be predicted."""
-        return dt.datetime(
-            test_config.END.year,
-            test_config.END.month,
-            test_config.END.day,
-            test_config.NOON,
-        )
 
     @pytest.mark.r
     def test_make_prediction_structure(

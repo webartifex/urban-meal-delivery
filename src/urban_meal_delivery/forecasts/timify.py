@@ -467,3 +467,38 @@ class OrderHistory:
             raise LookupError('`predict_at` is not in the order history')
 
         return training_ts, frequency, actuals_ts
+
+    def avg_daily_demand(
+        self, pixel_id: int, predict_day: dt.date, train_horizon: int,
+    ) -> float:
+        """Calculate the average daily demand (ADD) for a `Pixel`.
+
+        The ADD is defined as the average number of daily `Order`s in a
+        `Pixel` within the training horizon preceding the `predict_day`.
+
+        The ADD is primarily used for the rule-based heuristic to determine
+        the best forecasting model for a `Pixel` on the `predict_day`.
+
+        Implementation note: To calculate the ADD, the order counts are
+        generated as a vertical time series. That must be so as we need to
+        include all time steps of the days before the `predict_day` and
+        no time step of the latter.
+
+        Args:
+            pixel_id: pixel for which the ADD is calculated
+            predict_day: following the `train_horizon` on which the ADD is calculated
+            train_horizon: time horizon over which the ADD is calculated
+
+        Returns:
+            average number of orders per day
+        """
+        training_ts, _, _ = self.make_vertical_ts(  # noqa:WPS434
+            pixel_id=pixel_id, predict_day=predict_day, train_horizon=train_horizon,
+        )
+
+        first_day = training_ts.index.min().date()
+        last_day = training_ts.index.max().date()
+        # `+1` as both `first_day` and `last_day` are included.
+        n_days = (last_day - first_day).days + 1
+
+        return round(training_ts.sum() / n_days, 1)

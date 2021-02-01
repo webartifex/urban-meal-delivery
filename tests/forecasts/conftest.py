@@ -83,6 +83,17 @@ def good_pixel_id(pixel):
 
 
 @pytest.fixture
+def predict_at() -> dt.datetime:
+    """`NOON` on the day to be predicted."""
+    return dt.datetime(
+        test_config.END.year,
+        test_config.END.month,
+        test_config.END.day,
+        test_config.NOON,
+    )
+
+
+@pytest.fixture
 def order_totals(good_pixel_id):
     """A mock for `OrderHistory.totals`.
 
