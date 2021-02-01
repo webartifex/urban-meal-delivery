@@ -5,9 +5,12 @@ import math
 import pandas as pd
 import pytest
 
-from tests.forecasts.conftest import NS
-from tests.forecasts.conftest import VERTICAL_FREQUENCY
+from tests import config as test_config
 from urban_meal_delivery.forecasts.methods import decomposition
+
+
+# The "periodic" `ns` suggested for the STL method.
+NS = 999
 
 
 class TestInvalidArguments:
@@ -18,85 +21,118 @@ class TestInvalidArguments:
         time_series = pd.Series(dtype=float, index=vertical_datetime_index)
 
         with pytest.raises(ValueError, match='`NaN` values'):
-            decomposition.stl(time_series, frequency=VERTICAL_FREQUENCY, ns=99)
+            decomposition.stl(
+                time_series, frequency=test_config.VERTICAL_FREQUENCY_LONG, ns=NS,
+            )
 
     def test_ns_not_odd(self, vertical_no_demand):
         """`ns` must be odd and `>= 7`."""
         with pytest.raises(ValueError, match='`ns`'):
-            decomposition.stl(vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=8)
+            decomposition.stl(
+                vertical_no_demand, frequency=test_config.VERTICAL_FREQUENCY_LONG, ns=8,
+            )
 
     @pytest.mark.parametrize('ns', [-99, -1, 1, 5])
     def test_ns_smaller_than_seven(self, vertical_no_demand, ns):
         """`ns` must be odd and `>= 7`."""
         with pytest.raises(ValueError, match='`ns`'):
-            decomposition.stl(vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=ns)
+            decomposition.stl(
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=ns,
+            )
 
     def test_nt_not_odd(self, vertical_no_demand):
         """`nt` must be odd and `>= default_nt`."""
         nt = 200
-        default_nt = math.ceil((1.5 * VERTICAL_FREQUENCY) / (1 - (1.5 / NS)))
+        default_nt = math.ceil(
+            (1.5 * test_config.VERTICAL_FREQUENCY_LONG) / (1 - (1.5 / NS)),
+        )
 
         assert nt > default_nt  # sanity check
 
         with pytest.raises(ValueError, match='`nt`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, nt=nt,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                nt=nt,
             )
 
-    @pytest.mark.parametrize('nt', [-99, -1, 0, 1, 99, 159])
+    @pytest.mark.parametrize('nt', [-99, -1, 0, 1, 99, 125])
     def test_nt_not_at_least_the_default(self, vertical_no_demand, nt):
         """`nt` must be odd and `>= default_nt`."""
         # `default_nt` becomes 161.
-        default_nt = math.ceil((1.5 * VERTICAL_FREQUENCY) / (1 - (1.5 / NS)))
+        default_nt = math.ceil(
+            (1.5 * test_config.VERTICAL_FREQUENCY_LONG) / (1 - (1.5 / NS)),
+        )
 
         assert nt < default_nt  # sanity check
 
         with pytest.raises(ValueError, match='`nt`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, nt=nt,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                nt=nt,
             )
 
     def test_nl_not_odd(self, vertical_no_demand):
         """`nl` must be odd and `>= frequency`."""
         nl = 200
 
-        assert nl > VERTICAL_FREQUENCY  # sanity check
+        assert nl > test_config.VERTICAL_FREQUENCY_LONG  # sanity check
 
         with pytest.raises(ValueError, match='`nl`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, nl=nl,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                nl=nl,
             )
 
     def test_nl_at_least_the_frequency(self, vertical_no_demand):
         """`nl` must be odd and `>= frequency`."""
         nl = 77
 
-        assert nl < VERTICAL_FREQUENCY  # sanity check
+        assert nl < test_config.VERTICAL_FREQUENCY_LONG  # sanity check
 
         with pytest.raises(ValueError, match='`nl`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, nl=nl,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                nl=nl,
             )
 
     def test_ds_not_zero_or_one(self, vertical_no_demand):
         """`ds` must be `0` or `1`."""
         with pytest.raises(ValueError, match='`ds`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, ds=2,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                ds=2,
             )
 
     def test_dt_not_zero_or_one(self, vertical_no_demand):
         """`dt` must be `0` or `1`."""
         with pytest.raises(ValueError, match='`dt`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, dt=2,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                dt=2,
             )
 
     def test_dl_not_zero_or_one(self, vertical_no_demand):
         """`dl` must be `0` or `1`."""
         with pytest.raises(ValueError, match='`dl`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, dl=2,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                dl=2,
             )
 
     @pytest.mark.parametrize('js', [-1, 0])
@@ -104,7 +140,10 @@ class TestInvalidArguments:
         """`js` must be positive."""
         with pytest.raises(ValueError, match='`js`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, js=js,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                js=js,
             )
 
     @pytest.mark.parametrize('jt', [-1, 0])
@@ -112,7 +151,10 @@ class TestInvalidArguments:
         """`jt` must be positive."""
         with pytest.raises(ValueError, match='`jt`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, jt=jt,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                jt=jt,
             )
 
     @pytest.mark.parametrize('jl', [-1, 0])
@@ -120,7 +162,10 @@ class TestInvalidArguments:
         """`jl` must be positive."""
         with pytest.raises(ValueError, match='`jl`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, jl=jl,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                jl=jl,
             )
 
     @pytest.mark.parametrize('ni', [-1, 0])
@@ -128,14 +173,20 @@ class TestInvalidArguments:
         """`ni` must be positive."""
         with pytest.raises(ValueError, match='`ni`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, ni=ni,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                ni=ni,
             )
 
     def test_no_not_non_negative(self, vertical_no_demand):
         """`no` must be non-negative."""
         with pytest.raises(ValueError, match='`no`'):
             decomposition.stl(
-                vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS, no=-1,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
+                no=-1,
             )
 
 
@@ -146,7 +197,7 @@ class TestValidArguments:
     def test_structure_of_returned_dataframe(self, vertical_no_demand):
         """`stl()` returns a `pd.DataFrame` with three columns."""
         result = decomposition.stl(
-            vertical_no_demand, frequency=VERTICAL_FREQUENCY, ns=NS,
+            vertical_no_demand, frequency=test_config.VERTICAL_FREQUENCY_LONG, ns=NS,
         )
 
         assert isinstance(result, pd.DataFrame)
@@ -173,7 +224,7 @@ class TestValidArguments:
         """
         decomposed = decomposition.stl(
             vertical_no_demand,
-            frequency=VERTICAL_FREQUENCY,
+            frequency=test_config.VERTICAL_FREQUENCY_LONG,
             ns=NS,
             nt=nt,
             nl=nl,

@@ -9,13 +9,6 @@ from tests import config as test_config
 from urban_meal_delivery import config
 
 
-# See remarks in `vertical_datetime_index` fixture.
-VERTICAL_FREQUENCY = 7 * 12
-
-# The default `ns` suggested for the STL method.
-NS = 7
-
-
 @pytest.fixture
 def horizontal_datetime_index():
     """A `pd.Index` with `DateTime` values.

@@ -3,3 +3,4 @@
 from urban_meal_delivery.forecasts.methods import arima
 from urban_meal_delivery.forecasts.methods import decomposition
 from urban_meal_delivery.forecasts.methods import ets
+from urban_meal_delivery.forecasts.methods import extrapolate_season

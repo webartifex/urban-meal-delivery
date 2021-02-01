@@ -1,1 +1,1 @@
-"""Test the forecasting-related functionality."""
+"""Tests for the `urban_meal_delivery.forecasts` sub-package."""

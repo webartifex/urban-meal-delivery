@@ -47,7 +47,10 @@ def order_totals(good_pixel_id):
 
 @pytest.fixture
 def order_history(order_totals, grid):
-    """An `OrderHistory` object that does not need the database."""
+    """An `OrderHistory` object that does not need the database.
+
+    Uses the LONG_TIME_STEP as the length of a time step.
+    """
     oh = timify.OrderHistory(grid=grid, time_step=test_config.LONG_TIME_STEP)
     oh._data = order_totals
 

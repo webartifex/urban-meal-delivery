@@ -1,7 +1,4 @@
-"""Test the `arima.predict()` and `ets.predict()` functions.
-
-We consider both "classical" time series prediction models.
-"""
+"""Test all the `*.predict()` functions in the `methods` sub-package."""
 
 import datetime as dt
 
@@ -9,10 +6,10 @@ import pandas as pd
 import pytest
 
 from tests import config as test_config
-from tests.forecasts.conftest import VERTICAL_FREQUENCY
 from urban_meal_delivery import config
 from urban_meal_delivery.forecasts.methods import arima
 from urban_meal_delivery.forecasts.methods import ets
+from urban_meal_delivery.forecasts.methods import extrapolate_season
 
 
 @pytest.fixture
@@ -60,7 +57,9 @@ def forecast_time_step():
 
 
 @pytest.mark.r
-@pytest.mark.parametrize('func', [arima.predict, ets.predict])
+@pytest.mark.parametrize(
+    'func', [arima.predict, ets.predict, extrapolate_season.predict],
+)
 class TestMakePredictions:
     """Make predictions with `arima.predict()` and `ets.predict()`."""
 
@@ -74,7 +73,7 @@ class TestMakePredictions:
             func(
                 training_ts=vertical_no_demand,
                 forecast_interval=forecast_interval,
-                frequency=VERTICAL_FREQUENCY,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
             )
 
     def test_structure_of_returned_dataframe(
@@ -84,7 +83,7 @@ class TestMakePredictions:
         result = func(
             training_ts=vertical_no_demand,
             forecast_interval=forecast_interval,
-            frequency=VERTICAL_FREQUENCY,
+            frequency=test_config.VERTICAL_FREQUENCY_LONG,
         )
 
         assert isinstance(result, pd.DataFrame)
@@ -123,7 +122,7 @@ class TestMakePredictions:
         predictions = func(
             training_ts=vertical_no_demand,
             forecast_interval=forecast_interval,
-            frequency=VERTICAL_FREQUENCY,
+            frequency=test_config.VERTICAL_FREQUENCY_LONG,
         )
 
         result = predictions.sum().sum()
