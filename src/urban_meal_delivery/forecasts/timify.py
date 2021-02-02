@@ -1,5 +1,7 @@
 """Obtain and work with time series data."""
 
+from __future__ import annotations
+
 import datetime as dt
 from typing import Tuple
 
@@ -7,6 +9,7 @@ import pandas as pd
 
 from urban_meal_delivery import config
 from urban_meal_delivery import db
+from urban_meal_delivery.forecasts import models
 
 
 class OrderHistory:
@@ -502,3 +505,53 @@ class OrderHistory:
         n_days = (last_day - first_day).days + 1
 
         return round(training_ts.sum() / n_days, 1)
+
+    def choose_tactical_model(
+        self, pixel_id: int, predict_day: dt.date, train_horizon: int,
+    ) -> models.ForecastingModelABC:
+        """Choose the most promising forecasting `*Model` for tactical purposes.
+
+        The rules are deduced from "Table 1: Top-3 models by ..." in the article
+        "Real-time demand forecasting for an urban delivery platform", the first
+        research paper published for this `urban-meal-delivery` project.
+
+        According to the research findings in the article "Real-time demand
+        forecasting for an urban delivery platform", the best model is a function
+        of the average daily demand (ADD) and the length of the training horizon.
+
+        For the paper check:
+            https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf
+            https://www.sciencedirect.com/science/article/pii/S1366554520307936
+
+        Args:
+            pixel_id: pixel for which a forecasting `*Model` is chosen
+            predict_day: day for which demand is to be predicted with the `*Model`
+            train_horizon: time horizon available for training the `*Model`
+
+        Returns:
+            most promising forecasting `*Model`
+
+        # noqa:DAR401 RuntimeError
+        """  # noqa:RST215
+        add = self.avg_daily_demand(
+            pixel_id=pixel_id, predict_day=predict_day, train_horizon=train_horizon,
+        )
+
+        # For now, we only make forecasts with 8 weeks
+        # as the training horizon (note:4f79e8fa).
+        if train_horizon == 8:
+            if add >= 25:  # = "high demand"
+                return models.HorizontalETSModel(order_history=self)
+            elif add >= 10:  # = "medium demand"
+                return models.HorizontalETSModel(order_history=self)
+            elif add >= 2.5:  # = "low demand"
+                # TODO: create HorizontalSMAModel
+                return models.HorizontalETSModel(order_history=self)
+
+            # = "no demand"
+            # TODO: create HorizontalTrivialModel
+            return models.HorizontalETSModel(order_history=self)
+
+        raise RuntimeError(
+            'no rule for the given average daily demand and training horizon',
+        )

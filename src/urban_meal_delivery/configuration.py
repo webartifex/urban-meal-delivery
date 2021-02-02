@@ -48,8 +48,9 @@ class Config:
     # individual orders into time series.
     TIME_STEPS = [60]
 
-    # Training horizons (in full weeks) used
-    # to train the forecasting models.
+    # Training horizons (in full weeks) used to train the forecasting models.
+    # For now, we only use 8 weeks as that was the best performing in
+    # a previous study (note:4f79e8fa).
     TRAINING_HORIZONS = [8]
 
     # The demand forecasting methods used in the simulations.

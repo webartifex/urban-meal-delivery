@@ -36,7 +36,7 @@ def bad_predict_at():
     ... not a long enough history so that both `SHORT_TRAIN_HORIZON`
     and `LONG_TRAIN_HORIZON` do not work.
     """
-    predict_day = test_config.END - datetime.timedelta(weeks=2, days=1)
+    predict_day = test_config.END - datetime.timedelta(weeks=6, days=1)
     return datetime.datetime(
         predict_day.year, predict_day.month, predict_day.day, test_config.NOON, 0,
     )
