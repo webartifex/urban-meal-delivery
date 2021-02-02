@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import List
 
 import pandas as pd
@@ -141,7 +142,7 @@ class Forecast(meta.Base):
         )
 
     @classmethod
-    def from_dataframe(  # noqa:WPS211
+    def from_dataframe(  # noqa:WPS210,WPS211
         cls,
         pixel: db.Pixel,
         time_step: int,
@@ -176,20 +177,53 @@ class Forecast(meta.Base):
         forecasts = []
 
         for timestamp_idx in data.index:
-            forecast = cls(
-                pixel=pixel,
-                start_at=timestamp_idx.to_pydatetime(),
-                time_step=time_step,
-                training_horizon=training_horizon,
-                model=model,
-                actual=int(data.loc[timestamp_idx, 'actual']),
-                prediction=round(data.loc[timestamp_idx, 'prediction'], 5),
-                low80=round(data.loc[timestamp_idx, 'low80'], 5),
-                high80=round(data.loc[timestamp_idx, 'high80'], 5),
-                low95=round(data.loc[timestamp_idx, 'low95'], 5),
-                high95=round(data.loc[timestamp_idx, 'high95'], 5),
+            start_at = timestamp_idx.to_pydatetime()
+            actual = int(data.loc[timestamp_idx, 'actual'])
+            prediction = round(data.loc[timestamp_idx, 'prediction'], 5)
+
+            # Explicit type casting. SQLAlchemy does not convert
+            # `float('NaN')`s into plain `None`s.
+
+            low80 = data.loc[timestamp_idx, 'low80']
+            high80 = data.loc[timestamp_idx, 'high80']
+            low95 = data.loc[timestamp_idx, 'low95']
+            high95 = data.loc[timestamp_idx, 'high95']
+
+            if math.isnan(low80):
+                low80 = None
+            else:
+                low80 = round(low80, 5)
+
+            if math.isnan(high80):
+                high80 = None
+            else:
+                high80 = round(high80, 5)
+
+            if math.isnan(low95):
+                low95 = None
+            else:
+                low95 = round(low95, 5)
+
+            if math.isnan(high95):
+                high95 = None
+            else:
+                high95 = round(high95, 5)
+
+            forecasts.append(
+                cls(
+                    pixel=pixel,
+                    start_at=start_at,
+                    time_step=time_step,
+                    training_horizon=training_horizon,
+                    model=model,
+                    actual=actual,
+                    prediction=prediction,
+                    low80=low80,
+                    high80=high80,
+                    low95=low95,
+                    high95=high95,
+                ),
             )
-            forecasts.append(forecast)
 
         return forecasts
 

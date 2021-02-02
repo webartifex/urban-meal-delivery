@@ -11,6 +11,7 @@ from urban_meal_delivery.forecasts import models
 
 MODELS = (
     models.HorizontalETSModel,
+    models.HorizontalSMAModel,
     models.RealtimeARIMAModel,
     models.VerticalARIMAModel,
 )

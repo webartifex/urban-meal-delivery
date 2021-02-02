@@ -65,3 +65,66 @@ class HorizontalETSModel(base.ForecastingModelABC):
             raise RuntimeError('missing prediction for `predict_at`')
 
         return predictions
+
+
+class HorizontalSMAModel(base.ForecastingModelABC):
+    """A simple moving average model applied on a horizontal time series."""
+
+    name = 'hsma'
+
+    def predict(
+        self, pixel: db.Pixel, predict_at: dt.datetime, train_horizon: int,
+    ) -> pd.DataFrame:
+        """Predict demand for a time step.
+
+        Args:
+            pixel: pixel in which the prediction is made
+            predict_at: time step (i.e., "start_at") to make the prediction for
+            train_horizon: weeks of historic data used to predict `predict_at`
+
+        Returns:
+            actual order counts (i.e., the "actual" column) and
+                point forecasts (i.e., the "prediction" column);
+                this model does not support confidence intervals;
+                contains one row for the `predict_at` time step
+
+        # noqa:DAR401 RuntimeError
+        """
+        # Generate the historic (and horizontal) order time series.
+        training_ts, frequency, actuals_ts = self._order_history.make_horizontal_ts(
+            pixel_id=pixel.id, predict_at=predict_at, train_horizon=train_horizon,
+        )
+
+        # Sanity checks.
+        if frequency != 7:  # pragma: no cover
+            raise RuntimeError('`frequency` should be `7`')
+        if len(actuals_ts) != 1:  # pragma: no cover
+            raise RuntimeError(
+                'the hsma model can only predict one step into the future',
+            )
+
+        # The "prediction" is calculated as the `np.mean()`.
+        # As the `training_ts` covers only full week horizons,
+        # no adjustment regarding the weekly seasonality is needed.
+        predictions = pd.DataFrame(
+            data={
+                'actual': actuals_ts,
+                'prediction': training_ts.values.mean(),
+                'low80': float('NaN'),
+                'high80': float('NaN'),
+                'low95': float('NaN'),
+                'high95': float('NaN'),
+            },
+            index=actuals_ts.index,
+        )
+
+        # Sanity checks.
+        if (  # noqa:WPS337
+            predictions[['actual', 'prediction']].isnull().any().any()
+        ):  # pragma: no cover
+
+            raise RuntimeError('missing predictions in hsma model')
+        if predict_at not in predictions.index:  # pragma: no cover
+            raise RuntimeError('missing prediction for `predict_at`')
+
+        return predictions
