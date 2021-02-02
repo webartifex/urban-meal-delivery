@@ -112,8 +112,7 @@ class TestChooseTacticalModel:
             train_horizon=test_config.LONG_TRAIN_HORIZON,
         )
 
-        # TODO: this should be the future `HorizontalSMAModel`.
-        assert isinstance(result, models.HorizontalETSModel)
+        assert isinstance(result, models.HorizontalSMAModel)
 
     def test_best_model_with_no_demand(
         self, order_history, good_pixel_id, predict_at,
@@ -127,8 +126,7 @@ class TestChooseTacticalModel:
             train_horizon=test_config.LONG_TRAIN_HORIZON,
         )
 
-        # TODO: this should be the future `HorizontalTrivialModel`.
-        assert isinstance(result, models.HorizontalETSModel)
+        assert isinstance(result, models.TrivialModel)
 
     def test_best_model_for_unknown_train_horizon(
         self, order_history, good_pixel_id, predict_at,  # noqa:RST215

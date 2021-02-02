@@ -545,12 +545,10 @@ class OrderHistory:
             elif add >= 10:  # = "medium demand"
                 return models.HorizontalETSModel(order_history=self)
             elif add >= 2.5:  # = "low demand"
-                # TODO: create HorizontalSMAModel
-                return models.HorizontalETSModel(order_history=self)
+                return models.HorizontalSMAModel(order_history=self)
 
             # = "no demand"
-            # TODO: create HorizontalTrivialModel
-            return models.HorizontalETSModel(order_history=self)
+            return models.TrivialModel(order_history=self)
 
         raise RuntimeError(
             'no rule for the given average daily demand and training horizon',
