@@ -32,5 +32,6 @@ A future `planning` sub-package will contain the `*Model`s used to plan the
 from urban_meal_delivery.forecasts.models.base import ForecastingModelABC
 from urban_meal_delivery.forecasts.models.tactical.horizontal import HorizontalETSModel
 from urban_meal_delivery.forecasts.models.tactical.horizontal import HorizontalSMAModel
+from urban_meal_delivery.forecasts.models.tactical.other import TrivialModel
 from urban_meal_delivery.forecasts.models.tactical.realtime import RealtimeARIMAModel
 from urban_meal_delivery.forecasts.models.tactical.vertical import VerticalARIMAModel

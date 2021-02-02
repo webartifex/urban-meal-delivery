@@ -14,6 +14,7 @@ MODELS = (
     models.HorizontalSMAModel,
     models.RealtimeARIMAModel,
     models.VerticalARIMAModel,
+    models.TrivialModel,
 )
 
 
