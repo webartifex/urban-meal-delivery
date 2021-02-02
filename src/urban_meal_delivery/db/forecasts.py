@@ -27,7 +27,7 @@ class Forecast(meta.Base):
     pixel_id = sa.Column(sa.Integer, nullable=False, index=True)
     start_at = sa.Column(sa.DateTime, nullable=False)
     time_step = sa.Column(sa.SmallInteger, nullable=False)
-    training_horizon = sa.Column(sa.SmallInteger, nullable=False)
+    train_horizon = sa.Column(sa.SmallInteger, nullable=False)
     model = sa.Column(sa.Unicode(length=20), nullable=False)
     # We also store the actual order counts for convenient retrieval.
     # A `UniqueConstraint` below ensures that redundant values that
@@ -71,7 +71,7 @@ class Forecast(meta.Base):
         ),
         sa.CheckConstraint('time_step > 0', name='time_step_must_be_positive'),
         sa.CheckConstraint(
-            'training_horizon > 0', name='training_horizon_must_be_positive',
+            'train_horizon > 0', name='training_horizon_must_be_positive',
         ),
         sa.CheckConstraint('actual >= 0', name='actuals_must_be_non_negative'),
         sa.CheckConstraint(
@@ -124,7 +124,7 @@ class Forecast(meta.Base):
         ),
         # There can be only one prediction per forecasting setting.
         sa.UniqueConstraint(
-            'pixel_id', 'start_at', 'time_step', 'training_horizon', 'model',
+            'pixel_id', 'start_at', 'time_step', 'train_horizon', 'model',
         ),
     )
 
@@ -146,7 +146,7 @@ class Forecast(meta.Base):
         cls,
         pixel: db.Pixel,
         time_step: int,
-        training_horizon: int,
+        train_horizon: int,
         model: str,
         data: pd.Dataframe,
     ) -> List[db.Forecast]:
@@ -166,7 +166,7 @@ class Forecast(meta.Base):
         Args:
             pixel: in which the forecast is made
             time_step: length of one time step in minutes
-            training_horizon: length of the training horizon in weeks
+            train_horizon: length of the training horizon in weeks
             model: name of the forecasting model
             data: a `pd.Dataframe` as described above (i.e.,
                 with the six columns holding `float`s)
@@ -214,7 +214,7 @@ class Forecast(meta.Base):
                     pixel=pixel,
                     start_at=start_at,
                     time_step=time_step,
-                    training_horizon=training_horizon,
+                    train_horizon=train_horizon,
                     model=model,
                     actual=actual,
                     prediction=prediction,

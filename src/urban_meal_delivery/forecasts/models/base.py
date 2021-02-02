@@ -79,7 +79,7 @@ class ForecastingModelABC(abc.ABC):
             .filter_by(pixel=pixel)
             .filter_by(start_at=predict_at)
             .filter_by(time_step=self._order_history.time_step)
-            .filter_by(training_horizon=train_horizon)
+            .filter_by(train_horizon=train_horizon)
             .filter_by(model=self.name)
             .first()
         ) :
@@ -94,7 +94,7 @@ class ForecastingModelABC(abc.ABC):
         forecasts = db.Forecast.from_dataframe(
             pixel=pixel,
             time_step=self._order_history.time_step,
-            training_horizon=train_horizon,
+            train_horizon=train_horizon,
             model=self.name,
             data=predictions,
         )

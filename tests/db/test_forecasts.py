@@ -28,7 +28,7 @@ def forecast(pixel):
         pixel=pixel,
         start_at=start_at,
         time_step=test_config.LONG_TIME_STEP,
-        training_horizon=test_config.LONG_TRAIN_HORIZON,
+        train_horizon=test_config.LONG_TRAIN_HORIZON,
         model=MODEL,
         actual=12,
         prediction=12.3,
@@ -143,9 +143,9 @@ class TestConstraints:
             db_session.commit()
 
     @pytest.mark.parametrize('value', [-1, 0])
-    def test_positive_training_horizon(self, db_session, forecast, value):
+    def test_positive_train_horizon(self, db_session, forecast, value):
         """Insert an instance with invalid data."""
-        forecast.training_horizon = value
+        forecast.train_horizon = value
         db_session.add(forecast)
 
         with pytest.raises(
@@ -418,7 +418,7 @@ class TestConstraints:
             pixel=forecast.pixel,
             start_at=forecast.start_at,
             time_step=forecast.time_step,
-            training_horizon=forecast.training_horizon,
+            train_horizon=forecast.train_horizon,
             model=forecast.model,
             actual=forecast.actual,
             prediction=2,
@@ -479,7 +479,7 @@ class TestFromDataFrameConstructor:
         forecasts = db.Forecast.from_dataframe(
             pixel=pixel,
             time_step=test_config.LONG_TIME_STEP,
-            training_horizon=test_config.LONG_TRAIN_HORIZON,
+            train_horizon=test_config.LONG_TRAIN_HORIZON,
             model=MODEL,
             data=prediction_data,
         )
@@ -496,7 +496,7 @@ class TestFromDataFrameConstructor:
         forecasts = db.Forecast.from_dataframe(
             pixel=pixel,
             time_step=test_config.LONG_TIME_STEP,
-            training_horizon=test_config.LONG_TRAIN_HORIZON,
+            train_horizon=test_config.LONG_TRAIN_HORIZON,
             model=MODEL,
             data=prediction_data,
         )

@@ -140,7 +140,7 @@ class TestGenericForecastingModelProperties:
         assert isinstance(result, db.Forecast)
         assert result.pixel == pixel
         assert result.start_at == predict_at
-        assert result.training_horizon == test_config.LONG_TRAIN_HORIZON
+        assert result.train_horizon == test_config.LONG_TRAIN_HORIZON
 
     @pytest.mark.db
     @pytest.mark.r
