@@ -1,14 +1,14 @@
-"""Provide CLI scripts for the project."""
+"""The entry point for all CLI scripts in the project."""
 
 from typing import Any
 
 import click
-from click.core import Context
+from click import core as cli_core
 
 import urban_meal_delivery
 
 
-def show_version(ctx: Context, _param: Any, value: bool) -> None:
+def show_version(ctx: cli_core.Context, _param: Any, value: bool) -> None:
     """Show the package's version."""
     # If --version / -V is NOT passed in,
     # continue with the command.
@@ -24,7 +24,7 @@ def show_version(ctx: Context, _param: Any, value: bool) -> None:
     ctx.exit()
 
 
-@click.command()
+@click.group()
 @click.option(
     '--version',
     '-V',
@@ -33,5 +33,5 @@ def show_version(ctx: Context, _param: Any, value: bool) -> None:
     is_eager=True,
     expose_value=False,
 )
-def main() -> None:
+def entry_point() -> None:
     """The urban-meal-delivery research project."""

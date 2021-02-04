@@ -1,0 +1,3 @@
+[submodule "research/papers/demand-forecasting"]
+	path = research/papers/demand-forecasting
+	url = git@github.com:webartifex/urban-meal-delivery-demand-forecasting.git

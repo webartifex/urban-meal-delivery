@@ -17,7 +17,7 @@ as unified tasks to assure the quality of the source code:
     that are then interpreted as the paths the formatters and linters work
     on recursively
 
-- "lint" (flake8, mypy, pylint): same as "format"
+- "lint" (flake8, mypy): same as "format"
 
 - "test" (pytest, xdoctest):
 
@@ -25,26 +25,6 @@ as unified tasks to assure the quality of the source code:
   + accepts extra arguments, e.g., `poetry run nox -s test -- --no-cov`,
     that are passed on to `pytest` and `xdoctest` with no changes
     => may be paths or options
-
-
-GitHub Actions implements the following CI workflow:
-
-- "format", "lint", and "test" as above
-
-- "safety": check if dependencies contain known security vulnerabilites
-
-- "docs": build the documentation with sphinx
-
-
-The pre-commit framework invokes the following tasks:
-
-- before any commit:
-
-  + "format" and "lint" as above
-  + "fix-branch-references": replace branch references with the current one
-
-- before merges: run the entire "test-suite" independent of the file changes
-
 """
 
 import contextlib
@@ -92,7 +72,7 @@ nox.options.envdir = '.cache/nox'
 # Avoid accidental successes if the environment is not set up properly.
 nox.options.error_on_external_run = True
 
-# Run only CI related checks by default.
+# Run only local checks by default.
 nox.options.sessions = (
     'format',
     'lint',
@@ -141,7 +121,7 @@ def format_(session):
 
 @nox.session(python=PYTHON)
 def lint(session):
-    """Lint source files with flake8, mypy, and pylint.
+    """Lint source files with flake8 and mypy.
 
     If no extra arguments are provided, all source files are linted.
     Otherwise, they are interpreted as paths the linters work on recursively.
@@ -158,7 +138,6 @@ def lint(session):
         'flake8-expression-complexity',
         'flake8-pytest-style',
         'mypy',
-        'pylint',
         'wemake-python-styleguide',
     )
 
@@ -181,18 +160,6 @@ def lint(session):
         session.run('mypy', *mypy_locations)
     else:
         session.log('No paths to be checked with mypy')
-
-    # Ignore errors where pylint cannot import a third-party package due its
-    # being run in an isolated environment. For the same reason, pylint is
-    # also not able to determine the correct order of imports.
-    # One way to fix this is to install all develop dependencies in this nox
-    # session, which we do not do. The whole point of static linting tools is
-    # to not rely on any package be importable at runtime. Instead, these
-    # imports are validated implicitly when the test suite is run.
-    session.run('pylint', '--version')
-    session.run(
-        'pylint', '--disable=import-error', '--disable=wrong-import-order', *locations,
-    )
 
 
 @nox.session(python=PYTHON)
@@ -222,33 +189,71 @@ def test(session):
     session.run('poetry', 'install', '--no-dev', external=True)
     _install_packages(
         session,
+        'Faker',
+        'factory-boy',
+        'geopy',
         'packaging',
         'pytest',
         'pytest-cov',
         'pytest-env',
+        'pytest-mock',
+        'pytest-randomly',
         'xdoctest[optional]',
     )
 
+    session.run('pytest', '--version')
+
+    # When the CI server runs the slow tests, we only execute the R related
+    # test cases that require the slow installation of R and some packages.
+    if session.env.get('_slow_ci_tests'):
+        session.run(
+            'pytest', '--randomly-seed=4287', '-m', 'r and not db', PYTEST_LOCATION,
+        )
+
+        # In the "ci-tests-slow" session, we do not run any test tool
+        # other than pytest. So, xdoctest, for example, is only run
+        # locally or in the "ci-tests-fast" session.
+        return
+
+    # When the CI server executes pytest, no database is available.
+    # Therefore, the CI server does not measure coverage.
+    elif session.env.get('_fast_ci_tests'):
+        pytest_args = (
+            '--randomly-seed=4287',
+            '-m',
+            'not (db or r)',
+            PYTEST_LOCATION,
+        )
+
+    # When pytest is executed in the local develop environment,
+    # both R and a database are available.
+    # Therefore, we require 100% coverage.
+    else:
+        pytest_args = (
+            '--cov',
+            '--no-cov-on-fail',
+            '--cov-branch',
+            '--cov-fail-under=100',
+            '--cov-report=term-missing:skip-covered',
+            '--randomly-seed=4287',
+            PYTEST_LOCATION,
+        )
+
     # Interpret extra arguments as options for pytest.
-    # They are "dropped" by the hack in the pre_merge() function
-    # if this function is run within the "pre-merge" session.
+    # They are "dropped" by the hack in the test_suite() function
+    # if this function is run within the "test-suite" session.
     posargs = () if session.env.get('_drop_posargs') else session.posargs
 
-    args = posargs or (
-        '--cov',
-        '--no-cov-on-fail',
-        '--cov-branch',
-        '--cov-fail-under=100',
-        '--cov-report=term-missing:skip-covered',
-        '-k',
-        'not e2e',
-        PYTEST_LOCATION,
-    )
-    session.run('pytest', '--version')
-    session.run('pytest', *args)
+    session.run('pytest', *(posargs or pytest_args))
 
     # For xdoctest, the default arguments are different from pytest.
     args = posargs or [PACKAGE_IMPORT_NAME]
+
+    # The "TESTING" environment variable forces the global `engine`, `connection`,
+    # and `session` objects to be set to `None` and avoid any database connection.
+    # For pytest above this is not necessary as pytest sets this variable itself.
+    session.env['TESTING'] = 'true'
+
     session.run('xdoctest', '--version')
     session.run('xdoctest', '--quiet', *args)  # --quiet => less verbose output
 
@@ -292,6 +297,10 @@ def docs(session):
     session.run('poetry', 'install', '--no-dev', external=True)
     _install_packages(session, 'sphinx', 'sphinx-autodoc-typehints')
 
+    # The "TESTING" environment variable forces the global `engine`, `connection`,
+    # and `session` objects to be set to `None` and avoid any database connection.
+    session.env['TESTING'] = 'true'
+
     session.run('sphinx-build', DOCS_SRC, DOCS_BUILD)
     # Verify all external links return 200 OK.
     session.run('sphinx-build', '-b', 'linkcheck', DOCS_SRC, DOCS_BUILD)
@@ -299,11 +308,63 @@ def docs(session):
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
+@nox.session(name='ci-tests-fast', python=PYTHON)
+def fast_ci_tests(session):
+    """Fast tests run by the GitHub Actions CI server.
+
+    These regards all test cases NOT involving R via `rpy2`.
+
+    Also, coverage is not measured as full coverage can only be
+    achieved by running the tests in the local develop environment
+    that has access to a database.
+    """
+    # Re-using an old environment is not so easy here as the "test" session
+    # runs `poetry install --no-dev`, which removes previously installed packages.
+    if session.virtualenv.reuse_existing:
+        raise RuntimeError(
+            'The "ci-tests-fast" session must be run without the "-r" option',
+        )
+
+    # Little hack to pass arguments to the "test" session.
+    session.env['_fast_ci_tests'] = 'true'
+
+    # Cannot use session.notify() to trigger the "test" session
+    # as that would create a new Session object without the flag
+    # in the env(ironment).
+    test(session)
+
+
+@nox.session(name='ci-tests-slow', python=PYTHON)
+def slow_ci_tests(session):
+    """Slow tests run by the GitHub Actions CI server.
+
+    These regards all test cases involving R via `rpy2`.
+    They are slow as the CI server needs to install R and some packages
+    first, which takes a couple of minutes.
+
+    Also, coverage is not measured as full coverage can only be
+    achieved by running the tests in the local develop environment
+    that has access to a database.
+    """
+    # Re-using an old environment is not so easy here as the "test" session
+    # runs `poetry install --no-dev`, which removes previously installed packages.
+    if session.virtualenv.reuse_existing:
+        raise RuntimeError(
+            'The "ci-tests-slow" session must be run without the "-r" option',
+        )
+
+    # Little hack to pass arguments to the "test" session.
+    session.env['_slow_ci_tests'] = 'true'
+
+    # Cannot use session.notify() to trigger the "test" session
+    # as that would create a new Session object without the flag
+    # in the env(ironment).
+    test(session)
+
+
 @nox.session(name='test-suite', python=PYTHON)
 def test_suite(session):
-    """Run the entire test suite.
-
-    Intended to be run as a pre-commit hook.
+    """Run the entire test suite as a pre-commit hook.
 
     Ignores the paths passed in by the pre-commit framework
     and runs the entire test suite.
@@ -322,13 +383,12 @@ def test_suite(session):
 
     # Cannot use session.notify() to trigger the "test" session
     # as that would create a new Session object without the flag
-    # in the env(ironment). Instead, run the test() function within
-    # the "pre-merge" session.
+    # in the env(ironment).
     test(session)
 
 
 @nox.session(name='fix-branch-references', python=PYTHON, venv_backend='none')
-def fix_branch_references(session):  # noqa:WPS210
+def fix_branch_references(session):  # noqa:WPS210,WPS231
     """Replace branch references with the current branch.
 
     Intended to be run as a pre-commit hook.
@@ -336,9 +396,15 @@ def fix_branch_references(session):  # noqa:WPS210
     Many files in the project (e.g., README.md) contain links to resources
     on github.com or nbviewer.jupyter.org that contain branch labels.
 
-    This task rewrites these links such that they contain the branch reference
-    of the current branch. If the branch is only a temporary one that is to be
-    merged into the 'main' branch, all references are adjusted to 'main' as well.
+    This task rewrites these links such that they contain branch references
+    that make sense given the context:
+
+    - If the branch is only a temporary one that is to be merged into
+      the 'main' branch, all references are adjusted to 'main' as well.
+
+    - If the branch is not named after a default branch in the GitFlow
+      model, it is interpreted as a feature branch and the references
+      are adjusted into 'develop'.
 
     This task may be called with one positional argument that is interpreted
     as the branch to which all references are changed into.
@@ -362,6 +428,10 @@ def fix_branch_references(session):  # noqa:WPS210
     # into 'main', we adjust all branch references to 'main' as well.
     if branch.startswith('release') or branch.startswith('research'):
         branch = 'main'
+    # If the current branch appears to be a feature branch, we adjust
+    # all branch references to 'develop'.
+    elif branch != 'main':
+        branch = 'develop'
     # If a "--branch=BRANCH_NAME" argument is passed in
     # as the only positional argument, we use BRANCH_NAME.
     # Note: The --branch is required as session.posargs contains
@@ -445,7 +515,7 @@ def init_project(session):
 
 
 @nox.session(name='clean-pwd', python=PYTHON, venv_backend='none')
-def clean_pwd(session):  # noqa:WPS210,WPS231
+def clean_pwd(session):  # noqa:WPS231
     """Remove (almost) all glob patterns listed in .gitignore.
 
     The difference compared to `git clean -X` is that this task
@@ -519,6 +589,7 @@ def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) ->
             '--dev',
             '--format=requirements.txt',
             f'--output={requirements_txt.name}',
+            '--without-hashes',
             external=True,
         )
         session.install(

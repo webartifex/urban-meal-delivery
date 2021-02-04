@@ -16,16 +16,16 @@ that iteratively build on each other.
 ### Data Cleaning
 
 The UDP provided its raw data as a PostgreSQL dump.
-This [notebook](https://nbviewer.jupyter.org/github/webartifex/urban-meal-delivery/blob/main/notebooks/00_clean_data.ipynb)
+This [notebook](https://nbviewer.jupyter.org/github/webartifex/urban-meal-delivery/blob/develop/research/clean_data.ipynb)
 cleans the data extensively
-and maps them onto the [ORM models](https://github.com/webartifex/urban-meal-delivery/tree/main/src/urban_meal_delivery/db)
+and maps them onto the [ORM models](https://github.com/webartifex/urban-meal-delivery/tree/develop/src/urban_meal_delivery/db)
 defined in the `urban-meal-delivery` package
-that is developed in the [src/](https://github.com/webartifex/urban-meal-delivery/tree/main/src) folder
+that is developed in the [src/](https://github.com/webartifex/urban-meal-delivery/tree/develop/src) folder
 and contains all source code to drive the analyses.
 
 Due to a non-disclosure agreement with the UDP,
 neither the raw nor the cleaned data are published as of now.
-However, previews of the data can be seen throughout the [notebooks/](https://github.com/webartifex/urban-meal-delivery/tree/main/notebooks) folders.
+However, previews of the data can be seen throughout the [research/](https://github.com/webartifex/urban-meal-delivery/tree/develop/research) folder.
 
 
 ### Real-time Demand Forecasting
@@ -51,11 +51,11 @@ and
 `poetry install --extras research`
 
 The `--extras` option is necessary as the non-develop dependencies
-are structured in the [pyproject.toml](https://github.com/webartifex/urban-meal-delivery/blob/main/pyproject.toml) file
+are structured in the [pyproject.toml](https://github.com/webartifex/urban-meal-delivery/blob/develop/pyproject.toml) file
 into dependencies related to only the `urban-meal-delivery` source code package
 and dependencies used to run the [Jupyter](https://jupyter.org/) environment
 with the analyses.
 
 Contributions are welcome.
 Use the [issues](https://github.com/webartifex/urban-meal-delivery/issues) tab.
-The project is licensed under the [MIT license](https://github.com/webartifex/urban-meal-delivery/blob/main/LICENSE.txt).
+The project is licensed under the [MIT license](https://github.com/webartifex/urban-meal-delivery/blob/develop/LICENSE.txt).
