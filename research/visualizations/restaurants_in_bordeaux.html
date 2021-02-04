@@ -1,0 +1,3357 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_783e812e0e704926876252159cf7c1d9 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_783e812e0e704926876252159cf7c1d9" ></div>
+        
+</body>
+<script>    
+    
+            var map_783e812e0e704926876252159cf7c1d9 = L.map(
+                "map_783e812e0e704926876252159cf7c1d9",
+                {
+                    center: [44.837789, -0.57918],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 13,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_ce1787d0462a4f2dbcabdf3d3c64de42 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+            var circle_4711a5d9566745cf8d4589820513c649 = L.circle(
+                [44.851402, -0.57587],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_30abeef5bbad437f815f1872ab72f174 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_25f049a97f8541c89399b416f37618e5 = $(`<div id="html_25f049a97f8541c89399b416f37618e5" style="width: 100.0%; height: 100.0%;">36 Rue Cornac, 33000 Bordeaux</div>`)[0];
+            popup_30abeef5bbad437f815f1872ab72f174.setContent(html_25f049a97f8541c89399b416f37618e5);
+        
+
+        circle_4711a5d9566745cf8d4589820513c649.bindPopup(popup_30abeef5bbad437f815f1872ab72f174)
+        ;
+
+        
+    
+    
+            circle_4711a5d9566745cf8d4589820513c649.bindTooltip(
+                `<div>
+                     Max A Table (#1204) | n_orders=2021
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_d1dc5ff364c54f66a6f2595b146e9988 = L.circle(
+                [44.840405, -0.57394],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_f402fad48e9c459d9803118a1f667c6d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_de7703fc35144bb8a885d009bae70764 = $(`<div id="html_de7703fc35144bb8a885d009bae70764" style="width: 100.0%; height: 100.0%;">24 Rue Du Parlement Sainte-Catherine, 33000 Bordeaux</div>`)[0];
+            popup_f402fad48e9c459d9803118a1f667c6d.setContent(html_de7703fc35144bb8a885d009bae70764);
+        
+
+        circle_d1dc5ff364c54f66a6f2595b146e9988.bindPopup(popup_f402fad48e9c459d9803118a1f667c6d)
+        ;
+
+        
+    
+    
+            circle_d1dc5ff364c54f66a6f2595b146e9988.bindTooltip(
+                `<div>
+                     Taj Mahal (#1205) | n_orders=1784
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e1f565d6b8c14bf69dd33c2fb8f7db3c = L.circle(
+                [44.839706, -0.570672],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_e4aff7c25d2242ab94a79739147aba28 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cbcdfcff7532445182c44a26025f127d = $(`<div id="html_cbcdfcff7532445182c44a26025f127d" style="width: 100.0%; height: 100.0%;">1 Place Saint Pierre, 33000 Bordeaux</div>`)[0];
+            popup_e4aff7c25d2242ab94a79739147aba28.setContent(html_cbcdfcff7532445182c44a26025f127d);
+        
+
+        circle_e1f565d6b8c14bf69dd33c2fb8f7db3c.bindPopup(popup_e4aff7c25d2242ab94a79739147aba28)
+        ;
+
+        
+    
+    
+            circle_e1f565d6b8c14bf69dd33c2fb8f7db3c.bindTooltip(
+                `<div>
+                     La Maison Du Glacier (#1206) | n_orders=47
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c64f53a3abdc4c0baf0116287efdf3e9 = L.circle(
+                [44.837078, -0.579572],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_b1f896ab55f845bca5211709ae4ede52 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f70c15c866264699ac2b020a7efe4b8f = $(`<div id="html_f70c15c866264699ac2b020a7efe4b8f" style="width: 100.0%; height: 100.0%;">9 Rue Des Freres Bonie, 33000 Bordeaux</div>`)[0];
+            popup_b1f896ab55f845bca5211709ae4ede52.setContent(html_f70c15c866264699ac2b020a7efe4b8f);
+        
+
+        circle_c64f53a3abdc4c0baf0116287efdf3e9.bindPopup(popup_b1f896ab55f845bca5211709ae4ede52)
+        ;
+
+        
+    
+    
+            circle_c64f53a3abdc4c0baf0116287efdf3e9.bindTooltip(
+                `<div>
+                     Le Jardin Pekinois (#1207) | n_orders=1948
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e054b49eb05f46d1a1c34c086cf09aef = L.circle(
+                [44.850258, -0.586204],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_a57370d003b34e00a4bfe94d0dd88125 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_668cf979ca4341dab05bf2afa086b340 = $(`<div id="html_668cf979ca4341dab05bf2afa086b340" style="width: 100.0%; height: 100.0%;">1 Rue Matignon, 33000 Bordeaux</div>`)[0];
+            popup_a57370d003b34e00a4bfe94d0dd88125.setContent(html_668cf979ca4341dab05bf2afa086b340);
+        
+
+        circle_e054b49eb05f46d1a1c34c086cf09aef.bindPopup(popup_a57370d003b34e00a4bfe94d0dd88125)
+        ;
+
+        
+    
+    
+            circle_e054b49eb05f46d1a1c34c086cf09aef.bindTooltip(
+                `<div>
+                     Chez Ambre And Michel (#1208) | n_orders=355
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_074c3acf89b44c368f3e8a10f63996cd = L.circle(
+                [44.836849, -0.580108],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_e806652ce4a543d3b730ba45b83eeb27 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cb8f7b648c354915993f3a9a84a5dc6d = $(`<div id="html_cb8f7b648c354915993f3a9a84a5dc6d" style="width: 100.0%; height: 100.0%;">23 Rue Des Freres Bonie, 33000 Bordeaux</div>`)[0];
+            popup_e806652ce4a543d3b730ba45b83eeb27.setContent(html_cb8f7b648c354915993f3a9a84a5dc6d);
+        
+
+        circle_074c3acf89b44c368f3e8a10f63996cd.bindPopup(popup_e806652ce4a543d3b730ba45b83eeb27)
+        ;
+
+        
+    
+    
+            circle_074c3acf89b44c368f3e8a10f63996cd.bindTooltip(
+                `<div>
+                     La Gamelle (#1209) | n_orders=189
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_cef603b2b64340358efd04d884451799 = L.circle(
+                [44.8181798, -0.5851184],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_aae1f372549b4efdbc3dea33554aec41 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_fce5bdd98036423e9401f7bbd9d4b82d = $(`<div id="html_fce5bdd98036423e9401f7bbd9d4b82d" style="width: 100.0%; height: 100.0%;">93 Cours Gambetta, 33400 Talence</div>`)[0];
+            popup_aae1f372549b4efdbc3dea33554aec41.setContent(html_fce5bdd98036423e9401f7bbd9d4b82d);
+        
+
+        circle_cef603b2b64340358efd04d884451799.bindPopup(popup_aae1f372549b4efdbc3dea33554aec41)
+        ;
+
+        
+    
+    
+            circle_cef603b2b64340358efd04d884451799.bindTooltip(
+                `<div>
+                     Haru Haru (#1211) | n_orders=88
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_79530dd060844929976f0054f180c2d9 = L.circle(
+                [44.824543, -0.578545],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_a13257029fee4d9f994ce7c2c894a3db = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d31b1cf372dd415bb6178e44304f37fb = $(`<div id="html_d31b1cf372dd415bb6178e44304f37fb" style="width: 100.0%; height: 100.0%;">198 Cours De L'Argonne, 33800 Bordeaux</div>`)[0];
+            popup_a13257029fee4d9f994ce7c2c894a3db.setContent(html_d31b1cf372dd415bb6178e44304f37fb);
+        
+
+        circle_79530dd060844929976f0054f180c2d9.bindPopup(popup_a13257029fee4d9f994ce7c2c894a3db)
+        ;
+
+        
+    
+    
+            circle_79530dd060844929976f0054f180c2d9.bindTooltip(
+                `<div>
+                     Cote Terrasse (#1212) | n_orders=1451
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_79c91032337a4439932e75235b3ee162 = L.circle(
+                [44.837158, -0.576632],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_f1dde5e2f6474892a02cee3716c26565 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_77778e8c8a3c400fbea52b59a5912bc2 = $(`<div id="html_77778e8c8a3c400fbea52b59a5912bc2" style="width: 100.0%; height: 100.0%;">23 Place Pey Berland, 33000 Bordeaux, 33000 Bordeaux</div>`)[0];
+            popup_f1dde5e2f6474892a02cee3716c26565.setContent(html_77778e8c8a3c400fbea52b59a5912bc2);
+        
+
+        circle_79c91032337a4439932e75235b3ee162.bindPopup(popup_f1dde5e2f6474892a02cee3716c26565)
+        ;
+
+        
+    
+    
+            circle_79c91032337a4439932e75235b3ee162.bindTooltip(
+                `<div>
+                     Lupo (#1213) | n_orders=333
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_d58a3e1a2c6c4ca88af02e7d3ed4a980 = L.circle(
+                [44.841011, -0.570755],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_a19d2f4fc2704c928cc1cfd625bd9dc3 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5ec1979a4922447da477fed288e644cb = $(`<div id="html_5ec1979a4922447da477fed288e644cb" style="width: 100.0%; height: 100.0%;">3 Rue Du Puits Descujols, 33000 Bordeaux</div>`)[0];
+            popup_a19d2f4fc2704c928cc1cfd625bd9dc3.setContent(html_5ec1979a4922447da477fed288e644cb);
+        
+
+        circle_d58a3e1a2c6c4ca88af02e7d3ed4a980.bindPopup(popup_a19d2f4fc2704c928cc1cfd625bd9dc3)
+        ;
+
+        
+    
+    
+            circle_d58a3e1a2c6c4ca88af02e7d3ed4a980.bindTooltip(
+                `<div>
+                     Koh I Noor (#1214) | n_orders=553
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0260760e8ce449d0b5fb3cd1a66c8036 = L.circle(
+                [44.837299, -0.572124],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_04772f00a349421eb7534d2b596518c4 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_88cb707a488a45e7a9d91e40abf8ba6e = $(`<div id="html_88cb707a488a45e7a9d91e40abf8ba6e" style="width: 100.0%; height: 100.0%;">17 Place Fernand Lafargue, 33000 Bordeaux</div>`)[0];
+            popup_04772f00a349421eb7534d2b596518c4.setContent(html_88cb707a488a45e7a9d91e40abf8ba6e);
+        
+
+        circle_0260760e8ce449d0b5fb3cd1a66c8036.bindPopup(popup_04772f00a349421eb7534d2b596518c4)
+        ;
+
+        
+    
+    
+            circle_0260760e8ce449d0b5fb3cd1a66c8036.bindTooltip(
+                `<div>
+                     Moon Wok (#1215) | n_orders=943
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_9fc907eeb2bc4bc6939474604f386ac3 = L.circle(
+                [44.841721, -0.572962],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_c4c84ba326764f2cbf93aa7c7b511588 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_41f4f4e38d3044b2b664e55b89f696cc = $(`<div id="html_41f4f4e38d3044b2b664e55b89f696cc" style="width: 100.0%; height: 100.0%;">8 Rue Courbin, 33000 Bordeaux</div>`)[0];
+            popup_c4c84ba326764f2cbf93aa7c7b511588.setContent(html_41f4f4e38d3044b2b664e55b89f696cc);
+        
+
+        circle_9fc907eeb2bc4bc6939474604f386ac3.bindPopup(popup_c4c84ba326764f2cbf93aa7c7b511588)
+        ;
+
+        
+    
+    
+            circle_9fc907eeb2bc4bc6939474604f386ac3.bindTooltip(
+                `<div>
+                     Sushimi (#1216) | n_orders=291
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5c82a7ff62884dbe9555eaead2700bee = L.circle(
+                [44.845875, -0.579345],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_ecff587f2c30443f95028c821c76f9ab = L.popup({"maxWidth": "100%"});
+
+        
+            var html_bb7ffe959dd845cc8db45c841881ba48 = $(`<div id="html_bb7ffe959dd845cc8db45c841881ba48" style="width: 100.0%; height: 100.0%;">22 Rue Fondaudege, 33000 Bordeaux</div>`)[0];
+            popup_ecff587f2c30443f95028c821c76f9ab.setContent(html_bb7ffe959dd845cc8db45c841881ba48);
+        
+
+        circle_5c82a7ff62884dbe9555eaead2700bee.bindPopup(popup_ecff587f2c30443f95028c821c76f9ab)
+        ;
+
+        
+    
+    
+            circle_5c82a7ff62884dbe9555eaead2700bee.bindTooltip(
+                `<div>
+                     Henny'S Burger (#1217) | n_orders=1285
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_545965e335fd40cab1a8298408413af0 = L.circle(
+                [44.833736, -0.56662],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_2b471fdb07cf4dc6ab23fe4a4cf40502 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e98a24bbf08e4e68a38f1206f9825d79 = $(`<div id="html_e98a24bbf08e4e68a38f1206f9825d79" style="width: 100.0%; height: 100.0%;">7 Rue Gaspard Philippe, 33000 Bordeaux</div>`)[0];
+            popup_2b471fdb07cf4dc6ab23fe4a4cf40502.setContent(html_e98a24bbf08e4e68a38f1206f9825d79);
+        
+
+        circle_545965e335fd40cab1a8298408413af0.bindPopup(popup_2b471fdb07cf4dc6ab23fe4a4cf40502)
+        ;
+
+        
+    
+    
+            circle_545965e335fd40cab1a8298408413af0.bindTooltip(
+                `<div>
+                     Le Rizana (#1218) | n_orders=251
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b7247516b5cd4bb9813d0b1f18fea29d = L.circle(
+                [44.8393877, -0.5747810999999999],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_2b9906320ee140a7997c0deee8f036af = L.popup({"maxWidth": "100%"});
+
+        
+            var html_44f017c89ede4ac4a10b90919ebbf750 = $(`<div id="html_44f017c89ede4ac4a10b90919ebbf750" style="width: 100.0%; height: 100.0%;">14 Rue Guiraude, 33000 Bordeaux</div>`)[0];
+            popup_2b9906320ee140a7997c0deee8f036af.setContent(html_44f017c89ede4ac4a10b90919ebbf750);
+        
+
+        circle_b7247516b5cd4bb9813d0b1f18fea29d.bindPopup(popup_2b9906320ee140a7997c0deee8f036af)
+        ;
+
+        
+    
+    
+            circle_b7247516b5cd4bb9813d0b1f18fea29d.bindTooltip(
+                `<div>
+                     La Tagliatella (#1219) | n_orders=37
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a56eae98b37d4799b73559036ca2960d = L.circle(
+                [44.838287, -0.570993],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_a3550b60f02f4d23891c19a89fb51b4b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b7610391853348df8bd191121695717e = $(`<div id="html_b7610391853348df8bd191121695717e" style="width: 100.0%; height: 100.0%;">1 Rue Du Cerf Volant, 33000 Bordeaux</div>`)[0];
+            popup_a3550b60f02f4d23891c19a89fb51b4b.setContent(html_b7610391853348df8bd191121695717e);
+        
+
+        circle_a56eae98b37d4799b73559036ca2960d.bindPopup(popup_a3550b60f02f4d23891c19a89fb51b4b)
+        ;
+
+        
+    
+    
+            circle_a56eae98b37d4799b73559036ca2960d.bindTooltip(
+                `<div>
+                     Jardin Phnom Penh (#1220) | n_orders=30
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_336fe4de3c244d8b818f37cf2d84a766 = L.circle(
+                [44.84473, -0.578606],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_104900323217434f8ca00413a22a0b60 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6dcbae997b914fbdbb588c86e3c69f2f = $(`<div id="html_6dcbae997b914fbdbb588c86e3c69f2f" style="width: 100.0%; height: 100.0%;">25 Allee De Tourny, 33000 Bordeaux</div>`)[0];
+            popup_104900323217434f8ca00413a22a0b60.setContent(html_6dcbae997b914fbdbb588c86e3c69f2f);
+        
+
+        circle_336fe4de3c244d8b818f37cf2d84a766.bindPopup(popup_104900323217434f8ca00413a22a0b60)
+        ;
+
+        
+    
+    
+            circle_336fe4de3c244d8b818f37cf2d84a766.bindTooltip(
+                `<div>
+                     Le Veneto (#1221) | n_orders=650
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_cff420f9caea4df1b893cae26c02d0b9 = L.circle(
+                [44.839336, -0.58194],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_d5f5e8f8524a40b090c62258b472c103 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a464b577c1b34f1584f05498e2312aaa = $(`<div id="html_a464b577c1b34f1584f05498e2312aaa" style="width: 100.0%; height: 100.0%;">6 Rue Saint-Sernin, Bordeaux, 33000 Bordeaux</div>`)[0];
+            popup_d5f5e8f8524a40b090c62258b472c103.setContent(html_a464b577c1b34f1584f05498e2312aaa);
+        
+
+        circle_cff420f9caea4df1b893cae26c02d0b9.bindPopup(popup_d5f5e8f8524a40b090c62258b472c103)
+        ;
+
+        
+    
+    
+            circle_cff420f9caea4df1b893cae26c02d0b9.bindTooltip(
+                `<div>
+                     Les Tartines De Marine (#1222) | n_orders=223
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_eae4da15484d4e1abb95de4ca8f4e92d = L.circle(
+                [44.83419, -0.571462],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_c9e9b5f3f16545e2a994fec59cb3ea58 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c8044183a9fe4147b9a7ee9b156514aa = $(`<div id="html_c8044183a9fe4147b9a7ee9b156514aa" style="width: 100.0%; height: 100.0%;">19 Rue Du Mirail, 33000 Bordeaux</div>`)[0];
+            popup_c9e9b5f3f16545e2a994fec59cb3ea58.setContent(html_c8044183a9fe4147b9a7ee9b156514aa);
+        
+
+        circle_eae4da15484d4e1abb95de4ca8f4e92d.bindPopup(popup_c9e9b5f3f16545e2a994fec59cb3ea58)
+        ;
+
+        
+    
+    
+            circle_eae4da15484d4e1abb95de4ca8f4e92d.bindTooltip(
+                `<div>
+                     Bag'Elles Coffee (#1223) | n_orders=231
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_7183b085da8c4893abd1fe658ee55150 = L.circle(
+                [44.840355, -0.581659],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_eac3ab0f07b14c4c9fb21f508e9c42a5 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_1ca572fa91a74692ae797a2b79d56748 = $(`<div id="html_1ca572fa91a74692ae797a2b79d56748" style="width: 100.0%; height: 100.0%;">6 Rue Georges Bonnac, 33000 Bordeaux</div>`)[0];
+            popup_eac3ab0f07b14c4c9fb21f508e9c42a5.setContent(html_1ca572fa91a74692ae797a2b79d56748);
+        
+
+        circle_7183b085da8c4893abd1fe658ee55150.bindPopup(popup_eac3ab0f07b14c4c9fb21f508e9c42a5)
+        ;
+
+        
+    
+    
+            circle_7183b085da8c4893abd1fe658ee55150.bindTooltip(
+                `<div>
+                     Gyoza Factory (#1224) | n_orders=271
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f93f9d515cf34516b493e0d43b0a05ba = L.circle(
+                [44.827942, -0.59441],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_7a7836ae1ca74d05b6cee37b59bb2386 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_0204ee4cd96a475ebbe2adfae64feb48 = $(`<div id="html_0204ee4cd96a475ebbe2adfae64feb48" style="width: 100.0%; height: 100.0%;">5 Place Louis Barthou, 33000 Bordeaux</div>`)[0];
+            popup_7a7836ae1ca74d05b6cee37b59bb2386.setContent(html_0204ee4cd96a475ebbe2adfae64feb48);
+        
+
+        circle_f93f9d515cf34516b493e0d43b0a05ba.bindPopup(popup_7a7836ae1ca74d05b6cee37b59bb2386)
+        ;
+
+        
+    
+    
+            circle_f93f9d515cf34516b493e0d43b0a05ba.bindTooltip(
+                `<div>
+                     Billy Factory (#1225) | n_orders=746
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_aaba69c8545d4822b7c7ca71e20fd858 = L.circle(
+                [44.840084, -0.5994],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_e70ca4ae23ad46b8a2cbc6f316484497 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9b331e87d84d4162953dc5179edd2d30 = $(`<div id="html_9b331e87d84d4162953dc5179edd2d30" style="width: 100.0%; height: 100.0%;">84 Boulevard Du President Wilson, 33000 Bordeaux</div>`)[0];
+            popup_e70ca4ae23ad46b8a2cbc6f316484497.setContent(html_9b331e87d84d4162953dc5179edd2d30);
+        
+
+        circle_aaba69c8545d4822b7c7ca71e20fd858.bindPopup(popup_e70ca4ae23ad46b8a2cbc6f316484497)
+        ;
+
+        
+    
+    
+            circle_aaba69c8545d4822b7c7ca71e20fd858.bindTooltip(
+                `<div>
+                     Ici Argentine (#1226) | n_orders=249
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_299fb86c02074bb1b43c7fcd8cab225d = L.circle(
+                [44.839531, -0.570651],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_9c3e56cb8001411888b719ed88b30a51 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_244555ea845c42a8848aa85c44f2fede = $(`<div id="html_244555ea845c42a8848aa85c44f2fede" style="width: 100.0%; height: 100.0%;">4 Rue Des Bahutiers, 33000 Bordeaux</div>`)[0];
+            popup_9c3e56cb8001411888b719ed88b30a51.setContent(html_244555ea845c42a8848aa85c44f2fede);
+        
+
+        circle_299fb86c02074bb1b43c7fcd8cab225d.bindPopup(popup_9c3e56cb8001411888b719ed88b30a51)
+        ;
+
+        
+    
+    
+            circle_299fb86c02074bb1b43c7fcd8cab225d.bindTooltip(
+                `<div>
+                     Cilicie (#1227) | n_orders=691
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a1657bbf961042b1a09398339ff12a1d = L.circle(
+                [44.834278, -0.57038],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_df30aab7ef4541459119c8a8c7e61223 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a3df3a7475274281878a44829a09024c = $(`<div id="html_a3df3a7475274281878a44829a09024c" style="width: 100.0%; height: 100.0%;">2 Bis Rue De Cursol, 33000 Bordeaux</div>`)[0];
+            popup_df30aab7ef4541459119c8a8c7e61223.setContent(html_a3df3a7475274281878a44829a09024c);
+        
+
+        circle_a1657bbf961042b1a09398339ff12a1d.bindPopup(popup_df30aab7ef4541459119c8a8c7e61223)
+        ;
+
+        
+    
+    
+            circle_a1657bbf961042b1a09398339ff12a1d.bindTooltip(
+                `<div>
+                     Les Mijotes Du Bocal (#1229) | n_orders=59
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_4ae5602db95a4fe5b4be1dd9c54d55d8 = L.circle(
+                [44.855438, -0.567234],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_fbb5cca3a132487191a99891cc70136a = L.popup({"maxWidth": "100%"});
+
+        
+            var html_adcb90b0fd6d4a71ba7563e815b06c32 = $(`<div id="html_adcb90b0fd6d4a71ba7563e815b06c32" style="width: 100.0%; height: 100.0%;">12 Place Paul Et Jean-Paul Avisseau, 33300 Bordeaux</div>`)[0];
+            popup_fbb5cca3a132487191a99891cc70136a.setContent(html_adcb90b0fd6d4a71ba7563e815b06c32);
+        
+
+        circle_4ae5602db95a4fe5b4be1dd9c54d55d8.bindPopup(popup_fbb5cca3a132487191a99891cc70136a)
+        ;
+
+        
+    
+    
+            circle_4ae5602db95a4fe5b4be1dd9c54d55d8.bindTooltip(
+                `<div>
+                     Is&I Kitchen (#1230) | n_orders=14
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_3e96de43a7f041d5ba573867910a5035 = L.circle(
+                [44.83691, -0.573943],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_93c3da08b6d8469aa4ccc5d44430216e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a9557a64d4d84a0a879ec39526c1a460 = $(`<div id="html_a9557a64d4d84a0a879ec39526c1a460" style="width: 100.0%; height: 100.0%;">8 Place Fernand Lafargue, 33000 Bordeaux</div>`)[0];
+            popup_93c3da08b6d8469aa4ccc5d44430216e.setContent(html_a9557a64d4d84a0a879ec39526c1a460);
+        
+
+        circle_3e96de43a7f041d5ba573867910a5035.bindPopup(popup_93c3da08b6d8469aa4ccc5d44430216e)
+        ;
+
+        
+    
+    
+            circle_3e96de43a7f041d5ba573867910a5035.bindTooltip(
+                `<div>
+                     Umami Ramen (#1231) | n_orders=925
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_602f5da2ab0348db927d878f95e20a4d = L.circle(
+                [44.841103, -0.582515],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_91fdd2ef141f4881b7878019ca204aa2 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_21830c626fcc4e169f71c780f36fafb9 = $(`<div id="html_21830c626fcc4e169f71c780f36fafb9" style="width: 100.0%; height: 100.0%;">48 Rue Saint Sernin, 33000 Bordeaux</div>`)[0];
+            popup_91fdd2ef141f4881b7878019ca204aa2.setContent(html_21830c626fcc4e169f71c780f36fafb9);
+        
+
+        circle_602f5da2ab0348db927d878f95e20a4d.bindPopup(popup_91fdd2ef141f4881b7878019ca204aa2)
+        ;
+
+        
+    
+    
+            circle_602f5da2ab0348db927d878f95e20a4d.bindTooltip(
+                `<div>
+                     Anh Kha (#1232) | n_orders=103
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b86f2b6988214169aecab78b5ab840f6 = L.circle(
+                [44.841393, -0.572534],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_d672530817704ddfb4337fc4305391b0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_7182eed6a98a44ce9611bba8063d9399 = $(`<div id="html_7182eed6a98a44ce9611bba8063d9399" style="width: 100.0%; height: 100.0%;">39 Rue Saint Remi, 33000 Bordeaux</div>`)[0];
+            popup_d672530817704ddfb4337fc4305391b0.setContent(html_7182eed6a98a44ce9611bba8063d9399);
+        
+
+        circle_b86f2b6988214169aecab78b5ab840f6.bindPopup(popup_d672530817704ddfb4337fc4305391b0)
+        ;
+
+        
+    
+    
+            circle_b86f2b6988214169aecab78b5ab840f6.bindTooltip(
+                `<div>
+                     Punjab (#1233) | n_orders=735
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_df034ce844b5438b8c566813c4d77b9c = L.circle(
+                [44.843746, -0.554713],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_f0127438226644fc8e90be78bd201314 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_da7d7e24f0f14e79a632683005711122 = $(`<div id="html_da7d7e24f0f14e79a632683005711122" style="width: 100.0%; height: 100.0%;">96 Avenue Thiers, 33100 Bordeaux, 33100 Bordeaux</div>`)[0];
+            popup_f0127438226644fc8e90be78bd201314.setContent(html_da7d7e24f0f14e79a632683005711122);
+        
+
+        circle_df034ce844b5438b8c566813c4d77b9c.bindPopup(popup_f0127438226644fc8e90be78bd201314)
+        ;
+
+        
+    
+    
+            circle_df034ce844b5438b8c566813c4d77b9c.bindTooltip(
+                `<div>
+                     Mille Et Une Saveurs (#1234) | n_orders=270
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b337173e07a349428c4da590d02ff926 = L.circle(
+                [44.840603, -0.570444],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_5a7d675cfc9244b1a97c6d52064ca87c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_fc6cf5676e0b4dc786eef836a8cb05c7 = $(`<div id="html_fc6cf5676e0b4dc786eef836a8cb05c7" style="width: 100.0%; height: 100.0%;">17 Rue Leupold, 33000 Bordeaux</div>`)[0];
+            popup_5a7d675cfc9244b1a97c6d52064ca87c.setContent(html_fc6cf5676e0b4dc786eef836a8cb05c7);
+        
+
+        circle_b337173e07a349428c4da590d02ff926.bindPopup(popup_5a7d675cfc9244b1a97c6d52064ca87c)
+        ;
+
+        
+    
+    
+            circle_b337173e07a349428c4da590d02ff926.bindTooltip(
+                `<div>
+                     Melodie (#1235) | n_orders=223
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_74c3a12183ec46a0bcfa4bec942b07c3 = L.circle(
+                [44.834766, -0.565754],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_cb9f17b769c4404f9240e9766f07cd95 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_8e86997e31ea44348a33d09199540ca9 = $(`<div id="html_8e86997e31ea44348a33d09199540ca9" style="width: 100.0%; height: 100.0%;">27 Rue Des Faures, 33800 Bordeaux</div>`)[0];
+            popup_cb9f17b769c4404f9240e9766f07cd95.setContent(html_8e86997e31ea44348a33d09199540ca9);
+        
+
+        circle_74c3a12183ec46a0bcfa4bec942b07c3.bindPopup(popup_cb9f17b769c4404f9240e9766f07cd95)
+        ;
+
+        
+    
+    
+            circle_74c3a12183ec46a0bcfa4bec942b07c3.bindTooltip(
+                `<div>
+                     Marhaba (#1236) | n_orders=473
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_eaf50319ef584f4bb1152b2a3418cf39 = L.circle(
+                [44.837952, -0.567716],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_daccfae3a6364f968409faeb9d885050 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d160dd5f6f9245558ec9fd5475d5df39 = $(`<div id="html_d160dd5f6f9245558ec9fd5475d5df39" style="width: 100.0%; height: 100.0%;">2 Cours D'Alsace Lorraine, 33000 Bordeaux</div>`)[0];
+            popup_daccfae3a6364f968409faeb9d885050.setContent(html_d160dd5f6f9245558ec9fd5475d5df39);
+        
+
+        circle_eaf50319ef584f4bb1152b2a3418cf39.bindPopup(popup_daccfae3a6364f968409faeb9d885050)
+        ;
+
+        
+    
+    
+            circle_eaf50319ef584f4bb1152b2a3418cf39.bindTooltip(
+                `<div>
+                     Label Terre (#1237) | n_orders=10
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1dcbb16b9bfb4c829a11c7d4d6d8dbec = L.circle(
+                [44.846516, -0.588076],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_4429537339f6403990413b0bbcc31ac9 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ccd41bf0570b485ea23f76443ff69ff0 = $(`<div id="html_ccd41bf0570b485ea23f76443ff69ff0" style="width: 100.0%; height: 100.0%;">7 Rue Paulin, 33000 Bordeaux</div>`)[0];
+            popup_4429537339f6403990413b0bbcc31ac9.setContent(html_ccd41bf0570b485ea23f76443ff69ff0);
+        
+
+        circle_1dcbb16b9bfb4c829a11c7d4d6d8dbec.bindPopup(popup_4429537339f6403990413b0bbcc31ac9)
+        ;
+
+        
+    
+    
+            circle_1dcbb16b9bfb4c829a11c7d4d6d8dbec.bindTooltip(
+                `<div>
+                     Tam Tam Saigon (#1239) | n_orders=165
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_8ca8699b03d14d5987a3c0261e4b3f0e = L.circle(
+                [44.835506, -0.575218],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_ddae5bb10ed2441184a72011d0c0d11b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c45676f73d4e456cbb7a86c6fad1280a = $(`<div id="html_c45676f73d4e456cbb7a86c6fad1280a" style="width: 100.0%; height: 100.0%;">24 Place De La Ferme De Richemont, 33000 Bordeaux</div>`)[0];
+            popup_ddae5bb10ed2441184a72011d0c0d11b.setContent(html_c45676f73d4e456cbb7a86c6fad1280a);
+        
+
+        circle_8ca8699b03d14d5987a3c0261e4b3f0e.bindPopup(popup_ddae5bb10ed2441184a72011d0c0d11b)
+        ;
+
+        
+    
+    
+            circle_8ca8699b03d14d5987a3c0261e4b3f0e.bindTooltip(
+                `<div>
+                     My Terroir (#1241) | n_orders=261
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_7e79e9efffc249a48065818a38328775 = L.circle(
+                [44.841438, -0.572537],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_f494b042cbba451cb54b45e563db5b75 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_771557e05de74baa8d5df6ab70b055d1 = $(`<div id="html_771557e05de74baa8d5df6ab70b055d1" style="width: 100.0%; height: 100.0%;">37 Rue Saint Remi, 33000 Bordeaux</div>`)[0];
+            popup_f494b042cbba451cb54b45e563db5b75.setContent(html_771557e05de74baa8d5df6ab70b055d1);
+        
+
+        circle_7e79e9efffc249a48065818a38328775.bindPopup(popup_f494b042cbba451cb54b45e563db5b75)
+        ;
+
+        
+    
+    
+            circle_7e79e9efffc249a48065818a38328775.bindTooltip(
+                `<div>
+                     Fufu Saint Remi (#1242) | n_orders=2555
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_281c1a45f9d14144b67eacd644179347 = L.circle(
+                [44.842804, -0.550576],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_229fd152879e4b89901234c6eab6e1f0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a68e2e3793424f76b16b7d22d412041c = $(`<div id="html_a68e2e3793424f76b16b7d22d412041c" style="width: 100.0%; height: 100.0%;">53 Cours Le Rouzic, 33100 Bordeaux, 33100 Bordeaux</div>`)[0];
+            popup_229fd152879e4b89901234c6eab6e1f0.setContent(html_a68e2e3793424f76b16b7d22d412041c);
+        
+
+        circle_281c1a45f9d14144b67eacd644179347.bindPopup(popup_229fd152879e4b89901234c6eab6e1f0)
+        ;
+
+        
+    
+    
+            circle_281c1a45f9d14144b67eacd644179347.bindTooltip(
+                `<div>
+                     Bagel And Goodies (#1243) | n_orders=118
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_aabe0fe8a3444ae2beb448e95404d11f = L.circle(
+                [44.85516, -0.572128],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_09575f1fa1284bb980d70725fb404064 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_0024783c3eae4e579194702c700c1d21 = $(`<div id="html_0024783c3eae4e579194702c700c1d21" style="width: 100.0%; height: 100.0%;">71 Cours Portal, 33300 Bordeaux</div>`)[0];
+            popup_09575f1fa1284bb980d70725fb404064.setContent(html_0024783c3eae4e579194702c700c1d21);
+        
+
+        circle_aabe0fe8a3444ae2beb448e95404d11f.bindPopup(popup_09575f1fa1284bb980d70725fb404064)
+        ;
+
+        
+    
+    
+            circle_aabe0fe8a3444ae2beb448e95404d11f.bindTooltip(
+                `<div>
+                     Fufu Chartrons (#1244) | n_orders=954
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5f387403ffc845c0b15233d0efec69f4 = L.circle(
+                [44.841286, -0.573413],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_68a79ec3d39a47e79db650023b939b8c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_4a0e1d367bba44669f00bb148c135b19 = $(`<div id="html_4a0e1d367bba44669f00bb148c135b19" style="width: 100.0%; height: 100.0%;">55 Rue Saint Remi, 33000 Bordeaux</div>`)[0];
+            popup_68a79ec3d39a47e79db650023b939b8c.setContent(html_4a0e1d367bba44669f00bb148c135b19);
+        
+
+        circle_5f387403ffc845c0b15233d0efec69f4.bindPopup(popup_68a79ec3d39a47e79db650023b939b8c)
+        ;
+
+        
+    
+    
+            circle_5f387403ffc845c0b15233d0efec69f4.bindTooltip(
+                `<div>
+                     Eatsalad (#1245) | n_orders=1847
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_cb81f1f8e66a420e8739308fa0a62b89 = L.circle(
+                [44.836327, -0.575572],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_86c36b6f7cd646ca8d830fbff573a21f = L.popup({"maxWidth": "100%"});
+
+        
+            var html_58c71fea5ce44dab91d5b33404afc5bd = $(`<div id="html_58c71fea5ce44dab91d5b33404afc5bd" style="width: 100.0%; height: 100.0%;">70 Rue Des Ayres, 33000 Bordeaux</div>`)[0];
+            popup_86c36b6f7cd646ca8d830fbff573a21f.setContent(html_58c71fea5ce44dab91d5b33404afc5bd);
+        
+
+        circle_cb81f1f8e66a420e8739308fa0a62b89.bindPopup(popup_86c36b6f7cd646ca8d830fbff573a21f)
+        ;
+
+        
+    
+    
+            circle_cb81f1f8e66a420e8739308fa0a62b89.bindTooltip(
+                `<div>
+                     Thai Paradise (#1246) | n_orders=342
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c5fe10fca30b493d9fe8d7cc0685b125 = L.circle(
+                [44.841251, -0.558816],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_b375a87009134ac3b2833016d00501ed = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f3a83123aa9340ba9cf55d5ebaa80f5b = $(`<div id="html_f3a83123aa9340ba9cf55d5ebaa80f5b" style="width: 100.0%; height: 100.0%;">16 Avenue Tiers, 33100 Bordeaux</div>`)[0];
+            popup_b375a87009134ac3b2833016d00501ed.setContent(html_f3a83123aa9340ba9cf55d5ebaa80f5b);
+        
+
+        circle_c5fe10fca30b493d9fe8d7cc0685b125.bindPopup(popup_b375a87009134ac3b2833016d00501ed)
+        ;
+
+        
+    
+    
+            circle_c5fe10fca30b493d9fe8d7cc0685b125.bindTooltip(
+                `<div>
+                     Noonies (#1247) | n_orders=96
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_df21b6a3a05e4736af6026f0d31e7f19 = L.circle(
+                [44.831692, -0.573207],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_87d320c605894973a401885faa1573d1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d89aa6bdaca249e498e8cdc2d028b6f1 = $(`<div id="html_d89aa6bdaca249e498e8cdc2d028b6f1" style="width: 100.0%; height: 100.0%;">275 Rue Sainte Catherine, 33000 Bordeaux</div>`)[0];
+            popup_87d320c605894973a401885faa1573d1.setContent(html_d89aa6bdaca249e498e8cdc2d028b6f1);
+        
+
+        circle_df21b6a3a05e4736af6026f0d31e7f19.bindPopup(popup_87d320c605894973a401885faa1573d1)
+        ;
+
+        
+    
+    
+            circle_df21b6a3a05e4736af6026f0d31e7f19.bindTooltip(
+                `<div>
+                     Pitaya Sainte Catherine (#1249) | n_orders=2731
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6f28f39ddf5f4ea0b1c2503bab668006 = L.circle(
+                [44.837921, -0.572655],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_a1b59b58918a4b4c9dff76000b2246f1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c02fcf5a3a0e4849a13114fbc02e99cc = $(`<div id="html_c02fcf5a3a0e4849a13114fbc02e99cc" style="width: 100.0%; height: 100.0%;">39 Cours D'Alsace-Et-Lorraine, 33000 Bordeaux</div>`)[0];
+            popup_a1b59b58918a4b4c9dff76000b2246f1.setContent(html_c02fcf5a3a0e4849a13114fbc02e99cc);
+        
+
+        circle_6f28f39ddf5f4ea0b1c2503bab668006.bindPopup(popup_a1b59b58918a4b4c9dff76000b2246f1)
+        ;
+
+        
+    
+    
+            circle_6f28f39ddf5f4ea0b1c2503bab668006.bindTooltip(
+                `<div>
+                     Que Toi (#1250) | n_orders=507
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_812e81a2294e46f0afc6444173c78882 = L.circle(
+                [44.838081, -0.572281],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_2239c3a205214599bb6ccde801bc0220 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_520e5e201f474495b34104ed9bf92ade = $(`<div id="html_520e5e201f474495b34104ed9bf92ade" style="width: 100.0%; height: 100.0%;">5 Rue Du Loup, 33000 Bordeaux</div>`)[0];
+            popup_2239c3a205214599bb6ccde801bc0220.setContent(html_520e5e201f474495b34104ed9bf92ade);
+        
+
+        circle_812e81a2294e46f0afc6444173c78882.bindPopup(popup_2239c3a205214599bb6ccde801bc0220)
+        ;
+
+        
+    
+    
+            circle_812e81a2294e46f0afc6444173c78882.bindTooltip(
+                `<div>
+                     Funky Burger (#1254) | n_orders=5840
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_60b8db62172c4350879a5eb4f5a6675d = L.circle(
+                [44.840912, -0.559553],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_5c61bc64d5b24ab8a5156808814d5e48 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_2cc24a1ec130414888d94fbfe787f09d = $(`<div id="html_2cc24a1ec130414888d94fbfe787f09d" style="width: 100.0%; height: 100.0%;">36 Place De Stalingrad, 33100 Bordeaux</div>`)[0];
+            popup_5c61bc64d5b24ab8a5156808814d5e48.setContent(html_2cc24a1ec130414888d94fbfe787f09d);
+        
+
+        circle_60b8db62172c4350879a5eb4f5a6675d.bindPopup(popup_5c61bc64d5b24ab8a5156808814d5e48)
+        ;
+
+        
+    
+    
+            circle_60b8db62172c4350879a5eb4f5a6675d.bindTooltip(
+                `<div>
+                     Pitaya Stalingrad (#1256) | n_orders=1187
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f5e925844170434d813d80322dc43144 = L.circle(
+                [44.84127, -0.572691],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_a5d4b615d2994943bb96ed4d66a3528e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f6a7b79b24524eb19855bd726b70c702 = $(`<div id="html_f6a7b79b24524eb19855bd726b70c702" style="width: 100.0%; height: 100.0%;">42 Rue Saint Remi, 33000 Bordeaux</div>`)[0];
+            popup_a5d4b615d2994943bb96ed4d66a3528e.setContent(html_f6a7b79b24524eb19855bd726b70c702);
+        
+
+        circle_f5e925844170434d813d80322dc43144.bindPopup(popup_a5d4b615d2994943bb96ed4d66a3528e)
+        ;
+
+        
+    
+    
+            circle_f5e925844170434d813d80322dc43144.bindTooltip(
+                `<div>
+                     Pitaya Saint-Remi (#1258) | n_orders=1825
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1b9aab7f98de4b23bd422e9662902d20 = L.circle(
+                [44.838787, -0.568008],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_2e7e4d3e9e2a4a93a95b0760447e5798 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_da17de9f642f40a5a0272ca33232b1a4 = $(`<div id="html_da17de9f642f40a5a0272ca33232b1a4" style="width: 100.0%; height: 100.0%;">25 Quai Richelieu, 33000 Bordeaux</div>`)[0];
+            popup_2e7e4d3e9e2a4a93a95b0760447e5798.setContent(html_da17de9f642f40a5a0272ca33232b1a4);
+        
+
+        circle_1b9aab7f98de4b23bd422e9662902d20.bindPopup(popup_2e7e4d3e9e2a4a93a95b0760447e5798)
+        ;
+
+        
+    
+    
+            circle_1b9aab7f98de4b23bd422e9662902d20.bindTooltip(
+                `<div>
+                     Perditempo (#1259) | n_orders=120
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5da78021b8fb453e9073b6e840f1715d = L.circle(
+                [44.837101, -0.57272],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_e90a3220308b4e848bd6e02447d881ee = L.popup({"maxWidth": "100%"});
+
+        
+            var html_af9e44fd77fb436b9ed17b813b96ba5b = $(`<div id="html_af9e44fd77fb436b9ed17b813b96ba5b" style="width: 100.0%; height: 100.0%;">14 Rue Ravez, 33000 Bordeaux</div>`)[0];
+            popup_e90a3220308b4e848bd6e02447d881ee.setContent(html_af9e44fd77fb436b9ed17b813b96ba5b);
+        
+
+        circle_5da78021b8fb453e9073b6e840f1715d.bindPopup(popup_e90a3220308b4e848bd6e02447d881ee)
+        ;
+
+        
+    
+    
+            circle_5da78021b8fb453e9073b6e840f1715d.bindTooltip(
+                `<div>
+                     L'Epicerie Bordelaise (#1260) | n_orders=2157
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6d6f5c0b76c24d34a78a1108ab774c07 = L.circle(
+                [44.838734, -0.581611],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_e0d9d7806179404e8d4d085d82097d1e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ced1cbbf81c64ca2988583d3daedcd31 = $(`<div id="html_ced1cbbf81c64ca2988583d3daedcd31" style="width: 100.0%; height: 100.0%;">8 Cours D'Albret, 33000 Bordeaux</div>`)[0];
+            popup_e0d9d7806179404e8d4d085d82097d1e.setContent(html_ced1cbbf81c64ca2988583d3daedcd31);
+        
+
+        circle_6d6f5c0b76c24d34a78a1108ab774c07.bindPopup(popup_e0d9d7806179404e8d4d085d82097d1e)
+        ;
+
+        
+    
+    
+            circle_6d6f5c0b76c24d34a78a1108ab774c07.bindTooltip(
+                `<div>
+                     Noorn Akorn (#1263) | n_orders=297
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_19f2ea977d7d4465b795e36cbb5ec006 = L.circle(
+                [44.8428, -0.581592],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_49c96a80386148f4a08ec4f8ef96d26c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_1fc67d0839794edebbf718cb7d089f06 = $(`<div id="html_1fc67d0839794edebbf718cb7d089f06" style="width: 100.0%; height: 100.0%;">32 Rue De Palais Gallien, 33000 Bordeaux</div>`)[0];
+            popup_49c96a80386148f4a08ec4f8ef96d26c.setContent(html_1fc67d0839794edebbf718cb7d089f06);
+        
+
+        circle_19f2ea977d7d4465b795e36cbb5ec006.bindPopup(popup_49c96a80386148f4a08ec4f8ef96d26c)
+        ;
+
+        
+    
+    
+            circle_19f2ea977d7d4465b795e36cbb5ec006.bindTooltip(
+                `<div>
+                     Koeben (#1264) | n_orders=48
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_fbed1b9a91434e1ab5d44673f6f81422 = L.circle(
+                [44.853027, -0.573322],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_7485482e958e45539d7046bd738fe79a = L.popup({"maxWidth": "100%"});
+
+        
+            var html_18af766e7f714747a1681f10fd2cf674 = $(`<div id="html_18af766e7f714747a1681f10fd2cf674" style="width: 100.0%; height: 100.0%;">23 Cours Portal, 33000 Bordeaux</div>`)[0];
+            popup_7485482e958e45539d7046bd738fe79a.setContent(html_18af766e7f714747a1681f10fd2cf674);
+        
+
+        circle_fbed1b9a91434e1ab5d44673f6f81422.bindPopup(popup_7485482e958e45539d7046bd738fe79a)
+        ;
+
+        
+    
+    
+            circle_fbed1b9a91434e1ab5d44673f6f81422.bindTooltip(
+                `<div>
+                     Chez Frango (#1265) | n_orders=501
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_98c74f21c0a9417a8b75a86a0f7b1e84 = L.circle(
+                [44.834511, -0.578444],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_81703f530d244c01afeaec00ba4c3ea0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f078317ef8e0492db987d326eb66fa7d = $(`<div id="html_f078317ef8e0492db987d326eb66fa7d" style="width: 100.0%; height: 100.0%;">8 Rue Jean Burguet, 33000 Bordeaux</div>`)[0];
+            popup_81703f530d244c01afeaec00ba4c3ea0.setContent(html_f078317ef8e0492db987d326eb66fa7d);
+        
+
+        circle_98c74f21c0a9417a8b75a86a0f7b1e84.bindPopup(popup_81703f530d244c01afeaec00ba4c3ea0)
+        ;
+
+        
+    
+    
+            circle_98c74f21c0a9417a8b75a86a0f7b1e84.bindTooltip(
+                `<div>
+                     Sambo'S Shop (#1266) | n_orders=53
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6e730b554d58481abb8ef1ce5df2cdb0 = L.circle(
+                [44.853039, -0.56808],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_0fad0513ec6648de9b6985ee561f8fca = L.popup({"maxWidth": "100%"});
+
+        
+            var html_200dac3c710944538a7e40503092732a = $(`<div id="html_200dac3c710944538a7e40503092732a" style="width: 100.0%; height: 100.0%;">68 Quai Des Chartrons, 33300 Bordeaux</div>`)[0];
+            popup_0fad0513ec6648de9b6985ee561f8fca.setContent(html_200dac3c710944538a7e40503092732a);
+        
+
+        circle_6e730b554d58481abb8ef1ce5df2cdb0.bindPopup(popup_0fad0513ec6648de9b6985ee561f8fca)
+        ;
+
+        
+    
+    
+            circle_6e730b554d58481abb8ef1ce5df2cdb0.bindTooltip(
+                `<div>
+                     Lekkers (#1267) | n_orders=264
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f38892ca2b5e4e2d90c454e610dff809 = L.circle(
+                [44.853725, -0.573038],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_d76c031b7efc4bff85cc8a8bede6548e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3cf0c6bc49c34ecd90652e4973a6ebc6 = $(`<div id="html_3cf0c6bc49c34ecd90652e4973a6ebc6" style="width: 100.0%; height: 100.0%;">39 Cours Portal, 33000 Bordeaux</div>`)[0];
+            popup_d76c031b7efc4bff85cc8a8bede6548e.setContent(html_3cf0c6bc49c34ecd90652e4973a6ebc6);
+        
+
+        circle_f38892ca2b5e4e2d90c454e610dff809.bindPopup(popup_d76c031b7efc4bff85cc8a8bede6548e)
+        ;
+
+        
+    
+    
+            circle_f38892ca2b5e4e2d90c454e610dff809.bindTooltip(
+                `<div>
+                     Sushi Shop Chartrons (#1270) | n_orders=884
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_12575b70d6224e24ba272ed6274ffe35 = L.circle(
+                [44.838192, -0.569677],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_9373a11aceb84d8d967b2046a6af6f4f = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6f80fd8288d9484caf0d1d63f7e456a0 = $(`<div id="html_6f80fd8288d9484caf0d1d63f7e456a0" style="width: 100.0%; height: 100.0%;">8 Place Du Palais, 33000 Bordeaux</div>`)[0];
+            popup_9373a11aceb84d8d967b2046a6af6f4f.setContent(html_6f80fd8288d9484caf0d1d63f7e456a0);
+        
+
+        circle_12575b70d6224e24ba272ed6274ffe35.bindPopup(popup_9373a11aceb84d8d967b2046a6af6f4f)
+        ;
+
+        
+    
+    
+            circle_12575b70d6224e24ba272ed6274ffe35.bindTooltip(
+                `<div>
+                     La Cagette (#1271) | n_orders=125
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_61be23f155414205bb39b87da3cf6a82 = L.circle(
+                [44.838921, -0.570895],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_b9659fe11dc748e4894d338e062b54ba = L.popup({"maxWidth": "100%"});
+
+        
+            var html_1e20949cb055458aae8d9f72e645e51a = $(`<div id="html_1e20949cb055458aae8d9f72e645e51a" style="width: 100.0%; height: 100.0%;">27 Rue Des Bahutiers, 33000 Bordeaux</div>`)[0];
+            popup_b9659fe11dc748e4894d338e062b54ba.setContent(html_1e20949cb055458aae8d9f72e645e51a);
+        
+
+        circle_61be23f155414205bb39b87da3cf6a82.bindPopup(popup_b9659fe11dc748e4894d338e062b54ba)
+        ;
+
+        
+    
+    
+            circle_61be23f155414205bb39b87da3cf6a82.bindTooltip(
+                `<div>
+                     Vins Urbains (#1273) | n_orders=7
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_31c2e9a2ed1a4482930332deee5cf3d5 = L.circle(
+                [44.839516, -0.577758],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_4acd9558e4fa4757bc7eab24debca9be = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5bb15b9530c24bc8971593a09c28c4a6 = $(`<div id="html_5bb15b9530c24bc8971593a09c28c4a6" style="width: 100.0%; height: 100.0%;">7 Place Saint Christoly, 33000 Bordeaux</div>`)[0];
+            popup_4acd9558e4fa4757bc7eab24debca9be.setContent(html_5bb15b9530c24bc8971593a09c28c4a6);
+        
+
+        circle_31c2e9a2ed1a4482930332deee5cf3d5.bindPopup(popup_4acd9558e4fa4757bc7eab24debca9be)
+        ;
+
+        
+    
+    
+            circle_31c2e9a2ed1a4482930332deee5cf3d5.bindTooltip(
+                `<div>
+                     Spok (#1274) | n_orders=17
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_3e670ccb477c4676bf9a5d6608bdfbfd = L.circle(
+                [44.853455, -0.567276],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_d8cffde5bc59463f8ba7ef689b79c232 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3af92a188cf54fcab15e91c6f45f1121 = $(`<div id="html_3af92a188cf54fcab15e91c6f45f1121" style="width: 100.0%; height: 100.0%;">76 Quai Des Chartrons, 33300 Bordeaux</div>`)[0];
+            popup_d8cffde5bc59463f8ba7ef689b79c232.setContent(html_3af92a188cf54fcab15e91c6f45f1121);
+        
+
+        circle_3e670ccb477c4676bf9a5d6608bdfbfd.bindPopup(popup_d8cffde5bc59463f8ba7ef689b79c232)
+        ;
+
+        
+    
+    
+            circle_3e670ccb477c4676bf9a5d6608bdfbfd.bindTooltip(
+                `<div>
+                     Yumi (#1277) | n_orders=1110
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ba5b250457524c56b17a4ca00c483bfe = L.circle(
+                [44.852783, -0.570452],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_d2f00ea05376495888cf181400a393e6 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cd4a7a21aad74d3a9c96d3830d00768a = $(`<div id="html_cd4a7a21aad74d3a9c96d3830d00768a" style="width: 100.0%; height: 100.0%;">104 Rue Notre Dame, 33000 Bordeaux</div>`)[0];
+            popup_d2f00ea05376495888cf181400a393e6.setContent(html_cd4a7a21aad74d3a9c96d3830d00768a);
+        
+
+        circle_ba5b250457524c56b17a4ca00c483bfe.bindPopup(popup_d2f00ea05376495888cf181400a393e6)
+        ;
+
+        
+    
+    
+            circle_ba5b250457524c56b17a4ca00c483bfe.bindTooltip(
+                `<div>
+                     Copine Claude (#1278) | n_orders=76
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_83f137ce9e134991ac2e0568697b599f = L.circle(
+                [44.839165, -0.570658],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_61f7c43a31a14a69b72339c78e102092 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_696b16e5ee3c410c8b8c2b423da9572f = $(`<div id="html_696b16e5ee3c410c8b8c2b423da9572f" style="width: 100.0%; height: 100.0%;">7 Rue De La Tour De Gassies, 33000 Bordeaux</div>`)[0];
+            popup_61f7c43a31a14a69b72339c78e102092.setContent(html_696b16e5ee3c410c8b8c2b423da9572f);
+        
+
+        circle_83f137ce9e134991ac2e0568697b599f.bindPopup(popup_61f7c43a31a14a69b72339c78e102092)
+        ;
+
+        
+    
+    
+            circle_83f137ce9e134991ac2e0568697b599f.bindTooltip(
+                `<div>
+                     L'Auberge Espagnole (#1279) | n_orders=27
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_2e340661ed404a759fbb250025089241 = L.circle(
+                [44.834618, -0.566814],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_e60a5e4914b44cf599b287c0dd285b43 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_86d814f2da2a422a904c99d08ca5d404 = $(`<div id="html_86d814f2da2a422a904c99d08ca5d404" style="width: 100.0%; height: 100.0%;">28 Place Meynard, 33000 Bordeaux</div>`)[0];
+            popup_e60a5e4914b44cf599b287c0dd285b43.setContent(html_86d814f2da2a422a904c99d08ca5d404);
+        
+
+        circle_2e340661ed404a759fbb250025089241.bindPopup(popup_e60a5e4914b44cf599b287c0dd285b43)
+        ;
+
+        
+    
+    
+            circle_2e340661ed404a759fbb250025089241.bindTooltip(
+                `<div>
+                     Moony (#1280) | n_orders=1236
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1e99ec3fa4084cb49a155b1a46d11e33 = L.circle(
+                [44.837776, -0.568168],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_206c6eac5adc4fb3bbb2faa40b0108d7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5c2f76a4d4b04b4ab084fa150e875f7a = $(`<div id="html_5c2f76a4d4b04b4ab084fa150e875f7a" style="width: 100.0%; height: 100.0%;">23 Rue Ausone, 33000 Bordeaux</div>`)[0];
+            popup_206c6eac5adc4fb3bbb2faa40b0108d7.setContent(html_5c2f76a4d4b04b4ab084fa150e875f7a);
+        
+
+        circle_1e99ec3fa4084cb49a155b1a46d11e33.bindPopup(popup_206c6eac5adc4fb3bbb2faa40b0108d7)
+        ;
+
+        
+    
+    
+            circle_1e99ec3fa4084cb49a155b1a46d11e33.bindTooltip(
+                `<div>
+                     Frog And Rosbif (#1281) | n_orders=1700
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_fe4b4c1daf224a79aa1d2b3ab6feb865 = L.circle(
+                [44.839947, -0.582251],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_d1d00c50c2f240e09ddf1f3da0c11880 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ea6b1a803ce8408fb7da6d737866956d = $(`<div id="html_ea6b1a803ce8408fb7da6d737866956d" style="width: 100.0%; height: 100.0%;">22 Rue Saint Sernin, 33000 Bordeaux</div>`)[0];
+            popup_d1d00c50c2f240e09ddf1f3da0c11880.setContent(html_ea6b1a803ce8408fb7da6d737866956d);
+        
+
+        circle_fe4b4c1daf224a79aa1d2b3ab6feb865.bindPopup(popup_d1d00c50c2f240e09ddf1f3da0c11880)
+        ;
+
+        
+    
+    
+            circle_fe4b4c1daf224a79aa1d2b3ab6feb865.bindTooltip(
+                `<div>
+                     Konnichiwa St Sernin (#1282) | n_orders=328
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_fedcedbe7a934d5eac64dc24a7e67f21 = L.circle(
+                [44.826237, -0.557776],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_2128ac11b30842e4b713b997da80ea11 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ecfde9d0a9ce4a67b6a735fad4b993ef = $(`<div id="html_ecfde9d0a9ce4a67b6a735fad4b993ef" style="width: 100.0%; height: 100.0%;">13 Place De Casablanca, Bordeaux, 33800 Bordeaux</div>`)[0];
+            popup_2128ac11b30842e4b713b997da80ea11.setContent(html_ecfde9d0a9ce4a67b6a735fad4b993ef);
+        
+
+        circle_fedcedbe7a934d5eac64dc24a7e67f21.bindPopup(popup_2128ac11b30842e4b713b997da80ea11)
+        ;
+
+        
+    
+    
+            circle_fedcedbe7a934d5eac64dc24a7e67f21.bindTooltip(
+                `<div>
+                     Burger Fermier (#1283) | n_orders=1112
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_90a41dd94b4943af9934c0a722425e7b = L.circle(
+                [44.831909, -0.573192],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_977a2af325b4414886af0702e73de5fe = L.popup({"maxWidth": "100%"});
+
+        
+            var html_69b6cc22d68a46fc8d2dc8ae9c8da806 = $(`<div id="html_69b6cc22d68a46fc8d2dc8ae9c8da806" style="width: 100.0%; height: 100.0%;">267 Rue Sainte Catherine, 33000 Bordeaux</div>`)[0];
+            popup_977a2af325b4414886af0702e73de5fe.setContent(html_69b6cc22d68a46fc8d2dc8ae9c8da806);
+        
+
+        circle_90a41dd94b4943af9934c0a722425e7b.bindPopup(popup_977a2af325b4414886af0702e73de5fe)
+        ;
+
+        
+    
+    
+            circle_90a41dd94b4943af9934c0a722425e7b.bindTooltip(
+                `<div>
+                     La Cabane A Bagel (#1287) | n_orders=756
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1d9d5bd1a92649718029b30bb72c12dc = L.circle(
+                [44.852509, -0.570657],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_3fc725ecd72a4a6caafb6377afab5b4a = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c02e27b6bbf04ae08d4ced79acde524b = $(`<div id="html_c02e27b6bbf04ae08d4ced79acde524b" style="width: 100.0%; height: 100.0%;">96 Rue Notre Dame, 33000 Bordeaux</div>`)[0];
+            popup_3fc725ecd72a4a6caafb6377afab5b4a.setContent(html_c02e27b6bbf04ae08d4ced79acde524b);
+        
+
+        circle_1d9d5bd1a92649718029b30bb72c12dc.bindPopup(popup_3fc725ecd72a4a6caafb6377afab5b4a)
+        ;
+
+        
+    
+    
+            circle_1d9d5bd1a92649718029b30bb72c12dc.bindTooltip(
+                `<div>
+                     Liams (#1288) | n_orders=179
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_180d94ac0bb742939f6218ab1b55a92c = L.circle(
+                [44.83202, -0.569916],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_a0e97d4587bd4b18a467d5d094d47cd2 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_01f113bf8c52445ca045b7b97e469071 = $(`<div id="html_01f113bf8c52445ca045b7b97e469071" style="width: 100.0%; height: 100.0%;">65 Rue Mirail, 33000 Bordeaux</div>`)[0];
+            popup_a0e97d4587bd4b18a467d5d094d47cd2.setContent(html_01f113bf8c52445ca045b7b97e469071);
+        
+
+        circle_180d94ac0bb742939f6218ab1b55a92c.bindPopup(popup_a0e97d4587bd4b18a467d5d094d47cd2)
+        ;
+
+        
+    
+    
+            circle_180d94ac0bb742939f6218ab1b55a92c.bindTooltip(
+                `<div>
+                     L'Officine (#1290) | n_orders=60
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_592e847009cb4c5fb1d2e0e716fb8a89 = L.circle(
+                [44.833923, -0.566712],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_0282dbcfdc13427186881d179dae5456 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_085f6970bcec49a78f5752fa97a3b260 = $(`<div id="html_085f6970bcec49a78f5752fa97a3b260" style="width: 100.0%; height: 100.0%;">3 Rue Gaspard Philippe, 33800 Bordeaux</div>`)[0];
+            popup_0282dbcfdc13427186881d179dae5456.setContent(html_085f6970bcec49a78f5752fa97a3b260);
+        
+
+        circle_592e847009cb4c5fb1d2e0e716fb8a89.bindPopup(popup_0282dbcfdc13427186881d179dae5456)
+        ;
+
+        
+    
+    
+            circle_592e847009cb4c5fb1d2e0e716fb8a89.bindTooltip(
+                `<div>
+                     Les Saveurs De L'Atlas (#1291) | n_orders=393
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_4670441d5b73401bab2e291c33d8d44a = L.circle(
+                [44.863892, -0.581876],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_141d62c5b9164f76aaabb6a23fc2cbcd = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c7d9c9802e6a469d9d409b0f1d20d7c6 = $(`<div id="html_c7d9c9802e6a469d9d409b0f1d20d7c6" style="width: 100.0%; height: 100.0%;">78 Rue Calixte Camelle, 33110 Bordeaux</div>`)[0];
+            popup_141d62c5b9164f76aaabb6a23fc2cbcd.setContent(html_c7d9c9802e6a469d9d409b0f1d20d7c6);
+        
+
+        circle_4670441d5b73401bab2e291c33d8d44a.bindPopup(popup_141d62c5b9164f76aaabb6a23fc2cbcd)
+        ;
+
+        
+    
+    
+            circle_4670441d5b73401bab2e291c33d8d44a.bindTooltip(
+                `<div>
+                     Sushiman (#1292) | n_orders=595
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_fa33685f55774f4bb50bcfb3bdadc168 = L.circle(
+                [44.832458, -0.598411],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_3c4908bbbdfc4af7830b65b499a85c53 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ba9f1763d54d4b1db47f77c884345138 = $(`<div id="html_ba9f1763d54d4b1db47f77c884345138" style="width: 100.0%; height: 100.0%;">24 Boulevard Antoine Gautier, 33000 Bordeaux</div>`)[0];
+            popup_3c4908bbbdfc4af7830b65b499a85c53.setContent(html_ba9f1763d54d4b1db47f77c884345138);
+        
+
+        circle_fa33685f55774f4bb50bcfb3bdadc168.bindPopup(popup_3c4908bbbdfc4af7830b65b499a85c53)
+        ;
+
+        
+    
+    
+            circle_fa33685f55774f4bb50bcfb3bdadc168.bindTooltip(
+                `<div>
+                     Sicilia In Bocca (#1293) | n_orders=43
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_87411e98d15a4fc4bca6676cc58547d7 = L.circle(
+                [44.844807, -0.579384],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_f2b375d163b24bbe84a67d770e27bd4a = L.popup({"maxWidth": "100%"});
+
+        
+            var html_4ccfeb4621744a98ba535933adb70452 = $(`<div id="html_4ccfeb4621744a98ba535933adb70452" style="width: 100.0%; height: 100.0%;">17 Rue Huguerie, 33000 Bordeaux</div>`)[0];
+            popup_f2b375d163b24bbe84a67d770e27bd4a.setContent(html_4ccfeb4621744a98ba535933adb70452);
+        
+
+        circle_87411e98d15a4fc4bca6676cc58547d7.bindPopup(popup_f2b375d163b24bbe84a67d770e27bd4a)
+        ;
+
+        
+    
+    
+            circle_87411e98d15a4fc4bca6676cc58547d7.bindTooltip(
+                `<div>
+                     Bistro Mimi (#1297) | n_orders=688
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_25a646fad21b44bdbf6eaaa47c8a6542 = L.circle(
+                [44.818226, -0.585304],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_5265ca0cc0e14b18bcf51fd80f2d45f2 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_07dd2c2f98624966bc685813e4e1c608 = $(`<div id="html_07dd2c2f98624966bc685813e4e1c608" style="width: 100.0%; height: 100.0%;">2 Rue Emile Combes, 33400 Talence, 33400 Bordeaux</div>`)[0];
+            popup_5265ca0cc0e14b18bcf51fd80f2d45f2.setContent(html_07dd2c2f98624966bc685813e4e1c608);
+        
+
+        circle_25a646fad21b44bdbf6eaaa47c8a6542.bindPopup(popup_5265ca0cc0e14b18bcf51fd80f2d45f2)
+        ;
+
+        
+    
+    
+            circle_25a646fad21b44bdbf6eaaa47c8a6542.bindTooltip(
+                `<div>
+                     Haru Haru (#1300) | n_orders=603
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c4038eb83e7f478d8e2d42f9ae787b84 = L.circle(
+                [44.842258, -0.580017],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_52062cc8ab524fdeaf94b7708e1babcd = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6a05e50a88d646c5a5fac4bfa43931bf = $(`<div id="html_6a05e50a88d646c5a5fac4bfa43931bf" style="width: 100.0%; height: 100.0%;">3 Rue Martignac, 33000 Bordeaux</div>`)[0];
+            popup_52062cc8ab524fdeaf94b7708e1babcd.setContent(html_6a05e50a88d646c5a5fac4bfa43931bf);
+        
+
+        circle_c4038eb83e7f478d8e2d42f9ae787b84.bindPopup(popup_52062cc8ab524fdeaf94b7708e1babcd)
+        ;
+
+        
+    
+    
+            circle_c4038eb83e7f478d8e2d42f9ae787b84.bindTooltip(
+                `<div>
+                     Influence Wok (#1302) | n_orders=74
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_8e6a5a89bcda41fb80d8eefb9eb1e797 = L.circle(
+                [44.841034, -0.575741],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_d524dc529f464b668bb62680ceb71de0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cc264c1b03e14d85a6652280c342cc66 = $(`<div id="html_cc264c1b03e14d85a6652280c342cc66" style="width: 100.0%; height: 100.0%;">44 Rue Saint-Remi, 33000 Bordeaux</div>`)[0];
+            popup_d524dc529f464b668bb62680ceb71de0.setContent(html_cc264c1b03e14d85a6652280c342cc66);
+        
+
+        circle_8e6a5a89bcda41fb80d8eefb9eb1e797.bindPopup(popup_d524dc529f464b668bb62680ceb71de0)
+        ;
+
+        
+    
+    
+            circle_8e6a5a89bcda41fb80d8eefb9eb1e797.bindTooltip(
+                `<div>
+                     Un Soir A Shibuya (#1303) | n_orders=501
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_db547fc205bd4604b97e7579ee2100a3 = L.circle(
+                [44.812946, -0.56668],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_7e71c98c88164d28a6fa84562e73e9f9 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_763b5e4d1a7c4bc18f812292f1bbafc9 = $(`<div id="html_763b5e4d1a7c4bc18f812292f1bbafc9" style="width: 100.0%; height: 100.0%;">380 Rue De Begles, 33800 Bordeaux</div>`)[0];
+            popup_7e71c98c88164d28a6fa84562e73e9f9.setContent(html_763b5e4d1a7c4bc18f812292f1bbafc9);
+        
+
+        circle_db547fc205bd4604b97e7579ee2100a3.bindPopup(popup_7e71c98c88164d28a6fa84562e73e9f9)
+        ;
+
+        
+    
+    
+            circle_db547fc205bd4604b97e7579ee2100a3.bindTooltip(
+                `<div>
+                     Sushi Creation Begles (#1311) | n_orders=622
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_3fdd0951938d4d90bfe421cdb6778b48 = L.circle(
+                [44.841213, -0.559034],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_82426e3c62a74902a181ebab63b53d68 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6d035f27ad24454f996a96b247760ae3 = $(`<div id="html_6d035f27ad24454f996a96b247760ae3" style="width: 100.0%; height: 100.0%;">12 Avenue Thiers, 33100 Bordeaux, 33100 Bordeaux</div>`)[0];
+            popup_82426e3c62a74902a181ebab63b53d68.setContent(html_6d035f27ad24454f996a96b247760ae3);
+        
+
+        circle_3fdd0951938d4d90bfe421cdb6778b48.bindPopup(popup_82426e3c62a74902a181ebab63b53d68)
+        ;
+
+        
+    
+    
+            circle_3fdd0951938d4d90bfe421cdb6778b48.bindTooltip(
+                `<div>
+                     Litalia (#1312) | n_orders=930
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_7f48eb098da14e90b678c543637b6275 = L.circle(
+                [44.839649, -0.581241],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_ec7174c29529486db205bd0b5725554a = L.popup({"maxWidth": "100%"});
+
+        
+            var html_7a5062319c604ec7b86a8915242e801b = $(`<div id="html_7a5062319c604ec7b86a8915242e801b" style="width: 100.0%; height: 100.0%;">24 Rue Du Dr Charles Nancel Penard, 33000 Bordeaux</div>`)[0];
+            popup_ec7174c29529486db205bd0b5725554a.setContent(html_7a5062319c604ec7b86a8915242e801b);
+        
+
+        circle_7f48eb098da14e90b678c543637b6275.bindPopup(popup_ec7174c29529486db205bd0b5725554a)
+        ;
+
+        
+    
+    
+            circle_7f48eb098da14e90b678c543637b6275.bindTooltip(
+                `<div>
+                     Sushi Shop Gambetta (#1313) | n_orders=1753
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6f250e6b23cd4f48a2cf9b0ebe2606c0 = L.circle(
+                [44.852589, -0.572676],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_3a26e77fa1364abea47d1b3f76aa9a94 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b33ffeadb43548438f5c0fb726c5e010 = $(`<div id="html_b33ffeadb43548438f5c0fb726c5e010" style="width: 100.0%; height: 100.0%;">15 Rue Rode, 33000 Bordeaux</div>`)[0];
+            popup_3a26e77fa1364abea47d1b3f76aa9a94.setContent(html_b33ffeadb43548438f5c0fb726c5e010);
+        
+
+        circle_6f250e6b23cd4f48a2cf9b0ebe2606c0.bindPopup(popup_3a26e77fa1364abea47d1b3f76aa9a94)
+        ;
+
+        
+    
+    
+            circle_6f250e6b23cd4f48a2cf9b0ebe2606c0.bindTooltip(
+                `<div>
+                     Market Tavern (#1318) | n_orders=348
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b97d0ce5086546c3ac5d5fce2b838d98 = L.circle(
+                [44.841064, -0.579709],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_c144ce1ea04a4022b778365623ca4ce3 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_67c4e923345d4fa68b5445088994cd13 = $(`<div id="html_67c4e923345d4fa68b5445088994cd13" style="width: 100.0%; height: 100.0%;">20 Rue De La Vieille Tour, 33000 Bordeaux</div>`)[0];
+            popup_c144ce1ea04a4022b778365623ca4ce3.setContent(html_67c4e923345d4fa68b5445088994cd13);
+        
+
+        circle_b97d0ce5086546c3ac5d5fce2b838d98.bindPopup(popup_c144ce1ea04a4022b778365623ca4ce3)
+        ;
+
+        
+    
+    
+            circle_b97d0ce5086546c3ac5d5fce2b838d98.bindTooltip(
+                `<div>
+                     Mna (#1319) | n_orders=151
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_2de6143e732a40789647359cf85f9d2d = L.circle(
+                [44.860916, -0.60063],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_1bc18951d3ad4ec4a0856d46d13c05ae = L.popup({"maxWidth": "100%"});
+
+        
+            var html_dd6227fd5c3e47efa168d1b68e176949 = $(`<div id="html_dd6227fd5c3e47efa168d1b68e176949" style="width: 100.0%; height: 100.0%;">190 Avenue De La Liberation Charles De Gaulle, 33110 Le Bouscat, 33110 Bordeaux</div>`)[0];
+            popup_1bc18951d3ad4ec4a0856d46d13c05ae.setContent(html_dd6227fd5c3e47efa168d1b68e176949);
+        
+
+        circle_2de6143e732a40789647359cf85f9d2d.bindPopup(popup_1bc18951d3ad4ec4a0856d46d13c05ae)
+        ;
+
+        
+    
+    
+            circle_2de6143e732a40789647359cf85f9d2d.bindTooltip(
+                `<div>
+                     Pizza Wax (#1320) | n_orders=210
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_90cadffdda73409981b1d67188624a63 = L.circle(
+                [44.852592, -0.616981],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_ec1005ef8e484cd48e8cb7f849beee99 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6bbc9b25cf4a4025b5a7a5ce2d760be0 = $(`<div id="html_6bbc9b25cf4a4025b5a7a5ce2d760be0" style="width: 100.0%; height: 100.0%;">163 Avenue Louis Barthou, 33200 Bordeaux</div>`)[0];
+            popup_ec1005ef8e484cd48e8cb7f849beee99.setContent(html_6bbc9b25cf4a4025b5a7a5ce2d760be0);
+        
+
+        circle_90cadffdda73409981b1d67188624a63.bindPopup(popup_ec1005ef8e484cd48e8cb7f849beee99)
+        ;
+
+        
+    
+    
+            circle_90cadffdda73409981b1d67188624a63.bindTooltip(
+                `<div>
+                     Sushi Creation Cauderan (#1321) | n_orders=120
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_3f19fb617a0d430698aa875a6975c8d7 = L.circle(
+                [44.835999, -0.581449],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_b05d712708ba4d7f97eba23c06492e48 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_64365c44dc8041708f77c4307fe095fd = $(`<div id="html_64365c44dc8041708f77c4307fe095fd" style="width: 100.0%; height: 100.0%;">8 Cours Marechal Juin, 33000 Bordeaux, 33000 Bordeaux</div>`)[0];
+            popup_b05d712708ba4d7f97eba23c06492e48.setContent(html_64365c44dc8041708f77c4307fe095fd);
+        
+
+        circle_3f19fb617a0d430698aa875a6975c8d7.bindPopup(popup_b05d712708ba4d7f97eba23c06492e48)
+        ;
+
+        
+    
+    
+            circle_3f19fb617a0d430698aa875a6975c8d7.bindTooltip(
+                `<div>
+                     Orijines Oji (#1330) | n_orders=726
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1465053bf6b24632b8e95810b734494b = L.circle(
+                [44.852379, -0.573257],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_5ce08a4a606e42eeb35fbf504df87b2b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3739d767b4e544259c11f26473d839ee = $(`<div id="html_3739d767b4e544259c11f26473d839ee" style="width: 100.0%; height: 100.0%;">19 Rue Sicard, 33000 Bordeaux</div>`)[0];
+            popup_5ce08a4a606e42eeb35fbf504df87b2b.setContent(html_3739d767b4e544259c11f26473d839ee);
+        
+
+        circle_1465053bf6b24632b8e95810b734494b.bindPopup(popup_5ce08a4a606e42eeb35fbf504df87b2b)
+        ;
+
+        
+    
+    
+            circle_1465053bf6b24632b8e95810b734494b.bindTooltip(
+                `<div>
+                     Le Murano Chartrons (#1341) | n_orders=829
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_26bb9874b8b540648be162e50d5f2a5b = L.circle(
+                [44.842098, -0.57272],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_9b0878a1d1ed47ab87938b6d7f509acc = L.popup({"maxWidth": "100%"});
+
+        
+            var html_fcba86e3b14c4b3c9a89a9b2b7a3bf73 = $(`<div id="html_fcba86e3b14c4b3c9a89a9b2b7a3bf73" style="width: 100.0%; height: 100.0%;">32 Cours Du Chapeau-Rouge, 33000 Bordeaux</div>`)[0];
+            popup_9b0878a1d1ed47ab87938b6d7f509acc.setContent(html_fcba86e3b14c4b3c9a89a9b2b7a3bf73);
+        
+
+        circle_26bb9874b8b540648be162e50d5f2a5b.bindPopup(popup_9b0878a1d1ed47ab87938b6d7f509acc)
+        ;
+
+        
+    
+    
+            circle_26bb9874b8b540648be162e50d5f2a5b.bindTooltip(
+                `<div>
+                     Le Murano Chapeau-Rouge (#1342) | n_orders=765
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_57c3a492e65949dc8df27e6c07bf7f27 = L.circle(
+                [44.836559, -0.576367],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_b0bd4c6f209947c1ae23ba8d813a11e3 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d5e76bb6dfc04ec5832b0936367dfaa6 = $(`<div id="html_d5e76bb6dfc04ec5832b0936367dfaa6" style="width: 100.0%; height: 100.0%;">11 Rue Duffour Dubergier, 33000 Bordeaux</div>`)[0];
+            popup_b0bd4c6f209947c1ae23ba8d813a11e3.setContent(html_d5e76bb6dfc04ec5832b0936367dfaa6);
+        
+
+        circle_57c3a492e65949dc8df27e6c07bf7f27.bindPopup(popup_b0bd4c6f209947c1ae23ba8d813a11e3)
+        ;
+
+        
+    
+    
+            circle_57c3a492e65949dc8df27e6c07bf7f27.bindTooltip(
+                `<div>
+                     Patisserie San Nicolas (#1352) | n_orders=55
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_18d5536c5ab34d84b1b9ad554f935f64 = L.circle(
+                [44.841248, -0.5819],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_4d07370353a64d0badbd70bbc654224e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b8372a82a81a463ba83769b914c5f669 = $(`<div id="html_b8372a82a81a463ba83769b914c5f669" style="width: 100.0%; height: 100.0%;">6 Rue Castelnau D'Auros, 33000 Bordeaux</div>`)[0];
+            popup_4d07370353a64d0badbd70bbc654224e.setContent(html_b8372a82a81a463ba83769b914c5f669);
+        
+
+        circle_18d5536c5ab34d84b1b9ad554f935f64.bindPopup(popup_4d07370353a64d0badbd70bbc654224e)
+        ;
+
+        
+    
+    
+            circle_18d5536c5ab34d84b1b9ad554f935f64.bindTooltip(
+                `<div>
+                     Burger Fermier Gambetta (#1353) | n_orders=1011
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_51a1a114202746eaa267448761428e97 = L.circle(
+                [44.839119, -0.581599],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_2a95eea8b4c4431a8e582f0410b42841 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9af9f2927c5f4c48b83f6895193c9da4 = $(`<div id="html_9af9f2927c5f4c48b83f6895193c9da4" style="width: 100.0%; height: 100.0%;">36 Rue Du Dr Charles Nancel Penard, 33000 Bordeaux</div>`)[0];
+            popup_2a95eea8b4c4431a8e582f0410b42841.setContent(html_9af9f2927c5f4c48b83f6895193c9da4);
+        
+
+        circle_51a1a114202746eaa267448761428e97.bindPopup(popup_2a95eea8b4c4431a8e582f0410b42841)
+        ;
+
+        
+    
+    
+            circle_51a1a114202746eaa267448761428e97.bindTooltip(
+                `<div>
+                     Sushi Dozo (#1364) | n_orders=775
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_daa4f61687b94538acb9ffa36a3d77ac = L.circle(
+                [44.832691, -0.573878],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_7a6eb865d1a34ac9a7b37299eeb2fd8c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_7a6c0b0e410f4c72a00be124b2ea7ae4 = $(`<div id="html_7a6c0b0e410f4c72a00be124b2ea7ae4" style="width: 100.0%; height: 100.0%;">42 Cours Pasteur, 33000 Bordeaux</div>`)[0];
+            popup_7a6eb865d1a34ac9a7b37299eeb2fd8c.setContent(html_7a6c0b0e410f4c72a00be124b2ea7ae4);
+        
+
+        circle_daa4f61687b94538acb9ffa36a3d77ac.bindPopup(popup_7a6eb865d1a34ac9a7b37299eeb2fd8c)
+        ;
+
+        
+    
+    
+            circle_daa4f61687b94538acb9ffa36a3d77ac.bindTooltip(
+                `<div>
+                     Bonjour Bdx (#1370) | n_orders=68
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5ae987a953d84847bbe2d0f58b6d991d = L.circle(
+                [44.840179, -0.60022],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_2fc17c0f962347da84aff94f7473b901 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_8f7392605fef4b2ba705c2ba6796ebc1 = $(`<div id="html_8f7392605fef4b2ba705c2ba6796ebc1" style="width: 100.0%; height: 100.0%;">278 Rue Judaique, 33200 Bordeaux</div>`)[0];
+            popup_2fc17c0f962347da84aff94f7473b901.setContent(html_8f7392605fef4b2ba705c2ba6796ebc1);
+        
+
+        circle_5ae987a953d84847bbe2d0f58b6d991d.bindPopup(popup_2fc17c0f962347da84aff94f7473b901)
+        ;
+
+        
+    
+    
+            circle_5ae987a953d84847bbe2d0f58b6d991d.bindTooltip(
+                `<div>
+                     Fiori Di Pasta (#1377) | n_orders=21
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a40e39a1a7db41afa18a12a873aa0d47 = L.circle(
+                [44.836555, -0.575617],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_4ec36741e9af495d9265234bcf094508 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c59f2fea56e646218f8036b0a59c51c8 = $(`<div id="html_c59f2fea56e646218f8036b0a59c51c8" style="width: 100.0%; height: 100.0%;">83 Rue Ayres, 33000 Bordeaux</div>`)[0];
+            popup_4ec36741e9af495d9265234bcf094508.setContent(html_c59f2fea56e646218f8036b0a59c51c8);
+        
+
+        circle_a40e39a1a7db41afa18a12a873aa0d47.bindPopup(popup_4ec36741e9af495d9265234bcf094508)
+        ;
+
+        
+    
+    
+            circle_a40e39a1a7db41afa18a12a873aa0d47.bindTooltip(
+                `<div>
+                     Sushi Express 33 (#1378) | n_orders=696
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6c512e92e23c4c94a5d3d30d0292c796 = L.circle(
+                [44.843559, -0.573798],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_cf4aed9fc75c44398f0c06973ad0fc16 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_391b7f57992f41f1989815cefa34a585 = $(`<div id="html_391b7f57992f41f1989815cefa34a585" style="width: 100.0%; height: 100.0%;">40 Allee D'Orleans, 33000 Bordeaux</div>`)[0];
+            popup_cf4aed9fc75c44398f0c06973ad0fc16.setContent(html_391b7f57992f41f1989815cefa34a585);
+        
+
+        circle_6c512e92e23c4c94a5d3d30d0292c796.bindPopup(popup_cf4aed9fc75c44398f0c06973ad0fc16)
+        ;
+
+        
+    
+    
+            circle_6c512e92e23c4c94a5d3d30d0292c796.bindTooltip(
+                `<div>
+                     Fuxia (#1389) | n_orders=347
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_2d404a4cdf984b13a5be409b4cacdf05 = L.circle(
+                [44.864784, -0.557388],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_5bcbdf156cf74876a5ec32785d2896d6 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9e5f1a88dff044c384a2f1a8243bad5f = $(`<div id="html_9e5f1a88dff044c384a2f1a8243bad5f" style="width: 100.0%; height: 100.0%;">Bassin A Flot N1, Quai Armand Lalande, 33300 Bordeaux</div>`)[0];
+            popup_5bcbdf156cf74876a5ec32785d2896d6.setContent(html_9e5f1a88dff044c384a2f1a8243bad5f);
+        
+
+        circle_2d404a4cdf984b13a5be409b4cacdf05.bindPopup(popup_5bcbdf156cf74876a5ec32785d2896d6)
+        ;
+
+        
+    
+    
+            circle_2d404a4cdf984b13a5be409b4cacdf05.bindTooltip(
+                `<div>
+                     La Cantine De L'Iboat (#1390) | n_orders=224
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_7aae2e6145fe475db220d20bc53f8022 = L.circle(
+                [44.830441, -0.566194],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_65332c77fa164900aa360e158e2616b4 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c2a8309540fe4ad7a36730fb297e9583 = $(`<div id="html_c2a8309540fe4ad7a36730fb297e9583" style="width: 100.0%; height: 100.0%;">19 Rue Des Douves, 33800 Bordeaux</div>`)[0];
+            popup_65332c77fa164900aa360e158e2616b4.setContent(html_c2a8309540fe4ad7a36730fb297e9583);
+        
+
+        circle_7aae2e6145fe475db220d20bc53f8022.bindPopup(popup_65332c77fa164900aa360e158e2616b4)
+        ;
+
+        
+    
+    
+            circle_7aae2e6145fe475db220d20bc53f8022.bindTooltip(
+                `<div>
+                     La Jeune Garde (#1399) | n_orders=92
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0ffed84b0ebd4c06b125130428d87057 = L.circle(
+                [44.840466, -0.584044],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_04afa210c51b48a1bf227df659163620 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_0401bd74012643eeb6c8068d2e425123 = $(`<div id="html_0401bd74012643eeb6c8068d2e425123" style="width: 100.0%; height: 100.0%;">55 Rue Georges Bonnac, 33000 Bordeaux</div>`)[0];
+            popup_04afa210c51b48a1bf227df659163620.setContent(html_0401bd74012643eeb6c8068d2e425123);
+        
+
+        circle_0ffed84b0ebd4c06b125130428d87057.bindPopup(popup_04afa210c51b48a1bf227df659163620)
+        ;
+
+        
+    
+    
+            circle_0ffed84b0ebd4c06b125130428d87057.bindTooltip(
+                `<div>
+                     Faustine'S (#1435) | n_orders=79
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6a1d5ba7b202416da5010ffc2be128e4 = L.circle(
+                [44.841881, -0.58121],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_713121bc3bc940dc8dba9b90fc769e18 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a4af7e5caf9340999b8b380ed450e361 = $(`<div id="html_a4af7e5caf9340999b8b380ed450e361" style="width: 100.0%; height: 100.0%;">4 Rue Du Palais Gallien, 33000 Bordeaux</div>`)[0];
+            popup_713121bc3bc940dc8dba9b90fc769e18.setContent(html_a4af7e5caf9340999b8b380ed450e361);
+        
+
+        circle_6a1d5ba7b202416da5010ffc2be128e4.bindPopup(popup_713121bc3bc940dc8dba9b90fc769e18)
+        ;
+
+        
+    
+    
+            circle_6a1d5ba7b202416da5010ffc2be128e4.bindTooltip(
+                `<div>
+                     Charlie And Tom Gambetta (#1439) | n_orders=262
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_bbfd9691c5454a90b07f5bc9409ab770 = L.circle(
+                [44.864384, -0.580054],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_542bbdd26de2473bbabebfb6e69c65db = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c13d1e1c223044ed88dc2e3ea1729963 = $(`<div id="html_c13d1e1c223044ed88dc2e3ea1729963" style="width: 100.0%; height: 100.0%;">213 Boulevard Godard, 33110 Bordeaux</div>`)[0];
+            popup_542bbdd26de2473bbabebfb6e69c65db.setContent(html_c13d1e1c223044ed88dc2e3ea1729963);
+        
+
+        circle_bbfd9691c5454a90b07f5bc9409ab770.bindPopup(popup_542bbdd26de2473bbabebfb6e69c65db)
+        ;
+
+        
+    
+    
+            circle_bbfd9691c5454a90b07f5bc9409ab770.bindTooltip(
+                `<div>
+                     Charlie And Tom Bouscat (#1440) | n_orders=36
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_d44a8cfdc21d4e4cace67a60b6661d6a = L.circle(
+                [44.840263, -0.599827],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_095490eb7cf24857a75c157c46130ca1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ecf673b953a0433889203d976ed66659 = $(`<div id="html_ecf673b953a0433889203d976ed66659" style="width: 100.0%; height: 100.0%;">7 Avenue De La Republique, 33200 Bordeaux, 33200 Bordeaux</div>`)[0];
+            popup_095490eb7cf24857a75c157c46130ca1.setContent(html_ecf673b953a0433889203d976ed66659);
+        
+
+        circle_d44a8cfdc21d4e4cace67a60b6661d6a.bindPopup(popup_095490eb7cf24857a75c157c46130ca1)
+        ;
+
+        
+    
+    
+            circle_d44a8cfdc21d4e4cace67a60b6661d6a.bindTooltip(
+                `<div>
+                     Sushi Shop Cauderan (#1441) | n_orders=144
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_564c6078dc24480d860e9faff366b741 = L.circle(
+                [44.821487, -0.56608],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_ad8b7706d8b94d9cb8d570fdc3f656e4 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c2238cd6af1849248f210f76e55f6e9c = $(`<div id="html_c2238cd6af1849248f210f76e55f6e9c" style="width: 100.0%; height: 100.0%;">189 Rue De Begles, 33800 Bordeaux</div>`)[0];
+            popup_ad8b7706d8b94d9cb8d570fdc3f656e4.setContent(html_c2238cd6af1849248f210f76e55f6e9c);
+        
+
+        circle_564c6078dc24480d860e9faff366b741.bindPopup(popup_ad8b7706d8b94d9cb8d570fdc3f656e4)
+        ;
+
+        
+    
+    
+            circle_564c6078dc24480d860e9faff366b741.bindTooltip(
+                `<div>
+                     Lodeon (#1443) | n_orders=78
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_41cb92bfba2a4faaa3f5582a486119a0 = L.circle(
+                [44.839123, -0.571481],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_fc575277c180414f8a958c799ab424d1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f5e43ec27c9b4129a4fef10537f87962 = $(`<div id="html_f5e43ec27c9b4129a4fef10537f87962" style="width: 100.0%; height: 100.0%;">10 Rue Maucoudinat, 33000 Bordeaux</div>`)[0];
+            popup_fc575277c180414f8a958c799ab424d1.setContent(html_f5e43ec27c9b4129a4fef10537f87962);
+        
+
+        circle_41cb92bfba2a4faaa3f5582a486119a0.bindPopup(popup_fc575277c180414f8a958c799ab424d1)
+        ;
+
+        
+    
+    
+            circle_41cb92bfba2a4faaa3f5582a486119a0.bindTooltip(
+                `<div>
+                     Masaniello (#1445) | n_orders=1247
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_63f35765540043fc970e95ebf4aab9aa = L.circle(
+                [44.813572, -0.564188],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_5b2c56f7803d4f9090dee6cc849cbce7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_af5539c98d84421c98059d20c08929de = $(`<div id="html_af5539c98d84421c98059d20c08929de" style="width: 100.0%; height: 100.0%;">110 Boulevard Albert 1Er, 33800 Bordeaux, 33800 Bordeaux</div>`)[0];
+            popup_5b2c56f7803d4f9090dee6cc849cbce7.setContent(html_af5539c98d84421c98059d20c08929de);
+        
+
+        circle_63f35765540043fc970e95ebf4aab9aa.bindPopup(popup_5b2c56f7803d4f9090dee6cc849cbce7)
+        ;
+
+        
+    
+    
+            circle_63f35765540043fc970e95ebf4aab9aa.bindTooltip(
+                `<div>
+                     La Fabrique (#1447) | n_orders=32
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b52f41916bf641109fb7f0e8988f2c33 = L.circle(
+                [44.830414, -0.567878],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_cff98940ccb64efd89b9e533242e6a4b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cf13d05211734ff3886ac69a54e6b569 = $(`<div id="html_cf13d05211734ff3886ac69a54e6b569" style="width: 100.0%; height: 100.0%;">Place Des Capucins, 33800 Bordeaux, 33800 Bordeaux</div>`)[0];
+            popup_cff98940ccb64efd89b9e533242e6a4b.setContent(html_cf13d05211734ff3886ac69a54e6b569);
+        
+
+        circle_b52f41916bf641109fb7f0e8988f2c33.bindPopup(popup_cff98940ccb64efd89b9e533242e6a4b)
+        ;
+
+        
+    
+    
+            circle_b52f41916bf641109fb7f0e8988f2c33.bindTooltip(
+                `<div>
+                     Da Nonna Assunta (#1449) | n_orders=34
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_da68f4bd44e24d59aaaa371801e762fb = L.circle(
+                [44.837242, -0.570738],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_2a3becc1588545a2bf221b587160a192 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5a1ebe9ae7e94d2db35d857f4f8019dd = $(`<div id="html_5a1ebe9ae7e94d2db35d857f4f8019dd" style="width: 100.0%; height: 100.0%;">22 Rue Sainte Colombe, 33000 Bordeaux</div>`)[0];
+            popup_2a3becc1588545a2bf221b587160a192.setContent(html_5a1ebe9ae7e94d2db35d857f4f8019dd);
+        
+
+        circle_da68f4bd44e24d59aaaa371801e762fb.bindPopup(popup_2a3becc1588545a2bf221b587160a192)
+        ;
+
+        
+    
+    
+            circle_da68f4bd44e24d59aaaa371801e762fb.bindTooltip(
+                `<div>
+                     Kitchen Garden (#1451) | n_orders=1
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_793212359f604ef5869c34ca1d4df79c = L.circle(
+                [44.834591, -0.587233],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_9c680dd2d109435cad559b310d6d6fd4 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_135c3f7187044e8cb69b84e1327b4cb1 = $(`<div id="html_135c3f7187044e8cb69b84e1327b4cb1" style="width: 100.0%; height: 100.0%;">96 Cours Du Marechal Juin, 33000 Bordeaux</div>`)[0];
+            popup_9c680dd2d109435cad559b310d6d6fd4.setContent(html_135c3f7187044e8cb69b84e1327b4cb1);
+        
+
+        circle_793212359f604ef5869c34ca1d4df79c.bindPopup(popup_9c680dd2d109435cad559b310d6d6fd4)
+        ;
+
+        
+    
+    
+            circle_793212359f604ef5869c34ca1d4df79c.bindTooltip(
+                `<div>
+                     Vach Et Vous (#1492) | n_orders=254
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ebc02e0623bd40a58825bc7e60eb9f71 = L.circle(
+                [44.8564, -0.59657],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_85ae8c0bb69142c49bc697a6eecda904 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_56d1a4bb138942769ab2ed51d293008f = $(`<div id="html_56d1a4bb138942769ab2ed51d293008f" style="width: 100.0%; height: 100.0%;">69 Avenue De La Liberation Charles De Gaulle, 33110 Le Bouscat, 33110 Bordeaux</div>`)[0];
+            popup_85ae8c0bb69142c49bc697a6eecda904.setContent(html_56d1a4bb138942769ab2ed51d293008f);
+        
+
+        circle_ebc02e0623bd40a58825bc7e60eb9f71.bindPopup(popup_85ae8c0bb69142c49bc697a6eecda904)
+        ;
+
+        
+    
+    
+            circle_ebc02e0623bd40a58825bc7e60eb9f71.bindTooltip(
+                `<div>
+                     Calix (#1515) | n_orders=29
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_7cb5ed09ce3b417f9c8c3439637e8027 = L.circle(
+                [44.832256, -0.571267],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_f1df40124e1e4b898888a9a1fedf0185 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cba8de93cb5442668a7ea239e4d04c76 = $(`<div id="html_cba8de93cb5442668a7ea239e4d04c76" style="width: 100.0%; height: 100.0%;">10 Rue Augustins, 33000 Bordeaux</div>`)[0];
+            popup_f1df40124e1e4b898888a9a1fedf0185.setContent(html_cba8de93cb5442668a7ea239e4d04c76);
+        
+
+        circle_7cb5ed09ce3b417f9c8c3439637e8027.bindPopup(popup_f1df40124e1e4b898888a9a1fedf0185)
+        ;
+
+        
+    
+    
+            circle_7cb5ed09ce3b417f9c8c3439637e8027.bindTooltip(
+                `<div>
+                     Chez Dude (#1541) | n_orders=365
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b64a738dc1fe4caaa58a3bb477a785f7 = L.circle(
+                [44.850037, -0.57247],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_5663507e32724572aa805511952779ab = L.popup({"maxWidth": "100%"});
+
+        
+            var html_06253f6c5b14442e8d9f58dc4bebfb43 = $(`<div id="html_06253f6c5b14442e8d9f58dc4bebfb43" style="width: 100.0%; height: 100.0%;">15 Rue Notre Dame, 33000 Bordeaux</div>`)[0];
+            popup_5663507e32724572aa805511952779ab.setContent(html_06253f6c5b14442e8d9f58dc4bebfb43);
+        
+
+        circle_b64a738dc1fe4caaa58a3bb477a785f7.bindPopup(popup_5663507e32724572aa805511952779ab)
+        ;
+
+        
+    
+    
+            circle_b64a738dc1fe4caaa58a3bb477a785f7.bindTooltip(
+                `<div>
+                     Juliena (#1546) | n_orders=5
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1cbeab2ad826434ea551db1d8808e879 = L.circle(
+                [44.839493, -0.572089],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_9629c3869d7d4e4fbd6f968188100528 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_191ac7f789be4afd94de35c363a81ae2 = $(`<div id="html_191ac7f789be4afd94de35c363a81ae2" style="width: 100.0%; height: 100.0%;">23 Rue Du Pas-Saint-Georges, 33000 Bordeaux</div>`)[0];
+            popup_9629c3869d7d4e4fbd6f968188100528.setContent(html_191ac7f789be4afd94de35c363a81ae2);
+        
+
+        circle_1cbeab2ad826434ea551db1d8808e879.bindPopup(popup_9629c3869d7d4e4fbd6f968188100528)
+        ;
+
+        
+    
+    
+            circle_1cbeab2ad826434ea551db1d8808e879.bindTooltip(
+                `<div>
+                     Osteria Da Luigi (#1550) | n_orders=20
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e7b4f7b6f344493294d39969f3769af0 = L.circle(
+                [44.832344, -0.571402],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_c03b9af4ed44430a94526625d3942fde = L.popup({"maxWidth": "100%"});
+
+        
+            var html_1882a28572914801909842b8cd06ad99 = $(`<div id="html_1882a28572914801909842b8cd06ad99" style="width: 100.0%; height: 100.0%;">12 Rue Des Augustins, 33000 Bordeaux</div>`)[0];
+            popup_c03b9af4ed44430a94526625d3942fde.setContent(html_1882a28572914801909842b8cd06ad99);
+        
+
+        circle_e7b4f7b6f344493294d39969f3769af0.bindPopup(popup_c03b9af4ed44430a94526625d3942fde)
+        ;
+
+        
+    
+    
+            circle_e7b4f7b6f344493294d39969f3769af0.bindTooltip(
+                `<div>
+                     Restaurants #1556, #1564 | n_orders=530
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_166b6afe11264b58add1ccee9c5c28bd = L.circle(
+                [44.836712, -0.573877],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_64f6663a244a4aa3b946b2e1d97967cf = L.popup({"maxWidth": "100%"});
+
+        
+            var html_14b892278dfc4ed0900c457612f48c4a = $(`<div id="html_14b892278dfc4ed0900c457612f48c4a" style="width: 100.0%; height: 100.0%;">133 Rue Sainte Catherine, 33000 Bordeaux</div>`)[0];
+            popup_64f6663a244a4aa3b946b2e1d97967cf.setContent(html_14b892278dfc4ed0900c457612f48c4a);
+        
+
+        circle_166b6afe11264b58add1ccee9c5c28bd.bindPopup(popup_64f6663a244a4aa3b946b2e1d97967cf)
+        ;
+
+        
+    
+    
+            circle_166b6afe11264b58add1ccee9c5c28bd.bindTooltip(
+                `<div>
+                     La Petite Pause Nature (#1559) | n_orders=23
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_269408354d014c38a64b25f7b406d828 = L.circle(
+                [44.839771, -0.570809],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_ec6572b3c3b044cbba9288c84425b5d8 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f623f37e3d3f4ed2851794a412a837b3 = $(`<div id="html_f623f37e3d3f4ed2851794a412a837b3" style="width: 100.0%; height: 100.0%;">3 Place Saint-Pierre, 33000 Bordeaux</div>`)[0];
+            popup_ec6572b3c3b044cbba9288c84425b5d8.setContent(html_f623f37e3d3f4ed2851794a412a837b3);
+        
+
+        circle_269408354d014c38a64b25f7b406d828.bindPopup(popup_ec6572b3c3b044cbba9288c84425b5d8)
+        ;
+
+        
+    
+    
+            circle_269408354d014c38a64b25f7b406d828.bindTooltip(
+                `<div>
+                     Saveur Latine (#1560) | n_orders=200
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_89fdb214069440cd90a1e66d89515ab4 = L.circle(
+                [44.840649, -0.560486],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_7e8e8e4b5c75488e8e0ce069a9c1985d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_11deeb53907549b994486d6399723b77 = $(`<div id="html_11deeb53907549b994486d6399723b77" style="width: 100.0%; height: 100.0%;">6 Place De Stalingrad, 33100 Bordeaux, 33100 Bordeaux</div>`)[0];
+            popup_7e8e8e4b5c75488e8e0ce069a9c1985d.setContent(html_11deeb53907549b994486d6399723b77);
+        
+
+        circle_89fdb214069440cd90a1e66d89515ab4.bindPopup(popup_7e8e8e4b5c75488e8e0ce069a9c1985d)
+        ;
+
+        
+    
+    
+            circle_89fdb214069440cd90a1e66d89515ab4.bindTooltip(
+                `<div>
+                     Leon Cafe (#1580) | n_orders=42
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_921d181fa26c4bef912ee1b106bd3fd7 = L.circle(
+                [44.838013, -0.571663],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_7014032ced2b435a934f5763f492cf92 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c88b2245c59f4cda9de1ced8784b69a0 = $(`<div id="html_c88b2245c59f4cda9de1ced8784b69a0" style="width: 100.0%; height: 100.0%;">19 Rue Du Cerf Volant, 33000 Bordeaux</div>`)[0];
+            popup_7014032ced2b435a934f5763f492cf92.setContent(html_c88b2245c59f4cda9de1ced8784b69a0);
+        
+
+        circle_921d181fa26c4bef912ee1b106bd3fd7.bindPopup(popup_7014032ced2b435a934f5763f492cf92)
+        ;
+
+        
+    
+    
+            circle_921d181fa26c4bef912ee1b106bd3fd7.bindTooltip(
+                `<div>
+                     El Chivito (#1587) | n_orders=151
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1f96f41eb35f4bad9792241873a04e82 = L.circle(
+                [44.843342, -0.571432],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_c614617fa5364343a3b02db1246aa95c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_67c9781f5642499f82104202d8c8c0cb = $(`<div id="html_67c9781f5642499f82104202d8c8c0cb" style="width: 100.0%; height: 100.0%;">1 Rue Esprit Des Lois, 33000 Bordeaux</div>`)[0];
+            popup_c614617fa5364343a3b02db1246aa95c.setContent(html_67c9781f5642499f82104202d8c8c0cb);
+        
+
+        circle_1f96f41eb35f4bad9792241873a04e82.bindPopup(popup_c614617fa5364343a3b02db1246aa95c)
+        ;
+
+        
+    
+    
+            circle_1f96f41eb35f4bad9792241873a04e82.bindTooltip(
+                `<div>
+                     Sushi Design Miroir D'Eau (#1619) | n_orders=201
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_2f729a2d8d7145f0a1e4954104ab402f = L.circle(
+                [44.840061, -0.571568],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_b95e461278464410acfff04ce2ab86bc = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ecb7d083e77d42c6834b2805c17fc507 = $(`<div id="html_ecb7d083e77d42c6834b2805c17fc507" style="width: 100.0%; height: 100.0%;">19 Rue De La Devise, 33000 Bordeaux</div>`)[0];
+            popup_b95e461278464410acfff04ce2ab86bc.setContent(html_ecb7d083e77d42c6834b2805c17fc507);
+        
+
+        circle_2f729a2d8d7145f0a1e4954104ab402f.bindPopup(popup_b95e461278464410acfff04ce2ab86bc)
+        ;
+
+        
+    
+    
+            circle_2f729a2d8d7145f0a1e4954104ab402f.bindTooltip(
+                `<div>
+                     Jean Pince (#1630) | n_orders=32
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_79110ce648fd4b12a90c47b849133f0b = L.circle(
+                [44.841171, -0.581903],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_77c5ecc02c11442f8e90d00f56800568 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cf3a0fb06c3241af98459a7d1f8db204 = $(`<div id="html_cf3a0fb06c3241af98459a7d1f8db204" style="width: 100.0%; height: 100.0%;">8 Rue Castelnau D'Auros, 33000 Bordeaux</div>`)[0];
+            popup_77c5ecc02c11442f8e90d00f56800568.setContent(html_cf3a0fb06c3241af98459a7d1f8db204);
+        
+
+        circle_79110ce648fd4b12a90c47b849133f0b.bindPopup(popup_77c5ecc02c11442f8e90d00f56800568)
+        ;
+
+        
+    
+    
+            circle_79110ce648fd4b12a90c47b849133f0b.bindTooltip(
+                `<div>
+                     Kenchic (#1631) | n_orders=66
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6c2a03d677114e059a2218f16747810d = L.circle(
+                [44.838642, -0.58316],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_bd8dec110fba488db72bc33710b80b21 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d8e3a2a8cc524d519879b0f1e23015b9 = $(`<div id="html_d8e3a2a8cc524d519879b0f1e23015b9" style="width: 100.0%; height: 100.0%;">57 Rue Du Chateau D'Eau, 33000 Bordeaux</div>`)[0];
+            popup_bd8dec110fba488db72bc33710b80b21.setContent(html_d8e3a2a8cc524d519879b0f1e23015b9);
+        
+
+        circle_6c2a03d677114e059a2218f16747810d.bindPopup(popup_bd8dec110fba488db72bc33710b80b21)
+        ;
+
+        
+    
+    
+            circle_6c2a03d677114e059a2218f16747810d.bindTooltip(
+                `<div>
+                     Bagel Corner Meriadeck (#1647) | n_orders=54
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ec3cbb60428c44fa94f6e5a8a5612cd0 = L.circle(
+                [44.839653, -0.57465],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_c7fdebff4e2c4f0f9a37f259c0980f13 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3954a7a0fb56471aa7a236eb290182e4 = $(`<div id="html_3954a7a0fb56471aa7a236eb290182e4" style="width: 100.0%; height: 100.0%;">5 Rue Guiraude, 33000 Bordeaux</div>`)[0];
+            popup_c7fdebff4e2c4f0f9a37f259c0980f13.setContent(html_3954a7a0fb56471aa7a236eb290182e4);
+        
+
+        circle_ec3cbb60428c44fa94f6e5a8a5612cd0.bindPopup(popup_c7fdebff4e2c4f0f9a37f259c0980f13)
+        ;
+
+        
+    
+    
+            circle_ec3cbb60428c44fa94f6e5a8a5612cd0.bindTooltip(
+                `<div>
+                     Matsuri Sainte Catherine (#1663) | n_orders=45
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f035e69a738c4a128480cbc6f29881a9 = L.circle(
+                [44.838375, -0.568031],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_1b7456de3f2246fcb24c0831940b9210 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_56e49f0b0e634e97988a828f8b056dc1 = $(`<div id="html_56e49f0b0e634e97988a828f8b056dc1" style="width: 100.0%; height: 100.0%;">33 Quai Richelieu, 33000 Bordeaux</div>`)[0];
+            popup_1b7456de3f2246fcb24c0831940b9210.setContent(html_56e49f0b0e634e97988a828f8b056dc1);
+        
+
+        circle_f035e69a738c4a128480cbc6f29881a9.bindPopup(popup_1b7456de3f2246fcb24c0831940b9210)
+        ;
+
+        
+    
+    
+            circle_f035e69a738c4a128480cbc6f29881a9.bindTooltip(
+                `<div>
+                     Dose (#1671) | n_orders=70
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_24691ec919a24b6d8a2208ea2d519efd = L.circle(
+                [44.839577, -0.570725],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_1dd0c0fba0e042c58eea4861d5a78a92 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_fdc8dfdb77e64322bc63183de2beaf0c = $(`<div id="html_fdc8dfdb77e64322bc63183de2beaf0c" style="width: 100.0%; height: 100.0%;">5 Rue Des Bahutiers, 33000 Bordeaux</div>`)[0];
+            popup_1dd0c0fba0e042c58eea4861d5a78a92.setContent(html_fdc8dfdb77e64322bc63183de2beaf0c);
+        
+
+        circle_24691ec919a24b6d8a2208ea2d519efd.bindPopup(popup_1dd0c0fba0e042c58eea4861d5a78a92)
+        ;
+
+        
+    
+    
+            circle_24691ec919a24b6d8a2208ea2d519efd.bindTooltip(
+                `<div>
+                     Cappadoce (#1693) | n_orders=220
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a97d19fc52aa4cf9a5f2ba2b7e0a2caf = L.circle(
+                [44.84045, -0.582255],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_03023d013c2e4789ade552dd3faa244d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9ce1a300131c4315b17cca0f18f9c3b4 = $(`<div id="html_9ce1a300131c4315b17cca0f18f9c3b4" style="width: 100.0%; height: 100.0%;">17 Rue Georges Bonnac, 33000 Bordeaux</div>`)[0];
+            popup_03023d013c2e4789ade552dd3faa244d.setContent(html_9ce1a300131c4315b17cca0f18f9c3b4);
+        
+
+        circle_a97d19fc52aa4cf9a5f2ba2b7e0a2caf.bindPopup(popup_03023d013c2e4789ade552dd3faa244d)
+        ;
+
+        
+    
+    
+            circle_a97d19fc52aa4cf9a5f2ba2b7e0a2caf.bindTooltip(
+                `<div>
+                     Woof (#1699) | n_orders=207
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_32220e8721774b9faf56d4c923a0f59c = L.circle(
+                [44.836861, -0.571669],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_4cce3c01152d43bd9b5545e3a8042c35 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_4147f30cda3946fdbb965756c2906f99 = $(`<div id="html_4147f30cda3946fdbb965756c2906f99" style="width: 100.0%; height: 100.0%;">7 Place Fernand Lafargue, 33000 Bordeaux</div>`)[0];
+            popup_4cce3c01152d43bd9b5545e3a8042c35.setContent(html_4147f30cda3946fdbb965756c2906f99);
+        
+
+        circle_32220e8721774b9faf56d4c923a0f59c.bindPopup(popup_4cce3c01152d43bd9b5545e3a8042c35)
+        ;
+
+        
+    
+    
+            circle_32220e8721774b9faf56d4c923a0f59c.bindTooltip(
+                `<div>
+                     Pitaya Fernand Lafargue (#1736) | n_orders=220
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b4a1835ece7e4331a598a6c3f6fbd4d3 = L.circle(
+                [44.835003, -0.578385],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_a8ee2c91de8d4112bd79f4eb58a0c6ac = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3491c3fb548a443bb95dd1dc6bfc9b9c = $(`<div id="html_3491c3fb548a443bb95dd1dc6bfc9b9c" style="width: 100.0%; height: 100.0%;">50 Rue Du Marechal Joffre, 33000 Bordeaux</div>`)[0];
+            popup_a8ee2c91de8d4112bd79f4eb58a0c6ac.setContent(html_3491c3fb548a443bb95dd1dc6bfc9b9c);
+        
+
+        circle_b4a1835ece7e4331a598a6c3f6fbd4d3.bindPopup(popup_a8ee2c91de8d4112bd79f4eb58a0c6ac)
+        ;
+
+        
+    
+    
+            circle_b4a1835ece7e4331a598a6c3f6fbd4d3.bindTooltip(
+                `<div>
+                     Bistrot Regent (#1744) | n_orders=1
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_d19d83525eda4b3690e587cdf786c98f = L.circle(
+                [44.821663, -0.569359],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1, "stroke": true, "weight": 3}
+            ).addTo(map_783e812e0e704926876252159cf7c1d9);
+        
+    
+        var popup_ba542f7177514c48a3985fd5387ee1ac = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c0b33969614443889f1254bb26787e81 = $(`<div id="html_c0b33969614443889f1254bb26787e81" style="width: 100.0%; height: 100.0%;">200 Bis Rue Malbec, 33800 Bordeaux</div>`)[0];
+            popup_ba542f7177514c48a3985fd5387ee1ac.setContent(html_c0b33969614443889f1254bb26787e81);
+        
+
+        circle_d19d83525eda4b3690e587cdf786c98f.bindPopup(popup_ba542f7177514c48a3985fd5387ee1ac)
+        ;
+
+        
+    
+    
+            circle_d19d83525eda4b3690e587cdf786c98f.bindTooltip(
+                `<div>
+                     Zupper (#1761) | n_orders=2
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
