@@ -51,7 +51,7 @@ class Config:
     # Training horizons (in full weeks) used to train the forecasting models.
     # For now, we only use 8 weeks as that was the best performing in
     # a previous study (note:4f79e8fa).
-    TRAINING_HORIZONS = [8]
+    TRAIN_HORIZONS = [8]
 
     # The demand forecasting methods used in the simulations.
     FORECASTING_METHODS = ['hets', 'rtarima']
