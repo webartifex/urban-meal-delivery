@@ -105,7 +105,12 @@ def tactical_heuristic(  # noqa:C901,WPS213,WPS216,WPS231
         # Continue with forecasting on the day the last prediction was made ...
         last_predict_at = (  # noqa:ECE001
             db.session.query(func.max(db.Forecast.start_at))
+            .join(db.Pixel, db.Forecast.pixel_id == db.Pixel.id)
+            .join(db.Grid, db.Pixel.grid_id == db.Grid.id)
             .filter(db.Forecast.pixel == pixel)
+            .filter(db.Grid.side_length == side_length)
+            .filter(db.Forecast.time_step == time_step)
+            .filter(db.Forecast.train_horizon == train_horizon)
             .first()
         )[0]
         # ... or start `train_horizon` weeks after the first `Order`
