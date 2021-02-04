@@ -218,14 +218,16 @@ class City(meta.Base):
         all_zip_codes = sorted(
             row[0]
             for row in db.session.execute(
-                f"""  -- # noqa:S608
-                SELECT DISTINCT
-                    zip_code
-                FROM
-                    {config.CLEAN_SCHEMA}.addresses
-                WHERE
-                    city_id = {self.id};
-                """,
+                sa.text(
+                    f"""  -- # noqa:S608
+                    SELECT DISTINCT
+                        zip_code
+                    FROM
+                        {config.CLEAN_SCHEMA}.addresses
+                    WHERE
+                        city_id = {self.id};
+                    """,
+                ),
             )
         )
         cmap = utils.make_random_cmap(len(all_zip_codes), bright=False)

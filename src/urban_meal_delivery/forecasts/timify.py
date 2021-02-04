@@ -6,6 +6,7 @@ import datetime as dt
 from typing import Tuple
 
 import pandas as pd
+import sqlalchemy as sa
 
 from urban_meal_delivery import config
 from urban_meal_delivery import db
@@ -68,64 +69,68 @@ class OrderHistory:
         # `data` is probably missing "pixel_id"-"start_at" pairs.
         # This happens when there is no demand in the `Pixel` in the given `time_step`.
         data = pd.read_sql_query(
-            f"""-- # noqa:E501,WPS221
-            SELECT
-                pixel_id,
-                start_at,
-                COUNT(*) AS n_orders
-            FROM (
+            sa.text(
+                f"""  -- # noqa:WPS221
                 SELECT
                     pixel_id,
-                    placed_at_without_seconds - minutes_to_be_cut AS start_at
+                    start_at,
+                    COUNT(*) AS n_orders
                 FROM (
                     SELECT
-                        pixels.pixel_id,
-                        DATE_TRUNC('MINUTE', orders.placed_at) AS placed_at_without_seconds,
-                        ((
-                            EXTRACT(MINUTES FROM orders.placed_at)::INTEGER % {self._time_step}
-                        )::TEXT || ' MINUTES')::INTERVAL
-                            AS minutes_to_be_cut
+                        pixel_id,
+                        placed_at_without_seconds - minutes_to_be_cut AS start_at
                     FROM (
                         SELECT
-                            id,
-                            placed_at,
-                            pickup_address_id
-                        FROM
-                            {config.CLEAN_SCHEMA}.orders
+                            pixels.pixel_id,
+                            DATE_TRUNC('MINUTE', orders.placed_at)
+                                AS placed_at_without_seconds,
+                            ((
+                                EXTRACT(MINUTES FROM orders.placed_at)::INTEGER
+                                    % {self._time_step}
+                            )::TEXT || ' MINUTES')::INTERVAL
+                                AS minutes_to_be_cut
+                        FROM (
+                            SELECT
+                                id,
+                                placed_at,
+                                pickup_address_id
+                            FROM
+                                {config.CLEAN_SCHEMA}.orders
+                            INNER JOIN (
+                                SELECT
+                                    id AS address_id
+                                FROM
+                                    {config.CLEAN_SCHEMA}.addresses
+                                WHERE
+                                    city_id = {self._grid.city.id}
+                            ) AS in_city
+                                ON orders.pickup_address_id = in_city.address_id
+                            WHERE
+                                ad_hoc IS TRUE
+                        ) AS
+                            orders
                         INNER JOIN (
                             SELECT
-                                id AS address_id
+                                address_id,
+                                pixel_id
                             FROM
-                                {config.CLEAN_SCHEMA}.addresses
+                                {config.CLEAN_SCHEMA}.addresses_pixels
                             WHERE
-                                city_id = {self._grid.city.id}
-                        ) AS in_city
-                            ON orders.pickup_address_id = in_city.address_id
-                        WHERE
-                            ad_hoc IS TRUE
-                    ) AS
-                        orders
-                    INNER JOIN (
-                        SELECT
-                            address_id,
-                            pixel_id
-                        FROM
-                            {config.CLEAN_SCHEMA}.addresses_pixels
-                        WHERE
-                            grid_id = {self._grid.id}
-                            AND
-                            city_id = {self._grid.city.id} -- redundant -> sanity check
-                    ) AS pixels
-                        ON orders.pickup_address_id = pixels.address_id
-                ) AS placed_at_aggregated_into_start_at
-            ) AS pixel_start_at_combinations
-            GROUP BY
-                pixel_id,
-                start_at
-            ORDER BY
-                pixel_id,
-                start_at;
-            """,
+                                grid_id = {self._grid.id}
+                                AND
+                                city_id = {self._grid.city.id} -- -> sanity check
+                        ) AS pixels
+                            ON orders.pickup_address_id = pixels.address_id
+                    ) AS placed_at_aggregated_into_start_at
+                ) AS pixel_start_at_combinations
+                GROUP BY
+                    pixel_id,
+                    start_at
+                ORDER BY
+                    pixel_id,
+                    start_at;
+                """,
+            ),  # noqa:WPS355
             con=db.connection,
             index_col=['pixel_id', 'start_at'],
         )
