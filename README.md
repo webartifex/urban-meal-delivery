@@ -16,7 +16,7 @@ that iteratively build on each other.
 ### Data Cleaning
 
 The UDP provided its raw data as a PostgreSQL dump.
-This [notebook](https://nbviewer.jupyter.org/github/webartifex/urban-meal-delivery/blob/develop/notebooks/00_clean_data.ipynb)
+This [notebook](https://nbviewer.jupyter.org/github/webartifex/urban-meal-delivery/blob/develop/research/clean_data.ipynb)
 cleans the data extensively
 and maps them onto the [ORM models](https://github.com/webartifex/urban-meal-delivery/tree/develop/src/urban_meal_delivery/db)
 defined in the `urban-meal-delivery` package
@@ -25,7 +25,7 @@ and contains all source code to drive the analyses.
 
 Due to a non-disclosure agreement with the UDP,
 neither the raw nor the cleaned data are published as of now.
-However, previews of the data can be seen throughout the [notebooks/](https://github.com/webartifex/urban-meal-delivery/tree/develop/notebooks) folders.
+However, previews of the data can be seen throughout the [research/](https://github.com/webartifex/urban-meal-delivery/tree/develop/research) folder.
 
 
 ### Real-time Demand Forecasting

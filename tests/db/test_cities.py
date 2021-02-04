@@ -1,99 +1,96 @@
-"""Test the ORM's City model."""
+"""Test the ORM's `City` model."""
 
 import pytest
-from sqlalchemy.orm import exc as orm_exc
 
 from urban_meal_delivery import db
+from urban_meal_delivery.db import utils
 
 
 class TestSpecialMethods:
-    """Test special methods in City."""
+    """Test special methods in `City`."""
 
-    # pylint:disable=no-self-use
+    def test_create_city(self, city):
+        """Test instantiation of a new `City` object."""
+        assert city is not None
 
-    def test_create_city(self, city_data):
-        """Test instantiation of a new City object."""
-        result = db.City(**city_data)
-
-        assert result is not None
-
-    def test_text_representation(self, city_data):
-        """City has a non-literal text representation."""
-        city = db.City(**city_data)
-        name = city_data['name']
-
+    def test_text_representation(self, city):
+        """`City` has a non-literal text representation."""
         result = repr(city)
 
-        assert result == f'<City({name})>'
+        assert result == f'<City({city.name})>'
 
 
-@pytest.mark.e2e
+@pytest.mark.db
 @pytest.mark.no_cover
 class TestConstraints:
-    """Test the database constraints defined in City."""
+    """Test the database constraints defined in `City`."""
 
-    # pylint:disable=no-self-use
+    def test_insert_into_database(self, db_session, city):
+        """Insert an instance into the (empty) database."""
+        assert db_session.query(db.City).count() == 0
 
-    def test_insert_into_database(self, city, db_session):
-        """Insert an instance into the database."""
         db_session.add(city)
         db_session.commit()
 
-    def test_dublicate_primary_key(self, city, city_data, db_session):
-        """Can only add a record once."""
-        db_session.add(city)
-        db_session.commit()
-
-        another_city = db.City(**city_data)
-        db_session.add(another_city)
-
-        with pytest.raises(orm_exc.FlushError):
-            db_session.commit()
+        assert db_session.query(db.City).count() == 1
 
 
 class TestProperties:
-    """Test properties in City."""
+    """Test properties in `City`."""
 
-    # pylint:disable=no-self-use
+    def test_center(self, city, city_data):
+        """Test `City.center` property."""
+        result = city.center
 
-    def test_location_data(self, city_data):
-        """Test City.location property."""
-        city = db.City(**city_data)
+        assert isinstance(result, utils.Location)
+        assert result.latitude == pytest.approx(city_data['center_latitude'])
+        assert result.longitude == pytest.approx(city_data['center_longitude'])
 
-        result = city.location
+    def test_center_is_cached(self, city):
+        """Test `City.center` property."""
+        result1 = city.center
+        result2 = city.center
 
-        assert isinstance(result, dict)
-        assert len(result) == 2
-        assert result['latitude'] == pytest.approx(city_data['_center_latitude'])
-        assert result['longitude'] == pytest.approx(city_data['_center_longitude'])
+        assert result1 is result2
 
-    def test_viewport_data_overall(self, city_data):
-        """Test City.viewport property."""
-        city = db.City(**city_data)
+    def test_northeast(self, city, city_data):
+        """Test `City.northeast` property."""
+        result = city.northeast
 
-        result = city.viewport
+        assert isinstance(result, utils.Location)
+        assert result.latitude == pytest.approx(city_data['northeast_latitude'])
+        assert result.longitude == pytest.approx(city_data['northeast_longitude'])
 
-        assert isinstance(result, dict)
-        assert len(result) == 2
+    def test_northeast_is_cached(self, city):
+        """Test `City.northeast` property."""
+        result1 = city.northeast
+        result2 = city.northeast
 
-    def test_viewport_data_northeast(self, city_data):
-        """Test City.viewport property."""
-        city = db.City(**city_data)
+        assert result1 is result2
 
-        result = city.viewport['northeast']
+    def test_southwest(self, city, city_data):
+        """Test `City.southwest` property."""
+        result = city.southwest
 
-        assert isinstance(result, dict)
-        assert len(result) == 2
-        assert result['latitude'] == pytest.approx(city_data['_northeast_latitude'])
-        assert result['longitude'] == pytest.approx(city_data['_northeast_longitude'])
+        assert isinstance(result, utils.Location)
+        assert result.latitude == pytest.approx(city_data['southwest_latitude'])
+        assert result.longitude == pytest.approx(city_data['southwest_longitude'])
 
-    def test_viewport_data_southwest(self, city_data):
-        """Test City.viewport property."""
-        city = db.City(**city_data)
+    def test_southwest_is_cached(self, city):
+        """Test `City.southwest` property."""
+        result1 = city.southwest
+        result2 = city.southwest
 
-        result = city.viewport['southwest']
+        assert result1 is result2
 
-        assert isinstance(result, dict)
-        assert len(result) == 2
-        assert result['latitude'] == pytest.approx(city_data['_southwest_latitude'])
-        assert result['longitude'] == pytest.approx(city_data['_southwest_longitude'])
+    def test_total_x(self, city):
+        """Test `City.total_x` property."""
+        result = city.total_x
+
+        assert result > 18_000
+
+    def test_total_y(self, city):
+        """Test `City.total_y` property."""
+        result = city.total_y
+
+        assert result > 9_000

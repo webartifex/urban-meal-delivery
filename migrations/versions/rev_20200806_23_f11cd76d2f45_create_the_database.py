@@ -107,13 +107,13 @@ def upgrade():
         sa.Column('id', sa.Integer(), autoincrement=False, nullable=False),
         sa.Column('primary_id', sa.Integer(), nullable=False),
         sa.Column('created_at', sa.DateTime(), nullable=False),
-        sa.Column('place_id', sa.Unicode(length=120), nullable=False),  # noqa:WPS432
+        sa.Column('place_id', sa.Unicode(length=120), nullable=False),
         sa.Column('latitude', postgresql.DOUBLE_PRECISION(), nullable=False),
         sa.Column('longitude', postgresql.DOUBLE_PRECISION(), nullable=False),
         sa.Column('city_id', sa.SmallInteger(), nullable=False),
-        sa.Column('city', sa.Unicode(length=25), nullable=False),  # noqa:WPS432
+        sa.Column('city', sa.Unicode(length=25), nullable=False),
         sa.Column('zip_code', sa.Integer(), nullable=False),
-        sa.Column('street', sa.Unicode(length=80), nullable=False),  # noqa:WPS432
+        sa.Column('street', sa.Unicode(length=80), nullable=False),
         sa.Column('floor', sa.SmallInteger(), nullable=True),
         sa.CheckConstraint(
             '-180 <= longitude AND longitude <= 180',
@@ -192,7 +192,7 @@ def upgrade():
         'restaurants',
         sa.Column('id', sa.SmallInteger(), autoincrement=False, nullable=False),
         sa.Column('created_at', sa.DateTime(), nullable=False),
-        sa.Column('name', sa.Unicode(length=45), nullable=False),  # noqa:WPS432
+        sa.Column('name', sa.Unicode(length=45), nullable=False),
         sa.Column('address_id', sa.Integer(), nullable=False),
         sa.Column('estimated_prep_duration', sa.SmallInteger(), nullable=False),
         sa.CheckConstraint(

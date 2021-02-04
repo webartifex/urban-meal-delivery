@@ -1,4 +1,4 @@
-"""Provide the ORM's Order model."""
+"""Provide the ORM's `Order` model."""
 
 import datetime
 
@@ -10,14 +10,14 @@ from urban_meal_delivery.db import meta
 
 
 class Order(meta.Base):  # noqa:WPS214
-    """An Order by a Customer of the UDP."""
+    """An order by a `Customer` of the UDP."""
 
     __tablename__ = 'orders'
 
     # Generic columns
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
     _delivery_id = sa.Column('delivery_id', sa.Integer, index=True, unique=True)
-    _customer_id = sa.Column('customer_id', sa.Integer, nullable=False, index=True)
+    customer_id = sa.Column(sa.Integer, nullable=False, index=True)
     placed_at = sa.Column(sa.DateTime, nullable=False, index=True)
     ad_hoc = sa.Column(sa.Boolean, nullable=False)
     scheduled_delivery_at = sa.Column(sa.DateTime, index=True)
@@ -33,9 +33,7 @@ class Order(meta.Base):  # noqa:WPS214
     total = sa.Column(sa.Integer, nullable=False)
 
     # Restaurant-related columns
-    _restaurant_id = sa.Column(
-        'restaurant_id', sa.SmallInteger, nullable=False, index=True,
-    )
+    restaurant_id = sa.Column(sa.SmallInteger, nullable=False, index=True)
     restaurant_notified_at = sa.Column(sa.DateTime)
     restaurant_notified_at_corrected = sa.Column(sa.Boolean, index=True)
     restaurant_confirmed_at = sa.Column(sa.DateTime)
@@ -45,7 +43,7 @@ class Order(meta.Base):  # noqa:WPS214
     estimated_prep_buffer = sa.Column(sa.Integer, nullable=False, index=True)
 
     # Dispatch-related columns
-    _courier_id = sa.Column('courier_id', sa.Integer, index=True)
+    courier_id = sa.Column(sa.Integer, index=True)
     dispatch_at = sa.Column(sa.DateTime)
     dispatch_at_corrected = sa.Column(sa.Boolean, index=True)
     courier_notified_at = sa.Column(sa.DateTime)
@@ -55,9 +53,7 @@ class Order(meta.Base):  # noqa:WPS214
     utilization = sa.Column(sa.SmallInteger, nullable=False)
 
     # Pickup-related columns
-    _pickup_address_id = sa.Column(
-        'pickup_address_id', sa.Integer, nullable=False, index=True,
-    )
+    pickup_address_id = sa.Column(sa.Integer, nullable=False, index=True)
     reached_pickup_at = sa.Column(sa.DateTime)
     pickup_at = sa.Column(sa.DateTime)
     pickup_at_corrected = sa.Column(sa.Boolean, index=True)
@@ -66,9 +62,7 @@ class Order(meta.Base):  # noqa:WPS214
     left_pickup_at_corrected = sa.Column(sa.Boolean, index=True)
 
     # Delivery-related columns
-    _delivery_address_id = sa.Column(
-        'delivery_address_id', sa.Integer, nullable=False, index=True,
-    )
+    delivery_address_id = sa.Column(sa.Integer, nullable=False, index=True)
     reached_delivery_at = sa.Column(sa.DateTime)
     delivery_at = sa.Column(sa.DateTime)
     delivery_at_corrected = sa.Column(sa.Boolean, index=True)
@@ -86,17 +80,19 @@ class Order(meta.Base):  # noqa:WPS214
             ['customer_id'], ['customers.id'], onupdate='RESTRICT', ondelete='RESTRICT',
         ),
         sa.ForeignKeyConstraint(
-            ['restaurant_id'],
-            ['restaurants.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
-        ),
-        sa.ForeignKeyConstraint(
             ['courier_id'], ['couriers.id'], onupdate='RESTRICT', ondelete='RESTRICT',
         ),
         sa.ForeignKeyConstraint(
             ['pickup_address_id'],
             ['addresses.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
+        ),
+        sa.ForeignKeyConstraint(
+            # This foreign key ensures that there is only
+            # one `.pickup_address` per `.restaurant`
+            ['restaurant_id', 'pickup_address_id'],
+            ['restaurants.id', 'restaurants.address_id'],
             onupdate='RESTRICT',
             ondelete='RESTRICT',
         ),
@@ -308,29 +304,33 @@ class Order(meta.Base):  # noqa:WPS214
 
     # Relationships
     customer = orm.relationship('Customer', back_populates='orders')
-    restaurant = orm.relationship('Restaurant', back_populates='orders')
+    restaurant = orm.relationship(
+        'Restaurant',
+        back_populates='orders',
+        primaryjoin='Restaurant.id == Order.restaurant_id',
+    )
     courier = orm.relationship('Courier', back_populates='orders')
     pickup_address = orm.relationship(
         'Address',
         back_populates='orders_picked_up',
-        foreign_keys='[Order._pickup_address_id]',
+        foreign_keys='[Order.pickup_address_id]',
     )
     delivery_address = orm.relationship(
         'Address',
         back_populates='orders_delivered',
-        foreign_keys='[Order._delivery_address_id]',
+        foreign_keys='[Order.delivery_address_id]',
     )
 
     # Convenience properties
 
     @property
     def scheduled(self) -> bool:
-        """Inverse of Order.ad_hoc."""
+        """Inverse of `.ad_hoc`."""
         return not self.ad_hoc
 
     @property
     def completed(self) -> bool:
-        """Inverse of Order.cancelled."""
+        """Inverse of `.cancelled`."""
         return not self.cancelled
 
     @property
@@ -353,9 +353,9 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_to_accept(self) -> datetime.timedelta:
-        """Time until a courier accepted an order.
+        """Time until the `.courier` accepted the order.
 
-        This adds the time it took the UDP to notify a courier.
+        This measures the time it took the UDP to notify the `.courier` after dispatch.
         """
         if not self.dispatch_at:
             raise RuntimeError('dispatch_at is not set')
@@ -365,9 +365,9 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_to_react(self) -> datetime.timedelta:
-        """Time a courier took to accept an order.
+        """Time the `.courier` took to accept an order.
 
-        This time is a subset of Order.time_to_accept.
+        A subset of `.time_to_accept`.
         """
         if not self.courier_notified_at:
             raise RuntimeError('courier_notified_at is not set')
@@ -377,7 +377,7 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_to_pickup(self) -> datetime.timedelta:
-        """Time from a courier's acceptance to arrival at the pickup location."""
+        """Time from the `.courier`'s acceptance to arrival at `.pickup_address`."""
         if not self.courier_accepted_at:
             raise RuntimeError('courier_accepted_at is not set')
         if not self.reached_pickup_at:
@@ -386,7 +386,7 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_at_pickup(self) -> datetime.timedelta:
-        """Time a courier stayed at the pickup location."""
+        """Time the `.courier` stayed at the `.pickup_address`."""
         if not self.reached_pickup_at:
             raise RuntimeError('reached_pickup_at is not set')
         if not self.pickup_at:
@@ -405,13 +405,13 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def courier_early(self) -> datetime.timedelta:
-        """Time by which a courier is early for pickup.
+        """Time by which the `.courier` is early for pickup.
 
-        Measured relative to Order.scheduled_pickup_at.
+        Measured relative to `.scheduled_pickup_at`.
 
-        0 if the courier is on time or late.
+        `datetime.timedelta(seconds=0)` if the `.courier` is on time or late.
 
-        Goes together with Order.courier_late.
+        Goes together with `.courier_late`.
         """
         return max(
             datetime.timedelta(), self.scheduled_pickup_at - self.reached_pickup_at,
@@ -419,13 +419,13 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def courier_late(self) -> datetime.timedelta:
-        """Time by which a courier is late for pickup.
+        """Time by which the `.courier` is late for pickup.
 
-        Measured relative to Order.scheduled_pickup_at.
+        Measured relative to `.scheduled_pickup_at`.
 
-        0 if the courier is on time or early.
+        `datetime.timedelta(seconds=0)` if the `.courier` is on time or early.
 
-        Goes together with Order.courier_early.
+        Goes together with `.courier_early`.
         """
         return max(
             datetime.timedelta(), self.reached_pickup_at - self.scheduled_pickup_at,
@@ -433,31 +433,31 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def restaurant_early(self) -> datetime.timedelta:
-        """Time by which a restaurant is early for pickup.
+        """Time by which the `.restaurant` is early for pickup.
 
-        Measured relative to Order.scheduled_pickup_at.
+        Measured relative to `.scheduled_pickup_at`.
 
-        0 if the restaurant is on time or late.
+        `datetime.timedelta(seconds=0)` if the `.restaurant` is on time or late.
 
-        Goes together with Order.restaurant_late.
+        Goes together with `.restaurant_late`.
         """
         return max(datetime.timedelta(), self.scheduled_pickup_at - self.pickup_at)
 
     @property
     def restaurant_late(self) -> datetime.timedelta:
-        """Time by which a restaurant is late for pickup.
+        """Time by which the `.restaurant` is late for pickup.
 
-        Measured relative to Order.scheduled_pickup_at.
+        Measured relative to `.scheduled_pickup_at`.
 
-        0 if the restaurant is on time or early.
+        `datetime.timedelta(seconds=0)` if the `.restaurant` is on time or early.
 
-        Goes together with Order.restaurant_early.
+        Goes together with `.restaurant_early`.
         """
         return max(datetime.timedelta(), self.pickup_at - self.scheduled_pickup_at)
 
     @property
     def time_to_delivery(self) -> datetime.timedelta:
-        """Time a courier took from pickup to delivery location."""
+        """Time the `.courier` took from `.pickup_address` to `.delivery_address`."""
         if not self.pickup_at:
             raise RuntimeError('pickup_at is not set')
         if not self.reached_delivery_at:
@@ -466,7 +466,7 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def time_at_delivery(self) -> datetime.timedelta:
-        """Time a courier stayed at the delivery location."""
+        """Time the `.courier` stayed at the `.delivery_address`."""
         if not self.reached_delivery_at:
             raise RuntimeError('reached_delivery_at is not set')
         if not self.delivery_at:
@@ -475,20 +475,20 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def courier_waited_at_delivery(self) -> datetime.timedelta:
-        """Time a courier waited at the delivery location."""
+        """Time the `.courier` waited at the `.delivery_address`."""
         if self._courier_waited_at_delivery:
             return self.time_at_delivery
         return datetime.timedelta()
 
     @property
     def delivery_early(self) -> datetime.timedelta:
-        """Time by which a scheduled order was early.
+        """Time by which a `.scheduled` order was early.
 
-        Measured relative to Order.scheduled_delivery_at.
+        Measured relative to `.scheduled_delivery_at`.
 
-        0 if the delivery is on time or late.
+        `datetime.timedelta(seconds=0)` if the delivery is on time or late.
 
-        Goes together with Order.delivery_late.
+        Goes together with `.delivery_late`.
         """
         if not self.scheduled:
             raise AttributeError('Makes sense only for scheduled orders')
@@ -496,13 +496,13 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def delivery_late(self) -> datetime.timedelta:
-        """Time by which a scheduled order was late.
+        """Time by which a `.scheduled` order was late.
 
-        Measured relative to Order.scheduled_delivery_at.
+        Measured relative to `.scheduled_delivery_at`.
 
-        0 if the delivery is on time or early.
+        `datetime.timedelta(seconds=0)` if the delivery is on time or early.
 
-        Goes together with Order.delivery_early.
+        Goes together with `.delivery_early`.
         """
         if not self.scheduled:
             raise AttributeError('Makes sense only for scheduled orders')
@@ -510,7 +510,7 @@ class Order(meta.Base):  # noqa:WPS214
 
     @property
     def total_time(self) -> datetime.timedelta:
-        """Time from order placement to delivery for an ad-hoc order."""
+        """Time from order placement to delivery for an `.ad_hoc` order."""
         if self.scheduled:
             raise AttributeError('Scheduled orders have no total_time')
         if self.cancelled:
