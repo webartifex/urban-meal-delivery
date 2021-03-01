@@ -542,9 +542,9 @@ class OrderHistory:
             pixel_id=pixel_id, predict_day=predict_day, train_horizon=train_horizon,
         )
 
-        # For now, we only make forecasts with 8 weeks
+        # For now, we only make forecasts with 7 and 8 weeks
         # as the training horizon (note:4f79e8fa).
-        if train_horizon == 8:
+        if train_horizon in {7, 8}:
             if add >= 25:  # = "high demand"
                 return models.HorizontalETSModel(order_history=self)
             elif add >= 10:  # = "medium demand"

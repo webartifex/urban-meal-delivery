@@ -3,7 +3,7 @@
 The purpose of this module is to import all the R packages that are installed
 into a sub-folder (see `config.R_LIBS_PATH`) in the project's root directory.
 
-The Jupyter notebook "research/r_dependencies.ipynb" can be used to install all
+The Jupyter notebook "research/00_r_dependencies.ipynb" can be used to install all
 R dependencies on a Ubuntu/Debian based system.
 """
 
@@ -24,5 +24,5 @@ try:  # noqa:WPS229
     rpackages.importr('zoo')
 
 except rpackages.PackageNotInstalledError:  # pragma: no cover
-    msg = 'See the "research/r_dependencies.ipynb" notebook!'
+    msg = 'See the "research/00_r_dependencies.ipynb" notebook!'
     raise rpackages.PackageNotInstalledError(msg) from None
