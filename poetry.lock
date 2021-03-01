@@ -669,6 +669,17 @@ python-versions = ">=3.4"
 gitdb = ">=4.0.1,<5"
 
 [[package]]
+name = "googlemaps"
+version = "4.4.2"
+description = "Python client library for Google Maps Platform"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+requests = ">=2.20.0,<3.0"
+
+[[package]]
 name = "identify"
 version = "1.5.13"
 description = "File identification library for Python"
@@ -2018,7 +2029,7 @@ research = ["jupyterlab", "nb_black", "numpy", "pytz"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "9a2253e699e28998cb3ef8d8dadd8bf15a891c5e0cec4709671afe22159d5d86"
+content-hash = "1cb73f8385bd93c2b7091ea64cc4e866e72dfc3d5ceaf78082058c65ed4bc9b4"
 
 [metadata.files]
 alabaster = [
@@ -2351,6 +2362,9 @@ gitdb = [
 gitpython = [
     {file = "GitPython-3.1.12-py3-none-any.whl", hash = "sha256:867ec3dfb126aac0f8296b19fb63b8c4a399f32b4b6fafe84c4b10af5fa9f7b5"},
     {file = "GitPython-3.1.12.tar.gz", hash = "sha256:42dbefd8d9e2576c496ed0059f3103dcef7125b9ce16f9d5f9c834aed44a1dac"},
+]
+googlemaps = [
+    {file = "googlemaps-4.4.2.tar.gz", hash = "sha256:8e13cbecc9b5b0462d53a78074c166753027be285db0c9fff70f5b40241ce500"},
 ]
 identify = [
     {file = "identify-1.5.13-py2.py3-none-any.whl", hash = "sha256:9dfb63a2e871b807e3ba62f029813552a24b5289504f5b071dea9b041aee9fe4"},
