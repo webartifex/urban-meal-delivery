@@ -35,6 +35,7 @@ folium = "^0.12.1"
 geopy = "^2.1.0"
 googlemaps = "^4.4.2"
 matplotlib = "^3.3.3"
+ordered-set = "^4.0.2"
 pandas = "^1.1.0"
 psycopg2 = "^2.8.5"  # adapter for PostgreSQL
 rpy2 = "^3.4.1"
