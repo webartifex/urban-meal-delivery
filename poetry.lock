@@ -622,7 +622,7 @@ testing = ["pytest"]
 name = "geographiclib"
 version = "1.50"
 description = "The geodesic routines from GeographicLib"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -630,7 +630,7 @@ python-versions = "*"
 name = "geopy"
 version = "2.1.0"
 description = "Python Geocoding Toolbox"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -2029,7 +2029,7 @@ research = ["jupyterlab", "nb_black", "numpy", "pytz"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "1cb73f8385bd93c2b7091ea64cc4e866e72dfc3d5ceaf78082058c65ed4bc9b4"
+content-hash = "e4fb8762397c9f8c88e271208e6498f742dc00c4fdc82e1b4db1fa99f182dfb7"
 
 [metadata.files]
 alabaster = [
