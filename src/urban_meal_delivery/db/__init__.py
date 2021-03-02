@@ -1,6 +1,7 @@
 """Provide the ORM models and a connection to the database."""
 
 from urban_meal_delivery.db.addresses import Address
+from urban_meal_delivery.db.addresses_addresses import DistanceMatrix
 from urban_meal_delivery.db.addresses_pixels import AddressPixelAssociation
 from urban_meal_delivery.db.cities import City
 from urban_meal_delivery.db.connection import connection

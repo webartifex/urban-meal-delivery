@@ -24,7 +24,7 @@ def assoc(address, pixel):
 
 @pytest.mark.no_cover
 class TestSpecialMethods:
-    """Test special methods in `Pixel`."""
+    """Test special methods in `AddressPixelAssociation`."""
 
     def test_create_an_address_pixel_association(self, assoc):
         """Test instantiation of a new `AddressPixelAssociation` object."""

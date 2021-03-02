@@ -57,6 +57,16 @@ class Address(meta.Base):
 
     # Relationships
     city = orm.relationship('City', back_populates='addresses')
+    _distances1 = orm.relationship(
+        'DistanceMatrix',
+        back_populates='first_address',
+        foreign_keys='[DistanceMatrix.first_address_id, DistanceMatrix.city_id]',
+    )
+    _distances2 = orm.relationship(
+        'DistanceMatrix',
+        back_populates='second_address',
+        foreign_keys='[DistanceMatrix.second_address_id, DistanceMatrix.city_id]',
+    )
     restaurants = orm.relationship('Restaurant', back_populates='address')
     orders_picked_up = orm.relationship(
         'Order',
