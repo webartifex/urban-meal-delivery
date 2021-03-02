@@ -1,12 +1,20 @@
 """Model for the relationship between two `Address` objects (= distance matrix)."""
 
+from __future__ import annotations
+
+import itertools
 import json
 from typing import List
 
+import googlemaps as gm
+import ordered_set
 import sqlalchemy as sa
+from geopy import distance as geo_distance
 from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
 
+from urban_meal_delivery import config
+from urban_meal_delivery import db
 from urban_meal_delivery.db import meta
 from urban_meal_delivery.db import utils
 
@@ -91,6 +99,118 @@ class DistanceMatrix(meta.Base):
 
     # We do not implement a `.__init__()` method and leave that to SQLAlchemy.
     # Instead, we use `hasattr()` to check for uninitialized attributes.  grep:86ffc14e
+
+    @classmethod
+    def from_addresses(
+        cls, *addresses: db.Address, google_maps: bool = False,
+    ) -> List[DistanceMatrix]:
+        """Calculate pair-wise distances for `Address` objects.
+
+        This is the main constructor method for the class.
+
+        It handles the "sorting" of the `Address` objects by `.id`, which is
+        the logic that enforces the symmetric graph behind the distances.
+
+        Args:
+            *addresses: to calculate the pair-wise distances for;
+                must contain at least two `Address` objects
+            google_maps: if `.bicylce_distance` and `.directions` should be
+                populated with a query to the Google Maps Directions API;
+                by default, only the `.air_distance` is calculated with `geopy`
+
+        Returns:
+            distances
+        """
+        distances = []
+
+        # We consider all 2-tuples of `Address`es. The symmetric graph is ...
+        for first, second in itertools.combinations(addresses, 2):
+            # ... implicitly enforced by a precedence constraint for the `.id`s.
+            first, second = (  # noqa:WPS211
+                (first, second) if first.id < second.id else (second, first)
+            )
+
+            # If there is no `DistaneMatrix` object in the database ...
+            distance = (  # noqa:ECE001
+                db.session.query(db.DistanceMatrix)
+                .filter(db.DistanceMatrix.first_address == first)
+                .filter(db.DistanceMatrix.second_address == second)
+                .first()
+            )
+            # ... create a new one.
+            if distance is None:
+                air_distance = geo_distance.great_circle(
+                    first.location.lat_lng, second.location.lat_lng,
+                )
+
+                distance = cls(
+                    first_address=first,
+                    second_address=second,
+                    air_distance=round(air_distance.meters),
+                )
+
+                db.session.add(distance)
+                db.session.commit()
+
+            distances.append(distance)
+
+        if google_maps:
+            for distance in distances:  # noqa:WPS440
+                distance.sync_with_google_maps()
+
+        return distances
+
+    def sync_with_google_maps(self) -> None:
+        """Fill in `.bicycle_distance` and `.directions` with Google Maps.
+
+        `.directions` will not contain the coordinates of `.first_address` and
+        `.second_address`.
+
+        This uses the Google Maps Directions API.
+
+        Further info:
+            https://developers.google.com/maps/documentation/directions
+        """
+        # To save costs, we do not make an API call
+        # if we already have data from Google Maps.
+        if self.bicycle_distance is not None:
+            return
+
+        client = gm.Client(config.GOOGLE_MAPS_API_KEY)
+        response = client.directions(
+            origin=self.first_address.location.lat_lng,
+            destination=self.second_address.location.lat_lng,
+            mode='bicycling',
+            alternatives=False,
+        )
+        # Without "alternatives" and "waypoints", the `response` contains
+        # exactly one "route" that consists of exactly one "leg".
+        # Source: https://developers.google.com/maps/documentation/directions/get-directions#Legs  # noqa:E501
+        route = response[0]['legs'][0]
+
+        self.bicycle_distance = route['distance']['value']  # noqa:WPS601
+        self.bicycle_duration = route['duration']['value']  # noqa:WPS601
+
+        # Each route consists of many "steps" that are instructions as to how to
+        # get from A to B. As a step's "start_location" may equal the previous step's
+        # "end_location", we use an `OrderedSet` to find the unique latitude-longitude
+        # pairs that make up the path from `.first_address` to `.second_address`.
+        steps = ordered_set.OrderedSet()
+        for step in route['steps']:
+            steps.add(  # noqa:WPS221
+                (step['start_location']['lat'], step['start_location']['lng']),
+            )
+            steps.add(  # noqa:WPS221
+                (step['end_location']['lat'], step['end_location']['lng']),
+            )
+
+        steps.discard(self.first_address.location.lat_lng)
+        steps.discard(self.second_address.location.lat_lng)
+
+        self.directions = json.dumps(list(steps))  # noqa:WPS601
+
+        db.session.add(self)
+        db.session.commit()
 
     @property
     def path(self) -> List[utils.Location]:

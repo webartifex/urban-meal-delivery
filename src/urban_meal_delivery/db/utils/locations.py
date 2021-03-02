@@ -7,7 +7,7 @@ from typing import Optional, Tuple
 import utm
 
 
-class Location:
+class Location:  # noqa:WPS214
     """A location represented in WGS84 and UTM coordinates.
 
     WGS84:
@@ -66,6 +66,11 @@ class Location:
         Between -180 and +180 degrees.
         """
         return self._longitude
+
+    @property
+    def lat_lng(self) -> Tuple[float, float]:
+        """The `.latitude` and `.longitude` as a 2-`tuple`."""
+        return (self._latitude, self._longitude)
 
     @property
     def easting(self) -> int:
