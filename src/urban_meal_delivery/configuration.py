@@ -64,6 +64,7 @@ class Config:
     # --------------------------------
 
     DATABASE_URI = os.getenv('DATABASE_URI')
+    GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
     # The PostgreSQL schema that holds the tables with the original data.
     ORIGINAL_SCHEMA = os.getenv('ORIGINAL_SCHEMA') or 'public'
