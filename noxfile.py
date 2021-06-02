@@ -197,7 +197,6 @@ def test(session):
         'pytest-cov',
         'pytest-env',
         'pytest-mock',
-        'pytest-randomly',
         'xdoctest[optional]',
     )
 
@@ -207,7 +206,7 @@ def test(session):
     # test cases that require the slow installation of R and some packages.
     if session.env.get('_slow_ci_tests'):
         session.run(
-            'pytest', '--randomly-seed=4287', '-m', 'r and not db', PYTEST_LOCATION,
+            'pytest', '-m', 'r and not db', PYTEST_LOCATION,
         )
 
         # In the "ci-tests-slow" session, we do not run any test tool
@@ -219,7 +218,6 @@ def test(session):
     # Therefore, the CI server does not measure coverage.
     elif session.env.get('_fast_ci_tests'):
         pytest_args = (
-            '--randomly-seed=4287',
             '-m',
             'not (db or r)',
             PYTEST_LOCATION,
@@ -235,7 +233,6 @@ def test(session):
             '--cov-branch',
             '--cov-fail-under=100',
             '--cov-report=term-missing:skip-covered',
-            '--randomly-seed=4287',
             PYTEST_LOCATION,
         )
 

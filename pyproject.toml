@@ -86,7 +86,6 @@ pytest = "^6.0.1"
 pytest-cov = "^2.10.0"
 pytest-env = "^0.6.2"
 pytest-mock = "^3.5.1"
-pytest-randomly = "^3.5.0"
 xdoctest = { version="^0.13.0", extras=["optional"] }
 
 # Documentation

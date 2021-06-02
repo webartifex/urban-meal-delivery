@@ -1474,17 +1474,6 @@ pytest = ">=5.0"
 dev = ["pre-commit", "tox", "pytest-asyncio"]
 
 [[package]]
-name = "pytest-randomly"
-version = "3.5.0"
-description = "Pytest plugin to randomly order tests and control random.seed."
-category = "dev"
-optional = false
-python-versions = ">=3.5"
-
-[package.dependencies]
-pytest = "*"
-
-[[package]]
 name = "python-dateutil"
 version = "2.8.1"
 description = "Extensions to the standard Python datetime module"
@@ -2037,7 +2026,7 @@ research = ["jupyterlab", "nb_black", "numpy", "pytz"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "72f0b0200c4726e385a2ac8d4a4bce2cb194403700d0e48044592c9add81e3d5"
+content-hash = "f4dfe432ca7054f9be0e2ab189d3f6cd210dc51a2c2f2ded8b7d978620de9b51"
 
 [metadata.files]
 alabaster = [
@@ -2799,10 +2788,6 @@ pytest-env = [
 pytest-mock = [
     {file = "pytest-mock-3.5.1.tar.gz", hash = "sha256:a1e2aba6af9560d313c642dae7e00a2a12b022b80301d9d7fc8ec6858e1dd9fc"},
     {file = "pytest_mock-3.5.1-py3-none-any.whl", hash = "sha256:379b391cfad22422ea2e252bdfc008edd08509029bcde3c25b2c0bd741e0424e"},
-]
-pytest-randomly = [
-    {file = "pytest-randomly-3.5.0.tar.gz", hash = "sha256:440cec143fd9b0adeb072006c71e0294402a2bc2ccd08079c2341087ba4cf2d1"},
-    {file = "pytest_randomly-3.5.0-py3-none-any.whl", hash = "sha256:9db10d160237f3f8ee60cef72e4cb9ea88d2893c9dd5c8aa334b060cdeb67c3a"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
