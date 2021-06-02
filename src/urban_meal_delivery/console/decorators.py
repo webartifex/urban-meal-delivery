@@ -9,10 +9,12 @@ from typing import Any, Callable
 import click
 
 
-def db_revision(rev: str) -> Callable:  # pragma: no cover -> easy to check visually
+def db_revision(
+    rev: str,
+) -> Callable[..., Callable[..., Any]]:  # pragma: no cover -> easy to check visually
     """A decorator ensuring the database is at a given revision."""
 
-    def decorator(func: Callable) -> Callable:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @functools.wraps(func)
         def ensure(*args: Any, **kwargs: Any) -> Any:  # noqa:WPS430
             """Do not execute the `func` if the revision does not match."""
