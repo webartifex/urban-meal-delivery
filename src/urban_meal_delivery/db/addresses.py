@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 from typing import Any
 
 import folium
@@ -80,9 +81,6 @@ class Address(meta.Base):
     )
     pixels = orm.relationship('AddressPixelAssociation', back_populates='address')
 
-    # We do not implement a `.__init__()` method and leave that to SQLAlchemy.
-    # Instead, we use `hasattr()` to check for uninitialized attributes.  grep:b1f68d24
-
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}({street} in {city})>'.format(
@@ -100,7 +98,7 @@ class Address(meta.Base):
         """
         return self.id == self.primary_id
 
-    @property
+    @functools.cached_property
     def location(self) -> utils.Location:
         """The location of the address.
 
@@ -112,10 +110,9 @@ class Address(meta.Base):
         Implementation detail: This property is cached as none of the
         underlying attributes to calculate the value are to be changed.
         """
-        if not hasattr(self, '_location'):  # noqa:WPS421  note:b1f68d24
-            self._location = utils.Location(self.latitude, self.longitude)
-            self._location.relate_to(self.city.southwest)
-        return self._location
+        location = utils.Location(self.latitude, self.longitude)
+        location.relate_to(self.city.southwest)
+        return location
 
     @property
     def x(self) -> int:  # noqa=WPS111

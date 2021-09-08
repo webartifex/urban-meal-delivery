@@ -29,8 +29,8 @@ def assoc(address, another_address, make_address):
     # `.first_address` to `.second_address`.
     directions = json.dumps(
         [
-            (float(addr.latitude), float(addr.longitude))
-            for addr in (make_address() for _ in range(5))  # noqa:WPS335
+            (float(add.latitude), float(add.longitude))
+            for add in (make_address() for _ in range(5))  # noqa:WPS335
         ],
     )
 
@@ -40,7 +40,7 @@ def assoc(address, another_address, make_address):
         air_distance=round(air_distance),
         bicycle_distance=round(1.25 * air_distance),
         bicycle_duration=300,
-        directions=directions,
+        _directions=directions,
     )
 
 
@@ -327,7 +327,7 @@ class TestSyncWithGoogleMaps:
                 'copyrights': 'Map data ©2021',
                 'legs': [
                     {
-                        'distance': {'text': '3.0 km', 'value': 2969},
+                        'distance': {'text': '3.0 km', 'value': 2999},
                         'duration': {'text': '10 mins', 'value': 596},
                         'end_address': '13 Place Paul et Jean Paul Avisseau, ...',
                         'end_location': {'lat': 44.85540839999999, 'lng': -0.5672105},
@@ -335,7 +335,7 @@ class TestSyncWithGoogleMaps:
                         'start_location': {'lat': 44.8342256, 'lng': -0.570372},
                         'steps': [
                             {
-                                'distance': {'text': '0.1 km', 'value': 108},
+                                'distance': {'text': '0.1 km', 'value': 138},
                                 'duration': {'text': '1 min', 'value': 43},
                                 'end_location': {
                                     'lat': 44.83434380000001,
@@ -569,7 +569,7 @@ class TestSyncWithGoogleMaps:
     def _fake_google_api(self, api_response, monkeypatch):
         """Patch out the call to the Google Maps Directions API."""
 
-        def directions(self, *args, **kwargs):
+        def directions(_self, *_args, **_kwargs):
             return api_response
 
         monkeypatch.setattr(googlemaps.Client, 'directions', directions)
@@ -579,13 +579,13 @@ class TestSyncWithGoogleMaps:
         """Call the method for a `DistanceMatrix` object without Google data."""
         assoc.bicycle_distance = None
         assoc.bicycle_duration = None
-        assoc.directions = None
+        assoc._directions = None
 
         assoc.sync_with_google_maps()
 
-        assert assoc.bicycle_distance == 2_969
+        assert assoc.bicycle_distance == 2_999
         assert assoc.bicycle_duration == 596
-        assert assoc.directions is not None
+        assert assoc._directions is not None
 
     @pytest.mark.usefixtures('_fake_google_api')
     def test_repeated_sync_instances_with_google_maps(self, db_session, assoc):
@@ -597,13 +597,13 @@ class TestSyncWithGoogleMaps:
         """
         old_distance = assoc.bicycle_distance
         old_duration = assoc.bicycle_duration
-        old_directions = assoc.directions
+        old_directions = assoc._directions
 
         assoc.sync_with_google_maps()
 
         assert assoc.bicycle_distance is old_distance
         assert assoc.bicycle_duration is old_duration
-        assert assoc.directions is old_directions
+        assert assoc._directions is old_directions
 
 
 class TestProperties:

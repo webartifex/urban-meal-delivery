@@ -15,7 +15,7 @@ class Location:  # noqa:WPS214
         - assumes earth is a sphere and models the location in 3D
 
     UTM:
-        - the Universal Transverse Mercator sytem
+        - the Universal Transverse Mercator system
         - projects WGS84 coordinates onto a 2D map
         - can be used for visualizations and calculations directly
         - distances are in meters
@@ -70,7 +70,7 @@ class Location:  # noqa:WPS214
     @property
     def lat_lng(self) -> Tuple[float, float]:
         """The `.latitude` and `.longitude` as a 2-`tuple`."""
-        return (self._latitude, self._longitude)
+        return self._latitude, self._longitude
 
     @property
     def easting(self) -> int:
@@ -90,7 +90,7 @@ class Location:  # noqa:WPS214
     @property
     def zone_details(self) -> Tuple[int, str]:
         """The UTM zone of the location as the zone number and the band."""
-        return (self._zone, self._band)
+        return self._zone, self._band
 
     def __eq__(self, other: object) -> bool:
         """Check if two `Location` objects are the same location."""

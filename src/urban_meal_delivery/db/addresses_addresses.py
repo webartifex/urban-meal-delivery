@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 import itertools
 import json
 from typing import List
@@ -46,7 +47,7 @@ class DistanceMatrix(meta.Base):
     # The duration is measured in seconds.
     bicycle_duration = sa.Column(sa.Integer, nullable=True)
     # An array of latitude-longitude pairs approximating a courier's way.
-    directions = sa.Column(postgresql.JSON, nullable=True)
+    _directions = sa.Column('directions', postgresql.JSON, nullable=True)
 
     # Constraints
     __table_args__ = (
@@ -73,7 +74,7 @@ class DistanceMatrix(meta.Base):
             '0 <= air_distance AND air_distance < 20000', name='realistic_air_distance',
         ),
         sa.CheckConstraint(
-            'bicycle_distance < 25000',  # `.bicycle_distance` may not be negatative
+            'bicycle_distance < 25000',  # `.bicycle_distance` may not be negative
             name='realistic_bicycle_distance',  # due to the constraint below.
         ),
         sa.CheckConstraint(
@@ -97,9 +98,6 @@ class DistanceMatrix(meta.Base):
         foreign_keys='[DistanceMatrix.second_address_id, DistanceMatrix.city_id]',
     )
 
-    # We do not implement a `.__init__()` method and leave that to SQLAlchemy.
-    # Instead, we use `hasattr()` to check for uninitialized attributes.  grep:86ffc14e
-
     @classmethod
     def from_addresses(
         cls, *addresses: db.Address, google_maps: bool = False,
@@ -114,7 +112,7 @@ class DistanceMatrix(meta.Base):
         Args:
             *addresses: to calculate the pair-wise distances for;
                 must contain at least two `Address` objects
-            google_maps: if `.bicylce_distance` and `.directions` should be
+            google_maps: if `.bicycle_distance` and `._directions` should be
                 populated with a query to the Google Maps Directions API;
                 by default, only the `.air_distance` is calculated with `geopy`
 
@@ -130,7 +128,7 @@ class DistanceMatrix(meta.Base):
                 (first, second) if first.id < second.id else (second, first)
             )
 
-            # If there is no `DistaneMatrix` object in the database ...
+            # If there is no `DistanceMatrix` object in the database ...
             distance = (  # noqa:ECE001
                 db.session.query(db.DistanceMatrix)
                 .filter(db.DistanceMatrix.first_address == first)
@@ -161,10 +159,10 @@ class DistanceMatrix(meta.Base):
         return distances
 
     def sync_with_google_maps(self) -> None:
-        """Fill in `.bicycle_distance` and `.directions` with Google Maps.
+        """Fill in `.bicycle_distance` and `._directions` with Google Maps.
 
-        `.directions` will not contain the coordinates of `.first_address` and
-        `.second_address`.
+        `._directions` will NOT contain the coordinates
+        of `.first_address` and `.second_address`.
 
         This uses the Google Maps Directions API.
 
@@ -207,28 +205,24 @@ class DistanceMatrix(meta.Base):
         steps.discard(self.first_address.location.lat_lng)
         steps.discard(self.second_address.location.lat_lng)
 
-        self.directions = json.dumps(list(steps))  # noqa:WPS601
+        self._directions = json.dumps(list(steps))  # noqa:WPS601
 
         db.session.add(self)
         db.session.commit()
 
-    @property
+    @functools.cached_property
     def path(self) -> List[utils.Location]:
         """The couriers' path from `.first_address` to `.second_address`.
 
         The returned `Location`s all relates to `.first_address.city.southwest`.
 
         Implementation detail: This property is cached as none of the
-        underlying attributes (i.e., `.directions`) are to be changed.
+        underlying attributes (i.e., `._directions`) are to be changed.
         """
-        if not hasattr(self, '_path'):  # noqa:WPS421  note:86ffc14e
-            inner_points = [
-                utils.Location(point[0], point[1])
-                for point in json.loads(self.directions)
-            ]
-            for point in inner_points:
-                point.relate_to(self.first_address.city.southwest)
+        inner_points = [
+            utils.Location(*point) for point in json.loads(self._directions)
+        ]
+        for point in inner_points:
+            point.relate_to(self.first_address.city.southwest)
 
-            self._path = inner_points
-
-        return self._path
+        return inner_points

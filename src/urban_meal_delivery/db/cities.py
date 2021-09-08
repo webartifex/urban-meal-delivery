@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import functools
+
 import folium
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -38,51 +40,39 @@ class City(meta.Base):
     addresses = orm.relationship('Address', back_populates='city')
     grids = orm.relationship('Grid', back_populates='city')
 
-    # We do not implement a `.__init__()` method and leave that to SQLAlchemy.
-    # Instead, we use `hasattr()` to check for uninitialized attributes.  grep:d334120e
+    # We do not implement a `.__init__()` method and use SQLAlchemy's default.
+    # The uninitialized attribute `._map` is computed on the fly.  note:d334120ei
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}({name})>'.format(cls=self.__class__.__name__, name=self.name)
 
-    @property
+    @functools.cached_property
     def center(self) -> utils.Location:
         """Location of the city's center.
 
         Implementation detail: This property is cached as none of the
         underlying attributes to calculate the value are to be changed.
         """
-        if not hasattr(self, '_center'):  # noqa:WPS421  note:d334120e
-            self._center = utils.Location(self.center_latitude, self.center_longitude)
-        return self._center
+        return utils.Location(self.center_latitude, self.center_longitude)
 
-    @property
+    @functools.cached_property
     def northeast(self) -> utils.Location:
         """The city's northeast corner of the Google Maps viewport.
 
         Implementation detail: This property is cached as none of the
         underlying attributes to calculate the value are to be changed.
         """
-        if not hasattr(self, '_northeast'):  # noqa:WPS421  note:d334120e
-            self._northeast = utils.Location(
-                self.northeast_latitude, self.northeast_longitude,
-            )
+        return utils.Location(self.northeast_latitude, self.northeast_longitude)
 
-        return self._northeast
-
-    @property
+    @functools.cached_property
     def southwest(self) -> utils.Location:
         """The city's southwest corner of the Google Maps viewport.
 
         Implementation detail: This property is cached as none of the
         underlying attributes to calculate the value are to be changed.
         """
-        if not hasattr(self, '_southwest'):  # noqa:WPS421  note:d334120e
-            self._southwest = utils.Location(
-                self.southwest_latitude, self.southwest_longitude,
-            )
-
-        return self._southwest
+        return utils.Location(self.southwest_latitude, self.southwest_longitude)
 
     @property
     def total_x(self) -> int:
@@ -103,16 +93,17 @@ class City(meta.Base):
     def clear_map(self) -> City:  # pragma: no cover
         """Create a new `folium.Map` object aligned with the city's viewport.
 
-        The map is available via the `.map` property. Note that it is a
-        mutable objects that is changed from various locations in the code base.
+        The map is available via the `.map` property. Note that it is mutable
+        and changed from various locations in the code base.
 
         Returns:
             self: enabling method chaining
-        """  # noqa:DAR203
+        """  # noqa:DAR203  note:d334120e
         self._map = folium.Map(
             location=[self.center_latitude, self.center_longitude],
             zoom_start=self.initial_zoom,
         )
+
         return self
 
     @property  # pragma: no cover
@@ -221,11 +212,11 @@ class City(meta.Base):
                 sa.text(
                     f"""  -- # noqa:S608
                     SELECT DISTINCT
-                        zip_code
+                        {config.CLEAN_SCHEMA}.addresses.zip_code
                     FROM
-                        {config.CLEAN_SCHEMA}.addresses
+                        {config.CLEAN_SCHEMA}.addresses AS addresses
                     WHERE
-                        city_id = {self.id};
+                        {config.CLEAN_SCHEMA}.addresses.city_id = {self.id};
                     """,
                 ),
             )
