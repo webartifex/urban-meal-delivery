@@ -135,7 +135,6 @@ def lint(session):
         'flake8',
         'flake8-annotations',
         'flake8-black',
-        'flake8-expression-complexity',
         'flake8-pytest-style',
         'mypy',
         'wemake-python-styleguide',

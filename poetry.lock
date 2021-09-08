@@ -74,17 +74,6 @@ optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
 
 [[package]]
-name = "astpretty"
-version = "2.1.0"
-description = "Pretty print the output of python stdlib `ast.parse`."
-category = "dev"
-optional = false
-python-versions = ">=3.6.1"
-
-[package.extras]
-typed = ["typed-ast"]
-
-[[package]]
 name = "atomicwrites"
 version = "1.4.0"
 description = "Atomic file writes."
@@ -536,18 +525,6 @@ python-versions = ">=3.6,<4.0"
 attrs = "*"
 eradicate = ">=1.0,<2.0"
 flake8 = ">=3.5,<4.0"
-
-[[package]]
-name = "flake8-expression-complexity"
-version = "0.0.8"
-description = "A flake8 extension that checks expressions complexity"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-astpretty = "*"
-flake8 = "*"
 
 [[package]]
 name = "flake8-isort"
@@ -2136,7 +2113,7 @@ research = ["jupyterlab", "nb_black", "numpy", "pytz"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "f4dfe432ca7054f9be0e2ab189d3f6cd210dc51a2c2f2ded8b7d978620de9b51"
+content-hash = "8fb55f96f74960bcdff195a20747ea93778f33fdf36f392d553e51565d442947"
 
 [metadata.files]
 alabaster = [
@@ -2175,10 +2152,6 @@ argon2-cffi = [
 astor = [
     {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
     {file = "astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e"},
-]
-astpretty = [
-    {file = "astpretty-2.1.0-py2.py3-none-any.whl", hash = "sha256:f81f14b5636f7af81fadb1e3c09ca7702ce4615500d9cc6d6829befb2dec2e3c"},
-    {file = "astpretty-2.1.0.tar.gz", hash = "sha256:8a801fcda604ec741f010bb36d7cbadc3ec8a182ea6fb83e20ab663463e75ff6"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
@@ -2466,9 +2439,6 @@ flake8-docstrings = [
 flake8-eradicate = [
     {file = "flake8-eradicate-0.3.0.tar.gz", hash = "sha256:d0b3d283d85079917acbfe39b9d637385cd82cba3ae3d76c1278c07ddcf0d9b9"},
     {file = "flake8_eradicate-0.3.0-py3-none-any.whl", hash = "sha256:e8b32b32300bfb407fe7ef74667c8d2d3a6a81bdf6f09c14a7bcc82b7b870f8b"},
-]
-flake8-expression-complexity = [
-    {file = "flake8_expression_complexity-0.0.8.tar.gz", hash = "sha256:c23f8ae677eb13b073be9bafa2cf443a87d3e2594817ba82c1f3e184e2de4afa"},
 ]
 flake8-isort = [
     {file = "flake8-isort-3.0.1.tar.gz", hash = "sha256:5d976da513cc390232ad5a9bb54aee8a092466a15f442d91dfc525834bee727a"},

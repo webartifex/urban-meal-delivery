@@ -83,7 +83,7 @@ class Restaurant(meta.Base):
         if customers:
             # Obtain all primary `Address`es in the city that
             # received at least one delivery from `self`.
-            delivery_addresses = (  # noqa:ECE001
+            delivery_addresses = (
                 db.session.query(db.Address)
                 .filter(
                     db.Address.id.in_(
@@ -99,7 +99,7 @@ class Restaurant(meta.Base):
 
             for address in delivery_addresses:
                 if order_counts:
-                    n_orders = (  # noqa:ECE001
+                    n_orders = (
                         db.session.query(db.Order)
                         .join(db.Address, db.Order.delivery_address_id == db.Address.id)
                         .filter(db.Order.restaurant_id == self.id)

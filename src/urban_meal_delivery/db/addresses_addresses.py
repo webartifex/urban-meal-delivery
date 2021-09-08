@@ -129,7 +129,7 @@ class DistanceMatrix(meta.Base):
             )
 
             # If there is no `DistanceMatrix` object in the database ...
-            distance = (  # noqa:ECE001
+            distance = (
                 db.session.query(db.DistanceMatrix)
                 .filter(db.DistanceMatrix.first_address == first)
                 .filter(db.DistanceMatrix.second_address == second)

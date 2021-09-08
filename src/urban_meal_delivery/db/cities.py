@@ -129,7 +129,7 @@ class City(meta.Base):
             `.map` for convenience in interactive usage
         """
         # Obtain all primary `Address`es in the city that host `Restaurant`s.
-        addresses = (  # noqa:ECE001
+        addresses = (
             db.session.query(db.Address)
             .filter(
                 db.Address.id.in_(
@@ -146,7 +146,7 @@ class City(meta.Base):
         for address in addresses:
             # Show the restaurant's name if there is only one.
             # Otherwise, list all the restaurants' ID's.
-            restaurants = (  # noqa:ECE001
+            restaurants = (
                 db.session.query(db.Restaurant)
                 .join(db.Address, db.Restaurant.address_id == db.Address.id)
                 .filter(db.Address.primary_id == address.id)
@@ -161,7 +161,7 @@ class City(meta.Base):
 
             if order_counts:
                 # Calculate the number of orders for ALL restaurants ...
-                n_orders = (  # noqa:ECE001
+                n_orders = (
                     db.session.query(db.Order.id)
                     .join(db.Address, db.Order.pickup_address_id == db.Address.id)
                     .filter(db.Address.primary_id == address.id)
