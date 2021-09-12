@@ -89,13 +89,12 @@ class DistanceMatrix(meta.Base):
     # Relationships
     first_address = orm.relationship(
         'Address',
-        back_populates='_distances1',
         foreign_keys='[DistanceMatrix.first_address_id, DistanceMatrix.city_id]',
     )
     second_address = orm.relationship(
         'Address',
-        back_populates='_distances2',
         foreign_keys='[DistanceMatrix.second_address_id, DistanceMatrix.city_id]',
+        overlaps='first_address',
     )
 
     @classmethod

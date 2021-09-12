@@ -67,11 +67,14 @@ class Customer(meta.Base):
             db.session.query(db.Address)
             .filter(
                 db.Address.id.in_(
-                    db.session.query(db.Address.primary_id)  # noqa:WPS221
-                    .join(db.Order, db.Address.id == db.Order.delivery_address_id)
-                    .filter(db.Order.customer_id == self.id)
-                    .distinct()
-                    .all(),
+                    row.primary_id
+                    for row in (
+                        db.session.query(db.Address.primary_id)  # noqa:WPS221
+                        .join(db.Order, db.Address.id == db.Order.delivery_address_id)
+                        .filter(db.Order.customer_id == self.id)
+                        .distinct()
+                        .all()
+                    )
                 ),
             )
             .all()
