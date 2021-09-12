@@ -1,4 +1,4 @@
-"""Test the ORM's `DistanceMatrix` model."""
+"""Test the ORM's `Path` model."""
 
 import json
 
@@ -19,8 +19,8 @@ def another_address(make_address):
 
 
 @pytest.fixture
-def assoc(address, another_address, make_address):
-    """An association between `address` and `another_address`."""
+def path(address, another_address, make_address):
+    """A `Path` from `address` to `another_address`."""
     air_distance = distance.great_circle(  # noqa:WPS317
         address.location.lat_lng, another_address.location.lat_lng,
     ).meters
@@ -34,7 +34,7 @@ def assoc(address, another_address, make_address):
         ],
     )
 
-    return db.DistanceMatrix(
+    return db.Path(
         first_address=address,
         second_address=another_address,
         air_distance=round(air_distance),
@@ -45,34 +45,34 @@ def assoc(address, another_address, make_address):
 
 
 class TestSpecialMethods:
-    """Test special methods in `DistanceMatrix`."""
+    """Test special methods in `Path`."""
 
-    def test_create_an_address_address_association(self, assoc):
-        """Test instantiation of a new `DistanceMatrix` object."""
-        assert assoc is not None
+    def test_create_an_address_address_association(self, path):
+        """Test instantiation of a new `Path` object."""
+        assert path is not None
 
 
 @pytest.mark.db
 @pytest.mark.no_cover
 class TestConstraints:
-    """Test the database constraints defined in `DistanceMatrix`."""
+    """Test the database constraints defined in `Path`."""
 
-    def test_insert_into_database(self, db_session, assoc):
+    def test_insert_into_database(self, db_session, path):
         """Insert an instance into the (empty) database."""
-        assert db_session.query(db.DistanceMatrix).count() == 0
+        assert db_session.query(db.Path).count() == 0
 
-        db_session.add(assoc)
+        db_session.add(path)
         db_session.commit()
 
-        assert db_session.query(db.DistanceMatrix).count() == 1
+        assert db_session.query(db.Path).count() == 1
 
-    def test_delete_a_referenced_first_address(self, db_session, assoc):
+    def test_delete_a_referenced_first_address(self, db_session, path):
         """Remove a record that is referenced with a FK."""
-        db_session.add(assoc)
+        db_session.add(path)
         db_session.commit()
 
         # Must delete without ORM as otherwise an UPDATE statement is emitted.
-        stmt = sqla.delete(db.Address).where(db.Address.id == assoc.first_address.id)
+        stmt = sqla.delete(db.Address).where(db.Address.id == path.first_address.id)
 
         with pytest.raises(
             sa_exc.IntegrityError,
@@ -80,13 +80,13 @@ class TestConstraints:
         ):
             db_session.execute(stmt)
 
-    def test_delete_a_referenced_second_address(self, db_session, assoc):
+    def test_delete_a_referenced_second_address(self, db_session, path):
         """Remove a record that is referenced with a FK."""
-        db_session.add(assoc)
+        db_session.add(path)
         db_session.commit()
 
         # Must delete without ORM as otherwise an UPDATE statement is emitted.
-        stmt = sqla.delete(db.Address).where(db.Address.id == assoc.second_address.id)
+        stmt = sqla.delete(db.Address).where(db.Address.id == path.second_address.id)
 
         with pytest.raises(
             sa_exc.IntegrityError,
@@ -102,7 +102,7 @@ class TestConstraints:
 
         # Must insert without ORM as otherwise SQLAlchemy figures out
         # that something is wrong before any query is sent to the database.
-        stmt = sqla.insert(db.DistanceMatrix).values(
+        stmt = sqla.insert(db.Path).values(
             first_address_id=address.id,
             second_address_id=another_address.id,
             city_id=999,
@@ -115,34 +115,34 @@ class TestConstraints:
         ):
             db_session.execute(stmt)
 
-    def test_redundant_addresses(self, db_session, assoc):
+    def test_redundant_addresses(self, db_session, path):
         """Insert a record that violates a unique constraint."""
-        db_session.add(assoc)
+        db_session.add(path)
         db_session.commit()
 
         # Must insert without ORM as otherwise SQLAlchemy figures out
         # that something is wrong before any query is sent to the database.
-        stmt = sqla.insert(db.DistanceMatrix).values(
-            first_address_id=assoc.first_address.id,
-            second_address_id=assoc.second_address.id,
-            city_id=assoc.city_id,
-            air_distance=assoc.air_distance,
+        stmt = sqla.insert(db.Path).values(
+            first_address_id=path.first_address.id,
+            second_address_id=path.second_address.id,
+            city_id=path.city_id,
+            air_distance=path.air_distance,
         )
 
         with pytest.raises(sa_exc.IntegrityError, match='duplicate key value'):
             db_session.execute(stmt)
 
-    def test_symmetric_addresses(self, db_session, assoc):
+    def test_symmetric_addresses(self, db_session, path):
         """Insert a record that violates a check constraint."""
-        db_session.add(assoc)
+        db_session.add(path)
         db_session.commit()
 
-        another_assoc = db.DistanceMatrix(
-            first_address=assoc.second_address,
-            second_address=assoc.first_address,
-            air_distance=assoc.air_distance,
+        another_path = db.Path(
+            first_address=path.second_address,
+            second_address=path.first_address,
+            air_distance=path.air_distance,
         )
-        db_session.add(another_assoc)
+        db_session.add(another_path)
 
         with pytest.raises(
             sa_exc.IntegrityError,
@@ -150,44 +150,44 @@ class TestConstraints:
         ):
             db_session.commit()
 
-    def test_negative_air_distance(self, db_session, assoc):
+    def test_negative_air_distance(self, db_session, path):
         """Insert an instance with invalid data."""
-        assoc.air_distance = -1
-        db_session.add(assoc)
+        path.air_distance = -1
+        db_session.add(path)
 
         with pytest.raises(sa_exc.IntegrityError, match='realistic_air_distance'):
             db_session.commit()
 
-    def test_air_distance_too_large(self, db_session, assoc):
+    def test_air_distance_too_large(self, db_session, path):
         """Insert an instance with invalid data."""
-        assoc.air_distance = 20_000
-        assoc.bicycle_distance = 21_000
-        db_session.add(assoc)
+        path.air_distance = 20_000
+        path.bicycle_distance = 21_000
+        db_session.add(path)
 
         with pytest.raises(sa_exc.IntegrityError, match='realistic_air_distance'):
             db_session.commit()
 
-    def test_bicycle_distance_too_large(self, db_session, assoc):
+    def test_bicycle_distance_too_large(self, db_session, path):
         """Insert an instance with invalid data."""
-        assoc.bicycle_distance = 25_000
-        db_session.add(assoc)
+        path.bicycle_distance = 25_000
+        db_session.add(path)
 
         with pytest.raises(sa_exc.IntegrityError, match='realistic_bicycle_distance'):
             db_session.commit()
 
-    def test_air_distance_shorter_than_bicycle_distance(self, db_session, assoc):
+    def test_air_distance_shorter_than_bicycle_distance(self, db_session, path):
         """Insert an instance with invalid data."""
-        assoc.bicycle_distance = round(0.75 * assoc.air_distance)
-        db_session.add(assoc)
+        path.bicycle_distance = round(0.75 * path.air_distance)
+        db_session.add(path)
 
         with pytest.raises(sa_exc.IntegrityError, match='air_distance_is_shortest'):
             db_session.commit()
 
     @pytest.mark.parametrize('duration', [-1, 3601])
-    def test_unrealistic_bicycle_travel_time(self, db_session, assoc, duration):
+    def test_unrealistic_bicycle_travel_time(self, db_session, path, duration):
         """Insert an instance with invalid data."""
-        assoc.bicycle_duration = duration
-        db_session.add(assoc)
+        path.bicycle_duration = duration
+        db_session.add(path)
 
         with pytest.raises(
             sa_exc.IntegrityError, match='realistic_bicycle_travel_time',
@@ -197,47 +197,47 @@ class TestConstraints:
 
 @pytest.mark.db
 class TestFromAddresses:
-    """Test the alternative constructor `DistanceMatrix.from_addresses()`."""
+    """Test the alternative constructor `Path.from_addresses()`."""
 
     @pytest.fixture
     def _prepare_db(self, db_session, address):
         """Put the `address` into the database.
 
         `Address`es must be in the database as otherwise the `.city_id` column
-        cannot be resolved in `DistanceMatrix.from_addresses()`.
+        cannot be resolved in `Path.from_addresses()`.
         """
         db_session.add(address)
 
     @pytest.mark.usefixtures('_prepare_db')
-    def test_make_distance_matrix_instance(
+    def test_make_path_instance(
         self, db_session, address, another_address,
     ):
-        """Test instantiation of a new `DistanceMatrix` instance."""
-        assert db_session.query(db.DistanceMatrix).count() == 0
+        """Test instantiation of a new `Path` instance."""
+        assert db_session.query(db.Path).count() == 0
 
-        db.DistanceMatrix.from_addresses(address, another_address)
+        db.Path.from_addresses(address, another_address)
 
-        assert db_session.query(db.DistanceMatrix).count() == 1
+        assert db_session.query(db.Path).count() == 1
 
     @pytest.mark.usefixtures('_prepare_db')
-    def test_make_the_same_distance_matrix_instance_twice(
+    def test_make_the_same_path_instance_twice(
         self, db_session, address, another_address,
     ):
-        """Test instantiation of a new `DistanceMatrix` instance."""
-        assert db_session.query(db.DistanceMatrix).count() == 0
+        """Test instantiation of a new `Path` instance."""
+        assert db_session.query(db.Path).count() == 0
 
-        db.DistanceMatrix.from_addresses(address, another_address)
+        db.Path.from_addresses(address, another_address)
 
-        assert db_session.query(db.DistanceMatrix).count() == 1
+        assert db_session.query(db.Path).count() == 1
 
-        db.DistanceMatrix.from_addresses(another_address, address)
+        db.Path.from_addresses(another_address, address)
 
-        assert db_session.query(db.DistanceMatrix).count() == 1
+        assert db_session.query(db.Path).count() == 1
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_structure_of_return_value(self, db_session, address, another_address):
-        """Test instantiation of a new `DistanceMatrix` instance."""
-        results = db.DistanceMatrix.from_addresses(address, another_address)
+        """Test instantiation of a new `Path` instance."""
+        results = db.Path.from_addresses(address, another_address)
 
         assert isinstance(results, list)
 
@@ -245,10 +245,10 @@ class TestFromAddresses:
     def test_instances_must_have_air_distance(
         self, db_session, address, another_address,
     ):
-        """Test instantiation of a new `DistanceMatrix` instance."""
-        distances = db.DistanceMatrix.from_addresses(address, another_address)
+        """Test instantiation of a new `Path` instance."""
+        paths = db.Path.from_addresses(address, another_address)
 
-        result = distances[0]
+        result = paths[0]
 
         assert result.air_distance is not None
 
@@ -256,10 +256,10 @@ class TestFromAddresses:
     def test_do_not_sync_instances_with_google_maps(
         self, db_session, address, another_address,
     ):
-        """Test instantiation of a new `DistanceMatrix` instance."""
-        distances = db.DistanceMatrix.from_addresses(address, another_address)
+        """Test instantiation of a new `Path` instance."""
+        paths = db.Path.from_addresses(address, another_address)
 
-        result = distances[0]
+        result = paths[0]
 
         assert result.bicycle_distance is None
         assert result.bicycle_duration is None
@@ -268,52 +268,46 @@ class TestFromAddresses:
     def test_sync_instances_with_google_maps(
         self, db_session, address, another_address, monkeypatch,
     ):
-        """Test instantiation of a new `DistanceMatrix` instance."""
+        """Test instantiation of a new `Path` instance."""
 
         def sync(self):
             self.bicycle_distance = 1.25 * self.air_distance
             self.bicycle_duration = 300
 
-        monkeypatch.setattr(db.DistanceMatrix, 'sync_with_google_maps', sync)
+        monkeypatch.setattr(db.Path, 'sync_with_google_maps', sync)
 
-        distances = db.DistanceMatrix.from_addresses(
-            address, another_address, google_maps=True,
-        )
+        paths = db.Path.from_addresses(address, another_address, google_maps=True)
 
-        result = distances[0]
+        result = paths[0]
 
         assert result.bicycle_distance is not None
         assert result.bicycle_duration is not None
 
     @pytest.mark.usefixtures('_prepare_db')
-    def test_one_distance_for_two_addresses(self, db_session, address, another_address):
-        """Test instantiation of a new `DistanceMatrix` instance."""
-        result = len(db.DistanceMatrix.from_addresses(address, another_address))
+    def test_one_path_for_two_addresses(self, db_session, address, another_address):
+        """Test instantiation of a new `Path` instance."""
+        result = len(db.Path.from_addresses(address, another_address))
 
         assert result == 1
 
     @pytest.mark.usefixtures('_prepare_db')
-    def test_two_distances_for_three_addresses(self, db_session, make_address):
-        """Test instantiation of a new `DistanceMatrix` instance."""
-        result = len(
-            db.DistanceMatrix.from_addresses(*[make_address() for _ in range(3)]),
-        )
+    def test_two_paths_for_three_addresses(self, db_session, make_address):
+        """Test instantiation of a new `Path` instance."""
+        result = len(db.Path.from_addresses(*[make_address() for _ in range(3)]))
 
         assert result == 3
 
     @pytest.mark.usefixtures('_prepare_db')
-    def test_six_distances_for_four_addresses(self, db_session, make_address):
-        """Test instantiation of a new `DistanceMatrix` instance."""
-        result = len(
-            db.DistanceMatrix.from_addresses(*[make_address() for _ in range(4)]),
-        )
+    def test_six_paths_for_four_addresses(self, db_session, make_address):
+        """Test instantiation of a new `Path` instance."""
+        result = len(db.Path.from_addresses(*[make_address() for _ in range(4)]))
 
         assert result == 6
 
 
 @pytest.mark.db
 class TestSyncWithGoogleMaps:
-    """Test the `DistanceMatrix.sync_with_google_maps()` method."""
+    """Test the `Path.sync_with_google_maps()` method."""
 
     @pytest.fixture
     def api_response(self):
@@ -575,56 +569,58 @@ class TestSyncWithGoogleMaps:
         monkeypatch.setattr(googlemaps.Client, 'directions', directions)
 
     @pytest.mark.usefixtures('_fake_google_api')
-    def test_sync_instances_with_google_maps(self, db_session, assoc):
-        """Call the method for a `DistanceMatrix` object without Google data."""
-        assoc.bicycle_distance = None
-        assoc.bicycle_duration = None
-        assoc._directions = None
+    def test_sync_instances_with_google_maps(self, db_session, path):
+        """Call the method for a `Path` object without Google data."""
+        path.bicycle_distance = None
+        path.bicycle_duration = None
+        path._directions = None
 
-        assoc.sync_with_google_maps()
+        path.sync_with_google_maps()
 
-        assert assoc.bicycle_distance == 2_999
-        assert assoc.bicycle_duration == 596
-        assert assoc._directions is not None
+        assert path.bicycle_distance == 2_999
+        assert path.bicycle_duration == 596
+        assert path._directions is not None
 
     @pytest.mark.usefixtures('_fake_google_api')
-    def test_repeated_sync_instances_with_google_maps(self, db_session, assoc):
-        """Call the method for a `DistanceMatrix` object with Google data.
+    def test_repeated_sync_instances_with_google_maps(self, db_session, path):
+        """Call the method for a `Path` object with Google data.
 
         That call should immediately return without changing any data.
 
-        We use the `assoc`'s "Google" data from above.
+        We use the `path`'s "Google" data from above.
         """
-        old_distance = assoc.bicycle_distance
-        old_duration = assoc.bicycle_duration
-        old_directions = assoc._directions
+        old_distance = path.bicycle_distance
+        old_duration = path.bicycle_duration
+        old_directions = path._directions
 
-        assoc.sync_with_google_maps()
+        path.sync_with_google_maps()
 
-        assert assoc.bicycle_distance is old_distance
-        assert assoc.bicycle_duration is old_duration
-        assert assoc._directions is old_directions
+        assert path.bicycle_distance is old_distance
+        assert path.bicycle_duration is old_duration
+        assert path._directions is old_directions
 
 
 class TestProperties:
-    """Test properties in `DistanceMatrix`."""
+    """Test properties in `Path`."""
 
-    def test_path_structure(self, assoc):
-        """Test `DistanceMatrix.path` property."""
-        result = assoc.path
+    def test_waypoints_structure(self, path):
+        """Test `Path.waypoints` property."""
+        result = path.waypoints
 
         assert isinstance(result, list)
         assert isinstance(result[0], utils.Location)
 
-    def test_path_content(self, assoc):
-        """Test `DistanceMatrix.path` property."""
-        result = assoc.path
+    def test_waypoints_content(self, path):
+        """Test `Path.waypoints` property."""
+        result = path.waypoints
 
-        assert len(result) == 5  # = 5 inner points, excluding start and end
+        # There are 5 inner points, excluding start and end,
+        # i.e., the `.first_address` and `second_address`.
+        assert len(result) == 5
 
-    def test_path_is_cached(self, assoc):
-        """Test `DistanceMatrix.path` property."""
-        result1 = assoc.path
-        result2 = assoc.path
+    def test_waypoints_is_cached(self, path):
+        """Test `Path.waypoints` property."""
+        result1 = path.waypoints
+        result2 = path.waypoints
 
         assert result1 is result2

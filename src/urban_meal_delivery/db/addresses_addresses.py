@@ -1,4 +1,4 @@
-"""Model for the relationship between two `Address` objects (= distance matrix)."""
+"""Model for the `Path` relationship between two `Address` objects."""
 
 from __future__ import annotations
 
@@ -20,14 +20,14 @@ from urban_meal_delivery.db import meta
 from urban_meal_delivery.db import utils
 
 
-class DistanceMatrix(meta.Base):
-    """Distance matrix between `Address` objects.
+class Path(meta.Base):
+    """Path between two `Address` objects.
 
-    Models the pairwise distances between two `Address` objects,
-    including directions for a `Courier` to get from one `Address` to another.
+    Models the path between two `Address` objects, including directions
+    for a `Courier` to get from one `Address` to another.
 
-    As the couriers are on bicycles, we model the distance matrix
-    as a symmetric graph (i.e., same distance in both directions).
+    As the couriers are on bicycles, we model the paths as
+    a symmetric graph (i.e., same distance in both directions).
 
     Implements an association pattern between `Address` and `Address`.
 
@@ -88,37 +88,36 @@ class DistanceMatrix(meta.Base):
 
     # Relationships
     first_address = orm.relationship(
-        'Address',
-        foreign_keys='[DistanceMatrix.first_address_id, DistanceMatrix.city_id]',
+        'Address', foreign_keys='[Path.first_address_id, Path.city_id]',
     )
     second_address = orm.relationship(
         'Address',
-        foreign_keys='[DistanceMatrix.second_address_id, DistanceMatrix.city_id]',
+        foreign_keys='[Path.second_address_id, Path.city_id]',
         overlaps='first_address',
     )
 
     @classmethod
     def from_addresses(
         cls, *addresses: db.Address, google_maps: bool = False,
-    ) -> List[DistanceMatrix]:
-        """Calculate pair-wise distances for `Address` objects.
+    ) -> List[Path]:
+        """Calculate pair-wise paths for `Address` objects.
 
         This is the main constructor method for the class.
 
         It handles the "sorting" of the `Address` objects by `.id`, which is
-        the logic that enforces the symmetric graph behind the distances.
+        the logic that enforces the symmetric graph behind the paths.
 
         Args:
-            *addresses: to calculate the pair-wise distances for;
+            *addresses: to calculate the pair-wise paths for;
                 must contain at least two `Address` objects
             google_maps: if `.bicycle_distance` and `._directions` should be
                 populated with a query to the Google Maps Directions API;
                 by default, only the `.air_distance` is calculated with `geopy`
 
         Returns:
-            distances
+            paths
         """
-        distances = []
+        paths = []
 
         # We consider all 2-tuples of `Address`es. The symmetric graph is ...
         for first, second in itertools.combinations(addresses, 2):
@@ -127,35 +126,35 @@ class DistanceMatrix(meta.Base):
                 (first, second) if first.id < second.id else (second, first)
             )
 
-            # If there is no `DistanceMatrix` object in the database ...
-            distance = (
-                db.session.query(db.DistanceMatrix)
-                .filter(db.DistanceMatrix.first_address == first)
-                .filter(db.DistanceMatrix.second_address == second)
+            # If there is no `Path` object in the database ...
+            path = (
+                db.session.query(db.Path)
+                .filter(db.Path.first_address == first)
+                .filter(db.Path.second_address == second)
                 .first()
             )
             # ... create a new one.
-            if distance is None:
+            if path is None:
                 air_distance = geo_distance.great_circle(
                     first.location.lat_lng, second.location.lat_lng,
                 )
 
-                distance = cls(
+                path = cls(
                     first_address=first,
                     second_address=second,
                     air_distance=round(air_distance.meters),
                 )
 
-                db.session.add(distance)
+                db.session.add(path)
                 db.session.commit()
 
-            distances.append(distance)
+            paths.append(path)
 
         if google_maps:
-            for distance in distances:  # noqa:WPS440
-                distance.sync_with_google_maps()
+            for path in paths:  # noqa:WPS440
+                path.sync_with_google_maps()
 
-        return distances
+        return paths
 
     def sync_with_google_maps(self) -> None:
         """Fill in `.bicycle_distance` and `._directions` with Google Maps.
@@ -210,18 +209,16 @@ class DistanceMatrix(meta.Base):
         db.session.commit()
 
     @functools.cached_property
-    def path(self) -> List[utils.Location]:
-        """The couriers' path from `.first_address` to `.second_address`.
+    def waypoints(self) -> List[utils.Location]:
+        """The couriers' route from `.first_address` to `.second_address`.
 
-        The returned `Location`s all relates to `.first_address.city.southwest`.
+        The returned `Location`s all relate to `.first_address.city.southwest`.
 
         Implementation detail: This property is cached as none of the
         underlying attributes (i.e., `._directions`) are to be changed.
         """
-        inner_points = [
-            utils.Location(*point) for point in json.loads(self._directions)
-        ]
-        for point in inner_points:
+        points = [utils.Location(*point) for point in json.loads(self._directions)]
+        for point in points:
             point.relate_to(self.first_address.city.southwest)
 
-        return inner_points
+        return points
