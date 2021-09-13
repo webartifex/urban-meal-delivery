@@ -34,8 +34,9 @@ def gridify() -> None:  # pragma: no cover  note:b1f68d24
 
             click.echo(f' -> created {len(grid.pixels)} pixels')
 
-        # The number of assigned addresses is the same across different `side_length`s.
-        db.session.flush()  # necessary for the query to work
+        # Because the number of assigned addresses is the same across
+        # different `side_length`s, we can take any `grid` from the `city`.
+        grid = db.session.query(db.Grid).filter_by(city=city).first()
         n_assigned = (
             db.session.query(db.AddressPixelAssociation)
             .filter(db.AddressPixelAssociation.grid_id == grid.id)

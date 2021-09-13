@@ -1,8 +1,8 @@
 """Forecasting `*Model`s to predict demand for tactical purposes.
 
 The `*Model`s in this module predict only a small number (e.g., one)
-of time steps into the near future and are used to implement the UDP's
-predictive routing strategies.
+of time steps into the near future and are used to implement the
+predictive routing strategies employed by the UDP.
 
 They are classified into "horizontal", "vertical", and "real-time" models
 with respect to what historic data they are trained on and how often they

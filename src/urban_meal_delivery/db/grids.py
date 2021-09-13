@@ -76,7 +76,7 @@ class Grid(meta.Base):
         # `Pixel`s grouped by `.n_x`-`.n_y` coordinates.
         pixels = {}
 
-        pickup_addresses = (  # noqa:ECE:001
+        pickup_addresses = (
             db.session.query(db.Address)
             .join(db.Order, db.Address.id == db.Order.pickup_address_id)
             .filter(db.Address.city == city)

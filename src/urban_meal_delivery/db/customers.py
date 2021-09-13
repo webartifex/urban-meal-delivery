@@ -63,15 +63,18 @@ class Customer(meta.Base):
 
         # Obtain all primary `Address`es where
         # at least one delivery was made to `self`.
-        delivery_addresses = (  # noqa:ECE001
+        delivery_addresses = (
             db.session.query(db.Address)
             .filter(
                 db.Address.id.in_(
-                    db.session.query(db.Address.primary_id)  # noqa:WPS221
-                    .join(db.Order, db.Address.id == db.Order.delivery_address_id)
-                    .filter(db.Order.customer_id == self.id)
-                    .distinct()
-                    .all(),
+                    row.primary_id
+                    for row in (
+                        db.session.query(db.Address.primary_id)  # noqa:WPS221
+                        .join(db.Order, db.Address.id == db.Order.delivery_address_id)
+                        .filter(db.Order.customer_id == self.id)
+                        .distinct()
+                        .all()
+                    )
                 ),
             )
             .all()
@@ -79,7 +82,7 @@ class Customer(meta.Base):
 
         for address in delivery_addresses:
             if order_counts:
-                n_orders = (  # noqa:ECE001
+                n_orders = (
                     db.session.query(db.Order)
                     .join(db.Address, db.Order.delivery_address_id == db.Address.id)
                     .filter(db.Order.customer_id == self.id)
@@ -111,7 +114,7 @@ class Customer(meta.Base):
                 )
 
         if restaurants:
-            pickup_addresses = (  # noqa:ECE001
+            pickup_addresses = (
                 db.session.query(db.Address)
                 .filter(
                     db.Address.id.in_(
@@ -129,7 +132,7 @@ class Customer(meta.Base):
                 # Show the restaurant's name if there is only one.
                 # Otherwise, list all the restaurants' ID's.
                 # We cannot show the `Order.restaurant.name` due to the aggregation.
-                restaurants = (  # noqa:ECE001
+                restaurants = (
                     db.session.query(db.Restaurant)
                     .join(db.Address, db.Restaurant.address_id == db.Address.id)
                     .filter(db.Address.primary_id == address.id)  # noqa:WPS441
@@ -145,7 +148,7 @@ class Customer(meta.Base):
                     )
 
                 if order_counts:
-                    n_orders = (  # noqa:ECE001
+                    n_orders = (
                         db.session.query(db.Order)
                         .join(db.Address, db.Order.pickup_address_id == db.Address.id)
                         .filter(db.Order.customer_id == self.id)

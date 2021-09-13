@@ -45,7 +45,11 @@ class Restaurant(meta.Base):
 
     # Relationships
     address = orm.relationship('Address', back_populates='restaurants')
-    orders = orm.relationship('Order', back_populates='restaurant')
+    orders = orm.relationship(
+        'Order',
+        back_populates='restaurant',
+        overlaps='orders_picked_up,pickup_address',
+    )
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
@@ -83,15 +87,20 @@ class Restaurant(meta.Base):
         if customers:
             # Obtain all primary `Address`es in the city that
             # received at least one delivery from `self`.
-            delivery_addresses = (  # noqa:ECE001
+            delivery_addresses = (
                 db.session.query(db.Address)
                 .filter(
                     db.Address.id.in_(
-                        db.session.query(db.Address.primary_id)  # noqa:WPS221
-                        .join(db.Order, db.Address.id == db.Order.delivery_address_id)
-                        .filter(db.Order.restaurant_id == self.id)
-                        .distinct()
-                        .all(),
+                        row.primary_id
+                        for row in (
+                            db.session.query(db.Address.primary_id)  # noqa:WPS221
+                            .join(
+                                db.Order, db.Address.id == db.Order.delivery_address_id,
+                            )
+                            .filter(db.Order.restaurant_id == self.id)
+                            .distinct()
+                            .all()
+                        )
                     ),
                 )
                 .all()
@@ -99,7 +108,7 @@ class Restaurant(meta.Base):
 
             for address in delivery_addresses:
                 if order_counts:
-                    n_orders = (  # noqa:ECE001
+                    n_orders = (
                         db.session.query(db.Order)
                         .join(db.Address, db.Order.delivery_address_id == db.Address.id)
                         .filter(db.Order.restaurant_id == self.id)

@@ -84,41 +84,50 @@ class OrderHistory:
                             pixels.pixel_id,
                             DATE_TRUNC('MINUTE', orders.placed_at)
                                 AS placed_at_without_seconds,
-                            ((
-                                EXTRACT(MINUTES FROM orders.placed_at)::INTEGER
-                                    % {self._time_step}
-                            )::TEXT || ' MINUTES')::INTERVAL
-                                AS minutes_to_be_cut
+                            (
+                                (
+                                    (
+                                        EXTRACT(MINUTES FROM orders.placed_at)::INTEGER
+                                            % {self._time_step}
+                                    )::TEXT
+                                    ||
+                                    ' MINUTES'
+                                )::INTERVAL
+                            ) AS minutes_to_be_cut
                         FROM (
                             SELECT
-                                id,
-                                placed_at,
-                                pickup_address_id
+                                {config.CLEAN_SCHEMA}.orders.id,
+                                {config.CLEAN_SCHEMA}.orders.placed_at,
+                                {config.CLEAN_SCHEMA}.orders.pickup_address_id
                             FROM
                                 {config.CLEAN_SCHEMA}.orders
                             INNER JOIN (
                                 SELECT
-                                    id AS address_id
+                                    {config.CLEAN_SCHEMA}.addresses.id AS address_id
                                 FROM
                                     {config.CLEAN_SCHEMA}.addresses
                                 WHERE
-                                    city_id = {self._grid.city.id}
+                                    {config.CLEAN_SCHEMA}.addresses.city_id
+                                        = {self._grid.city.id}
                             ) AS in_city
-                                ON orders.pickup_address_id = in_city.address_id
+                                ON {config.CLEAN_SCHEMA}.orders.pickup_address_id
+                                    = in_city.address_id
                             WHERE
-                                ad_hoc IS TRUE
+                                {config.CLEAN_SCHEMA}.orders.ad_hoc IS TRUE
                         ) AS
                             orders
                         INNER JOIN (
                             SELECT
-                                address_id,
-                                pixel_id
+                                {config.CLEAN_SCHEMA}.addresses_pixels.address_id,
+                                {config.CLEAN_SCHEMA}.addresses_pixels.pixel_id
                             FROM
                                 {config.CLEAN_SCHEMA}.addresses_pixels
                             WHERE
-                                grid_id = {self._grid.id}
+                                {config.CLEAN_SCHEMA}.addresses_pixels.grid_id
+                                    = {self._grid.id}
                                 AND
-                                city_id = {self._grid.city.id} -- -> sanity check
+                                {config.CLEAN_SCHEMA}.addresses_pixels.city_id
+                                    = {self._grid.city.id} -- -> sanity check
                         ) AS pixels
                             ON orders.pickup_address_id = pixels.address_id
                     ) AS placed_at_aggregated_into_start_at
@@ -544,7 +553,7 @@ class OrderHistory:
 
         # For now, we only make forecasts with 7 and 8 weeks
         # as the training horizon (note:4f79e8fa).
-        if train_horizon == 7 or train_horizon == 8:
+        if train_horizon in {7, 8}:
             if add >= 25:  # = "high demand"
                 return models.HorizontalETSModel(order_history=self)
             elif add >= 10:  # = "medium demand"

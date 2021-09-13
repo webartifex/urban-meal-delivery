@@ -15,7 +15,7 @@ For the paper check:
 
 This sub-package is organized as follows. The `base` module defines an abstract
 `ForecastingModelABC` class that unifies how the concrete `*Model`s work.
-While the abstact `.predict()` method returns a `pd.DataFrame` (= basically,
+While the abstract `.predict()` method returns a `pd.DataFrame` (= basically,
 the result of one of the forecasting `methods`, the concrete `.make_forecast()`
 method converts the results into `Forecast` (=ORM) objects.
 Also, `.make_forecast()` implements a caching strategy where already made
@@ -23,7 +23,7 @@ Also, `.make_forecast()` implements a caching strategy where already made
 which could be a heavier computation.
 
 The `tactical` sub-package contains all the `*Model`s used to implement the
-UDP's predictive routing strategy.
+predictive routing strategy employed by the UDP.
 
 A future `planning` sub-package will contain the `*Model`s used to plan the
 `Courier`'s shifts a week ahead.

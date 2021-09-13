@@ -59,11 +59,13 @@ class Config:
     # Colors for the visualizations ins `folium`.
     RESTAURANT_COLOR = 'red'
     CUSTOMER_COLOR = 'blue'
+    NEUTRAL_COLOR = 'black'
 
     # Implementation-specific settings
     # --------------------------------
 
     DATABASE_URI = os.getenv('DATABASE_URI')
+    GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
     # The PostgreSQL schema that holds the tables with the original data.
     ORIGINAL_SCHEMA = os.getenv('ORIGINAL_SCHEMA') or 'public'
@@ -122,7 +124,7 @@ def make_config(env: str = 'production') -> Config:
     # the warning is only emitted if the code is not run by pytest.
     # We see the bad configuration immediately as all "db" tests fail.
     if config.DATABASE_URI is None and not os.getenv('TESTING'):
-        warnings.warn('Bad configurartion: no DATABASE_URI set in the environment')
+        warnings.warn('Bad configuration: no DATABASE_URI set in the environment')
 
     # Some functionalities require R and some packages installed.
     # To ensure isolation and reproducibility, the projects keeps the R dependencies

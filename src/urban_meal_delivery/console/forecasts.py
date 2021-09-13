@@ -103,8 +103,8 @@ def tactical_heuristic(  # noqa:C901,WPS213,WPS216,WPS231
         # Important: this check may need to be adapted once further
         # commands are added the make `Forecast`s without the heuristic!
         # Continue with forecasting on the day the last prediction was made ...
-        last_predict_at = (  # noqa:ECE001
-            db.session.query(func.max(db.Forecast.start_at))
+        last_predict_at = (
+            db.session.query(func.max(db.Forecast.start_at))  # noqa:WPS221
             .join(db.Pixel, db.Forecast.pixel_id == db.Pixel.id)
             .join(db.Grid, db.Pixel.grid_id == db.Grid.id)
             .filter(db.Forecast.pixel == pixel)
