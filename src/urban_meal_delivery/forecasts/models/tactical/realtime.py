@@ -59,7 +59,7 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
         # Make predictions for the seasonal component by linear extrapolation.
         seasonal_predictions = methods.extrapolate_season.predict(
             training_ts=decomposed_training_ts['seasonal'],
-            forecast_interval=actuals_ts.index,
+            forecast_interval=pd.DatetimeIndex(actuals_ts.index),
             frequency=frequency,
         )
 
@@ -68,7 +68,7 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
             training_ts=(
                 decomposed_training_ts['trend'] + decomposed_training_ts['residual']
             ),
-            forecast_interval=actuals_ts.index,
+            forecast_interval=pd.DatetimeIndex(actuals_ts.index),
             # Because the seasonality was taken out before,
             # the `training_ts` has, by definition, a `frequency` of `1`.
             frequency=1,
@@ -109,7 +109,7 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
         # Sanity checks.
         if len(predictions) != 1:  # pragma: no cover
             raise RuntimeError('real-time models should predict exactly one time step')
-        if predictions.isnull().any().any():  # pragma: no cover
+        if predictions.isnull().sum().any():  # pragma: no cover
             raise RuntimeError('missing predictions in rtarima model')
         if predict_at not in predictions.index:  # pragma: no cover
             raise RuntimeError('missing prediction for `predict_at`')

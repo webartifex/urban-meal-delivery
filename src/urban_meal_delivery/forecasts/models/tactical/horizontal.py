@@ -51,7 +51,7 @@ class HorizontalETSModel(base.ForecastingModelABC):
         # Make `predictions` with the seasonal ETS method ("ZZZ" model).
         predictions = methods.ets.predict(
             training_ts=training_ts,
-            forecast_interval=actuals_ts.index,
+            forecast_interval=pd.DatetimeIndex(actuals_ts.index),
             frequency=frequency,  # `== 7`, the number of weekdays
             seasonal_fit=True,  # because there was no decomposition before
         )
@@ -59,7 +59,7 @@ class HorizontalETSModel(base.ForecastingModelABC):
         predictions.insert(loc=0, column='actual', value=actuals_ts)
 
         # Sanity checks.
-        if predictions.isnull().any().any():  # pragma: no cover
+        if predictions.isnull().sum().any():  # pragma: no cover
             raise RuntimeError('missing predictions in hets model')
         if predict_at not in predictions.index:  # pragma: no cover
             raise RuntimeError('missing prediction for `predict_at`')

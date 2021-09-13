@@ -10,7 +10,7 @@ class AddressPixelAssociation(meta.Base):
     """Association pattern between `Address` and `Pixel`.
 
     This approach is needed here mainly because it implicitly
-    updates the `_city_id` and `_grid_id` columns.
+    updates the `city_id` and `grid_id` columns.
 
     Further info:
         https://docs.sqlalchemy.org/en/stable/orm/basic_relationships.html#association-object  # noqa:E501

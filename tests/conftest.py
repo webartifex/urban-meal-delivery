@@ -5,6 +5,7 @@ in the CLI layer need access to the database.
 """
 
 import os
+import warnings
 
 import pytest
 import sqlalchemy as sa
@@ -94,7 +95,9 @@ def db_session(db_connection):
 
     finally:
         session.close()
-        transaction.rollback()
+
+        with warnings.catch_warnings(record=True):
+            transaction.rollback()
 
 
 # Import the fixtures from the `fake_data` sub-package.

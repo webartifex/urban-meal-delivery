@@ -31,8 +31,8 @@ def predict(
     Raises:
         ValueError: if `training_ts` contains `NaN` values
     """
-    # Initialize R only if necessary as it is tested only in nox's
-    # "ci-tests-slow" session and "ci-tests-fast" should not fail.
+    # Initialize R only if it is actually used.
+    # For example, the nox session "ci-tests-fast" does not use it.
     from urban_meal_delivery import init_r  # noqa:F401,WPS433
 
     # Re-seed R every time it is used to ensure reproducibility.

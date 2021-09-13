@@ -2,10 +2,13 @@
 
 import datetime
 
+import folium
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
 
+from urban_meal_delivery import config
+from urban_meal_delivery import db
 from urban_meal_delivery.db import meta
 
 
@@ -523,4 +526,37 @@ class Order(meta.Base):  # noqa:WPS214
         """Non-literal text representation."""
         return '<{cls}(#{order_id})>'.format(
             cls=self.__class__.__name__, order_id=self.id,
+        )
+
+    def draw(self) -> folium.Map:  # pragma: no cover
+        """Draw the `.waypoints` from `.pickup_address` to `.delivery_address`.
+
+        Important: Do not put this in an automated script as a method call
+        triggers an API call to the Google Maps API and may result in costs.
+
+        Returns:
+            `...city.map` for convenience in interactive usage
+        """
+        path = db.Path.from_order(self)
+
+        restaurant_tooltip = f'{self.restaurant.name} (#{self.restaurant.id})'
+        customer_tooltip = f'Customer #{self.customer.id}'
+
+        # Because the underlying distance matrix is symmetric (i.e., a DB constraint),
+        # we must check if the `.pickup_address` is the couriers' `Path`'s start.
+        if path.first_address is self.pickup_address:
+            reverse = False
+            start_tooltip, end_tooltip = restaurant_tooltip, customer_tooltip
+        else:
+            reverse = True
+            start_tooltip, end_tooltip = customer_tooltip, restaurant_tooltip
+
+        # This triggers `Path.sync_with_google_maps()` behind the scenes.
+        return path.draw(
+            reverse=reverse,
+            start_tooltip=start_tooltip,
+            end_tooltip=end_tooltip,
+            start_color=config.RESTAURANT_COLOR,
+            end_color=config.CUSTOMER_COLOR,
+            path_color=config.NEUTRAL_COLOR,
         )

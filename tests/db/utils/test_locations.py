@@ -122,6 +122,15 @@ class TestProperties:
 
         assert result == pytest.approx(float(address.longitude))
 
+    def test_lat_lng(self, location, address):
+        """Test `Location.lat_lng` property."""
+        result = location.lat_lng
+
+        assert result == (
+            pytest.approx(float(address.latitude)),
+            pytest.approx(float(address.longitude)),
+        )
+
     def test_easting(self, location):
         """Test `Location.easting` property."""
         result = location.easting

@@ -32,7 +32,10 @@ Shapely = "^1.7.1"
 alembic = "^1.4.2"
 click = "^7.1.2"
 folium = "^0.12.1"
+geopy = "^2.1.0"
+googlemaps = "^4.4.2"
 matplotlib = "^3.3.3"
+ordered-set = "^4.0.2"
 pandas = "^1.1.0"
 psycopg2 = "^2.8.5"  # adapter for PostgreSQL
 rpy2 = "^3.4.1"
@@ -69,7 +72,6 @@ isort = "^4.3.21"  # TODO (isort): not ^5.5.4 due to wemake-python-styleguide
 flake8 = "^3.8.3"
 flake8-annotations = "^2.3.0"
 flake8-black = "^0.2.1"
-flake8-expression-complexity = "^0.0.8"
 flake8-pytest-style = "^1.2.2"
 mypy = "^0.782"
 wemake-python-styleguide = "^0.14.1"  # flake8 plug-in
@@ -83,7 +85,6 @@ pytest = "^6.0.1"
 pytest-cov = "^2.10.0"
 pytest-env = "^0.6.2"
 pytest-mock = "^3.5.1"
-pytest-randomly = "^3.5.0"
 xdoctest = { version="^0.13.0", extras=["optional"] }
 
 # Documentation

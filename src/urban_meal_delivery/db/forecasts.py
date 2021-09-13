@@ -31,7 +31,7 @@ class Forecast(meta.Base):
     model = sa.Column(sa.Unicode(length=20), nullable=False)
     # We also store the actual order counts for convenient retrieval.
     # A `UniqueConstraint` below ensures that redundant values that
-    # are to be expected are consistend across rows.
+    # are to be expected are consistent across rows.
     actual = sa.Column(sa.SmallInteger, nullable=False)
     # Raw `.prediction`s are stored as `float`s (possibly negative).
     # The rounding is then done on the fly if required.
@@ -157,7 +157,7 @@ class Forecast(meta.Base):
         Background: The functions in `urban_meal_delivery.forecasts.methods`
         return `pd.Dataframe`s with "start_at" (i.e., `pd.Timestamp` objects)
         values in the index and five columns "prediction", "low80", "high80",
-        "low95", and "high95" with `np.float` values. The `*Model.predic()`
+        "low95", and "high95" with `np.float` values. The `*Model.predict()`
         methods in `urban_meal_delivery.forecasts.models` then add an "actual"
         column. This constructor converts these results into ORM models.
         Also, the `np.float` values are cast as plain `float` ones as
