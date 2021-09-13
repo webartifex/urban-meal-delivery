@@ -59,6 +59,7 @@ class Config:
     # Colors for the visualizations ins `folium`.
     RESTAURANT_COLOR = 'red'
     CUSTOMER_COLOR = 'blue'
+    NEUTRAL_COLOR = 'black'
 
     # Implementation-specific settings
     # --------------------------------

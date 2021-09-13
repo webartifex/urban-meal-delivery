@@ -7,6 +7,7 @@ import itertools
 import json
 from typing import List
 
+import folium
 import googlemaps as gm
 import ordered_set
 import sqlalchemy as sa
@@ -227,6 +228,11 @@ class Path(meta.Base):
         db.session.add(self)
         db.session.commit()
 
+    @property  # pragma: no cover
+    def map(self) -> folium.Map:  # noqa:WPS125
+        """Convenience property to obtain the underlying `City.map`."""
+        return self.first_address.city.map
+
     @functools.cached_property
     def waypoints(self) -> List[utils.Location]:
         """The couriers' route from `.first_address` to `.second_address`.
@@ -241,3 +247,70 @@ class Path(meta.Base):
             point.relate_to(self.first_address.city.southwest)
 
         return points
+
+    def draw(  # noqa:WPS211
+        self,
+        *,
+        reverse: bool = False,
+        start_tooltip: str = 'Start',
+        end_tooltip: str = 'End',
+        start_color: str = 'green',
+        end_color: str = 'red',
+        path_color: str = 'black',
+    ) -> folium.Map:  # pragma: no cover
+        """Draw the `.waypoints` from `.first_address` to `.second_address`.
+
+        Args:
+            reverse: by default, `.first_address` is used as the start;
+                set to `False` to make `.second_address` the start
+            start_tooltip: text shown on marker at the path's start
+            end_tooltip: text shown on marker at the path's end
+            start_color: `folium` color for the path's start
+            end_color: `folium` color for the path's end
+            path_color: `folium` color along the path, which
+                is the line between the `.waypoints`
+
+        Returns:
+            `.map` for convenience in interactive usage
+        """
+        # Without `self._directions` synced from Google Maps,
+        # the `.waypoints` are not available.
+        self.sync_with_google_maps()
+
+        # First, plot the couriers' path between the start and
+        # end locations, so that it is below the `folium.Circle`s.
+        line = folium.PolyLine(
+            locations=(
+                self.first_address.location.lat_lng,
+                *(point.lat_lng for point in self.waypoints),
+                self.second_address.location.lat_lng,
+            ),
+            color=path_color,
+            weight=2,
+        )
+        line.add_to(self.map)
+
+        # Draw the path's start and end locations, possibly reversed,
+        # on top of the couriers' path.
+
+        if reverse:
+            start, end = self.second_address, self.first_address
+        else:
+            start, end = self.first_address, self.second_address
+
+        start.draw(
+            radius=5,
+            color=start_color,
+            fill_color=start_color,
+            fill_opacity=1,
+            tooltip=start_tooltip,
+        )
+        end.draw(
+            radius=5,
+            color=end_color,
+            fill_color=end_color,
+            fill_opacity=1,
+            tooltip=end_tooltip,
+        )
+
+        return self.map

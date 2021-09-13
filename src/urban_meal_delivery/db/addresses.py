@@ -11,6 +11,7 @@ from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.ext import hybrid
 
+from urban_meal_delivery import config
 from urban_meal_delivery.db import meta
 from urban_meal_delivery.db import utils
 
@@ -151,7 +152,7 @@ class Address(meta.Base):
             `.city.map` for convenience in interactive usage
         """
         defaults = {
-            'color': 'black',
+            'color': f'{config.NEUTRAL_COLOR}',
             'popup': f'{self.street}, {self.zip_code} {self.city_name}',
         }
         defaults.update(kwargs)
