@@ -197,7 +197,11 @@ class TestConstraints:
 
 @pytest.mark.db
 class TestFromAddresses:
-    """Test the alternative constructor `Path.from_addresses()`."""
+    """Test the alternative constructor `Path.from_addresses()`.
+
+    Includes tests for the convenience method `Path.from_order()`,
+    which redirects to `Path.from_addresses()`.
+    """
 
     @pytest.fixture
     def _prepare_db(self, db_session, address):
@@ -303,6 +307,58 @@ class TestFromAddresses:
         result = len(db.Path.from_addresses(*[make_address() for _ in range(4)]))
 
         assert result == 6
+
+    # Tests for the `Path.from_order()` convenience method.
+
+    @pytest.mark.usefixtures('_prepare_db')
+    def test_make_path_instance_from_order(
+        self, db_session, order,
+    ):
+        """Test instantiation of a new `Path` instance."""
+        assert db_session.query(db.Path).count() == 0
+
+        db.Path.from_order(order)
+
+        assert db_session.query(db.Path).count() == 1
+
+    @pytest.mark.usefixtures('_prepare_db')
+    def test_make_the_same_path_instance_from_order_twice(
+        self, db_session, order,
+    ):
+        """Test instantiation of a new `Path` instance."""
+        assert db_session.query(db.Path).count() == 0
+
+        db.Path.from_order(order)
+
+        assert db_session.query(db.Path).count() == 1
+
+        db.Path.from_order(order)
+
+        assert db_session.query(db.Path).count() == 1
+
+    @pytest.mark.usefixtures('_prepare_db')
+    def test_structure_of_return_value_from_order(self, db_session, order):
+        """Test instantiation of a new `Path` instance."""
+        result = db.Path.from_order(order)
+
+        assert isinstance(result, db.Path)
+
+    @pytest.mark.usefixtures('_prepare_db')
+    def test_sync_instance_from_order_with_google_maps(
+        self, db_session, order, monkeypatch,
+    ):
+        """Test instantiation of a new `Path` instance."""
+
+        def sync(self):
+            self.bicycle_distance = 1.25 * self.air_distance
+            self.bicycle_duration = 300
+
+        monkeypatch.setattr(db.Path, 'sync_with_google_maps', sync)
+
+        result = db.Path.from_order(order, google_maps=True)
+
+        assert result.bicycle_distance is not None
+        assert result.bicycle_duration is not None
 
 
 @pytest.mark.db

@@ -156,6 +156,25 @@ class Path(meta.Base):
 
         return paths
 
+    @classmethod
+    def from_order(cls, order: db.Order, google_maps: bool = False) -> Path:
+        """Calculate the path for an `Order` object.
+
+        The path goes from the `Order.pickup_address` to the `Order.delivery_address`.
+
+        Args:
+            order: to calculate the path for
+            google_maps: if `.bicycle_distance` and `._directions` should be
+                populated with a query to the Google Maps Directions API;
+                by default, only the `.air_distance` is calculated with `geopy`
+
+        Returns:
+            path
+        """
+        return cls.from_addresses(
+            order.pickup_address, order.delivery_address, google_maps=google_maps,
+        )[0]
+
     def sync_with_google_maps(self) -> None:
         """Fill in `.bicycle_distance` and `._directions` with Google Maps.
 
