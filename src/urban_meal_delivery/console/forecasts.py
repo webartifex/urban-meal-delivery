@@ -24,7 +24,7 @@ from urban_meal_delivery.forecasts import timify
 @click.argument('time_step', default=60, type=int)
 @click.argument('train_horizon', default=8, type=int)
 @decorators.db_revision('8bfb928a31f8')
-def tactical_heuristic(  # noqa:C901,WPS213,WPS216,WPS231
+def tactical_heuristic(  # noqa:C901,WPS213,WPS216
     city: str, side_length: int, time_step: int, train_horizon: int,
 ) -> None:  # pragma: no cover
     """Predict demand for all pixels and days in a city.

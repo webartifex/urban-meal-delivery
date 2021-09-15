@@ -186,9 +186,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
     )
 
     @factory.post_generation
-    def post(  # noqa:C901,WPS231
-        obj, create, extracted, **kwargs,  # noqa:B902,N805
-    ):
+    def post(obj, _create, _extracted, **_kwargs):  # noqa:B902,C901,N805
         """Discard timestamps that occur after cancellation."""
         if obj.cancelled:
             if obj.cancelled_at <= obj.restaurant_notified_at:

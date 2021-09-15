@@ -136,7 +136,7 @@ class Pixel(meta.Base):
         """Shortcut to the `.city.map` object."""
         return self.grid.city.map
 
-    def draw(  # noqa:C901,WPS210,WPS231
+    def draw(  # noqa:C901,WPS210
         self, restaurants: bool = True, order_counts: bool = False,  # pragma: no cover
     ) -> folium.Map:
         """Draw the pixel on the `.grid.city.map`.

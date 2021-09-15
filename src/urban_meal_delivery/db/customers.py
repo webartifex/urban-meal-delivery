@@ -42,7 +42,7 @@ class Customer(meta.Base):
         """Shortcut to the `...city.map` object."""
         return self.orders[0].pickup_address.city.map  # noqa:WPS219
 
-    def draw(  # noqa:C901,WPS210,WPS231
+    def draw(  # noqa:C901,WPS210
         self, restaurants: bool = True, order_counts: bool = False,  # pragma: no cover
     ) -> folium.Map:
         """Draw all the customer's delivery addresses on the `...city.map`.

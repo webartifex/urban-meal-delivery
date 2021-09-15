@@ -117,7 +117,7 @@ class City(meta.Base):
 
         return self._map
 
-    def draw_restaurants(  # noqa:WPS231
+    def draw_restaurants(
         self, order_counts: bool = False,  # pragma: no cover
     ) -> folium.Map:
         """Draw all restaurants on the`.map`.

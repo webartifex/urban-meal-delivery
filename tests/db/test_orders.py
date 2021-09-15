@@ -422,7 +422,7 @@ class TestProperties:
 
 @pytest.mark.db
 @pytest.mark.no_cover
-def test_make_random_orders(  # noqa:C901,WPS211,WPS213,WPS231
+def test_make_random_orders(  # noqa:C901,WPS211,WPS213
     db_session, make_address, make_courier, make_restaurant, make_order,
 ):
     """Sanity check the all the `make_*` fixtures.
