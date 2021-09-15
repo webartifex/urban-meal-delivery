@@ -90,15 +90,15 @@ class Customer(meta.Base):
                     .count()
                 )
                 if n_orders >= 25:
-                    radius = 20  # noqa:WPS220
+                    radius = 20
                 elif n_orders >= 10:
-                    radius = 15  # noqa:WPS220
+                    radius = 15
                 elif n_orders >= 5:
-                    radius = 10  # noqa:WPS220
+                    radius = 10
                 elif n_orders > 1:
-                    radius = 5  # noqa:WPS220
+                    radius = 5
                 else:
-                    radius = 1  # noqa:WPS220
+                    radius = 1
 
                 address.draw(
                     radius=radius,
@@ -156,15 +156,15 @@ class Customer(meta.Base):
                         .count()
                     )
                     if n_orders >= 25:
-                        radius = 20  # noqa:WPS220
+                        radius = 20
                     elif n_orders >= 10:
-                        radius = 15  # noqa:WPS220
+                        radius = 15
                     elif n_orders >= 5:
-                        radius = 10  # noqa:WPS220
+                        radius = 10
                     elif n_orders > 1:
-                        radius = 5  # noqa:WPS220
+                        radius = 5
                     else:
-                        radius = 1  # noqa:WPS220
+                        radius = 1
 
                     tooltip += f' | n_orders={n_orders}'  # noqa:WPS336
 

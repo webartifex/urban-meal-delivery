@@ -169,15 +169,15 @@ class City(meta.Base):
                 )
                 # ... and adjust the size of the red dot on the `.map`.
                 if n_orders >= 1000:
-                    radius = 20  # noqa:WPS220
+                    radius = 20
                 elif n_orders >= 500:
-                    radius = 15  # noqa:WPS220
+                    radius = 15
                 elif n_orders >= 100:
-                    radius = 10  # noqa:WPS220
+                    radius = 10
                 elif n_orders >= 10:
-                    radius = 5  # noqa:WPS220
+                    radius = 5
                 else:
-                    radius = 1  # noqa:WPS220
+                    radius = 1
 
                 tooltip += f' | n_orders={n_orders}'  # noqa:WPS336
 
