@@ -14,4 +14,6 @@ from urban_meal_delivery.db.grids import Grid
 from urban_meal_delivery.db.meta import Base
 from urban_meal_delivery.db.orders import Order
 from urban_meal_delivery.db.pixels import Pixel
+from urban_meal_delivery.db.replay import ReplayedOrder
+from urban_meal_delivery.db.replay import ReplaySimulation
 from urban_meal_delivery.db.restaurants import Restaurant

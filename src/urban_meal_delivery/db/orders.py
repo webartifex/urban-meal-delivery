@@ -105,6 +105,8 @@ class Order(meta.Base):  # noqa:WPS214
             onupdate='RESTRICT',
             ondelete='RESTRICT',
         ),
+        # Needed by a `ForeignKeyConstraint` in `ReplayedOrder`.
+        sa.UniqueConstraint('id', 'ad_hoc'),
         sa.CheckConstraint(
             """
                 (ad_hoc IS TRUE AND scheduled_delivery_at IS NULL)
@@ -146,6 +148,20 @@ class Order(meta.Base):  # noqa:WPS214
                 )
             """,
             name='scheduled_orders_within_business_hours',
+        ),
+        sa.CheckConstraint(
+            """
+                (
+                    EXTRACT(MINUTES FROM scheduled_delivery_at)::INTEGER
+                    % 15 = 0
+                )
+                AND
+                (
+                    EXTRACT(SECONDS FROM scheduled_delivery_at)::INTEGER
+                    = 0
+                )
+            """,
+            name='scheduled_orders_must_be_at_quarters_of_an_hour',
         ),
         sa.CheckConstraint(
             """
@@ -256,6 +272,7 @@ class Order(meta.Base):  # noqa:WPS214
                     'placed_at < courier_notified_at',
                     'placed_at < courier_accepted_at',
                     'placed_at < reached_pickup_at',
+                    'placed_at < pickup_at',
                     'placed_at < left_pickup_at',
                     'placed_at < reached_delivery_at',
                     'placed_at < delivery_at',
@@ -268,7 +285,6 @@ class Order(meta.Base):  # noqa:WPS214
                     'cancelled_at > pickup_at',
                     'cancelled_at > left_pickup_at',
                     'cancelled_at > reached_delivery_at',
-                    'cancelled_at > delivery_at',
                     'restaurant_notified_at < restaurant_confirmed_at',
                     'restaurant_notified_at < pickup_at',
                     'restaurant_confirmed_at < pickup_at',
@@ -323,6 +339,7 @@ class Order(meta.Base):  # noqa:WPS214
         back_populates='orders_delivered',
         foreign_keys='[Order.delivery_address_id]',
     )
+    replays = orm.relationship('ReplayedOrder', back_populates='actual')
 
     # Convenience properties
 

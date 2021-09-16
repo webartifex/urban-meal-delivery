@@ -39,6 +39,7 @@ class City(meta.Base):
     # Relationships
     addresses = orm.relationship('Address', back_populates='city')
     grids = orm.relationship('Grid', back_populates='city')
+    replays = orm.relationship('ReplaySimulation', back_populates='city')
 
     # We do not implement a `.__init__()` method and use SQLAlchemy's default.
     # The uninitialized attribute `._map` is computed on the fly.  note:d334120ei

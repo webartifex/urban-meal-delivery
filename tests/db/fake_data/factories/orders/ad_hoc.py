@@ -98,12 +98,16 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
         lambda obj: obj.placed_at
         + utils.random_timespan(min_seconds=30, max_seconds=90),
     )
-    restaurant_notified_at_corrected = False
+    restaurant_notified_at_corrected = factory.LazyAttribute(
+        lambda obj: False if obj.restaurant_notified_at else None,
+    )
     restaurant_confirmed_at = factory.LazyAttribute(
         lambda obj: obj.restaurant_notified_at
         + utils.random_timespan(min_seconds=30, max_seconds=150),
     )
-    restaurant_confirmed_at_corrected = False
+    restaurant_confirmed_at_corrected = factory.LazyAttribute(
+        lambda obj: False if obj.restaurant_confirmed_at else None,
+    )
     # Use the database defaults of the historic data.
     estimated_prep_duration = 900
     estimated_prep_duration_corrected = False
@@ -115,17 +119,23 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
         lambda obj: obj.placed_at
         + utils.random_timespan(min_seconds=600, max_seconds=1080),
     )
-    dispatch_at_corrected = False
+    dispatch_at_corrected = factory.LazyAttribute(
+        lambda obj: False if obj.dispatch_at else None,
+    )
     courier_notified_at = factory.LazyAttribute(
         lambda obj: obj.dispatch_at
         + utils.random_timespan(min_seconds=100, max_seconds=140),
     )
-    courier_notified_at_corrected = False
+    courier_notified_at_corrected = factory.LazyAttribute(
+        lambda obj: False if obj.courier_notified_at else None,
+    )
     courier_accepted_at = factory.LazyAttribute(
         lambda obj: obj.courier_notified_at
         + utils.random_timespan(min_seconds=15, max_seconds=45),
     )
-    courier_accepted_at_corrected = False
+    courier_accepted_at_corrected = factory.LazyAttribute(
+        lambda obj: False if obj.courier_accepted_at else None,
+    )
     # Sample a realistic utilization.
     utilization = factory.LazyFunction(lambda: random.choice([50, 60, 70, 80, 90, 100]))
 
@@ -139,13 +149,17 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
         lambda obj: obj.reached_pickup_at
         + utils.random_timespan(min_seconds=120, max_seconds=600),
     )
-    pickup_at_corrected = False
+    pickup_at_corrected = factory.LazyAttribute(
+        lambda obj: False if obj.pickup_at else None,
+    )
     pickup_not_confirmed = False
     left_pickup_at = factory.LazyAttribute(
         lambda obj: obj.pickup_at
         + utils.random_timespan(min_seconds=60, max_seconds=180),
     )
-    left_pickup_at_corrected = False
+    left_pickup_at_corrected = factory.LazyAttribute(
+        lambda obj: False if obj.left_pickup_at else None,
+    )
 
     # Delivery-related attributes
     # delivery_address -> set by the `make_order` fixture as there is only one `city`
@@ -157,7 +171,9 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
         lambda obj: obj.reached_delivery_at
         + utils.random_timespan(min_seconds=240, max_seconds=660),
     )
-    delivery_at_corrected = False
+    delivery_at_corrected = factory.LazyAttribute(
+        lambda obj: False if obj.delivery_at else None,
+    )
     delivery_not_confirmed = False
     _courier_waited_at_delivery = factory.LazyAttribute(
         lambda obj: False if obj.delivery_at else None,
