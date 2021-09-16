@@ -384,7 +384,7 @@ def test_suite(session):
 
 
 @nox.session(name='fix-branch-references', python=PYTHON, venv_backend='none')
-def fix_branch_references(session):  # noqa:WPS210,WPS231
+def fix_branch_references(session):  # noqa:WPS210
     """Replace branch references with the current branch.
 
     Intended to be run as a pre-commit hook.
@@ -511,7 +511,7 @@ def init_project(session):
 
 
 @nox.session(name='clean-pwd', python=PYTHON, venv_backend='none')
-def clean_pwd(session):  # noqa:WPS231
+def clean_pwd(session):
     """Remove (almost) all glob patterns listed in .gitignore.
 
     The difference compared to `git clean -X` is that this task

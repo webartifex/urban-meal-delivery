@@ -103,3 +103,41 @@ def make_order(make_address, make_courier, make_customer, make_restaurant):
         )
 
     return func
+
+
+@pytest.fixture
+def make_replay_order(make_order, simulation):
+    """Replaces `ReplayedOrderFactory.build()`: Create a `ReplayedOrder`."""
+    # Reset the identifiers before every test.
+    factories.ReplayedOrderFactory.reset_sequence(1)
+
+    def func(scheduled=False, order=None, **kwargs):
+        """Create a new `ReplayedOrder` object.
+
+        Each `ReplayOrder` is made by a new `Customer` with a unique `Address`.
+
+        Args:
+            scheduled: if an `Order` is a pre-order
+            order: the `Order` that is replayed
+            kwargs: keyword arguments forwarded to the `ReplayedOrderFactory`
+
+        Returns:
+            order
+
+        Raises:
+            RuntimeError: if `scheduled=True` is passed in
+                together with an ad-hoc `order`
+        """
+        if scheduled:
+            if order and order.ad_hoc is False:
+                raise RuntimeError('`order` must be scheduled')
+            elif order is None:
+                order = make_order(scheduled=True)
+        elif order is None:
+            order = make_order()
+
+        return factories.ReplayedOrderFactory.build(
+            simulation=simulation, actual=order, courier=order.courier, **kwargs,
+        )
+
+    return func

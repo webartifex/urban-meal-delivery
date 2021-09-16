@@ -4,6 +4,7 @@ from tests.db.fake_data.fixture_makers import make_address
 from tests.db.fake_data.fixture_makers import make_courier
 from tests.db.fake_data.fixture_makers import make_customer
 from tests.db.fake_data.fixture_makers import make_order
+from tests.db.fake_data.fixture_makers import make_replay_order
 from tests.db.fake_data.fixture_makers import make_restaurant
 from tests.db.fake_data.static_fixtures import address
 from tests.db.fake_data.static_fixtures import city
@@ -13,4 +14,8 @@ from tests.db.fake_data.static_fixtures import customer
 from tests.db.fake_data.static_fixtures import grid
 from tests.db.fake_data.static_fixtures import order
 from tests.db.fake_data.static_fixtures import pixel
+from tests.db.fake_data.static_fixtures import pre_order
+from tests.db.fake_data.static_fixtures import replayed_order
 from tests.db.fake_data.static_fixtures import restaurant
+from tests.db.fake_data.static_fixtures import simulation
+from tests.db.fake_data.static_fixtures import simulation_data

@@ -54,8 +54,20 @@ def restaurant(address, make_restaurant):
 
 @pytest.fixture
 def order(make_order, restaurant):
-    """An `Order` object for the `restaurant`."""
+    """An ad-hoc `Order` object for the `restaurant`."""
     return make_order(restaurant=restaurant)
+
+
+@pytest.fixture
+def pre_order(make_order, restaurant):
+    """A scheduled `Order` object for the `restaurant`."""
+    return make_order(restaurant=restaurant, scheduled=True)
+
+
+@pytest.fixture
+def replayed_order(make_replay_order, order):
+    """A `ReplayedOrder` object for the `restaurant`."""
+    return make_replay_order(order=order)
 
 
 @pytest.fixture
@@ -68,3 +80,20 @@ def grid(city):
 def pixel(grid):
     """The `Pixel` in the lower-left corner of the `grid`."""
     return db.Pixel(id=1, grid=grid, n_x=0, n_y=0)
+
+
+@pytest.fixture
+def simulation_data(city):
+    """The data for the one and only `ReplaySimulation` object as a `dict`."""
+    return {
+        'id': 1,
+        'city': city,
+        'strategy': 'best_possible_routing',
+        'run': 0,
+    }
+
+
+@pytest.fixture
+def simulation(simulation_data):
+    """The one and only `ReplaySimulation` object."""
+    return db.ReplaySimulation(**simulation_data)

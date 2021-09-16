@@ -39,6 +39,7 @@ class City(meta.Base):
     # Relationships
     addresses = orm.relationship('Address', back_populates='city')
     grids = orm.relationship('Grid', back_populates='city')
+    replays = orm.relationship('ReplaySimulation', back_populates='city')
 
     # We do not implement a `.__init__()` method and use SQLAlchemy's default.
     # The uninitialized attribute `._map` is computed on the fly.  note:d334120ei
@@ -117,7 +118,7 @@ class City(meta.Base):
 
         return self._map
 
-    def draw_restaurants(  # noqa:WPS231
+    def draw_restaurants(
         self, order_counts: bool = False,  # pragma: no cover
     ) -> folium.Map:
         """Draw all restaurants on the`.map`.
@@ -169,15 +170,15 @@ class City(meta.Base):
                 )
                 # ... and adjust the size of the red dot on the `.map`.
                 if n_orders >= 1000:
-                    radius = 20  # noqa:WPS220
+                    radius = 20
                 elif n_orders >= 500:
-                    radius = 15  # noqa:WPS220
+                    radius = 15
                 elif n_orders >= 100:
-                    radius = 10  # noqa:WPS220
+                    radius = 10
                 elif n_orders >= 10:
-                    radius = 5  # noqa:WPS220
+                    radius = 5
                 else:
-                    radius = 1  # noqa:WPS220
+                    radius = 1
 
                 tooltip += f' | n_orders={n_orders}'  # noqa:WPS336
 

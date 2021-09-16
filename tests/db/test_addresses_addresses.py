@@ -377,7 +377,10 @@ class TestSyncWithGoogleMaps:
                 'copyrights': 'Map data ©2021',
                 'legs': [
                     {
-                        'distance': {'text': '3.0 km', 'value': 2999},
+                        # We choose an artificially high distance of `9999`
+                        # so that the synced bicycle distance is longer than
+                        # the randomized air distance (i.e., fake data) for sure.
+                        'distance': {'text': '3.0 km', 'value': 9999},
                         'duration': {'text': '10 mins', 'value': 596},
                         'end_address': '13 Place Paul et Jean Paul Avisseau, ...',
                         'end_location': {'lat': 44.85540839999999, 'lng': -0.5672105},
@@ -633,7 +636,7 @@ class TestSyncWithGoogleMaps:
 
         path.sync_with_google_maps()
 
-        assert path.bicycle_distance == 2_999
+        assert path.bicycle_distance == 9_999
         assert path.bicycle_duration == 596
         assert path._directions is not None
 

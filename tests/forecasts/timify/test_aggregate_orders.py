@@ -73,9 +73,7 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
-                ),
+                placed_at=datetime.datetime(*test_config.DATE, hour, 11),
             )
             db_session.add(order)
 
@@ -104,9 +102,7 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
-                ),
+                placed_at=datetime.datetime(*test_config.DATE, hour, 11),
             )
             db_session.add(order)
 
@@ -137,9 +133,7 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
-                ),
+                placed_at=datetime.datetime(*test_config.DATE, hour, 11),
             )
             db_session.add(order)
 
@@ -169,21 +163,15 @@ class TestAggregateOrders:
         ad_hoc_order = make_order(
             scheduled=False,
             restaurant=restaurant,
-            placed_at=datetime.datetime(
-                test_config.YEAR, test_config.MONTH, test_config.DAY, 11, 11,
-            ),
+            placed_at=datetime.datetime(*test_config.DATE, 11, 11),
         )
         db_session.add(ad_hoc_order)
 
         pre_order = make_order(
             scheduled=True,
             restaurant=restaurant,
-            placed_at=datetime.datetime(
-                test_config.YEAR, test_config.MONTH, test_config.DAY, 9, 0,
-            ),
-            scheduled_delivery_at=datetime.datetime(
-                test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 0,
-            ),
+            placed_at=datetime.datetime(*test_config.DATE, 9, 0),
+            scheduled_delivery_at=datetime.datetime(*test_config.DATE, 12, 0),
         )
         db_session.add(pre_order)
 
@@ -215,9 +203,7 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
-                ),
+                placed_at=datetime.datetime(*test_config.DATE, hour, 11),
             )
             db_session.add(order)
 
@@ -252,9 +238,7 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
-                placed_at=datetime.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
-                ),
+                placed_at=datetime.datetime(*test_config.DATE, hour, 11),
             )
             db_session.add(order)
 
@@ -333,9 +317,7 @@ class TestAggregateOrders:
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant1,
-                placed_at=datetime.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, hour, 11,
-                ),
+                placed_at=datetime.datetime(*test_config.DATE, hour, 11),
             )
             db_session.add(order)
 

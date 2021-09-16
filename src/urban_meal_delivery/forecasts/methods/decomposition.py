@@ -11,7 +11,7 @@ from rpy2 import robjects
 from rpy2.robjects import pandas2ri
 
 
-def stl(  # noqa:C901,WPS210,WPS211,WPS231
+def stl(  # noqa:C901,WPS210,WPS211
     time_series: pd.Series,
     *,
     frequency: int,
