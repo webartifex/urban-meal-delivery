@@ -23,5 +23,5 @@ def random_timespan(  # noqa:WPS211
 
 def early_in_the_morning():
     """A randomized `datetime` object early in the morning."""
-    early = dt.datetime(test_config.YEAR, test_config.MONTH, test_config.DAY, 3, 0)
+    early = dt.datetime(*test_config.DATE, 3, 0)
     return early + random_timespan(max_hours=2)

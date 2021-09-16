@@ -7,6 +7,8 @@ from urban_meal_delivery import config
 
 # The day on which most test cases take place.
 YEAR, MONTH, DAY = 2016, 7, 1
+# Same day as a `tuple`.
+DATE = (YEAR, MONTH, DAY)
 
 # The hour when most test cases take place.
 NOON = 12

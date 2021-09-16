@@ -17,9 +17,7 @@ def horizontal_datetime_index():
     The times resemble a horizontal time series with a `frequency` of `7`.
     All observations take place at `NOON`.
     """
-    first_start_at = dt.datetime(
-        test_config.YEAR, test_config.MONTH, test_config.DAY, test_config.NOON, 0,
-    )
+    first_start_at = dt.datetime(*test_config.DATE, test_config.NOON, 0)
 
     gen = (
         start_at

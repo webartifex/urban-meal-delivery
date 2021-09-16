@@ -70,9 +70,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
     # Attributes regarding the specialization of an `Order`: ad-hoc or scheduled.
     # Ad-hoc `Order`s are placed between 11.45 and 14.15.
     placed_at = factory.LazyFunction(
-        lambda: dt.datetime(
-            test_config.YEAR, test_config.MONTH, test_config.DAY, 11, 45,
-        )
+        lambda: dt.datetime(*test_config.DATE, 11, 45)
         + utils.random_timespan(max_hours=2, max_minutes=30),
     )
     ad_hoc = True

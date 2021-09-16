@@ -27,27 +27,13 @@ class ScheduledOrderFactory(ad_hoc.AdHocOrderFactory):
     scheduled_delivery_at = factory.LazyFunction(
         lambda: random.choice(
             [
-                dt.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 0,
-                ),
-                dt.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 15,
-                ),
-                dt.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 30,
-                ),
-                dt.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, 12, 45,
-                ),
-                dt.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, 13, 0,
-                ),
-                dt.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, 13, 15,
-                ),
-                dt.datetime(
-                    test_config.YEAR, test_config.MONTH, test_config.DAY, 13, 30,
-                ),
+                dt.datetime(*test_config.DATE, 12, 0),
+                dt.datetime(*test_config.DATE, 12, 15),
+                dt.datetime(*test_config.DATE, 12, 30),
+                dt.datetime(*test_config.DATE, 12, 45),
+                dt.datetime(*test_config.DATE, 13, 0),
+                dt.datetime(*test_config.DATE, 13, 15),
+                dt.datetime(*test_config.DATE, 13, 30),
             ],
         ),
     )
