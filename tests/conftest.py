@@ -64,15 +64,20 @@ def db_connection(request):
         yield connection
 
     finally:
-        connection.execute(f'DROP SCHEMA {config.CLEAN_SCHEMA} CASCADE;')
-
-        if request.param == 'sequentially':
-            tmp_alembic_version = f'{config.ALEMBIC_TABLE}_{config.CLEAN_SCHEMA}'
-            connection.execute(
-                f'DROP TABLE {config.ALEMBIC_TABLE_SCHEMA}.{tmp_alembic_version};',
-            )
-
+        # Close the connection first: this rolls back any transaction a test
+        # may have left open, which would otherwise swallow the `DROP`s below.
         connection.close()
+
+        with engine.begin() as cleanup:
+            cleanup.execute(f'DROP SCHEMA {config.CLEAN_SCHEMA} CASCADE;')
+
+            if request.param == 'sequentially':
+                tmp_alembic_version = f'{config.ALEMBIC_TABLE}_{config.CLEAN_SCHEMA}'
+                cleanup.execute(
+                    f'DROP TABLE {config.ALEMBIC_TABLE_SCHEMA}.{tmp_alembic_version};',
+                )
+
+        engine.dispose()
 
 
 @pytest.fixture
