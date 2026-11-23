@@ -1,0 +1,65 @@
+name: CI
+
+
+# Run on every push and on pull requests
+on:
+  push:
+  pull_request:
+
+
+# Use `bash` instead of the container's default `sh`
+defaults:
+  run:
+    shell: bash
+
+
+jobs:
+  test:
+    name: Tests (Python 3.8)
+    runs-on: debian-13
+
+    # Throwaway database, reachable from the job as host `postgres`
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: db
+
+    # Same variables as in `.env` on `nehemiah`, the main development machine
+    env:
+      DATABASE_URI: postgresql://user:password@postgres:5432/db
+      GOOGLE_MAPS_API_KEY: AIzaDummyKeyForTests  # Fake key to mock the Google API
+      R_LIBS: /usr/lib/R/site-library
+
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Install system packages (psycopg2 and R)
+        run: |
+            apt-get update
+            apt-get install --no-install-recommends \
+                libpq-dev \
+                r-base-dev \
+                r-cran-forecast \
+                r-cran-zoo \
+                -y
+
+      - name: Install development tool chain (Python, uv, poetry)
+        run: |
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+            "$HOME/.local/bin/uv" python install 3.8
+            "$HOME/.local/bin/uv" tool install 'poetry==1.8.5'
+
+      - name: Install the project
+        run: |
+            poetry env use "$(uv python find 3.8)"
+            poetry install --no-interaction
+
+      # `TESTING=true` comes from `setup.cfg`
+      - name: Run the test suite
+        run: poetry run pytest -q
