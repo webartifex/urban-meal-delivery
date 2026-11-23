@@ -14,8 +14,8 @@ from alembic import config as migrations_config
 from sqlalchemy import orm
 
 from tests.db import fake_data
-from urban_meal_delivery import config
-from urban_meal_delivery import db
+from velofy import config
+from velofy import db
 
 
 # The TESTING environment variable is set

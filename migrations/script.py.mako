@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from alembic import op
 ${imports if imports else ""}
 
-from urban_meal_delivery import configuration
+from velofy import configuration
 
 revision = ${repr(up_revision)}
 down_revision = ${repr(down_revision)}

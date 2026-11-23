@@ -8,8 +8,8 @@ import sqlalchemy as sqla
 from geopy import distance
 from sqlalchemy import exc as sa_exc
 
-from urban_meal_delivery import db
-from urban_meal_delivery.db import utils
+from velofy import db
+from velofy.db import utils
 
 
 @pytest.fixture

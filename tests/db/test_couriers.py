@@ -3,7 +3,7 @@
 import pytest
 from sqlalchemy import exc as sa_exc
 
-from urban_meal_delivery import db
+from velofy import db
 
 
 class TestSpecialMethods:

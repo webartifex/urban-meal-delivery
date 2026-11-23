@@ -2,7 +2,7 @@
 
 import datetime as dt
 
-from urban_meal_delivery import config
+from velofy import config
 
 
 # The day on which most test cases take place.

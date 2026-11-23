@@ -2,7 +2,7 @@
 
 import pytest
 
-from urban_meal_delivery import configuration
+from velofy import configuration
 
 
 envs = ['production', 'testing']

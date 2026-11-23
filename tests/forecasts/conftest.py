@@ -1,4 +1,4 @@
-"""Fixtures for testing the `urban_meal_delivery.forecasts` sub-package."""
+"""Fixtures for testing the `velofy.forecasts` sub-package."""
 
 import datetime as dt
 
@@ -6,8 +6,8 @@ import pandas as pd
 import pytest
 
 from tests import config as test_config
-from urban_meal_delivery import config
-from urban_meal_delivery.forecasts import timify
+from velofy import config
+from velofy.forecasts import timify
 
 
 @pytest.fixture

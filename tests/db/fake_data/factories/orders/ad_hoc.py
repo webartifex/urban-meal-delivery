@@ -9,7 +9,7 @@ from geopy import distance
 
 from tests import config as test_config
 from tests.db.fake_data.factories import utils
-from urban_meal_delivery import db
+from velofy import db
 
 
 class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):

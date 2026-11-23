@@ -1,10 +1,10 @@
-"""Integration test for the `urban_meal_delivery.console.gridify` module."""
+"""Integration test for the `velofy.console.gridify` module."""
 
 import pytest
 
-import urban_meal_delivery
-from urban_meal_delivery import db
-from urban_meal_delivery.console import gridify
+import velofy
+from velofy import db
+from velofy.console import gridify
 
 
 @pytest.mark.db
@@ -38,7 +38,7 @@ def test_two_pixels_with_two_addresses(  # noqa:WPS211
     side_length = max(city.total_x // 2, city.total_y // 2) + 1
 
     # Hack the configuration regarding the grids to be created.
-    monkeypatch.setattr(urban_meal_delivery.config, 'GRID_SIDE_LENGTHS', [side_length])
+    monkeypatch.setattr(velofy.config, 'GRID_SIDE_LENGTHS', [side_length])
 
     result = cli.invoke(gridify.gridify)
 

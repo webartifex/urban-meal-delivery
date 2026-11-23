@@ -8,7 +8,7 @@ skip-string-normalization = true  # wemake-python-styleguide enforces single quo
 target-version = ["py38"]
 
 [tool.poetry]
-name = "urban-meal-delivery"
+name = "velofy"
 version = "0.5.0.dev0"
 
 authors = ["Alexander Hess <alexander@webartifex.biz>"]
@@ -27,7 +27,7 @@ repository = "https://github.com/webartifex/urban-meal-delivery"
 [tool.poetry.dependencies]
 python = "^3.8"
 
-# Package => code developed in *.py files and packaged under src/urban_meal_delivery
+# Package => code developed in *.py files and packaged under src/velofy
 Shapely = "^1.7.1"
 alembic = "^1.4.2"
 click = "^7.1.2"
@@ -92,4 +92,4 @@ sphinx = "^3.1.2"
 sphinx-autodoc-typehints = "^1.11.0"
 
 [tool.poetry.scripts]
-umd = "urban_meal_delivery.console:cli"
+umd = "velofy.console:cli"

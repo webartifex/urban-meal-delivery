@@ -2,7 +2,7 @@
 
 import pytest
 
-from urban_meal_delivery.db import utils
+from velofy.db import utils
 
 
 # All tests take place in Paris.

@@ -10,7 +10,7 @@ import pandas as pd
 import pytest
 
 from tests import config as test_config
-from urban_meal_delivery import config
+from velofy import config
 
 
 @pytest.fixture

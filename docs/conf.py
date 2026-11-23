@@ -1,6 +1,6 @@
 """Configure sphinx."""
 
-import urban_meal_delivery as umd
+import velofy as umd
 
 
 project = umd.__pkg_name__

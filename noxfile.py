@@ -41,7 +41,7 @@ from nox.sessions import Session
 
 
 GITHUB_REPOSITORY = 'webartifex/urban-meal-delivery'
-PACKAGE_IMPORT_NAME = 'urban_meal_delivery'
+PACKAGE_IMPORT_NAME = 'velofy'
 
 # Docs/sphinx locations.
 DOCS_SRC = 'docs/'

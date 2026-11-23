@@ -6,8 +6,8 @@ from logging import config as log_config
 import sqlalchemy as sa
 from alembic import context
 
-from urban_meal_delivery import config as umd_config
-from urban_meal_delivery import db
+from velofy import config as umd_config
+from velofy import db
 
 
 # Disable the --sql option, a.k.a, the "offline mode".

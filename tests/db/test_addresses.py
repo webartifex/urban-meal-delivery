@@ -4,8 +4,8 @@ import pytest
 import sqlalchemy as sqla
 from sqlalchemy import exc as sa_exc
 
-from urban_meal_delivery import db
-from urban_meal_delivery.db import utils
+from velofy import db
+from velofy.db import utils
 
 
 class TestSpecialMethods:

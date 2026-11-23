@@ -6,10 +6,10 @@ import pandas as pd
 import pytest
 
 from tests import config as test_config
-from urban_meal_delivery import config
-from urban_meal_delivery.forecasts.methods import arima
-from urban_meal_delivery.forecasts.methods import ets
-from urban_meal_delivery.forecasts.methods import extrapolate_season
+from velofy import config
+from velofy.forecasts.methods import arima
+from velofy.forecasts.methods import ets
+from velofy.forecasts.methods import extrapolate_season
 
 
 @pytest.fixture
