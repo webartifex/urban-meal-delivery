@@ -247,7 +247,7 @@ class OrderHistory:
 
         For explanation of the terms "horizontal", "vertical", and "real-time"
         in the context of time series, see section 3.2 in the following paper:
-        https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf
+        https://code.webartifex.de/alexander/velofy-forecasting/src/branch/main/paper.pdf
 
         Args:
             pixel_id: pixel in which the time series is aggregated
@@ -316,7 +316,7 @@ class OrderHistory:
 
         For explanation of the terms "horizontal", "vertical", and "real-time"
         in the context of time series, see section 3.2 in the following paper:
-        https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf
+        https://code.webartifex.de/alexander/velofy-forecasting/src/branch/main/paper.pdf
 
         Args:
             pixel_id: pixel in which the time series is aggregated
@@ -402,7 +402,7 @@ class OrderHistory:
 
         For explanation of the terms "horizontal", "vertical", and "real-time"
         in the context of time series, see section 3.2 in the following paper:
-        https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf
+        https://code.webartifex.de/alexander/velofy-forecasting/src/branch/main/paper.pdf
 
         Args:
             pixel_id: pixel in which the time series is aggregated
@@ -534,7 +534,7 @@ class OrderHistory:
         of the average daily demand (ADD) and the length of the training horizon.
 
         For the paper check:
-            https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf
+            https://code.webartifex.de/alexander/velofy-forecasting/src/branch/main/paper.pdf
             https://www.sciencedirect.com/science/article/pii/S1366554520307936
 
         Args:

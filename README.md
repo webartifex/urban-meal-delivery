@@ -46,7 +46,7 @@ and are thus used for tactical purposes, in particular predictive routing (cf., 
 The details of how this works can be found in the first academic paper
 published in the context of this research project
 and titled "*Real-time Demand Forecasting for an Urban Delivery Platform*"
-(cf., the [repository](https://github.com/webartifex/urban-meal-delivery-demand-forecasting) with the LaTeX files).
+(cf., the [repository](https://code.webartifex.de/alexander/velofy-forecasting) with the LaTeX files).
 All demand forecasting related code is in the [forecasts/](https://code.webartifex.de/alexander/velofy/src/branch/develop/src/velofy/forecasts) sub-package.
 
 

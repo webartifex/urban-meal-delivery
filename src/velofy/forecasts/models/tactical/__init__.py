@@ -11,6 +11,6 @@ are re-trained on the day to be predicted. For the details, check section
 Urban Delivery Platform".
 
 For the paper check:
-    https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf
+    https://code.webartifex.de/alexander/velofy-forecasting/src/branch/main/paper.pdf
     https://www.sciencedirect.com/science/article/pii/S1366554520307936
 """  # noqa:RST215
