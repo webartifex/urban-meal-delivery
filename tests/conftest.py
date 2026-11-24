@@ -54,8 +54,9 @@ def db_connection(request):
     db.connection = connection
 
     if request.param == 'all_at_once':
-        connection.execute(f'CREATE SCHEMA {config.CLEAN_SCHEMA};')
-        db.Base.metadata.create_all(connection)
+        with connection.begin():
+            connection.execute(sa.text(f'CREATE SCHEMA {config.CLEAN_SCHEMA};'))
+            db.Base.metadata.create_all(connection)
     else:
         cfg = migrations_config.Config('alembic.ini')
         migrations_cmd.upgrade(cfg, 'head')
