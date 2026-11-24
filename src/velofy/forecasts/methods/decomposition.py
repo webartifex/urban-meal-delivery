@@ -5,6 +5,7 @@ using the `rpy2` library.
 """
 
 import math
+from typing import Optional
 
 import pandas as pd
 from rpy2 import robjects
@@ -16,14 +17,14 @@ def stl(  # noqa:C901,WPS210,WPS211
     *,
     frequency: int,
     ns: int,
-    nt: int = None,
-    nl: int = None,
+    nt: Optional[int] = None,
+    nl: Optional[int] = None,
     ds: int = 0,
     dt: int = 1,
     dl: int = 1,
-    js: int = None,
-    jt: int = None,
-    jl: int = None,
+    js: Optional[int] = None,
+    jt: Optional[int] = None,
+    jl: Optional[int] = None,
     ni: int = 2,
     no: int = 0,  # noqa:WPS110
 ) -> pd.DataFrame:
