@@ -3543,13 +3543,14 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "utm"
-version = "0.7.0"
+version = "0.8.1"
 description = "Bidirectional UTM-WGS84 converter for python"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "utm-0.7.0.tar.gz", hash = "sha256:3c9a3650e98bb6eecec535418d0dfd4db8f88c8ceaca112a0ff0787e116566e2"},
+    {file = "utm-0.8.1-py3-none-any.whl", hash = "sha256:e3d5e224082af138e40851dcaad08d7f99da1cc4b5c413a7de34eabee35f434a"},
+    {file = "utm-0.8.1.tar.gz", hash = "sha256:634d5b6221570ddc6a1e94afa5c51bae92bcead811ddc5c9bc0a20b847c2dafa"},
 ]
 
 [[package]]
@@ -3679,4 +3680,4 @@ research = ["jupyterlab", "numpy", "pytz"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "af09a6fa2d4c134a96f821fedaa6b0f8bc9b0150bcd97c2d75626f5d900bf8c2"
+content-hash = "9e34b303c0aee1d429e7057150923d122429115312e3d86b1a86397001474b64"
