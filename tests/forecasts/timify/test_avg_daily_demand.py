@@ -9,7 +9,7 @@ two parts of the same conceptual step.
 import pytest
 
 from tests import config as test_config
-from urban_meal_delivery.forecasts import models
+from velofy.forecasts import models
 
 
 class TestAverageDailyDemand:

@@ -40,8 +40,8 @@ import nox
 from nox.sessions import Session
 
 
-GITHUB_REPOSITORY = 'webartifex/urban-meal-delivery'
-PACKAGE_IMPORT_NAME = 'urban_meal_delivery'
+FORGEJO_REPOSITORY = 'code.webartifex.de/alexander/velofy'
+PACKAGE_IMPORT_NAME = 'velofy'
 
 # Docs/sphinx locations.
 DOCS_SRC = 'docs/'
@@ -390,7 +390,7 @@ def fix_branch_references(session):  # noqa:WPS210
     Intended to be run as a pre-commit hook.
 
     Many files in the project (e.g., README.md) contain links to resources
-    on github.com or nbviewer.jupyter.org that contain branch labels.
+    on Forgejo that contain branch labels.
 
     This task rewrites these links such that they contain branch references
     that make sense given the context:
@@ -441,16 +441,9 @@ def fix_branch_references(session):  # noqa:WPS210
 
     rewrites = [
         {
-            'name': 'github',
+            'name': 'forgejo',
             'pattern': re.compile(
-                fr'((((http)|(https))://github\.com/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w\.-]+)/)',  # noqa:E501
-            ),
-            'replacement': fr'\2{branch}/',
-        },
-        {
-            'name': 'nbviewer',
-            'pattern': re.compile(
-                fr'((((http)|(https))://nbviewer\.jupyter\.org/github/{GITHUB_REPOSITORY}/((blob)|(tree))/)([\w\.-]+)/)',  # noqa:E501
+                fr'((https://{FORGEJO_REPOSITORY}/src/branch/)([\w\.-]+)/)',
             ),
             'replacement': fr'\2{branch}/',
         },

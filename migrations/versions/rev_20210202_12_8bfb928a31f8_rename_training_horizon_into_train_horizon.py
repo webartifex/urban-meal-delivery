@@ -8,7 +8,7 @@ import os
 
 from alembic import op
 
-from urban_meal_delivery import configuration
+from velofy import configuration
 
 
 revision = '8bfb928a31f8'

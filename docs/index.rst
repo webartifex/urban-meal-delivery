@@ -9,7 +9,7 @@ Urban Meal Delivery
    reference
 
 
-This is the documentation for the `urban-meal-delivery` package
+This is the documentation for the `velofy` package
 that contains all the source code
 used in a research project
 residing in this `repository`_.
@@ -25,13 +25,13 @@ All other software is automatically installed (cf., next section).
 Installation
 ------------
 
-The `urban-meal-delivery` package is installed
+The `velofy` package is installed
 only after cloning the `repository`_.
 It is *not* available on `PyPI`_ via `pip`_.
 
 .. code-block:: console
 
-   $ git clone https://github.com/webartifex/urban-meal-delivery.git
+   $ git clone ssh://git@git.webartifex.de/alexander/velofy.git
 
 Use `poetry`_ to install the package
 with its dependencies into a `virtual environment`_,
@@ -91,5 +91,5 @@ You can use them to choose among the different tasks you want to achieve.
 .. _poetry: https://python-poetry.org/docs/
 .. _pypi: https://pypi.org/
 .. _python: https://docs.python.org/3/
-.. _repository: https://github.com/webartifex/urban-meal-delivery
+.. _repository: https://code.webartifex.de/alexander/velofy
 .. _virtual environment: https://docs.python.org/3/tutorial/venv.html

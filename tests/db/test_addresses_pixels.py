@@ -3,7 +3,7 @@
 Implementation notes:
     The test suite has 100% coverage without the test cases in this module.
     That is so as the `AddressPixelAssociation` model is imported into the
-    `urban_meal_delivery.db` namespace so that the `Address` and `Pixel` models
+    `velofy.db` namespace so that the `Address` and `Pixel` models
     can find it upon initialization. Yet, none of the other unit tests run any
     code associated with it. Therefore, we test it here as non-e2e tests and do
     not measure its coverage.
@@ -13,7 +13,7 @@ import pytest
 import sqlalchemy as sqla
 from sqlalchemy import exc as sa_exc
 
-from urban_meal_delivery import db
+from velofy import db
 
 
 @pytest.fixture

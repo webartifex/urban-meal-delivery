@@ -5,8 +5,8 @@ import datetime
 import pytest
 
 from tests import config as test_config
-from urban_meal_delivery import db
-from urban_meal_delivery.forecasts import timify
+from velofy import db
+from velofy.forecasts import timify
 
 
 @pytest.mark.db

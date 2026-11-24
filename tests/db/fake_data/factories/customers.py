@@ -3,7 +3,7 @@
 import factory
 from factory import alchemy
 
-from urban_meal_delivery import db
+from velofy import db
 
 
 class CustomerFactory(alchemy.SQLAlchemyModelFactory):

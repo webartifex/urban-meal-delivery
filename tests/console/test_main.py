@@ -1,9 +1,9 @@
-"""Test the package's top-level `umd` CLI command."""
+"""Test the package's top-level `manage` CLI command."""
 
 import click
 import pytest
 
-from urban_meal_delivery.console import main
+from velofy.console import main
 
 
 class TestShowVersion:
@@ -34,7 +34,7 @@ class TestShowVersion:
     def test_final_version(self, capsys, ctx, monkeypatch):
         """For final versions, NO "development" warning is emitted."""
         version = '1.2.3'
-        monkeypatch.setattr(main.urban_meal_delivery, '__version__', version)
+        monkeypatch.setattr(main.velofy, '__version__', version)
 
         with pytest.raises(click.exceptions.Exit):
             main.show_version(ctx, _param='discarded', value=True)
@@ -46,7 +46,7 @@ class TestShowVersion:
     def test_develop_version(self, capsys, ctx, monkeypatch):
         """For develop versions, a warning thereof is emitted."""
         version = '1.2.3.dev0'
-        monkeypatch.setattr(main.urban_meal_delivery, '__version__', version)
+        monkeypatch.setattr(main.velofy, '__version__', version)
 
         with pytest.raises(click.exceptions.Exit):
             main.show_version(ctx, _param='discarded', value=True)
@@ -57,7 +57,7 @@ class TestShowVersion:
 
 
 class TestCLIWithoutCommand:
-    """Test the `umd` CLI utility, invoked without any specific command.
+    """Test the `manage` CLI utility, invoked without any specific command.
 
     The test cases are integration tests.
     Therefore, they are not considered for coverage reporting.
@@ -79,7 +79,7 @@ class TestCLIWithoutCommand:
     def test_final_version(self, cli, monkeypatch, option):
         """For final versions, NO "development" warning is emitted."""
         version = '1.2.3'
-        monkeypatch.setattr(main.urban_meal_delivery, '__version__', version)
+        monkeypatch.setattr(main.velofy, '__version__', version)
 
         result = cli.invoke(main.entry_point, option)
 
@@ -91,7 +91,7 @@ class TestCLIWithoutCommand:
     def test_develop_version(self, cli, monkeypatch, option):
         """For develop versions, a warning thereof is emitted."""
         version = '1.2.3.dev0'
-        monkeypatch.setattr(main.urban_meal_delivery, '__version__', version)
+        monkeypatch.setattr(main.velofy, '__version__', version)
 
         result = cli.invoke(main.entry_point, option)
 

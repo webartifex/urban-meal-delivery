@@ -6,7 +6,7 @@ import factory
 from factory import alchemy
 
 from tests.db.fake_data.factories import utils
-from urban_meal_delivery import db
+from velofy import db
 
 
 class ReplayedOrderFactory(alchemy.SQLAlchemyModelFactory):

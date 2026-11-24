@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 from tests import config as test_config
-from urban_meal_delivery.forecasts.methods import decomposition
+from velofy.forecasts.methods import decomposition
 
 
 # The "periodic" `ns` suggested for the STL method.

@@ -9,7 +9,7 @@ import os
 import sqlalchemy as sa
 from alembic import op
 
-from urban_meal_delivery import configuration
+from velofy import configuration
 
 
 revision = '81aa304d7a6e'

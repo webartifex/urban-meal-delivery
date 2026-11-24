@@ -1,12 +1,12 @@
 """Configure sphinx."""
 
-import urban_meal_delivery as umd
+import velofy
 
 
-project = umd.__pkg_name__
-author = umd.__author__
+project = velofy.__pkg_name__
+author = velofy.__author__
 copyright = f'2020, {author}'
-version = release = umd.__version__
+version = release = velofy.__version__
 
 extensions = [
     'sphinx.ext.autodoc',

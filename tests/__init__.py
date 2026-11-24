@@ -1,1 +1,1 @@
-"""Test the urban-meal-delivery package."""
+"""Test the velofy package."""

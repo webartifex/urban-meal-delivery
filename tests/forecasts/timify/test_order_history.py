@@ -5,7 +5,7 @@ import datetime as dt
 import pytest
 
 from tests import config as test_config
-from urban_meal_delivery.forecasts import timify
+from velofy.forecasts import timify
 
 
 class TestSpecialMethods:

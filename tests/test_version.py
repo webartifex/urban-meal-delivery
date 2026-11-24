@@ -14,7 +14,7 @@ import re
 import pytest
 from packaging import version as pkg_version
 
-import urban_meal_delivery
+import velofy
 
 
 class TestPEP404Compliance:
@@ -23,7 +23,7 @@ class TestPEP404Compliance:
     @pytest.fixture
     def parsed_version(self) -> str:
         """The packaged version."""
-        return pkg_version.Version(urban_meal_delivery.__version__)  # noqa:WPS609
+        return pkg_version.Version(velofy.__version__)  # noqa:WPS609
 
     def test_parsed_version_has_no_epoch(self, parsed_version):
         """PEP440 compliant subset of semantic versioning: no epoch."""
@@ -39,7 +39,7 @@ class TestPEP404Compliance:
 
     def test_parsed_version_is_all_public(self, parsed_version):
         """PEP440 compliant subset of semantic versioning: all public parts."""
-        assert parsed_version.public == urban_meal_delivery.__version__  # noqa:WPS609
+        assert parsed_version.public == velofy.__version__  # noqa:WPS609
 
 
 class TestSemanticVersioning:
@@ -51,9 +51,7 @@ class TestSemanticVersioning:
 
     def test_version_is_semantic(self):
         """Packaged version follows semantic versioning."""
-        result = self.version_pattern.fullmatch(
-            urban_meal_delivery.__version__,  # noqa:WPS609
-        )
+        result = self.version_pattern.fullmatch(velofy.__version__)  # noqa:WPS609
 
         assert result is not None
 

@@ -1,12 +1,12 @@
-"""Tests for the `urban_meal_delivery.forecasts.models` sub-package."""
+"""Tests for the `velofy.forecasts.models` sub-package."""
 
 
 import pandas as pd
 import pytest
 
 from tests import config as test_config
-from urban_meal_delivery import db
-from urban_meal_delivery.forecasts import models
+from velofy import db
+from velofy.forecasts import models
 
 
 MODELS = (

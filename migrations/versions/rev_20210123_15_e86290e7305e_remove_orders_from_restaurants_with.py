@@ -126,7 +126,7 @@ import os
 
 from alembic import op
 
-from urban_meal_delivery import configuration
+from velofy import configuration
 
 
 revision = 'e86290e7305e'

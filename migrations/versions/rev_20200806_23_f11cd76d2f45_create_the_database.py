@@ -9,7 +9,7 @@ import sqlalchemy as sa
 from alembic import op
 from sqlalchemy.dialects import postgresql
 
-from urban_meal_delivery import configuration
+from velofy import configuration
 
 
 revision = 'f11cd76d2f45'
