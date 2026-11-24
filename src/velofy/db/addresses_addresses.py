@@ -6,6 +6,7 @@ import functools
 import itertools
 import json
 from typing import List
+from typing import Tuple
 
 import folium
 import googlemaps as gm
@@ -211,7 +212,7 @@ class Path(meta.Base):
         # get from A to B. As a step's "start_location" may equal the previous step's
         # "end_location", we use an `OrderedSet` to find the unique latitude-longitude
         # pairs that make up the path from `.first_address` to `.second_address`.
-        steps = ordered_set.OrderedSet()
+        steps: ordered_set.OrderedSet[Tuple[float, float]] = ordered_set.OrderedSet()
         for step in route['steps']:
             steps.add(  # noqa:WPS221
                 (step['start_location']['lat'], step['start_location']['lng']),
