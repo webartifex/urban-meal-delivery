@@ -4305,17 +4305,58 @@ testing = ["process-tests", "pytest-xdist", "virtualenv"]
 
 [[package]]
 name = "pytest-env"
-version = "0.6.2"
-description = "py.test plugin that allows you to add environment variables."
+version = "1.1.5"
+description = "pytest plugin that allows you to add environment variables."
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 groups = ["dev"]
+markers = "python_version < \"3.10\""
 files = [
-    {file = "pytest-env-0.6.2.tar.gz", hash = "sha256:7e94956aef7f2764f3c147d216ce066bf6c42948bb9e293169b1b1c880a580c2"},
+    {file = "pytest_env-1.1.5-py3-none-any.whl", hash = "sha256:ce90cf8772878515c24b31cd97c7fa1f4481cd68d588419fd45f10ecaee6bc30"},
+    {file = "pytest_env-1.1.5.tar.gz", hash = "sha256:91209840aa0e43385073ac464a554ad2947cc2fd663a9debf88d03b01e0cc1cf"},
 ]
 
 [package.dependencies]
-pytest = ">=2.6.0"
+pytest = ">=8.3.3"
+tomli = {version = ">=2.0.1", markers = "python_version < \"3.11\""}
+
+[package.extras]
+testing = ["covdefaults (>=2.3)", "coverage (>=7.6.1)", "pytest-mock (>=3.14)"]
+
+[[package]]
+name = "pytest-env"
+version = "1.7.1"
+description = "pytest plugin that allows you to add environment variables."
+optional = false
+python-versions = ">=3.10"
+groups = ["dev"]
+markers = "python_version == \"3.10\""
+files = [
+    {file = "pytest_env-1.7.1-py3-none-any.whl", hash = "sha256:22341b945305b65ef4e53d7c678982cfd64b5c5800afdf7d37caad2362ea002c"},
+    {file = "pytest_env-1.7.1.tar.gz", hash = "sha256:f2c5aed2621dbfc73c2866a710e2e456409495c5ac10905612c9509b3ee631a2"},
+]
+
+[package.dependencies]
+pytest = ">=9.0.2"
+python-dotenv = ">=1.2.2"
+tomli = {version = ">=2.4", markers = "python_version < \"3.11\""}
+
+[[package]]
+name = "pytest-env"
+version = "1.8.8"
+description = "Set environment variables for pytest sessions."
+optional = false
+python-versions = ">=3.11"
+groups = ["dev"]
+markers = "python_version >= \"3.11\""
+files = [
+    {file = "pytest_env-1.8.8-py3-none-any.whl", hash = "sha256:fa2ca73225081b7c926be23ca77716427377ea898afcaa02ca25d50a6e94f816"},
+    {file = "pytest_env-1.8.8.tar.gz", hash = "sha256:5ff0688eb64b43edc4e0a3b2c3e7931f76a5f2859d755ae9ddfe10851e41ceef"},
+]
+
+[package.dependencies]
+pytest = ">=9.1.1"
+python-dotenv = ">=1.2.4"
 
 [[package]]
 name = "pytest-mock"
@@ -4349,6 +4390,22 @@ files = [
 
 [package.dependencies]
 six = ">=1.5"
+
+[[package]]
+name = "python-dotenv"
+version = "1.2.4"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.10"
+groups = ["dev"]
+markers = "python_version >= \"3.10\""
+files = [
+    {file = "python_dotenv-1.2.4-py3-none-any.whl", hash = "sha256:42269a8a5b3fd54ffa6f3d84b18abed50064717576b4ecf03dc4a55d8aa04fdc"},
+    {file = "python_dotenv-1.2.4.tar.gz", hash = "sha256:f0d53e69935a851c0dcc78f3ab7aaccd8cabef0b92382b576b824212902873c0"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
 
 [[package]]
 name = "pytz"
@@ -6037,4 +6094,4 @@ research = ["jupyterlab", "numpy", "pytz"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "f56b078012ce70a1c62b6aa251f837fb71a406bb3b7199015eab23e39c22dc1c"
+content-hash = "d9886bb3684e74f327cc06fdf6f2139388aabdcc0f5696295318dd54ada7d058"
