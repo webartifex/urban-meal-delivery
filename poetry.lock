@@ -1059,13 +1059,13 @@ typing-extensions = {version = ">=3.7.4.3", markers = "python_version < \"3.10\"
 
 [[package]]
 name = "googlemaps"
-version = "4.5.3"
+version = "4.10.0"
 description = "Python client library for Google Maps Platform"
 optional = false
 python-versions = ">=3.5"
 groups = ["main"]
 files = [
-    {file = "googlemaps-4.5.3.tar.gz", hash = "sha256:cd6a4bcf6fbdbbffeb5e4cffd7f9db223864cce96c9149fb48358b62050f3a2a"},
+    {file = "googlemaps-4.10.0.tar.gz", hash = "sha256:3055fcbb1aa262a9159b589b5e6af762b10e80634ae11c59495bd44867e47d88"},
 ]
 
 [package.dependencies]
