@@ -7,7 +7,7 @@ time series becomes the `VerticalARIMAModel`.
 
 An overview of the `*Model`s used for tactical forecasting can be found in section
 "3.6 Forecasting Models" in the paper "Real-time Demand Forecasting for an Urban
-Delivery Platform" that is part of the `urban-meal-delivery` research project.
+Delivery Platform" that is part of the `velofy` research project.
 
 For the paper check:
     https://github.com/webartifex/urban-meal-delivery-demand-forecasting/blob/main/paper.pdf

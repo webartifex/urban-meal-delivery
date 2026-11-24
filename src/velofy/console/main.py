@@ -34,4 +34,4 @@ def show_version(ctx: cli_core.Context, _param: Any, value: bool) -> None:
     expose_value=False,
 )
 def entry_point() -> None:
-    """The urban-meal-delivery research project."""
+    """The velofy research project."""

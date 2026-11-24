@@ -527,7 +527,7 @@ class OrderHistory:
 
         The rules are deduced from "Table 1: Top-3 models by ..." in the article
         "Real-time demand forecasting for an urban delivery platform", the first
-        research paper published for this `urban-meal-delivery` project.
+        research paper published for this `velofy` project.
 
         According to the research findings in the article "Real-time demand
         forecasting for an urban delivery platform", the best model is a function

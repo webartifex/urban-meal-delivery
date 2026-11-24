@@ -1,4 +1,4 @@
-"""Source code for the urban-meal-delivery research project.
+"""Source code for the velofy research project.
 
 Example:
     >>> import velofy

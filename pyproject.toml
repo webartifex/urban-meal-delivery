@@ -21,8 +21,8 @@ keywords = [
 license = "MIT"
 
 readme = "README.md"
-homepage = "https://github.com/webartifex/urban-meal-delivery"
-repository = "https://github.com/webartifex/urban-meal-delivery"
+homepage = "https://code.webartifex.de/alexander/velofy"
+repository = "https://code.webartifex.de/alexander/velofy"
 
 [tool.poetry.dependencies]
 python = "^3.8"
