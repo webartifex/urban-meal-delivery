@@ -53,12 +53,12 @@ jobs:
             curl -LsSf https://astral.sh/uv/install.sh | sh
             echo "$HOME/.local/bin" >> "$GITHUB_PATH"
             "$HOME/.local/bin/uv" python install 3.8
-            "$HOME/.local/bin/uv" tool install 'poetry==1.8.5'
+            "$HOME/.local/bin/uv" tool install --python 3.13 'poetry>=2'
 
       - name: Install the project
         run: |
-            poetry env use "$(uv python find 3.8)"
-            poetry install --no-interaction
+            uv venv --python 3.8 --seed .venv
+            poetry sync --no-interaction
 
       # `TESTING=true` comes from `setup.cfg`
       - name: Run the test suite
