@@ -297,18 +297,18 @@ webencodings = "*"
 
 [[package]]
 name = "branca"
-version = "0.4.2"
+version = "0.8.2"
 description = "Generate complex HTML+JS pages with Python"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "branca-0.4.2-py3-none-any.whl", hash = "sha256:62c2e777f074fc1830cd40ba9e650beb941861075980babafead8d97856b1a4b"},
-    {file = "branca-0.4.2.tar.gz", hash = "sha256:c111453617b17ab2bda60a4cd71787d6f2b59c85cdf71ab160a737606ac66c31"},
+    {file = "branca-0.8.2-py3-none-any.whl", hash = "sha256:2ebaef3983e3312733c1ae2b793b0a8ba3e1c4edeb7598e10328505280cf2f7c"},
+    {file = "branca-0.8.2.tar.gz", hash = "sha256:e5040f4c286e973658c27de9225c1a5a7356dd0702a7c8d84c0f0dfbde388fe7"},
 ]
 
 [package.dependencies]
-jinja2 = "*"
+jinja2 = ">=3"
 
 [[package]]
 name = "certifi"
@@ -1255,20 +1255,46 @@ flake8 = "*"
 
 [[package]]
 name = "folium"
-version = "0.12.1"
+version = "0.18.0"
 description = "Make beautiful maps with Leaflet.js & Python"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.8"
 groups = ["main"]
+markers = "python_version < \"3.10\""
 files = [
-    {file = "folium-0.12.1-py2.py3-none-any.whl", hash = "sha256:3d2c48dd6ffe5327975bbfd718468c4e81db9f2844c26e574f878adf4c08b644"},
+    {file = "folium-0.18.0-py2.py3-none-any.whl", hash = "sha256:4e85f2b10166d5208bb65cdf4a072e239a923647dca4dee7c1d2dbe100af56b1"},
+    {file = "folium-0.18.0.tar.gz", hash = "sha256:39655dacb600fb1f614793575c5d352b90f28a7a9c9540ed6b7f46e43b428df8"},
 ]
 
 [package.dependencies]
-branca = ">=0.3.0"
+branca = ">=0.6.0"
 jinja2 = ">=2.9"
 numpy = "*"
 requests = "*"
+xyzservices = "*"
+
+[package.extras]
+testing = ["pytest"]
+
+[[package]]
+name = "folium"
+version = "0.20.0"
+description = "Make beautiful maps with Leaflet.js & Python"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+markers = "python_version >= \"3.10\""
+files = [
+    {file = "folium-0.20.0-py2.py3-none-any.whl", hash = "sha256:f0bc2a92acde20bca56367aa5c1c376c433f450608d058daebab2fc9bf8198bf"},
+    {file = "folium-0.20.0.tar.gz", hash = "sha256:a0d78b9d5a36ba7589ca9aedbd433e84e9fcab79cd6ac213adbcff922e454cb9"},
+]
+
+[package.dependencies]
+branca = ">=0.6.0"
+jinja2 = ">=2.9"
+numpy = "*"
+requests = "*"
+xyzservices = "*"
 
 [package.extras]
 testing = ["pytest"]
@@ -4848,6 +4874,18 @@ optional = ["Pygments", "colorama ; platform_system == \"Windows\""]
 tests = ["cmake", "codecov", "ninja", "pybind11", "pytest", "pytest-cov", "scikit-build"]
 
 [[package]]
+name = "xyzservices"
+version = "2026.9.1"
+description = "Source of XYZ tiles providers"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "xyzservices-2026.9.1-py3-none-any.whl", hash = "sha256:af4fddac0f1fa5f7951834e2c58e10109e722be548cb1fe4f1a8e8b18cef4c09"},
+    {file = "xyzservices-2026.9.1.tar.gz", hash = "sha256:8d1a39bf6b192940cc5db5264eeefc1b20dd184f8b83b1303b078743744f5943"},
+]
+
+[[package]]
 name = "zipp"
 version = "3.5.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -4870,4 +4908,4 @@ research = ["jupyterlab", "numpy", "pytz"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "ed72bdf3ce63060a2a43ff00b804b845de761e3368ff5f70c2ec7424803556ca"
+content-hash = "232bc26142dbf913138cb4ce7db55d73a5586c3c0e922664cd2a03d831dca341"
