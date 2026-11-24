@@ -70,12 +70,14 @@ def db_connection(request):
         connection.close()
 
         with engine.begin() as cleanup:
-            cleanup.execute(f'DROP SCHEMA {config.CLEAN_SCHEMA} CASCADE;')
+            cleanup.execute(sa.text(f'DROP SCHEMA {config.CLEAN_SCHEMA} CASCADE;'))
 
             if request.param == 'sequentially':
                 tmp_alembic_version = f'{config.ALEMBIC_TABLE}_{config.CLEAN_SCHEMA}'
                 cleanup.execute(
-                    f'DROP TABLE {config.ALEMBIC_TABLE_SCHEMA}.{tmp_alembic_version};',
+                    sa.text(
+                        f'DROP TABLE {config.ALEMBIC_TABLE_SCHEMA}.{tmp_alembic_version};',  # noqa:E501
+                    ),
                 )
 
         engine.dispose()
