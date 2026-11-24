@@ -1,4 +1,4 @@
-"""Test the package's top-level `umd` CLI command."""
+"""Test the package's top-level `manage` CLI command."""
 
 import click
 import pytest
@@ -57,7 +57,7 @@ class TestShowVersion:
 
 
 class TestCLIWithoutCommand:
-    """Test the `umd` CLI utility, invoked without any specific command.
+    """Test the `manage` CLI utility, invoked without any specific command.
 
     The test cases are integration tests.
     Therefore, they are not considered for coverage reporting.

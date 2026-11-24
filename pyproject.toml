@@ -92,4 +92,4 @@ sphinx = "^3.1.2"
 sphinx-autodoc-typehints = "^1.11.0"
 
 [tool.poetry.scripts]
-umd = "velofy.console:cli"
+manage = "velofy.console:cli"
