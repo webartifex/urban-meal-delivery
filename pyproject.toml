@@ -98,7 +98,7 @@ mypy = ">=0.782"
 wemake-python-styleguide = ">=0.14.1"  # `flake8` plug-in
 
 # Test Suite
-Faker = "^5.0.1"
+Faker = ">=5.0.1"
 factory-boy = ">=3.1.0"
 geopy = "^2.1.0"
 packaging = ">=20.4"  # Used to test the packaged version
