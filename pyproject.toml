@@ -50,9 +50,9 @@ dependencies = [
 
 # `jupyter lab` => Notebooks with analyses using the developed package
 research = [
-    "jupyterlab>=2.2.2,<3",
-    "numpy>=1.19.1,<2",
-    "pytz>=2020.1,<2021",
+    "jupyterlab>=2.2.2",
+    "numpy>=1.19.1",
+    "pytz>=2020.1",
 ]
 
 
