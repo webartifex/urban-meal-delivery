@@ -49,11 +49,12 @@ def vertical_datetime_index():
     `frequency` of `7` times the number of daily time steps,
     which is `12` for `LONG_TIME_STEP` values.
     """
+    start_ats = pd.date_range(
+        test_config.START, test_config.END, freq=f'{test_config.LONG_TIME_STEP}T',
+    )
     gen = (
         start_at
-        for start_at in pd.date_range(
-            test_config.START, test_config.END, freq=f'{test_config.LONG_TIME_STEP}T',
-        )
+        for start_at in start_ats
         if config.SERVICE_START <= start_at.hour < config.SERVICE_END
     )
 
@@ -101,12 +102,13 @@ def order_totals(good_pixel_id):
     """
     pixel_ids = [good_pixel_id, good_pixel_id + 1]
 
+    start_ats = pd.date_range(
+        test_config.START, test_config.END, freq=f'{test_config.LONG_TIME_STEP}T',
+    )
     gen = (
         (pixel_id, start_at)
         for pixel_id in pixel_ids
-        for start_at in pd.date_range(
-            test_config.START, test_config.END, freq=f'{test_config.LONG_TIME_STEP}T',
-        )
+        for start_at in start_ats
         if config.SERVICE_START <= start_at.hour < config.SERVICE_END
     )
 
