@@ -9,7 +9,7 @@ Urban Meal Delivery
    reference
 
 
-This is the documentation for the `urban-meal-delivery` package
+This is the documentation for the `velofy` package
 that contains all the source code
 used in a research project
 residing in this `repository`_.
@@ -25,7 +25,7 @@ All other software is automatically installed (cf., next section).
 Installation
 ------------
 
-The `urban-meal-delivery` package is installed
+The `velofy` package is installed
 only after cloning the `repository`_.
 It is *not* available on `PyPI`_ via `pip`_.
 

@@ -19,7 +19,7 @@ The UDP provided its raw data as a PostgreSQL dump.
 This [notebook](https://code.webartifex.de/alexander/velofy/src/branch/develop/research/01_clean_data.ipynb)
 cleans the data extensively
 and maps them onto the [ORM models](https://code.webartifex.de/alexander/velofy/src/branch/develop/src/velofy/db)
-defined in the `urban-meal-delivery` package
+defined in the `velofy` package
 that is developed in the [src/](https://code.webartifex.de/alexander/velofy/src/branch/develop/src) folder
 and contains all source code to drive the analyses.
 
@@ -59,7 +59,7 @@ All demand forecasting related code is in the [forecasts/](https://code.webartif
 
 To play with the code developed for the analyses,
 you can clone the project with [git](https://git-scm.com/)
-and install the contained `urban-meal-delivery` package
+and install the contained `velofy` package
 and all its dependencies
 in a [virtual environment](https://docs.python.org/3/tutorial/venv.html)
 with [poetry](https://python-poetry.org/docs/):
@@ -72,7 +72,7 @@ and
 
 The `--extras` option is necessary as the non-develop dependencies
 are structured in the [pyproject.toml](https://code.webartifex.de/alexander/velofy/src/branch/develop/pyproject.toml) file
-into dependencies related to only the `urban-meal-delivery` source code package
+into dependencies related to only the `velofy` source code package
 and dependencies used to run the [Jupyter](https://jupyter.org/) environment
 with the analyses.
 
