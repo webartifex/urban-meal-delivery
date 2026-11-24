@@ -1,8 +1,8 @@
 """Source code for the urban-meal-delivery research project.
 
 Example:
-    >>> import velofy as umd
-    >>> umd.__version__ != '0.0.0'
+    >>> import velofy
+    >>> velofy.__version__ != '0.0.0'
     True
 """
 # The config object must come before all other project-internal imports.
