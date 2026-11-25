@@ -47,18 +47,16 @@ jobs:
                 r-cran-zoo \
                 -y
 
-      - name: Install development tool chain (Python, uv, poetry)
+      - name: Install development tool chain (Python, uv)
         run: |
             curl -LsSf https://astral.sh/uv/install.sh | sh
             echo "$HOME/.local/bin" >> "$GITHUB_PATH"
             "$HOME/.local/bin/uv" python install 3.13
-            "$HOME/.local/bin/uv" tool install --python 3.13 'poetry>=2'
 
       - name: Install the project
         run: |
-            uv venv --python 3.13 --seed .venv
-            poetry sync --no-interaction
+            uv sync --locked --python-preference only-managed
 
       # `TESTING=true` comes from `pyproject.toml`
       - name: Run the test suite
-        run: poetry run pytest -q
+        run: uv run pytest -q

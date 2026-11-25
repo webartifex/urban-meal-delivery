@@ -68,8 +68,8 @@ PYTHON = '3.13'
 # Use a unified .cache/ folder for all tools.
 nox.options.envdir = '.cache/nox'
 
-# All tools except git and poetry are project dependencies.
-# Avoid accidental successes if the environment is not set up properly.
+# All tools except `git` and `uv` are project dependencies
+# => Avoid accidental successes if the environment is not set up properly
 nox.options.error_on_external_run = True
 
 # Run only local checks by default.

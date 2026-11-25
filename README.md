@@ -62,15 +62,15 @@ you can clone the project with [git](https://git-scm.com/)
 and install the contained `velofy` package
 and all its dependencies
 in a [virtual environment](https://docs.python.org/3/tutorial/venv.html)
-with [poetry](https://python-poetry.org/docs/):
+with [uv](https://docs.astral.sh/uv/):
 
 `git clone ssh://git@git.webartifex.de/alexander/velofy.git`
 
 and
 
-`poetry install --extras research`
+`uv sync --extra research`
 
-The `--extras` option is necessary as the non-develop dependencies
+The `--extra` option is necessary as the non-develop dependencies
 are structured in the [pyproject.toml](https://code.webartifex.de/alexander/velofy/src/branch/develop/pyproject.toml) file
 into dependencies related to only the `velofy` source code package
 and dependencies used to run the [Jupyter](https://jupyter.org/) environment
