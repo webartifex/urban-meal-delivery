@@ -98,18 +98,10 @@ def format_(session):
     # Interpret extra arguments as locations of source files.
     locations = session.posargs or SRC_LOCATIONS
 
+    # `autoflake` only changes files because of "in-place = true"
+    # in the "[tool.autoflake]" section in pyproject.toml
     session.run('autoflake', '--version')
-    session.run(
-        'autoflake',
-        '--in-place',
-        '--recursive',
-        '--expand-star-imports',
-        '--remove-all-unused-imports',
-        '--ignore-init-module-imports',  # modifies --remove-all-unused-imports
-        '--remove-duplicate-keys',
-        '--remove-unused-variables',
-        *locations,
-    )
+    session.run('autoflake', *locations)
 
     session.run('black', '--version')
     session.run('black', *locations)

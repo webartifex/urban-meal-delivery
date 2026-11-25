@@ -107,6 +107,19 @@ docs = [
 
 
 
+[tool.autoflake]
+# Source: https://github.com/PyCQA/autoflake#configuration
+
+in-place = true
+recursive = true
+expand-star-imports = true
+remove-all-unused-imports = true
+ignore-init-module-imports = true  # modifies "remove-all-unused-imports"
+remove-duplicate-keys = true
+remove-unused-variables = true
+
+
+
 [tool.black]
 
 target-version = ["py313"]
