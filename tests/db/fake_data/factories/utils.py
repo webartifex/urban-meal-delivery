@@ -18,7 +18,9 @@ def random_timespan(  # noqa:WPS211
     """A randomized `timedelta` object between the specified arguments."""
     total_min_seconds = min_hours * 3600 + min_minutes * 60 + min_seconds
     total_max_seconds = max_hours * 3600 + max_minutes * 60 + max_seconds
-    return dt.timedelta(seconds=random.randint(total_min_seconds, total_max_seconds))
+    return dt.timedelta(
+        seconds=random.randint(int(total_min_seconds), int(total_max_seconds))
+    )
 
 
 def early_in_the_morning():

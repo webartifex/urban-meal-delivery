@@ -38,7 +38,7 @@ def forecast_interval():
     start_ats = pd.date_range(
         first_start_at,
         end_of_day,
-        freq=f'{test_config.LONG_TIME_STEP}T',
+        freq=f'{test_config.LONG_TIME_STEP}min',
     )
     gen = (
         start_at
