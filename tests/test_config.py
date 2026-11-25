@@ -1,5 +1,7 @@
 """Test the package's configuration module."""
 
+import warnings
+
 import pytest
 
 from velofy import configuration
@@ -32,7 +34,8 @@ def test_database_uri_set(env, monkeypatch):
     # Prevent that a warning is emitted for a missing R_LIBS_PATH.
     monkeypatch.setattr(configuration.Config, 'R_LIBS_PATH', '.cache/r_libs')
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter('always')
         configuration.make_config(env)
 
     assert len(record) == 0  # noqa:WPS441,WPS507
@@ -49,7 +52,8 @@ def test_no_database_uri_set_with_testing_env_var(env, monkeypatch):
     # Prevent that a warning is emitted for a missing R_LIBS_PATH.
     monkeypatch.setattr(configuration.Config, 'R_LIBS_PATH', '.cache/r_libs')
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter('always')
         configuration.make_config(env)
 
     assert len(record) == 0  # noqa:WPS441,WPS507
@@ -79,7 +83,8 @@ def test_r_libs_path_set(env, monkeypatch):
     uri = 'postgresql://user:password@localhost/db'
     monkeypatch.setattr(configuration.ProductionConfig, 'DATABASE_URI', uri)
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter('always')
         configuration.make_config(env)
 
     assert len(record) == 0  # noqa:WPS441,WPS507
@@ -98,7 +103,8 @@ def test_no_r_libs_path_set_with_testing_env_var(env, monkeypatch):
     uri = 'postgresql://user:password@localhost/db'
     monkeypatch.setattr(configuration.ProductionConfig, 'DATABASE_URI', uri)
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings(record=True) as record:
+        warnings.simplefilter('always')
         configuration.make_config(env)
 
     assert len(record) == 0  # noqa:WPS441,WPS507

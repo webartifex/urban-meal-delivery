@@ -3,12 +3,12 @@
 from typing import Any
 
 import sqlalchemy as sa
-from sqlalchemy.ext import declarative
+from sqlalchemy import orm
 
 import velofy
 
 
-Base: Any = declarative.declarative_base(
+Base: Any = orm.declarative_base(
     metadata=sa.MetaData(
         schema=velofy.config.CLEAN_SCHEMA,
         naming_convention={

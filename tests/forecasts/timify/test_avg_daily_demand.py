@@ -131,7 +131,7 @@ class TestChooseTacticalModel:
     def test_best_model_for_unknown_train_horizon(
         self, order_history, good_pixel_id, predict_at,  # noqa:RST215
     ):
-        """For `train_horizon`s not included in the rule-based system ...
+        """For `train_horizon` values not included in the rule-based system ...
 
         ... the method raises a `RuntimeError`.
         """

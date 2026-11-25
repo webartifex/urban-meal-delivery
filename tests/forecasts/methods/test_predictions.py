@@ -27,11 +27,12 @@ def forecast_interval():
         future_day.year, future_day.month, future_day.day, config.SERVICE_END, 0,
     )
 
+    start_ats = pd.date_range(
+        first_start_at, end_of_day, freq=f'{test_config.LONG_TIME_STEP}T',
+    )
     gen = (
         start_at
-        for start_at in pd.date_range(
-            first_start_at, end_of_day, freq=f'{test_config.LONG_TIME_STEP}T',
-        )
+        for start_at in start_ats
         if config.SERVICE_START <= start_at.hour < config.SERVICE_END
     )
 
