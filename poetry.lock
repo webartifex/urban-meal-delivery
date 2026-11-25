@@ -20,7 +20,7 @@ description = "A light, configurable Sphinx theme"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
-markers = "python_version >= \"3.9\" and python_version < \"3.14\""
+markers = "python_version == \"3.9\""
 files = [
     {file = "alabaster-0.7.16-py3-none-any.whl", hash = "sha256:b46733c07dce03ae4e150330b975c75737fa60f0a7c591b6c8bf4928a28e2c92"},
     {file = "alabaster-0.7.16.tar.gz", hash = "sha256:75a8b99c28a5dad50dd7f8ccdd447a121ddb3892da9e53d1ca5cca3106d58d65"},
@@ -33,7 +33,7 @@ description = "A light, configurable Sphinx theme"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
-markers = "python_version >= \"3.14\""
+markers = "python_version >= \"3.10\""
 files = [
     {file = "alabaster-1.0.0-py3-none-any.whl", hash = "sha256:fc6786402dc3fcb2de3cabd5fe455a2db534b371124f1f21de8731783dec828b"},
     {file = "alabaster-1.0.0.tar.gz", hash = "sha256:c00dca57bca26fa62a6d7d0a9fcce65f3e026e9bfe33e9c538fd3fbb2144fd9e"},
@@ -158,7 +158,7 @@ description = "High-level concurrency and networking framework on top of asyncio
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "anyio-4.16.0-py3-none-any.whl", hash = "sha256:c66ae634e0b8228396b801741beb3294326d4b6102f7bba4041c0dfb58c29026"},
     {file = "anyio-4.16.0.tar.gz", hash = "sha256:59bb03251907983d1603d27c3087ddb1e93299ea2163adcdba37899a4fb12ffb"},
@@ -315,7 +315,7 @@ description = "Low-level CFFI bindings for Argon2"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "argon2_cffi_bindings-26.2.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:5ec171ae5e52691b5f111d815cb656a8142bedc1408c3db904d1a11df44604ca"},
     {file = "argon2_cffi_bindings-26.2.0-cp310-abi3-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:92d65a0831e78294e19d7297d101eaa871033825ad2aa7cb87af2f706062acd7"},
@@ -458,7 +458,7 @@ description = "Simple LRU cache for asyncio"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "async_lru-2.4.0-py3-none-any.whl", hash = "sha256:1b46a96419ef91fe11431d58db98d792c9b4250001427191a40faf1031934212"},
     {file = "async_lru-2.4.0.tar.gz", hash = "sha256:b0b0077d9b7596615b3c12d0aad4f6aeccaaa0ac75ceae472608ede89e764c08"},
@@ -499,7 +499,7 @@ files = [
     {file = "attrs-26.1.0-py3-none-any.whl", hash = "sha256:c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309"},
     {file = "attrs-26.1.0.tar.gz", hash = "sha256:d03ceb89cb322a8fd706d4fb91940737b6642aa36998fe130a9bc96c985eff32"},
 ]
-markers = {main = "python_version >= \"3.9\" and extra == \"research\"", dev = "python_version >= \"3.9\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.9\"", dev = "python_version >= \"3.9\""}
 
 [[package]]
 name = "autoflake"
@@ -582,7 +582,7 @@ files = [
     {file = "babel-2.19.0-py3-none-any.whl", hash = "sha256:6d49734aed1d595b2c065d012174df8c83964692f26fc461702281634dd7555b"},
     {file = "babel-2.19.0.tar.gz", hash = "sha256:fddd2cbbbac7c299af3c2880be23609c331bd94f0912baca6cb0abfe054dfc27"},
 ]
-markers = {main = "python_version >= \"3.9\" and extra == \"research\"", dev = "python_version >= \"3.9\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.9\"", dev = "python_version >= \"3.9\""}
 
 [package.extras]
 dev = ["freezegun (>=1.0,<2.0)", "jinja2 (>=3.0)", "pytest (>=6.0)", "pytest-cov", "pytz", "setuptools", "tzdata ; sys_platform == \"win32\""]
@@ -913,7 +913,7 @@ files = [
     {file = "bleach-6.4.0-py3-none-any.whl", hash = "sha256:4b6b6a54fff2e69a3dde9d21cc6301220bee3c3cb792187d11403fd795031081"},
     {file = "bleach-6.4.0.tar.gz", hash = "sha256:4202482733d85cedd04e59fcb2f89f4e4c7c385a78d3c3c23c30446843a37452"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.dependencies]
 tinycss2 = {version = ">=1.1.0", optional = true, markers = "extra == \"css\""}
@@ -1237,7 +1237,7 @@ files = [
     {file = "cffi-2.1.1-cp315-cp315t-win_arm64.whl", hash = "sha256:d18e5ac0f2f03f4f518d3e23db0f0cad7faa1da8620e9c09461d443bbf6e6692"},
     {file = "cffi-2.1.1.tar.gz", hash = "sha256:dd31f52ea1086513bb9df30f8fcee9b8918323ae067a3d5b78bc826a000712be"},
 ]
-markers = {main = "python_version >= \"3.10\"", dev = "python_version >= \"3.10\" and implementation_name == \"pypy\""}
+markers = {main = "python_version >= \"3.10\"", dev = "implementation_name == \"pypy\" and python_version >= \"3.10\""}
 
 [package.dependencies]
 pycparser = {version = "*", markers = "implementation_name != \"PyPy\""}
@@ -1499,6 +1499,7 @@ description = "Log formatting with colors!"
 optional = false
 python-versions = "*"
 groups = ["dev"]
+markers = "python_version < \"3.10\""
 files = [
     {file = "colorlog-4.8.0-py2.py3-none-any.whl", hash = "sha256:3dd15cb27e8119a24c1a7b5c93f9f3b455855e0f73993b1c25921b2f646f1dcd"},
     {file = "colorlog-4.8.0.tar.gz", hash = "sha256:59b53160c60902c405cdec28d38356e09d40686659048893e026ecbd589516b1"},
@@ -1506,6 +1507,25 @@ files = [
 
 [package.dependencies]
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
+
+[[package]]
+name = "colorlog"
+version = "6.12.0"
+description = "Add colours to the output of Python's logging module."
+optional = false
+python-versions = ">=3.6"
+groups = ["dev"]
+markers = "python_version >= \"3.10\""
+files = [
+    {file = "colorlog-6.12.0-py3-none-any.whl", hash = "sha256:30d392604e9110045a2c2aeefc27d7a017abbab63f3a8aee594eac0801df784e"},
+    {file = "colorlog-6.12.0.tar.gz", hash = "sha256:2a7924c1dadf18b22a0eb8b06d1c7b01d5341707ec1641eb6fcc4fde0c3e8e5f"},
+]
+
+[package.dependencies]
+colorama = {version = "*", markers = "sys_platform == \"win32\""}
+
+[package.extras]
+development = ["black", "flake8", "mypy", "pytest", "types-colorama"]
 
 [[package]]
 name = "comm"
@@ -2531,7 +2551,7 @@ files = [
     {file = "debugpy-1.8.22-py2.py3-none-any.whl", hash = "sha256:a9e9d3550e15ca479c59333e90845029190531f0cacfedab3b815a57bd913947"},
     {file = "debugpy-1.8.22.tar.gz", hash = "sha256:e489c7268e1c7b41e13b438d9c533d2a7af73fb59bf8cd30fead8286c1c39c4e"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "python_version >= \"3.10\""}
 
 [[package]]
 name = "decorator"
@@ -2558,6 +2578,46 @@ files = [
     {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
 ]
 markers = {main = "extra == \"research\"", dev = "platform_python_implementation != \"PyPy\""}
+
+[[package]]
+name = "dependency-groups"
+version = "1.3.1"
+description = "A tool for resolving PEP 735 Dependency Group data"
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+markers = "python_version < \"3.10\""
+files = [
+    {file = "dependency_groups-1.3.1-py3-none-any.whl", hash = "sha256:51aeaa0dfad72430fcfb7bcdbefbd75f3792e5919563077f30bc0d73f4493030"},
+    {file = "dependency_groups-1.3.1.tar.gz", hash = "sha256:78078301090517fd938c19f64a53ce98c32834dfe0dee6b88004a569a6adfefd"},
+]
+
+[package.dependencies]
+packaging = "*"
+tomli = {version = "*", markers = "python_version < \"3.11\""}
+
+[package.extras]
+cli = ["tomli ; python_version < \"3.11\""]
+
+[[package]]
+name = "dependency-groups"
+version = "1.3.2"
+description = "A tool for resolving PEP 735 Dependency Group data"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+markers = "python_version >= \"3.9\""
+files = [
+    {file = "dependency_groups-1.3.2-py3-none-any.whl", hash = "sha256:8c337f7b92445823b0d0ea507f611390c58dcd2112be00aebcd738a2ca7a1c64"},
+    {file = "dependency_groups-1.3.2.tar.gz", hash = "sha256:c81831f43828dbc3987ee247eb198241a0152b8e7ceab10977cc3808eb388ac7"},
+]
+
+[package.dependencies]
+packaging = "*"
+tomli = {version = "*", markers = "python_version < \"3.11\""}
+
+[package.extras]
+cli = ["tomli ; python_version < \"3.11\""]
 
 [[package]]
 name = "distlib"
@@ -2604,7 +2664,7 @@ description = "Docutils -- Python Documentation Utilities"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
-markers = "python_version >= \"3.11\" and python_version < \"3.14\""
+markers = "python_version < \"3.14\" and python_version >= \"3.11\""
 files = [
     {file = "docutils-0.22.4-py3-none-any.whl", hash = "sha256:d0013f540772d1420576855455d050a2180186c91c15779301ac2ccb3eeb68de"},
     {file = "docutils-0.22.4.tar.gz", hash = "sha256:4db53b1fde9abecbb74d91230d32ab626d94f6badfc575d6db9194a49df29968"},
@@ -2770,7 +2830,7 @@ files = [
     {file = "fastjsonschema-2.22.3-py3-none-any.whl", hash = "sha256:f670b443830b75aca3f00b75949efa20f4b2a80302ec7a21505c28dd54cffd43"},
     {file = "fastjsonschema-2.22.3.tar.gz", hash = "sha256:8330c91b027dcf941efcb7b1f0998515ff95d177ea15bbabdfe8671965620901"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.extras]
 devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benchmark", "pytest-cache", "validictory"]
@@ -4201,6 +4261,70 @@ socks = ["socksio (==1.*)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
+name = "humanize"
+version = "4.10.0"
+description = "Python humanize utilities"
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+markers = "python_version < \"3.10\""
+files = [
+    {file = "humanize-4.10.0-py3-none-any.whl", hash = "sha256:39e7ccb96923e732b5c2e27aeaa3b10a8dfeeba3eb965ba7b74a3eb0e30040a6"},
+    {file = "humanize-4.10.0.tar.gz", hash = "sha256:06b6eb0293e4b85e8d385397c5868926820db32b9b654b932f57fa41c23c9978"},
+]
+
+[package.extras]
+tests = ["freezegun", "pytest", "pytest-cov"]
+
+[[package]]
+name = "humanize"
+version = "4.13.0"
+description = "Python humanize utilities"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+markers = "python_version == \"3.9\""
+files = [
+    {file = "humanize-4.13.0-py3-none-any.whl", hash = "sha256:b810820b31891813b1673e8fec7f1ed3312061eab2f26e3fa192c393d11ed25f"},
+    {file = "humanize-4.13.0.tar.gz", hash = "sha256:78f79e68f76f0b04d711c4e55d32bebef5be387148862cb1ef83d2b58e7935a0"},
+]
+
+[package.extras]
+tests = ["freezegun", "pytest", "pytest-cov"]
+
+[[package]]
+name = "humanize"
+version = "4.16.0"
+description = "Python humanize utilities"
+optional = false
+python-versions = ">=3.10"
+groups = ["dev"]
+markers = "python_version == \"3.10\""
+files = [
+    {file = "humanize-4.16.0-py3-none-any.whl", hash = "sha256:353eb2f34c09d098b2880eee8bef21832eae6d174f48c5762fff7e5fcb74d01d"},
+    {file = "humanize-4.16.0.tar.gz", hash = "sha256:7dc2244a2f84a4bfb1d36c37bac80cd78e35cdc5c119206d87b018e1445f3a3f"},
+]
+
+[package.extras]
+tests = ["freezegun", "pytest (>=9)", "pytest-benchmark", "pytest-codspeed", "pytest-cov"]
+
+[[package]]
+name = "humanize"
+version = "4.17.0"
+description = "Python humanize utilities"
+optional = false
+python-versions = ">=3.11"
+groups = ["dev"]
+markers = "python_version >= \"3.11\""
+files = [
+    {file = "humanize-4.17.0-py3-none-any.whl", hash = "sha256:02d0899527760efe18011944f882df4970943b4cdff7b5a0ba7fed43a576ef98"},
+    {file = "humanize-4.17.0.tar.gz", hash = "sha256:1d6a36c453dbfbb3f0b34601d2e0b4ce5d48d780305cd45714843f0068fde6ac"},
+]
+
+[package.extras]
+tests = ["freezegun", "pytest (>=9)", "pytest-benchmark", "pytest-codspeed", "pytest-cov"]
+
+[[package]]
 name = "identify"
 version = "2.6.1"
 description = "File identification library for Python"
@@ -4546,7 +4670,7 @@ files = [
     {file = "ipykernel-7.4.0-py3-none-any.whl", hash = "sha256:a6757f790ddc5a6006b813d82da1a9dbb65b3a00f2b6607df776418c6566ec1c"},
     {file = "ipykernel-7.4.0.tar.gz", hash = "sha256:4330114d22b9b33575b2c7c68753fc8faabbbcfbc60b0cdff9f14dd4ce63742f"},
 ]
-markers = {main = "python_version >= \"3.11\" and extra == \"research\"", dev = "(platform_system != \"Windows\" or platform_python_implementation != \"PyPy\") and python_version >= \"3.11\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.11\"", dev = "(platform_system != \"Windows\" or platform_python_implementation != \"PyPy\") and python_version >= \"3.11\""}
 
 [package.dependencies]
 appnope = {version = ">=0.1.2", markers = "platform_system == \"Darwin\""}
@@ -4693,7 +4817,7 @@ files = [
     {file = "ipython-9.19.1-py3-none-any.whl", hash = "sha256:06158707d8bb83f0bb0f03cc358de185dcf2fe99187bbce03e9971c22616a7c5"},
     {file = "ipython-9.19.1.tar.gz", hash = "sha256:8d717edbe293adcb1b9fdeaad7ccfb1573f62d91bc10f0ae62604dbf31e6acac"},
 ]
-markers = {main = "python_version >= \"3.11\" and extra == \"research\"", dev = "python_version >= \"3.11\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.11\"", dev = "python_version >= \"3.11\""}
 
 [package.dependencies]
 colorama = {version = ">=0.4.4", markers = "sys_platform == \"win32\""}
@@ -4740,7 +4864,7 @@ files = [
     {file = "ipython_pygments_lexers-1.1.1-py3-none-any.whl", hash = "sha256:a9462224a505ade19a605f71f8fa63c2048833ce50abc86768a0d81d876dc81c"},
     {file = "ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81"},
 ]
-markers = {main = "python_version >= \"3.11\" and extra == \"research\"", dev = "python_version >= \"3.11\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.11\"", dev = "python_version >= \"3.11\""}
 
 [package.dependencies]
 pygments = "*"
@@ -4883,7 +5007,7 @@ files = [
     {file = "jedi-0.20.1-py2.py3-none-any.whl", hash = "sha256:0fb16d86c4a4c73c37ba518c77419975e30fcc620658a8d14fbb5720cdd34142"},
     {file = "jedi-0.20.1.tar.gz", hash = "sha256:2f71208c3f9c1bca057c0e90d3f272aba44ace88fc4067d7587e9e069331b7e5"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "python_version >= \"3.10\""}
 
 [package.dependencies]
 parso = ">=0.8.7,<0.9.0"
@@ -4943,7 +5067,7 @@ description = "Identify specific nodes in a JSON document (RFC 6901) "
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "jsonpointer-3.12-py3-none-any.whl", hash = "sha256:89f391335ee2719ae72149e1bf30a4d4c7c5d92f15a3f53faa8d20cc7c6c7f19"},
     {file = "jsonpointer-3.12.tar.gz", hash = "sha256:7a3dcc11b64053eaa9c549e85e413f8d40a075215f793a331bed9182a14251ae"},
@@ -5025,7 +5149,7 @@ files = [
     {file = "jsonschema-4.26.0-py3-none-any.whl", hash = "sha256:d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce"},
     {file = "jsonschema-4.26.0.tar.gz", hash = "sha256:0c26707e2efad8aa1bfc5b7ce170f3fccc2e4918ff85989ba9ffa9facb2be326"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.dependencies]
 attrs = ">=22.2.0"
@@ -5074,7 +5198,7 @@ files = [
     {file = "jsonschema_specifications-2025.9.1-py3-none-any.whl", hash = "sha256:98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe"},
     {file = "jsonschema_specifications-2025.9.1.tar.gz", hash = "sha256:b540987f239e745613c7a9176f3edb72b832a4ac465cf02712288397832b5e8d"},
 ]
-markers = {main = "python_version >= \"3.9\" and extra == \"research\"", dev = "python_version >= \"3.9\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.9\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.9\""}
 
 [package.dependencies]
 referencing = ">=0.31.0"
@@ -5086,7 +5210,7 @@ description = "JupyterLab build tools"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "jupyter_builder-1.3.0-py3-none-any.whl", hash = "sha256:87148399852377bea07ca77660e497b387c365558d187673eeacd583cfd6cf95"},
     {file = "jupyter_builder-1.3.0.tar.gz", hash = "sha256:dc0a3cdc27be674f29de2b4aecfdd55190fffa65199846bbdf4ceaf31a56b7d1"},
@@ -5137,7 +5261,7 @@ files = [
     {file = "jupyter_client-8.10.0-py3-none-any.whl", hash = "sha256:5f73f24f22fa25192cfff6b23c051932a2473a797b05734aff495b392103e14e"},
     {file = "jupyter_client-8.10.0.tar.gz", hash = "sha256:9f7116294dca55f1785be880057d44544db9b1567718d92cb33c58886afb9497"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "python_version >= \"3.10\""}
 
 [package.dependencies]
 jupyter-core = ">=5.1"
@@ -5185,7 +5309,7 @@ files = [
     {file = "jupyter_core-5.9.1-py3-none-any.whl", hash = "sha256:ebf87fdc6073d142e114c72c9e29a9d7ca03fad818c5d300ce2adc1fb0743407"},
     {file = "jupyter_core-5.9.1.tar.gz", hash = "sha256:4d09aaff303b9566c3ce657f580bd089ff5c91f5f89cf7d8846c3cdf465b5508"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "python_version >= \"3.10\""}
 
 [package.dependencies]
 platformdirs = ">=2.5"
@@ -5229,7 +5353,7 @@ description = "Jupyter Event System library"
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "python_version >= \"3.9\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.9\""
 files = [
     {file = "jupyter_events-0.12.1-py3-none-any.whl", hash = "sha256:c366585253f537a627da52fa7ca7410c5b5301fe893f511e7b077c2d93ec8bcf"},
     {file = "jupyter_events-0.12.1.tar.gz", hash = "sha256:faff25f77218335752f35f23c5fe6e4a392a7bd99a5939ccb9b8fbf594636cf3"},
@@ -5350,7 +5474,7 @@ description = "The backend—i.e. core services, APIs, and REST endpoints—to J
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "jupyter_server-2.21.1-py3-none-any.whl", hash = "sha256:2a6467606af7dbae2e7e31640030025969e15db6a649eae334af90415dc71dca"},
     {file = "jupyter_server-2.21.1.tar.gz", hash = "sha256:a8960aa29263f6041283e97d4756b099fb49b767baab6371891ecb1bd40a63df"},
@@ -5485,7 +5609,7 @@ description = "JupyterLab computational environment"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "jupyterlab-4.6.6-py3-none-any.whl", hash = "sha256:4261910ccf1ecad6e0b3ca0debe96d4fde9735bfc9707509c125aab850e06b81"},
     {file = "jupyterlab-4.6.6.tar.gz", hash = "sha256:5f6fbb409158167aeefb5781d6f0b228e24b493cb6e6f1320fb5bc8897acc223"},
@@ -5562,7 +5686,7 @@ description = "A set of server components for JupyterLab and JupyterLab like app
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "jupyterlab_server-2.28.1-py3-none-any.whl", hash = "sha256:4bd36c7c11d872e15cefa4951e12380a47e6901687165332dd50a007cb367ad9"},
     {file = "jupyterlab_server-2.28.1.tar.gz", hash = "sha256:0c3c2418d51021ce280916e63dfe4cba8386b4e2787be5c25433c98f560ddb31"},
@@ -5866,7 +5990,7 @@ description = "a modern parsing library"
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "python_version >= \"3.9\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.9\""
 files = [
     {file = "lark-1.3.1-py3-none-any.whl", hash = "sha256:c629b661023a014c37da873b4ff58a817398d12635d3bbb2c5a03be7fe5d1e12"},
     {file = "lark-1.3.1.tar.gz", hash = "sha256:b426a7a6d6d53189d318f2b6236ab5d6429eaf09259f1ca33eb716eed10d2905"},
@@ -6033,7 +6157,7 @@ description = "Mypyc runtime library"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
-markers = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""
+markers = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""
 files = [
     {file = "librt-0.17.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d8d3bb5cb72f455007cf893151fdaf4b08aa1110af388ed9e0388510f7cbacff"},
     {file = "librt-0.17.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:22e27fb876b6b684373555a0589cad5e2cf0a6e19a301f17d3f6d604d7d65dee"},
@@ -6783,7 +6907,7 @@ files = [
     {file = "matplotlib_inline-0.2.2-py3-none-any.whl", hash = "sha256:3c821cf1c209f59fb2d2d64abbf5b23b67bcb2210d663f9918dd851c6da1fcf6"},
     {file = "matplotlib_inline-0.2.2.tar.gz", hash = "sha256:72f3fe8fce36b70d4a5b612f899090cd0401deddc4ea90e1572b9f4bfb058c79"},
 ]
-markers = {main = "python_version >= \"3.9\" and extra == \"research\"", dev = "python_version >= \"3.9\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.9\"", dev = "python_version >= \"3.9\""}
 
 [package.dependencies]
 traitlets = "*"
@@ -6857,7 +6981,7 @@ files = [
     {file = "mistune-3.4.0-py3-none-any.whl", hash = "sha256:d03cec4c8620f21517a996d82d14f3b59c30d79bda2cc6c56bd32b839f18ce6b"},
     {file = "mistune-3.4.0.tar.gz", hash = "sha256:2eaf7952af928ca8d33b779762effc1da517b62c6ad85ec8ca957e3b07b9782a"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.dependencies]
 typing-extensions = {version = "*", markers = "python_version < \"3.11\""}
@@ -7071,7 +7195,7 @@ files = [
     {file = "nbclient-0.11.0-py3-none-any.whl", hash = "sha256:ef7fa0d59d6e1d41103933d8a445a18d5de860ca6b613b87b8574accdb3c2895"},
     {file = "nbclient-0.11.0.tar.gz", hash = "sha256:04a134a5b087f2c5887f228aca155db50169b8cd9334dee6942c8e927e56081a"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.dependencies]
 jupyter-client = ">=7.0.0"
@@ -7134,7 +7258,7 @@ files = [
     {file = "nbconvert-7.17.2-py3-none-any.whl", hash = "sha256:6a143c11c00bf831604da4b1be4347d36ea52367057eb920135d69bc2862fed2"},
     {file = "nbconvert-7.17.2.tar.gz", hash = "sha256:344a218e8595117ce37396ed025d994f146d076226ebac59255a2fa085ab24d8"},
 ]
-markers = {main = "python_version >= \"3.9\" and extra == \"research\"", dev = "python_version >= \"3.9\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.9\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.9\""}
 
 [package.dependencies]
 beautifulsoup4 = "*"
@@ -7196,7 +7320,7 @@ files = [
     {file = "nbformat-5.11.1-py3-none-any.whl", hash = "sha256:cc6698fa75f4fab8755ead786317815f13a6fee3b53311c0abb1a8b51d52f7ec"},
     {file = "nbformat-5.11.1.tar.gz", hash = "sha256:32d4521c68c6e7d5b29c76defaeed9f42ea733142b9b19f88277ce10390b9c4d"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.dependencies]
 fastjsonschema = ">=2.15"
@@ -7232,7 +7356,7 @@ files = [
     {file = "nest_asyncio2-1.7.4-py3-none-any.whl", hash = "sha256:86e77b52c3d1496b294af3c944b44213b9b82a12a5ee590c0acc4ca4692ef6c7"},
     {file = "nest_asyncio2-1.7.4.tar.gz", hash = "sha256:995b1409d926ec55e0876ea39a69bffdd8852cf1db3652c177e8c8ffdbcaf3cc"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "(platform_system != \"Windows\" or platform_python_implementation != \"PyPy\") and python_version >= \"3.10\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "(platform_system != \"Windows\" or platform_python_implementation != \"PyPy\") and python_version >= \"3.10\""}
 
 [[package]]
 name = "nodeenv"
@@ -7288,24 +7412,93 @@ test = ["pytest", "pytest-console-scripts", "pytest-jupyter", "pytest-tornasync"
 
 [[package]]
 name = "nox"
-version = "2020.12.31"
+version = "2026.2.9"
 description = "Flexible test automation."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 groups = ["dev"]
+markers = "python_version < \"3.10\""
 files = [
-    {file = "nox-2020.12.31-py3-none-any.whl", hash = "sha256:f179d6990f7a0a9cebad01b9ecea34556518b8d3340dfcafdc1d85f2c1a37ea0"},
-    {file = "nox-2020.12.31.tar.gz", hash = "sha256:58a662070767ed4786beb46ce3a789fca6f1e689ed3ac15c73c4d0094e4f9dc4"},
+    {file = "nox-2026.2.9-py3-none-any.whl", hash = "sha256:1b7143bc8ecdf25f2353201326152c5303ae4ae56ca097b1fb6179ad75164c47"},
+    {file = "nox-2026.2.9.tar.gz", hash = "sha256:1bc8a202ee8cd69be7aaada63b2a7019126899a06fc930a7aee75585bf8ee41b"},
 ]
 
 [package.dependencies]
-argcomplete = ">=1.9.4,<2.0"
-colorlog = ">=2.6.1,<5.0.0"
-py = ">=1.4.0,<2.0.0"
-virtualenv = ">=14.0.0"
+argcomplete = ">=1.9.4,<4"
+attrs = ">=24.1"
+colorlog = ">=2.6.1,<7"
+dependency-groups = ">=1.1"
+humanize = ">=4"
+packaging = ">=22"
+tomli = {version = ">=1.1", markers = "python_version < \"3.11\""}
+virtualenv = {version = ">=20.14.1", markers = "python_version < \"3.10\""}
 
 [package.extras]
-tox-to-nox = ["jinja2", "tox"]
+pbs = ["pbs-installer[all] (>=2025.1.6)"]
+tox-to-nox = ["importlib-resources ; python_version < \"3.9\"", "jinja2", "tox (>=4)"]
+uv = ["uv (>=0.1.6)"]
+
+[[package]]
+name = "nox"
+version = "2026.4.10"
+description = "Flexible test automation."
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+markers = "python_version == \"3.9\""
+files = [
+    {file = "nox-2026.4.10-py3-none-any.whl", hash = "sha256:082c117627590d9b90aa21f86df89b310b07c5842539524203bcb3c719f116c1"},
+    {file = "nox-2026.4.10.tar.gz", hash = "sha256:2d0af5374f3f37a295428c927d1b04a8182aa01762897d172446dda2f1ce9692"},
+]
+
+[package.dependencies]
+argcomplete = ">=1.9.4,<4"
+attrs = ">=24.1"
+colorlog = ">=2.6.1,<7"
+dependency-groups = ">=1.1"
+humanize = ">=4"
+packaging = ">=22"
+tomli = {version = ">=1.1", markers = "python_version < \"3.11\""}
+virtualenv = {version = ">=20.14.1", markers = "python_version < \"3.10\""}
+
+[package.extras]
+pbs = ["pbs-installer[all] (>=2025.1.6)"]
+tox-to-nox = ["jinja2", "tox (>=4)"]
+uv = ["uv (>=0.1.6)"]
+
+[[package]]
+name = "nox"
+version = "2026.10.20"
+description = "Flexible test automation."
+optional = false
+python-versions = ">=3.10"
+groups = ["dev"]
+markers = "python_version >= \"3.10\""
+files = [
+    {file = "nox-2026.10.20-py3-none-any.whl", hash = "sha256:7aff12bb01471f5b087ada34cf0dbe452b02d840593f2e2afecc4bf6e6d6cd3f"},
+    {file = "nox-2026.10.20.tar.gz", hash = "sha256:5da57c009c3dfdd762c068d9079b17966ec967a9eb02cd8ebcf016a946eaf67f"},
+]
+
+[package.dependencies]
+argcomplete = ">=1.9.4,<4"
+attrs = ">=24.1"
+colorlog = ">=6.6,<7"
+dependency-groups = ">=1.1"
+humanize = ">=4"
+packaging = ">=22"
+platformdirs = ">=2"
+python-discovery = ">=1"
+tomli = {version = ">=1.1", markers = "python_version < \"3.11\""}
+virtualenv = [
+    {version = ">=20.15", markers = "python_version < \"3.15\""},
+    {version = ">=21", markers = "python_version >= \"3.15\""},
+]
+
+[package.extras]
+pbs = ["pbs-installer[all] (>=2025.1.6)"]
+rattler = ["py-rattler (>=0.26)"]
+tox-to-nox = ["jinja2", "tox (>=4)"]
+uv = ["uv (>=0.1.6)"]
 
 [[package]]
 name = "numpy"
@@ -7984,7 +8177,7 @@ files = [
     {file = "pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523"},
     {file = "pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f"},
 ]
-markers = {main = "extra == \"research\" and sys_platform != \"win32\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\" or python_version < \"3.10\")", dev = "sys_platform != \"win32\" and sys_platform != \"emscripten\" or sys_platform != \"win32\" and python_version < \"3.10\""}
+markers = {main = "extra == \"research\" and sys_platform != \"win32\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\" or python_version < \"3.10\")", dev = "sys_platform != \"win32\" and sys_platform != \"emscripten\" or python_version < \"3.10\" and sys_platform != \"win32\""}
 
 [package.dependencies]
 ptyprocess = ">=0.5"
@@ -8508,7 +8701,7 @@ files = [
     {file = "platformdirs-4.14.8-py3-none-any.whl", hash = "sha256:1e34af590de4d978631b751eb2202f2fee4497537a17c1720b12fcf57b331392"},
     {file = "platformdirs-4.14.8.tar.gz", hash = "sha256:96893d686e84e9e6f358a9ea41a8de544df66dbf2ba6cda250e7dc73acf85b9b"},
 ]
-markers = {main = "python_version >= \"3.11\" and extra == \"research\"", dev = "python_version >= \"3.11\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.11\"", dev = "python_version >= \"3.11\""}
 
 [[package]]
 name = "pluggy"
@@ -8599,7 +8792,7 @@ description = "Python client for the Prometheus monitoring system."
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "python_version >= \"3.9\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.9\""
 files = [
     {file = "prometheus_client-0.26.0-py3-none-any.whl", hash = "sha256:fa93d06737aa02bacd05794768508bb97d2fbee28cb3bca04eaae92f0ca953d6"},
     {file = "prometheus_client-0.26.0.tar.gz", hash = "sha256:04a91bcf94e2cf74a44a1a874d651a2e853ed354b6e822f3b7487751465d5c2b"},
@@ -8637,7 +8830,7 @@ files = [
     {file = "prompt_toolkit-3.0.53-py3-none-any.whl", hash = "sha256:01c0891d7f9237d5e339f7d3e42cdae80b7534abb1c7c0e3352efba6231492f2"},
     {file = "prompt_toolkit-3.0.53.tar.gz", hash = "sha256:9ec8a0ad96d5c56148b3f914aa79c1564c3fde5d2e6b876e7bc327e353cf8fa6"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "python_version >= \"3.10\""}
 
 [package.dependencies]
 wcwidth = ">=0.1.4"
@@ -8672,7 +8865,7 @@ files = [
     {file = "psutil-7.2.2-cp37-abi3-win_arm64.whl", hash = "sha256:8c233660f575a5a89e6d4cb65d9f938126312bca76d8fe087b947b3a1aaac9ee"},
     {file = "psutil-7.2.2.tar.gz", hash = "sha256:0746f5f8d406af344fd547f1c8daa5f5c33dbc293bb8d6a16d80b4bb88f59372"},
 ]
-markers = {main = "extra == \"research\" and (sys_platform != \"emscripten\" and sys_platform != \"cygwin\" and sys_platform != \"android\" or python_version <= \"3.10\")", dev = "(sys_platform != \"emscripten\" and sys_platform != \"cygwin\" and sys_platform != \"android\" or platform_system != \"Windows\" or platform_python_implementation != \"PyPy\") and (sys_platform != \"emscripten\" and sys_platform != \"cygwin\" and sys_platform != \"android\" or python_version <= \"3.10\") and (platform_system != \"Windows\" or platform_python_implementation != \"PyPy\" or python_version >= \"3.11\")"}
+markers = {main = "extra == \"research\" and (sys_platform != \"emscripten\" and sys_platform != \"cygwin\" and sys_platform != \"android\" or python_version <= \"3.10\")", dev = "(sys_platform != \"emscripten\" and sys_platform != \"cygwin\" and sys_platform != \"android\" or python_version <= \"3.10\") and (platform_system != \"Windows\" or platform_python_implementation != \"PyPy\" or python_version >= \"3.11\") and (platform_system != \"Windows\" or platform_python_implementation != \"PyPy\" or sys_platform != \"emscripten\" and sys_platform != \"cygwin\" and sys_platform != \"android\")"}
 
 [package.extras]
 dev = ["abi3audit", "black", "check-manifest", "colorama ; os_name == \"nt\"", "coverage", "packaging", "psleak", "pylint", "pyperf", "pypinfo", "pyreadline3 ; os_name == \"nt\"", "pytest", "pytest-cov", "pytest-instafail", "pytest-xdist", "pywin32 ; os_name == \"nt\" and implementation_name != \"pypy\"", "requests", "rstcheck", "ruff", "setuptools", "sphinx", "sphinx_rtd_theme", "toml-sort", "twine", "validate-pyproject[all]", "virtualenv", "vulture", "wheel", "wheel ; os_name == \"nt\" and implementation_name != \"pypy\"", "wmi ; os_name == \"nt\" and implementation_name != \"pypy\""]
@@ -8746,7 +8939,7 @@ files = [
     {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
     {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
 ]
-markers = {main = "extra == \"research\" and (sys_platform != \"win32\" or os_name != \"nt\") and (sys_platform != \"win32\" and sys_platform != \"emscripten\" or os_name != \"nt\" or python_version < \"3.10\")", dev = "sys_platform != \"win32\" and sys_platform != \"emscripten\" or sys_platform != \"win32\" and python_version < \"3.10\""}
+markers = {main = "extra == \"research\" and (sys_platform != \"win32\" or os_name != \"nt\") and (sys_platform != \"win32\" and sys_platform != \"emscripten\" or os_name != \"nt\" or python_version < \"3.10\")", dev = "sys_platform != \"win32\" and sys_platform != \"emscripten\" or python_version < \"3.10\" and sys_platform != \"win32\""}
 
 [[package]]
 name = "pure-eval"
@@ -8763,18 +8956,6 @@ markers = {main = "extra == \"research\""}
 
 [package.extras]
 tests = ["pytest"]
-
-[[package]]
-name = "py"
-version = "1.11.0"
-description = "library with cross-python path, ini-parsing, io, code, log facilities"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-groups = ["dev"]
-files = [
-    {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
-    {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
-]
 
 [[package]]
 name = "pycodestyle"
@@ -8852,7 +9033,7 @@ files = [
     {file = "pycparser-3.12-py3-none-any.whl", hash = "sha256:a076f3f489b39b43ed13563a1dafe42447445bec2e294154ec5c57fcdda4c85e"},
     {file = "pycparser-3.12.tar.gz", hash = "sha256:f03387877eab82ce01bbdfd0ba7252ee55a90b1c708d5129e2ce915475cf1db6"},
 ]
-markers = {main = "python_version >= \"3.11\" and implementation_name != \"PyPy\"", dev = "python_version >= \"3.11\" and implementation_name == \"pypy\""}
+markers = {main = "implementation_name != \"PyPy\" and python_version >= \"3.11\"", dev = "implementation_name == \"pypy\" and python_version >= \"3.11\""}
 
 [[package]]
 name = "pydocstyle"
@@ -8952,7 +9133,7 @@ files = [
     {file = "pygments-2.21.0-py3-none-any.whl", hash = "sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"},
     {file = "pygments-2.21.0.tar.gz", hash = "sha256:610ca751c9bc2492b38eb9a38a7fbc93edbbb2d7182edaf34e66ae493dee5c8c"},
 ]
-markers = {main = "python_version >= \"3.9\" and extra == \"research\"", dev = "python_version >= \"3.9\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.9\"", dev = "python_version >= \"3.9\""}
 
 [package.extras]
 windows-terminal = ["colorama (>=0.4.6)"]
@@ -9323,7 +9504,7 @@ description = "JSON Log Formatter for the Python Logging Package"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "python_json_logger-4.2.0-py3-none-any.whl", hash = "sha256:158a52126fcd6869e09574d2b66272666f3dc8f468c62637ef9a1fa883719cb9"},
     {file = "python_json_logger-4.2.0.tar.gz", hash = "sha256:e371ebe22ec01e289850102091a2b1f6fc9e655c7f1f5f29073936756c290afa"},
@@ -9701,7 +9882,7 @@ files = [
     {file = "pyyaml-6.0.4-cp315-cp315t-win_arm64.whl", hash = "sha256:d276f23e2371deb5ee68dd252cc9c2402b806b54d8d2cc7efbb6c34c3a78d886"},
     {file = "pyyaml-6.0.4.tar.gz", hash = "sha256:e24bf71af8a432d7808fabff134d38dfe16d3cbb41f2873bb4b1e42422de0a1a"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "python_version >= \"3.10\""}
 
 [[package]]
 name = "pyzmq"
@@ -9910,7 +10091,7 @@ files = [
     {file = "pyzmq-27.3.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:7ce9cebf124d032c8416b8c4f63e4a82d22943a04d903aeef35ad3eb29ee12e1"},
     {file = "pyzmq-27.3.0.tar.gz", hash = "sha256:bbedb3d1d99babc625f1dd9d7438acefd442b36b75073fd6bc1ef7c0a4b96d56"},
 ]
-markers = {main = "python_version >= \"3.9\" and extra == \"research\"", dev = "python_version >= \"3.9\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.9\"", dev = "python_version >= \"3.9\""}
 
 [package.dependencies]
 cffi = {version = "*", markers = "implementation_name == \"pypy\""}
@@ -9961,7 +10142,7 @@ files = [
     {file = "referencing-0.37.0-py3-none-any.whl", hash = "sha256:381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231"},
     {file = "referencing-0.37.0.tar.gz", hash = "sha256:44aefc3142c5b842538163acb373e24cce6632bd54bdb01b21ad5863489f50d8"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.dependencies]
 attrs = ">=22.2.0"
@@ -10089,7 +10270,7 @@ description = "Helper functions to syntactically validate strings according to R
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "python_version >= \"3.9\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.9\""
 files = [
     {file = "rfc3987_syntax-1.1.0-py3-none-any.whl", hash = "sha256:6c3d97604e4c5ce9f714898e05401a0445a641cfa276432b0a648c80856f6a3f"},
     {file = "rfc3987_syntax-1.1.0.tar.gz", hash = "sha256:717a62cbf33cffdd16dfa3a497d81ce48a660ea691b1ddd7be710c22f00b4a0d"},
@@ -10697,7 +10878,7 @@ files = [
     {file = "rpds_py-2026.9.1-pp312-pypy312_pp80-macosx_11_0_arm64.whl", hash = "sha256:b242c27c8f836305a4a72df9cdd564386ac57b807bd252a063223331c9316b37"},
     {file = "rpds_py-2026.9.1.tar.gz", hash = "sha256:4793ef7f78268b124b73fa933440f01d258bbae01de9fa53e9080c9ab0425a12"},
 ]
-markers = {main = "python_version >= \"3.11\" and extra == \"research\"", dev = "python_version >= \"3.11\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.11\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.11\""}
 
 [[package]]
 name = "rpy2"
@@ -11466,7 +11647,7 @@ numpy = ">=1.26"
 name = "six"
 version = "1.17.0"
 description = "Python 2 and 3 compatibility utilities"
-optional = true
+optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 groups = ["main", "dev"]
 files = [
@@ -11537,7 +11718,7 @@ files = [
     {file = "soupsieve-2.10-py3-none-any.whl", hash = "sha256:8596eb8967d744174820280fa62b4542a2e955bfaccca73ed8a13c6eb8e9b502"},
     {file = "soupsieve-2.10.tar.gz", hash = "sha256:49e9380d7d2905463583bafe285e818c7366a9ed7b3aee221c1ac79c905d8bc0"},
 ]
-markers = {main = "python_version < \"3.12\" and extra == \"research\" and python_version >= \"3.10\"", dev = "python_version < \"3.12\" and platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
+markers = {main = "python_version < \"3.12\" and python_version >= \"3.10\" and extra == \"research\"", dev = "python_version < \"3.12\" and python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
 
 [[package]]
 name = "soupsieve"
@@ -11550,7 +11731,7 @@ files = [
     {file = "soupsieve-4.1.3-py3-none-any.whl", hash = "sha256:7a390d1a57d1ab7bb228531e9b8a750a5ebf87db774e0ef6faeeac057d22a5bf"},
     {file = "soupsieve-4.1.3.tar.gz", hash = "sha256:13f70186c8f40bf8d0ff7bbab09a18fb149600b465269207b5e5b588f55fda08"},
 ]
-markers = {main = "python_version >= \"3.12\" and extra == \"research\"", dev = "python_version >= \"3.12\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.12\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.12\""}
 
 [[package]]
 name = "sphinx"
@@ -11703,7 +11884,7 @@ description = "Python documentation generator"
 optional = false
 python-versions = ">=3.12"
 groups = ["dev"]
-markers = "python_version >= \"3.12\" and python_version < \"3.14\""
+markers = "python_version < \"3.14\" and python_version >= \"3.12\""
 files = [
     {file = "sphinx-9.1.1-py3-none-any.whl", hash = "sha256:f8b60013ce25017be41a509e5c2d265bc1918410061315c36b809c7f335646c0"},
     {file = "sphinx-9.1.1.tar.gz", hash = "sha256:48b627f02908f22c601b3ba9c7b17265b4f315dd05c8bc64cd4da41183f44fbc"},
@@ -12523,7 +12704,7 @@ files = [
     {file = "tinycss2-1.5.1-py3-none-any.whl", hash = "sha256:3415ba0f5839c062696996998176c4a3751d18b7edaaeeb658c9ce21ec150661"},
     {file = "tinycss2-1.5.1.tar.gz", hash = "sha256:d339d2b616ba90ccce58da8495a78f46e55d4d25f9fd71dfd526f07e7d53f957"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.dependencies]
 webencodings = ">=0.4"
@@ -12606,7 +12787,7 @@ files = [
     {file = "tomli-2.5.0-py3-none-any.whl", hash = "sha256:32a7b79ac57a2e83670ce329ccf675798bc5a2094783a63676866b70503f2e2b"},
     {file = "tomli-2.5.0.tar.gz", hash = "sha256:264507556cd8b8c8e7c6ee037cdf443a463f03f4c958e57195e3d369711b8ff6"},
 ]
-markers = {main = "extra == \"research\" and python_version <= \"3.10\" or python_version >= \"3.9\" and python_version <= \"3.10\"", dev = "python_version <= \"3.10\""}
+markers = {main = "(extra == \"research\" or python_version >= \"3.9\") and python_version <= \"3.10\"", dev = "python_version <= \"3.10\""}
 
 [[package]]
 name = "tornado"
@@ -12703,7 +12884,7 @@ files = [
     {file = "tornado-6.6.1-cp315-cp315t-win_arm64.whl", hash = "sha256:065bc741478b168df9baf754956a3010c04d1330bb45a84833d807c29e11b257"},
     {file = "tornado-6.6.1.tar.gz", hash = "sha256:28e6311402af59c8b02e3fa0f5e7d8eb465b25081381803b127d97e6a4395d5a"},
 ]
-markers = {main = "python_version >= \"3.11\" and extra == \"research\"", dev = "python_version >= \"3.11\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.11\"", dev = "python_version >= \"3.11\""}
 
 [[package]]
 name = "traitlets"
@@ -12750,7 +12931,7 @@ files = [
     {file = "traitlets-5.16.1-py3-none-any.whl", hash = "sha256:f775618166caa0396c8e337099240f2bd3e5e917d203b2e6fbe21a58d3cb1f6b"},
     {file = "traitlets-5.16.1.tar.gz", hash = "sha256:ed900c2b631aa3a112811139fa97b8d2c3bad5e989656bba4b7e52c7852c18c1"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "python_version >= \"3.10\""}
 
 [package.extras]
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
@@ -13047,7 +13228,7 @@ files = [
     {file = "wcwidth-0.9.5-py3-none-any.whl", hash = "sha256:ef205150ff317032d633de2d8ca26d03dc8d5ba6a00294f6acfd1d0cfe1365d6"},
     {file = "wcwidth-0.9.5.tar.gz", hash = "sha256:713534e2ecb16e0fc39f19e0a5dda997da76d010953e9e8f803e7971f8accd80"},
 ]
-markers = {main = "python_version >= \"3.9\" and extra == \"research\"", dev = "python_version >= \"3.9\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.9\"", dev = "python_version >= \"3.9\""}
 
 [[package]]
 name = "webcolors"
@@ -13086,7 +13267,7 @@ description = "A library for working with the color formats defined by HTML and 
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "webcolors-25.10.0-py3-none-any.whl", hash = "sha256:032c727334856fc0b968f63daa252a1ac93d33db2f5267756623c210e57a4f1d"},
     {file = "webcolors-25.10.0.tar.gz", hash = "sha256:62abae86504f66d0f6364c2a8520de4a0c47b80c03fc3a5f1815fedbef7c19bf"},
@@ -13116,7 +13297,7 @@ files = [
     {file = "webencodings-0.6.1-py3-none-any.whl", hash = "sha256:7fab6269c8bf237c657876b52058ccb182e861518d1c695c1a9aaa8c1c105d5b"},
     {file = "webencodings-0.6.1.tar.gz", hash = "sha256:565f9ad031c702dae404e27a099e3e09186a3ab1b9520f06d215502b651fd910"},
 ]
-markers = {main = "python_version >= \"3.10\" and extra == \"research\"", dev = "python_version >= \"3.10\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "extra == \"research\" and python_version >= \"3.10\"", dev = "platform_python_implementation != \"PyPy\" and python_version >= \"3.10\""}
 
 [package.extras]
 doc = ["furo", "sphinx"]
@@ -13165,7 +13346,7 @@ description = "WebSocket client for Python with low level API options"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "python_version >= \"3.10\" and extra == \"research\""
+markers = "extra == \"research\" and python_version >= \"3.10\""
 files = [
     {file = "websocket_client-1.9.2-py3-none-any.whl", hash = "sha256:e1a673830a9c7bfa47b1cd3d5e4178f4c9651d80a4eab02c9c23a1c3ec6250ce"},
     {file = "websocket_client-1.9.2.tar.gz", hash = "sha256:0fcb57545848be86992e128218fd96dd87a6769ffdb1a968dff79632b85604d0"},
@@ -13392,4 +13573,4 @@ research = ["jupyterlab", "numpy", "pytz"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "4b7da034a0a230ed9367bf720252c10b684e2bc72d88266f8e7f049f3174dfc9"
+content-hash = "c217cdab662492a6c095fb5f92f4eae7b5b29813cabfaa91d5a747a699cc90cc"
