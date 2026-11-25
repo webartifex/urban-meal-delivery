@@ -78,6 +78,36 @@ skip-string-normalization = true  # `wemake-python-styleguide` enforces single q
 
 
 
+[tool.coverage]
+# Source: https://coverage.readthedocs.io/en/latest/config.html
+
+
+[tool.coverage.paths]
+
+source = [
+    "src/",
+    "*/site-packages/",
+]
+
+
+[tool.coverage.report]
+
+show_missing = true
+
+skip_covered = true
+skip_empty = true
+
+
+[tool.coverage.run]
+
+branch = true
+
+data_file = ".cache/coverage/data"
+
+source = ["velofy"]
+
+
+
 [tool.poetry.group.dev.dependencies]
 
 # Task Runners
