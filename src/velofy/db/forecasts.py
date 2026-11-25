@@ -188,7 +188,7 @@ class Forecast(meta.Base):
         for timestamp_idx in data.index:
             start_at = timestamp_idx.to_pydatetime()
             actual = int(data.loc[timestamp_idx, 'actual'])
-            prediction = round(data.loc[timestamp_idx, 'prediction'], 5)
+            prediction = float(round(data.loc[timestamp_idx, 'prediction'], 5))
 
             # Explicit type casting. SQLAlchemy does not convert
             # `float('NaN')`s into plain `None`s.
@@ -201,22 +201,22 @@ class Forecast(meta.Base):
             if math.isnan(low80):
                 low80 = None
             else:
-                low80 = round(low80, 5)
+                low80 = float(round(low80, 5))
 
             if math.isnan(high80):
                 high80 = None
             else:
-                high80 = round(high80, 5)
+                high80 = float(round(high80, 5))
 
             if math.isnan(low95):
                 low95 = None
             else:
-                low95 = round(low95, 5)
+                low95 = float(round(low95, 5))
 
             if math.isnan(high95):
                 high95 = None
             else:
-                high95 = round(high95, 5)
+                high95 = float(round(high95, 5))
 
             forecasts.append(
                 cls(

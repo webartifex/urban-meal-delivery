@@ -63,7 +63,7 @@ SRC_LOCATIONS = (
     PYTEST_LOCATION,
 )
 
-PYTHON = '3.8'
+PYTHON = '3.13'
 
 # Use a unified .cache/ folder for all tools.
 nox.options.envdir = '.cache/nox'

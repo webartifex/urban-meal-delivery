@@ -15,7 +15,7 @@ defaults:
 
 jobs:
   test:
-    name: Tests (Python 3.8)
+    name: Tests (Python 3.13)
     runs-on: debian-13
 
     # Throwaway database, reachable from the job as host `postgres`
@@ -52,12 +52,12 @@ jobs:
         run: |
             curl -LsSf https://astral.sh/uv/install.sh | sh
             echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-            "$HOME/.local/bin/uv" python install 3.8
+            "$HOME/.local/bin/uv" python install 3.13
             "$HOME/.local/bin/uv" tool install --python 3.13 'poetry>=2'
 
       - name: Install the project
         run: |
-            uv venv --python 3.8 --seed .venv
+            uv venv --python 3.13 --seed .venv
             poetry sync --no-interaction
 
       # `TESTING=true` comes from `setup.cfg`
