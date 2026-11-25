@@ -50,8 +50,8 @@ def predict(
 
         # Create a point forecast by linear extrapolation
         # for one or even more time steps ahead.
-        slope = trend[-1] - trend[-2]
-        prediction = trend[-1] + slope
+        slope = trend.iloc[-1] - trend.iloc[-2]
+        prediction = trend.iloc[-1] + slope
         idx = observations.index.max() + seasonal_lag
         while idx <= forecast_interval.max():
             if idx in forecast_interval:

@@ -52,7 +52,7 @@ def vertical_datetime_index():
     start_ats = pd.date_range(
         test_config.START,
         test_config.END,
-        freq=f'{test_config.LONG_TIME_STEP}T',
+        freq=f'{test_config.LONG_TIME_STEP}min',
     )
     gen = (
         start_at
@@ -107,7 +107,7 @@ def order_totals(good_pixel_id):
     start_ats = pd.date_range(
         test_config.START,
         test_config.END,
-        freq=f'{test_config.LONG_TIME_STEP}T',
+        freq=f'{test_config.LONG_TIME_STEP}min',
     )
     gen = (
         (pixel_id, start_at)

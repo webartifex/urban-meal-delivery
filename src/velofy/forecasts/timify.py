@@ -162,7 +162,7 @@ class OrderHistory:
         gen = (
             (pixel_id, start_at)
             for pixel_id in sorted(data.index.levels[0])
-            for start_at in pd.date_range(start, end, freq=f'{self._time_step}T')
+            for start_at in pd.date_range(start, end, freq=f'{self._time_step}min')
             if config.SERVICE_START <= start_at.hour < config.SERVICE_END
         )
 
