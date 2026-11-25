@@ -44,7 +44,8 @@ class TestConstraints:
         stmt = sqla.delete(db.Address).where(db.Address.id == restaurant.address.id)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='fk_restaurants_to_addresses_via_address_id',
+            sa_exc.IntegrityError,
+            match='fk_restaurants_to_addresses_via_address_id',
         ):
             db_session.execute(stmt)
 
@@ -54,7 +55,8 @@ class TestConstraints:
         db_session.add(restaurant)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='realistic_estimated_prep_duration',
+            sa_exc.IntegrityError,
+            match='realistic_estimated_prep_duration',
         ):
             db_session.commit()
 
@@ -64,6 +66,7 @@ class TestConstraints:
         db_session.add(restaurant)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='realistic_estimated_prep_duration',
+            sa_exc.IntegrityError,
+            match='realistic_estimated_prep_duration',
         ):
             db_session.commit()

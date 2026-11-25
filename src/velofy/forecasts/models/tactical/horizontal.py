@@ -22,7 +22,10 @@ class HorizontalETSModel(base.ForecastingModelABC):
     name = 'hets'
 
     def predict(
-        self, pixel: db.Pixel, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel: db.Pixel,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> pd.DataFrame:
         """Predict demand for a time step.
 
@@ -41,7 +44,9 @@ class HorizontalETSModel(base.ForecastingModelABC):
         """
         # Generate the historic (and horizontal) order time series.
         training_ts, frequency, actuals_ts = self._order_history.make_horizontal_ts(
-            pixel_id=pixel.id, predict_at=predict_at, train_horizon=train_horizon,
+            pixel_id=pixel.id,
+            predict_at=predict_at,
+            train_horizon=train_horizon,
         )
 
         # Sanity check.
@@ -73,7 +78,10 @@ class HorizontalSMAModel(base.ForecastingModelABC):
     name = 'hsma'
 
     def predict(
-        self, pixel: db.Pixel, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel: db.Pixel,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> pd.DataFrame:
         """Predict demand for a time step.
 
@@ -92,7 +100,9 @@ class HorizontalSMAModel(base.ForecastingModelABC):
         """
         # Generate the historic (and horizontal) order time series.
         training_ts, frequency, actuals_ts = self._order_history.make_horizontal_ts(
-            pixel_id=pixel.id, predict_at=predict_at, train_horizon=train_horizon,
+            pixel_id=pixel.id,
+            predict_at=predict_at,
+            train_horizon=train_horizon,
         )
 
         # Sanity checks.

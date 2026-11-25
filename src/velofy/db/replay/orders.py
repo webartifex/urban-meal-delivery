@@ -67,7 +67,10 @@ class ReplayedOrder(meta.Base):
             ondelete='RESTRICT',
         ),
         sa.ForeignKeyConstraint(
-            ['courier_id'], ['couriers.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['courier_id'],
+            ['couriers.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         # The check constraints model some of the assumptions made in the simulations.
         sa.CheckConstraint(
@@ -262,7 +265,8 @@ class ReplayedOrder(meta.Base):
             # in the actual `Order` model with an extra `restaurant_ready_at` column
             # and the non-simulated columns removed.
             sa.CheckConstraint(
-                constraint, name='ordered_timestamps_{index}'.format(index=index),
+                constraint,
+                name='ordered_timestamps_{index}'.format(index=index),
             )
             for index, constraint in enumerate(
                 (
@@ -335,7 +339,8 @@ class ReplayedOrder(meta.Base):
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}(#{order_id})>'.format(
-            cls=self.__class__.__name__, order_id=self.actual.id,
+            cls=self.__class__.__name__,
+            order_id=self.actual.id,
         )
 
     # Convenience properties

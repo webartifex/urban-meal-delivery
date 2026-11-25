@@ -113,7 +113,9 @@ def upgrade():
         sa.Column('reached_delivery_at', sa.DateTime),
         sa.Column('delivery_at', sa.DateTime),
         sa.PrimaryKeyConstraint(
-            'simulation_id', 'actual_order_id', name=op.f('pk_replayed_orders'),
+            'simulation_id',
+            'actual_order_id',
+            name=op.f('pk_replayed_orders'),
         ),
         sa.ForeignKeyConstraint(
             ['simulation_id'],
@@ -296,7 +298,8 @@ def upgrade():
         ),
         *(
             sa.CheckConstraint(
-                constraint, name='ordered_timestamps_{index}'.format(index=index),
+                constraint,
+                name='ordered_timestamps_{index}'.format(index=index),
             )
             for index, constraint in enumerate(
                 (
@@ -390,7 +393,10 @@ def downgrade():
     op.drop_table('replayed_orders', schema=config.CLEAN_SCHEMA)
     op.drop_table('replay_simulations', schema=config.CLEAN_SCHEMA)
     op.drop_constraint(
-        'uq_orders_on_id_ad_hoc', 'orders', type_=None, schema=config.CLEAN_SCHEMA,
+        'uq_orders_on_id_ad_hoc',
+        'orders',
+        type_=None,
+        schema=config.CLEAN_SCHEMA,
     )
     op.execute(
         f"""

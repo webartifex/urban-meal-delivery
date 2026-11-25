@@ -23,7 +23,9 @@ class Restaurant(meta.Base):
 
     # Columns
     id = sa.Column(  # noqa:WPS125
-        sa.SmallInteger, primary_key=True, autoincrement=False,
+        sa.SmallInteger,
+        primary_key=True,
+        autoincrement=False,
     )
     created_at = sa.Column(sa.DateTime, nullable=False)
     name = sa.Column(sa.Unicode(length=45), nullable=False)
@@ -33,7 +35,10 @@ class Restaurant(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['address_id'], ['addresses.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['address_id'],
+            ['addresses.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         sa.CheckConstraint(
             '0 <= estimated_prep_duration AND estimated_prep_duration <= 2400',
@@ -70,7 +75,9 @@ class Restaurant(meta.Base):
         return self.address.city.map
 
     def draw(
-        self, customers: bool = True, order_counts: bool = False,  # pragma: no cover
+        self,
+        customers: bool = True,
+        order_counts: bool = False,  # pragma: no cover
     ) -> folium.Map:
         """Draw the restaurant on the `.address.city.map`.
 
@@ -95,7 +102,8 @@ class Restaurant(meta.Base):
                         for row in (
                             db.session.query(db.Address.primary_id)  # noqa:WPS221
                             .join(
-                                db.Order, db.Address.id == db.Order.delivery_address_id,
+                                db.Order,
+                                db.Address.id == db.Order.delivery_address_id,
                             )
                             .filter(db.Order.restaurant_id == self.id)
                             .distinct()
@@ -136,7 +144,8 @@ class Restaurant(meta.Base):
 
                 else:
                     address.draw(
-                        radius=1, color=config.CUSTOMER_COLOR,
+                        radius=1,
+                        color=config.CUSTOMER_COLOR,
                     )
 
         self.address.draw(

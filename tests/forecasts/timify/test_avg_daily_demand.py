@@ -16,7 +16,10 @@ class TestAverageDailyDemand:
     """Tests for the `OrderHistory.avg_daily_demand()` method."""
 
     def test_avg_daily_demand_with_constant_demand(
-        self, order_history, good_pixel_id, predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        predict_at,
     ):
         """The average daily demand must be the number of time steps ...
 
@@ -34,7 +37,10 @@ class TestAverageDailyDemand:
         assert result == 12.0
 
     def test_avg_daily_demand_with_no_demand(
-        self, order_history, good_pixel_id, predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        predict_at,
     ):
         """Without demand, the average daily demand must be `0.0`."""
         order_history._data.loc[:, 'n_orders'] = 0
@@ -52,7 +58,10 @@ class TestChooseTacticalModel:
     """Tests for the `OrderHistory.choose_tactical_model()` method."""
 
     def test_best_model_with_high_demand(
-        self, order_history, good_pixel_id, predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        predict_at,
     ):
         """With high demand, the average daily demand is `.>= 25.0`."""
         # With 12 time steps per day, the ADD becomes `36.0`.
@@ -67,7 +76,10 @@ class TestChooseTacticalModel:
         assert isinstance(result, models.HorizontalETSModel)
 
     def test_best_model_with_medium_demand(
-        self, order_history, good_pixel_id, predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        predict_at,
     ):
         """With medium demand, the average daily demand is `>= 10.0` and `< 25.0`."""
         # With 12 time steps per day, the ADD becomes `24.0`.
@@ -82,7 +94,10 @@ class TestChooseTacticalModel:
         assert isinstance(result, models.HorizontalETSModel)
 
     def test_best_model_with_low_demand(
-        self, order_history, good_pixel_id, predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        predict_at,
     ):
         """With low demand, the average daily demand is `>= 2.5` and `< 10.0`."""
         # With 12 time steps per day, the ADD becomes `12.0` ...
@@ -115,7 +130,10 @@ class TestChooseTacticalModel:
         assert isinstance(result, models.HorizontalSMAModel)
 
     def test_best_model_with_no_demand(
-        self, order_history, good_pixel_id, predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        predict_at,
     ):
         """Without demand, the average daily demand is `< 2.5`."""
         order_history._data.loc[:, 'n_orders'] = 0
@@ -129,7 +147,10 @@ class TestChooseTacticalModel:
         assert isinstance(result, models.TrivialModel)
 
     def test_best_model_for_unknown_train_horizon(
-        self, order_history, good_pixel_id, predict_at,  # noqa:RST215
+        self,
+        order_history,
+        good_pixel_id,
+        predict_at,  # noqa:RST215
     ):
         """For `train_horizon` values not included in the rule-based system ...
 

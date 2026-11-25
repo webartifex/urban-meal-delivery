@@ -4,8 +4,7 @@ import functools
 import os
 import subprocess  # noqa:S404
 import sys
-from typing import Any
-from typing import Callable
+from typing import Any, Callable
 
 import click
 

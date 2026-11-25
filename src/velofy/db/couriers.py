@@ -24,14 +24,17 @@ class Courier(meta.Base):
     # Constraints
     __table_args__ = (
         sa.CheckConstraint(
-            "vehicle IN ('bicycle', 'motorcycle')", name='available_vehicle_types',
+            "vehicle IN ('bicycle', 'motorcycle')",
+            name='available_vehicle_types',
         ),
         sa.CheckConstraint('0 <= speed AND speed <= 30', name='realistic_speed'),
         sa.CheckConstraint(
-            '0 <= capacity AND capacity <= 200', name='capacity_under_200_liters',
+            '0 <= capacity AND capacity <= 200',
+            name='capacity_under_200_liters',
         ),
         sa.CheckConstraint(
-            '0 <= pay_per_hour AND pay_per_hour <= 1500', name='realistic_pay_per_hour',
+            '0 <= pay_per_hour AND pay_per_hour <= 1500',
+            name='realistic_pay_per_hour',
         ),
         sa.CheckConstraint(
             '0 <= pay_per_order AND pay_per_order <= 650',
@@ -45,5 +48,6 @@ class Courier(meta.Base):
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}(#{courier_id})>'.format(
-            cls=self.__class__.__name__, courier_id=self.id,
+            cls=self.__class__.__name__,
+            courier_id=self.id,
         )

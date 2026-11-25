@@ -49,7 +49,8 @@ class TestConstraints:
         )
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='fk_replayed_orders_to_replay_simulations',
+            sa_exc.IntegrityError,
+            match='fk_replayed_orders_to_replay_simulations',
         ):
             db_session.execute(stmt)
 
@@ -65,7 +66,10 @@ class TestConstraints:
             db_session.execute(stmt)
 
     def test_delete_a_referenced_courier(
-        self, db_session, replayed_order, make_courier,
+        self,
+        db_session,
+        replayed_order,
+        make_courier,
     ):
         """Remove a record that is referenced with a FK."""
         # Need a second courier, one that is
@@ -79,7 +83,8 @@ class TestConstraints:
         stmt = sqla.delete(db.Courier).where(db.Courier.id == replayed_order.courier.id)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='fk_replayed_orders_to_couriers',
+            sa_exc.IntegrityError,
+            match='fk_replayed_orders_to_couriers',
         ):
             db_session.execute(stmt)
 
@@ -92,12 +97,15 @@ class TestConstraints:
         db_session.add(replayed_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='either_ad_hoc_or_scheduled_order',
+            sa_exc.IntegrityError,
+            match='either_ad_hoc_or_scheduled_order',
         ):
             db_session.commit()
 
     def test_scheduled_order_without_scheduled_delivery_at(
-        self, db_session, make_replay_order,
+        self,
+        db_session,
+        make_replay_order,
     ):
         """Insert an instance with invalid data."""
         replay_order = make_replay_order(scheduled=True)
@@ -109,7 +117,8 @@ class TestConstraints:
         db_session.add(replay_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='either_ad_hoc_or_scheduled_order',
+            sa_exc.IntegrityError,
+            match='either_ad_hoc_or_scheduled_order',
         ):
             db_session.commit()
 
@@ -122,7 +131,8 @@ class TestConstraints:
         db_session.add(replay_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ad_hoc_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='ad_hoc_orders_within_business_hours',
         ):
             db_session.commit()
 
@@ -135,7 +145,8 @@ class TestConstraints:
         db_session.add(replay_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ad_hoc_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='ad_hoc_orders_within_business_hours',
         ):
             db_session.commit()
 
@@ -153,7 +164,8 @@ class TestConstraints:
         db_session.add(replay_pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='scheduled_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='scheduled_orders_within_business_hours',
         ):
             db_session.commit()
 
@@ -171,7 +183,8 @@ class TestConstraints:
         db_session.add(replay_pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='scheduled_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='scheduled_orders_within_business_hours',
         ):
             db_session.commit()
 
@@ -210,17 +223,23 @@ class TestConstraints:
         db_session.add(replay_pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='scheduled_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='scheduled_orders_within_business_hours',
         ):
             db_session.commit()
 
     @pytest.mark.parametrize('minute', [min_ for min_ in range(60) if min_ % 15 != 0])
     def test_scheduled_order_at_non_quarter_of_an_hour(
-        self, db_session, make_replay_order, minute,
+        self,
+        db_session,
+        make_replay_order,
+        minute,
     ):
         """Insert an instance with invalid data."""
         scheduled_delivery_at = dt.datetime(  # `minute` is not 0, 15, 30, or 45
-            *test_config.DATE, test_config.NOON, minute,
+            *test_config.DATE,
+            test_config.NOON,
+            minute,
         )
         replay_pre_order = make_replay_order(
             scheduled=True,
@@ -240,11 +259,17 @@ class TestConstraints:
 
     @pytest.mark.parametrize('second', list(range(1, 60)))
     def test_scheduled_order_at_non_quarter_of_an_hour_by_seconds(
-        self, db_session, make_replay_order, second,
+        self,
+        db_session,
+        make_replay_order,
+        second,
     ):
         """Insert an instance with invalid data."""
         scheduled_delivery_at = dt.datetime(
-            *test_config.DATE, test_config.NOON, 0, second,
+            *test_config.DATE,
+            test_config.NOON,
+            0,
+            second,
         )
         replay_pre_order = make_replay_order(
             scheduled=True,
@@ -289,7 +314,8 @@ class TestConstraints:
         db_session.add(replay_pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='scheduled_orders_not_within_30_minutes',
+            sa_exc.IntegrityError,
+            match='scheduled_orders_not_within_30_minutes',
         ):
             db_session.commit()
 
@@ -355,10 +381,14 @@ class TestConstraints:
         db_session.commit()
 
     @pytest.mark.parametrize(
-        'column', ['pickup_at', 'left_pickup_at', 'reached_delivery_at', 'delivery_at'],
+        'column',
+        ['pickup_at', 'left_pickup_at', 'reached_delivery_at', 'delivery_at'],
     )
     def test_no_simulated_cancellation_after_pickup(
-        self, db_session, replayed_order, column,
+        self,
+        db_session,
+        replayed_order,
+        column,
     ):
         """Insert an instance with invalid data."""
         # Setting `.cancelled_at` to the end of a day
@@ -386,27 +416,35 @@ class TestConstraints:
 
     @pytest.mark.parametrize('duration', [-1, 3601])
     def test_estimated_prep_duration_out_of_range(
-        self, db_session, replayed_order, duration,
+        self,
+        db_session,
+        replayed_order,
+        duration,
     ):
         """Insert an instance with invalid data."""
         replayed_order.estimated_prep_duration = duration
         db_session.add(replayed_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='between_0',  # constraint name too long
+            sa_exc.IntegrityError,
+            match='between_0',  # constraint name too long
         ):
             db_session.commit()
 
     @pytest.mark.parametrize('duration', [1, 59, 119, 3599])
     def test_estimated_prep_duration_not_whole_minute(
-        self, db_session, replayed_order, duration,
+        self,
+        db_session,
+        replayed_order,
+        duration,
     ):
         """Insert an instance with invalid data."""
         replayed_order.estimated_prep_duration = duration
         db_session.add(replayed_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='must_be_w',  # constraint name too long
+            sa_exc.IntegrityError,
+            match='must_be_w',  # constraint name too long
         ):
             db_session.commit()
 
@@ -417,14 +455,19 @@ class TestConstraints:
         db_session.add(replayed_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='between_0_and_100',
+            sa_exc.IntegrityError,
+            match='between_0_and_100',
         ):
             db_session.commit()
 
     @pytest.mark.parametrize('column', ['restaurant_notified_at', 'dispatch_at'])
     @pytest.mark.parametrize('hour', [0, 10])
     def test_order_dispatched_in_non_business_hour(
-        self, db_session, replayed_order, column, hour,
+        self,
+        db_session,
+        replayed_order,
+        column,
+        hour,
     ):
         """Insert an instance with invalid data."""
         orig_timestamp = getattr(replayed_order, column)
@@ -436,7 +479,8 @@ class TestConstraints:
         db_session.add(replayed_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='business_hours',
+            sa_exc.IntegrityError,
+            match='business_hours',
         ):
             db_session.commit()
 
@@ -493,7 +537,10 @@ class TestConstraints:
         ],
     )
     def test_timestamps_unordered(
-        self, db_session, replayed_order, comparison,
+        self,
+        db_session,
+        replayed_order,
+        comparison,
     ):
         """Insert an instance with invalid data.
 
@@ -522,7 +569,9 @@ class TestConstraints:
         # choose one second after a quarter of an hour.
         replayed_pre_order.placed_at = dt.datetime(*test_config.DATE, 11, 45, 1)
         self.test_timestamps_unordered(
-            db_session, replayed_pre_order, 'placed_at < scheduled_delivery_at',
+            db_session,
+            replayed_pre_order,
+            'placed_at < scheduled_delivery_at',
         )
 
     @pytest.mark.parametrize(
@@ -539,7 +588,10 @@ class TestConstraints:
         ],
     )
     def test_timestamps_unordered_cancelled(
-        self, db_session, replayed_order, comparison,
+        self,
+        db_session,
+        replayed_order,
+        comparison,
     ):
         """Insert an instance with invalid data.
 

@@ -1,6 +1,5 @@
 """Tests for the `velofy.forecasts.models` sub-package."""
 
-
 import pandas as pd
 import pytest
 
@@ -62,7 +61,11 @@ class TestGenericForecastingModelProperties:
 
     @pytest.mark.r
     def test_make_prediction_structure(
-        self, model_cls, order_history, pixel, predict_at,
+        self,
+        model_cls,
+        order_history,
+        pixel,
+        predict_at,
     ):
         """`*Model.predict()` returns a `pd.DataFrame` ...
 
@@ -88,7 +91,11 @@ class TestGenericForecastingModelProperties:
 
     @pytest.mark.r
     def test_make_prediction_for_given_time_step(
-        self, model_cls, order_history, pixel, predict_at,
+        self,
+        model_cls,
+        order_history,
+        pixel,
+        predict_at,
     ):
         """`*Model.predict()` returns a row for ...
 
@@ -106,7 +113,11 @@ class TestGenericForecastingModelProperties:
 
     @pytest.mark.r
     def test_make_prediction_contains_actual_values(
-        self, model_cls, order_history, pixel, predict_at,
+        self,
+        model_cls,
+        order_history,
+        pixel,
+        predict_at,
     ):
         """`*Model.predict()` returns a `pd.DataFrame` ...
 
@@ -126,7 +137,12 @@ class TestGenericForecastingModelProperties:
     @pytest.mark.db
     @pytest.mark.r
     def test_make_forecast(  # noqa:WPS211
-        self, db_session, model_cls, order_history, pixel, predict_at,
+        self,
+        db_session,
+        model_cls,
+        order_history,
+        pixel,
+        predict_at,
     ):
         """`*Model.make_forecast()` returns a `Forecast` object."""  # noqa:RST215
         model = model_cls(order_history=order_history)
@@ -145,7 +161,12 @@ class TestGenericForecastingModelProperties:
     @pytest.mark.db
     @pytest.mark.r
     def test_make_forecast_is_cached(  # noqa:WPS211
-        self, db_session, model_cls, order_history, pixel, predict_at,
+        self,
+        db_session,
+        model_cls,
+        order_history,
+        pixel,
+        predict_at,
     ):
         """`*Model.make_forecast()` caches the `Forecast` object."""  # noqa:RST215
         model = model_cls(order_history=order_history)

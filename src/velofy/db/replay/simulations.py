@@ -1,6 +1,5 @@
 """Provide the ORM's `ReplaySimulation` model for the replay simulations."""
 
-
 import sqlalchemy as sa
 from sqlalchemy import orm
 
@@ -25,7 +24,10 @@ class ReplaySimulation(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['city_id'], ['cities.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['city_id'],
+            ['cities.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         # A `.strategy` can be replayed several times per `.city`.
         sa.UniqueConstraint('city_id', 'strategy', 'run'),

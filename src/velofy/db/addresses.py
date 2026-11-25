@@ -37,13 +37,20 @@ class Address(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['primary_id'], ['addresses.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['primary_id'],
+            ['addresses.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         sa.ForeignKeyConstraint(
-            ['city_id'], ['cities.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['city_id'],
+            ['cities.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         sa.CheckConstraint(
-            '-90 <= latitude AND latitude <= 90', name='latitude_between_90_degrees',
+            '-90 <= latitude AND latitude <= 90',
+            name='latitude_between_90_degrees',
         ),
         sa.CheckConstraint(
             '-180 <= longitude AND longitude <= 180',
@@ -52,7 +59,8 @@ class Address(meta.Base):
         # Needed by a `ForeignKeyConstraint` in `AddressPixelAssociation`.
         sa.UniqueConstraint('id', 'city_id'),
         sa.CheckConstraint(
-            '30000 <= zip_code AND zip_code <= 99999', name='valid_zip_code',
+            '30000 <= zip_code AND zip_code <= 99999',
+            name='valid_zip_code',
         ),
         sa.CheckConstraint('0 <= floor AND floor <= 40', name='realistic_floor'),
     )
@@ -75,7 +83,9 @@ class Address(meta.Base):
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}({street} in {city})>'.format(
-            cls=self.__class__.__name__, street=self.street, city=self.city_name,
+            cls=self.__class__.__name__,
+            street=self.street,
+            city=self.city_name,
         )
 
     @hybrid.hybrid_property

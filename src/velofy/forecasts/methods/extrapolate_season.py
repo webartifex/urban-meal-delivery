@@ -5,7 +5,10 @@ from statsmodels.tsa import api as ts_stats
 
 
 def predict(
-    training_ts: pd.Series, forecast_interval: pd.DatetimeIndex, *, frequency: int,
+    training_ts: pd.Series,
+    forecast_interval: pd.DatetimeIndex,
+    *,
+    frequency: int,
 ) -> pd.DataFrame:
     """Extrapolate a seasonal component with a linear model.
 

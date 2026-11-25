@@ -80,10 +80,16 @@ class Order(meta.Base):  # noqa:WPS214
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['customer_id'], ['customers.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['customer_id'],
+            ['customers.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         sa.ForeignKeyConstraint(
-            ['courier_id'], ['couriers.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['courier_id'],
+            ['couriers.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         sa.ForeignKeyConstraint(
             ['pickup_address_id'],
@@ -259,7 +265,8 @@ class Order(meta.Base):  # noqa:WPS214
         ),
         *(
             sa.CheckConstraint(
-                constraint, name='ordered_timestamps_{index}'.format(index=index),
+                constraint,
+                name='ordered_timestamps_{index}'.format(index=index),
             )
             for index, constraint in enumerate(
                 (
@@ -434,7 +441,8 @@ class Order(meta.Base):  # noqa:WPS214
         Goes together with `.courier_late`.
         """
         return max(
-            datetime.timedelta(), self.scheduled_pickup_at - self.reached_pickup_at,
+            datetime.timedelta(),
+            self.scheduled_pickup_at - self.reached_pickup_at,
         )
 
     @property
@@ -448,7 +456,8 @@ class Order(meta.Base):  # noqa:WPS214
         Goes together with `.courier_early`.
         """
         return max(
-            datetime.timedelta(), self.reached_pickup_at - self.scheduled_pickup_at,
+            datetime.timedelta(),
+            self.reached_pickup_at - self.scheduled_pickup_at,
         )
 
     @property
@@ -542,7 +551,8 @@ class Order(meta.Base):  # noqa:WPS214
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}(#{order_id})>'.format(
-            cls=self.__class__.__name__, order_id=self.id,
+            cls=self.__class__.__name__,
+            order_id=self.id,
         )
 
     def draw(self) -> folium.Map:  # pragma: no cover

@@ -24,7 +24,10 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
     name = 'rtarima'
 
     def predict(
-        self, pixel: db.Pixel, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel: db.Pixel,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> pd.DataFrame:
         """Predict demand for a time step.
 
@@ -43,7 +46,9 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
         """
         # Generate the historic (and real-time) order time series.
         training_ts, frequency, actuals_ts = self._order_history.make_realtime_ts(
-            pixel_id=pixel.id, predict_at=predict_at, train_horizon=train_horizon,
+            pixel_id=pixel.id,
+            predict_at=predict_at,
+            train_horizon=train_horizon,
         )
 
         # Decompose the `training_ts` to make predictions for the seasonal

@@ -24,7 +24,10 @@ class VerticalARIMAModel(base.ForecastingModelABC):
     name = 'varima'
 
     def predict(
-        self, pixel: db.Pixel, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel: db.Pixel,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> pd.DataFrame:
         """Predict demand for a time step.
 

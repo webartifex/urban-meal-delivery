@@ -127,7 +127,8 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='either_ad_hoc_or_scheduled_order',
+            sa_exc.IntegrityError,
+            match='either_ad_hoc_or_scheduled_order',
         ):
             db_session.commit()
 
@@ -141,7 +142,8 @@ class TestConstraints:
         db_session.add(pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='either_ad_hoc_or_scheduled_order',
+            sa_exc.IntegrityError,
+            match='either_ad_hoc_or_scheduled_order',
         ):
             db_session.commit()
 
@@ -152,7 +154,8 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ad_hoc_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='ad_hoc_orders_within_business_hours',
         ):
             db_session.commit()
 
@@ -163,20 +166,23 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ad_hoc_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='ad_hoc_orders_within_business_hours',
         ):
             db_session.commit()
 
     def test_scheduled_order_way_too_early(self, db_session, make_order):
         """Insert an instance with invalid data."""
         pre_order = make_order(
-            scheduled=True, scheduled_delivery_at=dt.datetime(*test_config.DATE, 10, 0),
+            scheduled=True,
+            scheduled_delivery_at=dt.datetime(*test_config.DATE, 10, 0),
         )
 
         db_session.add(pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='scheduled_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='scheduled_orders_within_business_hours',
         ):
             db_session.commit()
 
@@ -190,7 +196,8 @@ class TestConstraints:
         db_session.add(pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='scheduled_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='scheduled_orders_within_business_hours',
         ):
             db_session.commit()
 
@@ -214,25 +221,32 @@ class TestConstraints:
     def test_scheduled_order_too_late(self, db_session, make_order):
         """Insert an instance with invalid data."""
         pre_order = make_order(
-            scheduled=True, scheduled_delivery_at=dt.datetime(*test_config.DATE, 23, 0),
+            scheduled=True,
+            scheduled_delivery_at=dt.datetime(*test_config.DATE, 23, 0),
         )
 
         db_session.add(pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='scheduled_orders_within_business_hours',
+            sa_exc.IntegrityError,
+            match='scheduled_orders_within_business_hours',
         ):
             db_session.commit()
 
     @pytest.mark.parametrize('minute', [min_ for min_ in range(60) if min_ % 15 != 0])
     def test_scheduled_order_at_non_quarter_of_an_hour(
-        self, db_session, make_order, minute,
+        self,
+        db_session,
+        make_order,
+        minute,
     ):
         """Insert an instance with invalid data."""
         pre_order = make_order(
             scheduled=True,
             scheduled_delivery_at=dt.datetime(  # `minute` is not 0, 15, 30, or 45
-                *test_config.DATE, test_config.NOON, minute,
+                *test_config.DATE,
+                test_config.NOON,
+                minute,
             ),
         )
 
@@ -246,13 +260,19 @@ class TestConstraints:
 
     @pytest.mark.parametrize('second', list(range(1, 60)))
     def test_scheduled_order_at_non_quarter_of_an_hour_by_seconds(
-        self, db_session, make_order, second,
+        self,
+        db_session,
+        make_order,
+        second,
     ):
         """Insert an instance with invalid data."""
         pre_order = make_order(
             scheduled=True,
             scheduled_delivery_at=dt.datetime(
-                *test_config.DATE, test_config.NOON, 0, second,
+                *test_config.DATE,
+                test_config.NOON,
+                0,
+                second,
             ),
         )
 
@@ -288,7 +308,8 @@ class TestConstraints:
         db_session.add(pre_order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='scheduled_orders_not_within_30_minutes',
+            sa_exc.IntegrityError,
+            match='scheduled_orders_not_within_30_minutes',
         ):
             db_session.commit()
 
@@ -304,7 +325,8 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='only_cancelled_orders_may_have_cancelled_at',
+            sa_exc.IntegrityError,
+            match='only_cancelled_orders_may_have_cancelled_at',
         ):
             db_session.commit()
 
@@ -317,7 +339,8 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='cancelled_orders_must_not_be_delivered',
+            sa_exc.IntegrityError,
+            match='cancelled_orders_must_not_be_delivered',
         ):
             db_session.commit()
 
@@ -328,20 +351,25 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='between_0_and_2700',
+            sa_exc.IntegrityError,
+            match='between_0_and_2700',
         ):
             db_session.commit()
 
     @pytest.mark.parametrize('duration', [1, 59, 119, 2699])
     def test_estimated_prep_duration_not_whole_minute(
-        self, db_session, order, duration,
+        self,
+        db_session,
+        order,
+        duration,
     ):
         """Insert an instance with invalid data."""
         order.estimated_prep_duration = duration
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='must_be_whole_minutes',
+            sa_exc.IntegrityError,
+            match='must_be_whole_minutes',
         ):
             db_session.commit()
 
@@ -352,7 +380,8 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='between_0_and_900',
+            sa_exc.IntegrityError,
+            match='between_0_and_900',
         ):
             db_session.commit()
 
@@ -363,7 +392,8 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='must_be_whole_minutes',
+            sa_exc.IntegrityError,
+            match='must_be_whole_minutes',
         ):
             db_session.commit()
 
@@ -374,7 +404,8 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='between_0_and_100',
+            sa_exc.IntegrityError,
+            match='between_0_and_100',
         ):
             db_session.commit()
 
@@ -393,7 +424,10 @@ class TestConstraints:
         ],
     )
     def test_unset_timestamp_column_not_marked_as_uncorrected(  # noqa:WPS213
-        self, db_session, order, column,
+        self,
+        db_session,
+        order,
+        column,
     ):
         """Insert an instance with invalid data.
 
@@ -421,12 +455,15 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='corrections_only_for_set_value',
+            sa_exc.IntegrityError,
+            match='corrections_only_for_set_value',
         ):
             db_session.commit()
 
     def test_unset_timestamp_column_not_marked_as_uncorrected_special_case1(
-        self, db_session, order,
+        self,
+        db_session,
+        order,
     ):
         """Insert an instance with invalid data.
 
@@ -434,11 +471,15 @@ class TestConstraints:
         """
         order.pickup_not_confirmed = None
         self.test_unset_timestamp_column_not_marked_as_uncorrected(
-            db_session, order, 'pickup_at',
+            db_session,
+            order,
+            'pickup_at',
         )
 
     def test_unset_timestamp_column_not_marked_as_uncorrected_special_case2(
-        self, db_session, order,
+        self,
+        db_session,
+        order,
     ):
         """Insert an instance with invalid data.
 
@@ -447,7 +488,9 @@ class TestConstraints:
         order.delivery_not_confirmed = None
         order._courier_waited_at_delivery = None
         self.test_unset_timestamp_column_not_marked_as_uncorrected(
-            db_session, order, 'delivery_at',
+            db_session,
+            order,
+            'delivery_at',
         )
 
     @pytest.mark.parametrize(
@@ -465,7 +508,10 @@ class TestConstraints:
         ],
     )
     def test_set_timestamp_column_is_not_unmarked(  # noqa:WPS213
-        self, db_session, order, column,
+        self,
+        db_session,
+        order,
+        column,
     ):
         """Insert an instance with invalid data.
 
@@ -493,23 +539,30 @@ class TestConstraints:
         db_session.add(order)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='corrections_only_for_set_value',
+            sa_exc.IntegrityError,
+            match='corrections_only_for_set_value',
         ):
             db_session.commit()
 
     def test_set_timestamp_column_is_not_unmarked_special_case1(
-        self, db_session, pre_order,
+        self,
+        db_session,
+        pre_order,
     ):
         """Insert an instance with invalid data.
 
         This is one of two special cases. See the generic case above.
         """
         self.test_set_timestamp_column_is_not_unmarked(
-            db_session, pre_order, 'scheduled_delivery_at',
+            db_session,
+            pre_order,
+            'scheduled_delivery_at',
         )
 
     def test_set_timestamp_column_is_not_unmarked_special_case2(
-        self, db_session, order,
+        self,
+        db_session,
+        order,
     ):
         """Insert an instance with invalid data.
 
@@ -524,7 +577,9 @@ class TestConstraints:
         order._courier_waited_at_delivery = None
 
         self.test_set_timestamp_column_is_not_unmarked(
-            db_session, order, 'cancelled_at',
+            db_session,
+            order,
+            'cancelled_at',
         )
 
     @pytest.mark.parametrize(
@@ -575,7 +630,10 @@ class TestConstraints:
         ],
     )
     def test_timestamps_unordered(
-        self, db_session, order, comparison,
+        self,
+        db_session,
+        order,
+        comparison,
     ):
         """Insert an instance with invalid data.
 
@@ -604,7 +662,9 @@ class TestConstraints:
         # choose one second after a quarter of an hour.
         pre_order.placed_at = dt.datetime(*test_config.DATE, 11, 45, 1)
         self.test_timestamps_unordered(
-            db_session, pre_order, 'placed_at < scheduled_delivery_at',
+            db_session,
+            pre_order,
+            'placed_at < scheduled_delivery_at',
         )
 
     @pytest.mark.parametrize(
@@ -623,7 +683,10 @@ class TestConstraints:
         ],
     )
     def test_timestamps_unordered_cancelled(
-        self, db_session, order, comparison,
+        self,
+        db_session,
+        order,
+        comparison,
     ):
         """Insert an instance with invalid data.
 
@@ -1021,7 +1084,11 @@ class TestProperties:
 @pytest.mark.db
 @pytest.mark.no_cover
 def test_make_random_orders(  # noqa:C901,WPS211,WPS213
-    db_session, make_address, make_courier, make_restaurant, make_order,
+    db_session,
+    make_address,
+    make_courier,
+    make_restaurant,
+    make_order,
 ):
     """Sanity check the all the `make_*` fixtures.
 

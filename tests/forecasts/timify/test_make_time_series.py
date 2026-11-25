@@ -38,7 +38,11 @@ def bad_predict_at():
     """
     predict_day = test_config.END - datetime.timedelta(weeks=6, days=1)
     return datetime.datetime(
-        predict_day.year, predict_day.month, predict_day.day, test_config.NOON, 0,
+        predict_day.year,
+        predict_day.month,
+        predict_day.day,
+        test_config.NOON,
+        0,
     )
 
 
@@ -57,7 +61,11 @@ class TestMakeHorizontalTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_are_series(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The time series come as a `pd.Series`."""
         result = order_history.make_horizontal_ts(
@@ -75,7 +83,11 @@ class TestMakeHorizontalTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The length of a training time series must be a multiple of `7` ...
 
@@ -94,7 +106,11 @@ class TestMakeHorizontalTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_of_weekdays(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The `frequency` must be `7`."""
         result = order_history.make_horizontal_ts(
@@ -109,7 +125,11 @@ class TestMakeHorizontalTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_no_long_enough_history1(
-        self, order_history, good_pixel_id, bad_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        bad_predict_at,
+        train_horizon,
     ):
         """If the `predict_at` day is too early in the `START`-`END` horizon ...
 
@@ -123,7 +143,10 @@ class TestMakeHorizontalTimeSeries:
             )
 
     def test_no_long_enough_history2(
-        self, order_history, good_pixel_id, good_predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
     ):
         """If the `train_horizon` is longer than the `START`-`END` horizon ...
 
@@ -131,7 +154,9 @@ class TestMakeHorizontalTimeSeries:
         """
         with pytest.raises(RuntimeError):
             order_history.make_horizontal_ts(
-                pixel_id=good_pixel_id, predict_at=good_predict_at, train_horizon=999,
+                pixel_id=good_pixel_id,
+                predict_at=good_predict_at,
+                train_horizon=999,
             )
 
 
@@ -150,7 +175,11 @@ class TestMakeVerticalTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_are_series(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The time series come as `pd.Series`."""
         result = order_history.make_vertical_ts(
@@ -168,7 +197,11 @@ class TestMakeVerticalTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The length of a training time series is the product of the ...
 
@@ -197,7 +230,11 @@ class TestMakeVerticalTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_number_of_weekly_time_steps(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The `frequency` is the number of weekly time steps."""
         result = order_history.make_vertical_ts(
@@ -218,7 +255,11 @@ class TestMakeVerticalTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_no_long_enough_history1(
-        self, order_history, good_pixel_id, bad_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        bad_predict_at,
+        train_horizon,
     ):
         """If the `predict_at` day is too early in the `START`-`END` horizon ...
 
@@ -232,7 +273,10 @@ class TestMakeVerticalTimeSeries:
             )
 
     def test_no_long_enough_history2(
-        self, order_history, good_pixel_id, good_predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
     ):
         """If the `train_horizon` is longer than the `START`-`END` horizon ...
 
@@ -261,7 +305,11 @@ class TestMakeRealTimeTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_are_series(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The time series come as `pd.Series`."""
         result = order_history.make_realtime_ts(
@@ -279,7 +327,11 @@ class TestMakeRealTimeTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length1(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The length of a training time series is the product of the ...
 
@@ -297,7 +349,9 @@ class TestMakeRealTimeTimeSeries:
             0,
         )
         result = order_history.make_realtime_ts(
-            pixel_id=good_pixel_id, predict_at=predict_at, train_horizon=train_horizon,
+            pixel_id=good_pixel_id,
+            predict_at=predict_at,
+            train_horizon=train_horizon,
         )
 
         training_ts, _, actuals_ts = result
@@ -313,7 +367,11 @@ class TestMakeRealTimeTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length2(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The length of a training time series is the product of the ...
 
@@ -352,7 +410,11 @@ class TestMakeRealTimeTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_number_of_weekly_time_steps(
-        self, order_history, good_pixel_id, good_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
+        train_horizon,
     ):
         """The `frequency` is the number of weekly time steps."""
         result = order_history.make_realtime_ts(
@@ -373,7 +435,11 @@ class TestMakeRealTimeTimeSeries:
 
     @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
     def test_no_long_enough_history1(
-        self, order_history, good_pixel_id, bad_predict_at, train_horizon,
+        self,
+        order_history,
+        good_pixel_id,
+        bad_predict_at,
+        train_horizon,
     ):
         """If the `predict_at` day is too early in the `START`-`END` horizon ...
 
@@ -387,7 +453,10 @@ class TestMakeRealTimeTimeSeries:
             )
 
     def test_no_long_enough_history2(
-        self, order_history, good_pixel_id, good_predict_at,
+        self,
+        order_history,
+        good_pixel_id,
+        good_predict_at,
     ):
         """If the `train_horizon` is longer than the `START`-`END` horizon ...
 
@@ -395,5 +464,7 @@ class TestMakeRealTimeTimeSeries:
         """
         with pytest.raises(RuntimeError):
             order_history.make_realtime_ts(
-                pixel_id=good_pixel_id, predict_at=good_predict_at, train_horizon=999,
+                pixel_id=good_pixel_id,
+                predict_at=good_predict_at,
+                train_horizon=999,
             )

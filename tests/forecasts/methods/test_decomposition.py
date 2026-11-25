@@ -22,14 +22,18 @@ class TestInvalidArguments:
 
         with pytest.raises(ValueError, match='`NaN` values'):
             decomposition.stl(
-                time_series, frequency=test_config.VERTICAL_FREQUENCY_LONG, ns=NS,
+                time_series,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=NS,
             )
 
     def test_ns_not_odd(self, vertical_no_demand):
         """`ns` must be odd and `>= 7`."""
         with pytest.raises(ValueError, match='`ns`'):
             decomposition.stl(
-                vertical_no_demand, frequency=test_config.VERTICAL_FREQUENCY_LONG, ns=8,
+                vertical_no_demand,
+                frequency=test_config.VERTICAL_FREQUENCY_LONG,
+                ns=8,
             )
 
     @pytest.mark.parametrize('ns', [-99, -1, 1, 5])
@@ -197,7 +201,9 @@ class TestValidArguments:
     def test_structure_of_returned_dataframe(self, vertical_no_demand):
         """`stl()` returns a `pd.DataFrame` with three columns."""
         result = decomposition.stl(
-            vertical_no_demand, frequency=test_config.VERTICAL_FREQUENCY_LONG, ns=NS,
+            vertical_no_demand,
+            frequency=test_config.VERTICAL_FREQUENCY_LONG,
+            ns=NS,
         )
 
         assert isinstance(result, pd.DataFrame)
@@ -216,7 +222,18 @@ class TestValidArguments:
     @pytest.mark.parametrize('ni', [2, 3])
     @pytest.mark.parametrize('no', [0, 1])
     def test_decompose_time_series_with_no_demand(  # noqa:WPS211,WPS216
-        self, vertical_no_demand, nt, nl, ds, dt, dl, js, jt, jl, ni, no,  # noqa:WPS110
+        self,
+        vertical_no_demand,
+        nt,
+        nl,
+        ds,
+        dt,
+        dl,
+        js,
+        jt,
+        jl,
+        ni,
+        no,  # noqa:WPS110
     ):
         """Decomposing a time series with no demand ...
 

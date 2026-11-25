@@ -73,7 +73,8 @@ class TestMethods:
     def test_first_order_at_non_existing_pixel(self, order_history, good_pixel_id):
         """Test `OrderHistory.first_order_at()` with bad input."""
         with pytest.raises(
-            LookupError, match='`pixel_id` is not in the `grid`',
+            LookupError,
+            match='`pixel_id` is not in the `grid`',
         ):
             order_history.first_order_at(-1)
 
@@ -87,6 +88,7 @@ class TestMethods:
     def test_last_order_at_non_existing_pixel(self, order_history, good_pixel_id):
         """Test `OrderHistory.last_order_at()` with bad input."""
         with pytest.raises(
-            LookupError, match='`pixel_id` is not in the `grid`',
+            LookupError,
+            match='`pixel_id` is not in the `grid`',
         ):
             order_history.last_order_at(-1)

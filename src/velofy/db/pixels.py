@@ -36,7 +36,10 @@ class Pixel(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['grid_id'], ['grids.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['grid_id'],
+            ['grids.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         sa.CheckConstraint('0 <= n_x', name='n_x_is_positive'),
         sa.CheckConstraint('0 <= n_y', name='n_y_is_positive'),
@@ -54,7 +57,9 @@ class Pixel(meta.Base):
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}: ({x}|{y})>'.format(
-            cls=self.__class__.__name__, x=self.n_x, y=self.n_y,
+            cls=self.__class__.__name__,
+            x=self.n_x,
+            y=self.n_y,
         )
 
     # Convenience properties
@@ -81,7 +86,9 @@ class Pixel(meta.Base):
             self.grid.city.southwest.northing + ((self.n_y + 1) * self.side_length),
         )
         latitude, longitude = utm.to_latlon(
-            easting, northing, *self.grid.city.southwest.zone_details,
+            easting,
+            northing,
+            *self.grid.city.southwest.zone_details,
         )
 
         location = utils.Location(latitude, longitude)
@@ -101,7 +108,9 @@ class Pixel(meta.Base):
             self.grid.city.southwest.northing + (self.n_y * self.side_length),
         )
         latitude, longitude = utm.to_latlon(
-            easting, northing, *self.grid.city.southwest.zone_details,
+            easting,
+            northing,
+            *self.grid.city.southwest.zone_details,
         )
 
         location = utils.Location(latitude, longitude)
@@ -137,7 +146,9 @@ class Pixel(meta.Base):
         return self.grid.city.map
 
     def draw(  # noqa:C901,WPS210
-        self, restaurants: bool = True, order_counts: bool = False,  # pragma: no cover
+        self,
+        restaurants: bool = True,
+        order_counts: bool = False,  # pragma: no cover
     ) -> folium.Map:
         """Draw the pixel on the `.grid.city.map`.
 
@@ -248,7 +259,9 @@ class Pixel(meta.Base):
 
                 else:
                     address.draw(
-                        radius=1, color=config.RESTAURANT_COLOR, tooltip=tooltip,
+                        radius=1,
+                        color=config.RESTAURANT_COLOR,
+                        tooltip=tooltip,
                     )
 
         return self.map

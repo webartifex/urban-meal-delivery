@@ -25,7 +25,10 @@ from velofy.forecasts import timify
 @click.argument('train_horizon', default=8, type=int)
 @decorators.db_revision('8bfb928a31f8')
 def tactical_heuristic(  # noqa:C901,WPS213,WPS216
-    city: str, side_length: int, time_step: int, train_horizon: int,
+    city: str,
+    side_length: int,
+    time_step: int,
+    train_horizon: int,
 ) -> None:  # pragma: no cover
     """Predict demand for all pixels and days in a city.
 
@@ -125,7 +128,9 @@ def tactical_heuristic(  # noqa:C901,WPS213,WPS216
         while predict_day <= order_history.last_order_at(pixel_id=pixel.id).date():
             # ... and choose the most promising `*Model` for that day.
             model = order_history.choose_tactical_model(
-                pixel_id=pixel.id, predict_day=predict_day, train_horizon=train_horizon,
+                pixel_id=pixel.id,
+                predict_day=predict_day,
+                train_horizon=train_horizon,
             )
             click.echo(
                 f'Predicting pixel #{pixel.id} in {city} '
@@ -141,7 +146,9 @@ def tactical_heuristic(  # noqa:C901,WPS213,WPS216
             )
             while predict_at.hour < config.SERVICE_END:
                 model.make_forecast(
-                    pixel=pixel, predict_at=predict_at, train_horizon=train_horizon,
+                    pixel=pixel,
+                    predict_at=predict_at,
+                    train_horizon=train_horizon,
                 )
 
                 predict_at += dt.timedelta(minutes=time_step)

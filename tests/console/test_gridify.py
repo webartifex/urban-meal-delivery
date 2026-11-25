@@ -9,7 +9,13 @@ from velofy.console import gridify
 
 @pytest.mark.db
 def test_two_pixels_with_two_addresses(  # noqa:WPS211
-    cli, db_session, monkeypatch, city, make_address, make_restaurant, make_order,
+    cli,
+    db_session,
+    monkeypatch,
+    city,
+    make_address,
+    make_restaurant,
+    make_order,
 ):
     """Two `Address` objects in distinct `Pixel` objects.
 

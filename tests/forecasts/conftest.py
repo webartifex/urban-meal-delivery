@@ -50,7 +50,9 @@ def vertical_datetime_index():
     which is `12` for `LONG_TIME_STEP` values.
     """
     start_ats = pd.date_range(
-        test_config.START, test_config.END, freq=f'{test_config.LONG_TIME_STEP}T',
+        test_config.START,
+        test_config.END,
+        freq=f'{test_config.LONG_TIME_STEP}T',
     )
     gen = (
         start_at
@@ -103,7 +105,9 @@ def order_totals(good_pixel_id):
     pixel_ids = [good_pixel_id, good_pixel_id + 1]
 
     start_ats = pd.date_range(
-        test_config.START, test_config.END, freq=f'{test_config.LONG_TIME_STEP}T',
+        test_config.START,
+        test_config.END,
+        freq=f'{test_config.LONG_TIME_STEP}T',
     )
     gen = (
         (pixel_id, start_at)
