@@ -128,7 +128,6 @@ def lint(session):
         'flake8-black',
         'flake8-pytest-style',
         'mypy',
-        'wemake-python-styleguide',
     )
 
     # Interpret extra arguments as locations of source files.
