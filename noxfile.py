@@ -224,11 +224,6 @@ def test(session):
     forwarded to pytest and xdoctest without any changes.
     xdoctest ignores arguments it does not understand.
     """
-    # Re-using an old environment is not so easy here as
-    # `poetry install --no-dev` removes previously installed packages.
-    # We keep things simple and forbid such usage.
-    if session.virtualenv.reuse_existing:
-        raise RuntimeError('The "test" session must be run without the "-r" option')
 
     start(session)
 
@@ -336,10 +331,6 @@ def safety(session):
 @nox.session(python=MAIN_PYTHON)
 def docs(session):
     """Build the documentation with sphinx."""
-    # The latest version of the package needs to be installed
-    # so that sphinx's autodoc can include the latest docstrings.
-    if session.virtualenv.reuse_existing:
-        raise RuntimeError('The "docs" session must be run without the "-r" option')
 
     start(session)
 
@@ -369,12 +360,6 @@ def fast_ci_tests(session):
     achieved by running the tests in the local develop environment
     that has access to a database.
     """
-    # Re-using an old environment is not so easy here as the "test" session
-    # runs `poetry install --no-dev`, which removes previously installed packages.
-    if session.virtualenv.reuse_existing:
-        raise RuntimeError(
-            'The "ci-tests-fast" session must be run without the "-r" option',
-        )
 
     # Little hack to pass arguments to the "test" session.
     session.env['_fast_ci_tests'] = 'true'
@@ -397,12 +382,6 @@ def slow_ci_tests(session):
     achieved by running the tests in the local develop environment
     that has access to a database.
     """
-    # Re-using an old environment is not so easy here as the "test" session
-    # runs `poetry install --no-dev`, which removes previously installed packages.
-    if session.virtualenv.reuse_existing:
-        raise RuntimeError(
-            'The "ci-tests-slow" session must be run without the "-r" option',
-        )
 
     # Little hack to pass arguments to the "test" session.
     session.env['_slow_ci_tests'] = 'true'
@@ -420,12 +399,6 @@ def test_suite(session):
     Ignores the paths passed in by the pre-commit framework
     and runs the entire test suite.
     """
-    # Re-using an old environment is not so easy here as the "test" session
-    # runs `poetry install --no-dev`, which removes previously installed packages.
-    if session.virtualenv.reuse_existing:
-        raise RuntimeError(
-            'The "test-suite" session must be run without the "-r" option',
-        )
 
     # Little hack to not work with the extra arguments provided
     # by the pre-commit framework. Create a flag in the
@@ -631,14 +604,8 @@ def install_pinned(
     The developed package itself (i.e., ".") is only rebuilt
     if a file listed in the "cache-keys" in the "[tool.uv]" section
     in pyproject.toml changes; otherwise, `uv` re-uses a cached build.
-
-    IMPORTANT: This function skips installation if the current nox session
-    is run with the "-r" flag to re-use an existing virtual environment.
     """
-    if session.virtualenv.reuse_existing:
-        session.log(
-            'No dependencies are installed as an existing environment is re-used',
-        )
+    if skip_install(session):
         return
 
     with tempfile.NamedTemporaryFile(suffix='.txt') as constraints_txt:
@@ -658,6 +625,19 @@ def install_pinned(
             *packages_or_pip_args,
             **kwargs,
         )
+
+
+def skip_install(session: Session) -> bool:
+    """Installations may be skipped if a virtual environment can be reused.
+
+    Skipping package installations must be requested with the "-R" flag.
+    """
+    # Same logic to skip package installation as in core `nox`
+    # See: https://github.com/wntrblm/nox/blob/2024.10.09/nox/sessions.py#L816
+    venv = session._runner.venv
+    if session._runner.global_config.no_install and venv._reused:
+        return True
+    return False
 
 
 if MAIN_PYTHON not in SUPPORTED_PYTHONS:
