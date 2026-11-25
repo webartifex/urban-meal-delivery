@@ -126,6 +126,7 @@ def lint(session):
         'flake8',
         'flake8-annotations',
         'flake8-black',
+        'flake8-pyproject',
         'flake8-pytest-style',
         'mypy',
     )
@@ -133,6 +134,8 @@ def lint(session):
     # Interpret extra arguments as locations of source files.
     locations = session.posargs or SRC_LOCATIONS
 
+    # `flake8` reads the "[tool.flake8]" section in pyproject.toml
+    # only with the `flake8-pyproject` plugin installed
     session.run('flake8', '--version')
     session.run('flake8', *locations)
 
