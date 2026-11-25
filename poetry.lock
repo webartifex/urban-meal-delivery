@@ -3734,21 +3734,19 @@ testing = ["process-tests", "pytest-xdist", "virtualenv"]
 
 [[package]]
 name = "pytest-env"
-version = "1.1.5"
-description = "pytest plugin that allows you to add environment variables."
+version = "1.8.8"
+description = "Set environment variables for pytest sessions."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.11"
 groups = ["dev"]
 files = [
-    {file = "pytest_env-1.1.5-py3-none-any.whl", hash = "sha256:ce90cf8772878515c24b31cd97c7fa1f4481cd68d588419fd45f10ecaee6bc30"},
-    {file = "pytest_env-1.1.5.tar.gz", hash = "sha256:91209840aa0e43385073ac464a554ad2947cc2fd663a9debf88d03b01e0cc1cf"},
+    {file = "pytest_env-1.8.8-py3-none-any.whl", hash = "sha256:fa2ca73225081b7c926be23ca77716427377ea898afcaa02ca25d50a6e94f816"},
+    {file = "pytest_env-1.8.8.tar.gz", hash = "sha256:5ff0688eb64b43edc4e0a3b2c3e7931f76a5f2859d755ae9ddfe10851e41ceef"},
 ]
 
 [package.dependencies]
-pytest = ">=8.3.3"
-
-[package.extras]
-testing = ["covdefaults (>=2.3)", "coverage (>=7.6.1)", "pytest-mock (>=3.14)"]
+pytest = ">=9.1.1"
+python-dotenv = ">=1.2.4"
 
 [[package]]
 name = "pytest-mock"
@@ -3797,6 +3795,21 @@ files = [
 
 [package.dependencies]
 filelock = ">=3.16.1"
+
+[[package]]
+name = "python-dotenv"
+version = "1.2.4"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.10"
+groups = ["dev"]
+files = [
+    {file = "python_dotenv-1.2.4-py3-none-any.whl", hash = "sha256:42269a8a5b3fd54ffa6f3d84b18abed50064717576b4ecf03dc4a55d8aa04fdc"},
+    {file = "python_dotenv-1.2.4.tar.gz", hash = "sha256:f0d53e69935a851c0dcc78f3ab7aaccd8cabef0b92382b576b824212902873c0"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
 
 [[package]]
 name = "python-json-logger"
@@ -5325,4 +5338,4 @@ research = ["jupyterlab", "numpy", "pytz"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4.0"
-content-hash = "cea8d94fe87d16b679177a7f34e0b53aac77650c8b7a5c021d4b06a5b2d8b4ac"
+content-hash = "fb96b8d9785885e267e0eb6cb1a9dd4ba6446239a6404bda03395e62c500438e"
