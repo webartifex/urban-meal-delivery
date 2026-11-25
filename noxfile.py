@@ -106,9 +106,8 @@ def format_(session):
     session.run('black', '--version')
     session.run('black', *locations)
 
-    with _isort_fix(session):  # TODO (isort): Remove after upgrading
-        session.run('isort', '--version')
-        session.run('isort', *locations)
+    session.run('isort', '--version')
+    session.run('isort', *locations)
 
 
 @nox.session(python=PYTHON)
@@ -138,9 +137,8 @@ def lint(session):
     session.run('flake8', '--version')
     session.run('flake8', '--ignore=I0', *locations)  # TODO (isort): Remove flag
 
-    with _isort_fix(session):  # TODO (isort): Remove after upgrading
-        session.run('isort', '--version')
-        session.run('isort', '--check-only', *locations)
+    session.run('isort', '--version')
+    session.run('isort', '--check-only', *locations)
 
     # For mypy, only lint *.py files to be packaged.
     mypy_locations = [
@@ -585,15 +583,3 @@ def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) ->
             *packages_or_pip_args,
             **kwargs,
         )
-
-
-# TODO (isort): Remove this fix after
-# upgrading to isort ^5.5.4 in pyproject.toml.
-@contextlib.contextmanager
-def _isort_fix(session):
-    """Temporarily upgrade to isort 5.5.4."""
-    session.install('isort==5.5.4')
-    try:
-        yield
-    finally:
-        session.install('isort==4.3.21')
