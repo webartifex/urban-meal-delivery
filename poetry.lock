@@ -1107,19 +1107,22 @@ doc = ["Sphinx", "sphinx-rtd-theme", "sphinxcontrib-spelling"]
 
 [[package]]
 name = "faker"
-version = "35.2.2"
+version = "40.63.0"
 description = "Faker is a Python package that generates fake data for you."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "Faker-35.2.2-py3-none-any.whl", hash = "sha256:94216ce3d8affdc0a8fd0ea8219c184c346a1dcf07b03f193e52f3116186621e"},
-    {file = "faker-35.2.2.tar.gz", hash = "sha256:0a79ebe8f0ea803f7bd288d51e2d445b86035a2480e048daee1bffbd4d69b32b"},
+    {file = "faker-40.63.0-py3-none-any.whl", hash = "sha256:36627c20b575b4138f54b6c21f8703e9ab122fd487aca11319beec2aa6ca7232"},
+    {file = "faker-40.63.0.tar.gz", hash = "sha256:6c5a09bfb17b3a5fa29f349a2ea86ec5af959df95ec71adc831268adfccc9d62"},
 ]
 
 [package.dependencies]
-python-dateutil = ">=2.4"
-typing-extensions = "*"
+tzdata = {version = "*", markers = "platform_system == \"Windows\""}
+
+[package.extras]
+image = ["pillow"]
+tzdata = ["tzdata"]
 
 [[package]]
 name = "fastjsonschema"
@@ -5047,4 +5050,4 @@ research = ["jupyterlab", "numpy", "pytz"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4.0"
-content-hash = "0b46413f07dbf5aa69a50176d15d46ae8720a11c1e49c2abd9921800c1c18399"
+content-hash = "de9508de1641521b71aff155e4f1e527b52faa338eebbaa8a45281c6b07d570a"
