@@ -134,7 +134,7 @@ def lint(session):
     locations = session.posargs or SRC_LOCATIONS
 
     session.run('flake8', '--version')
-    session.run('flake8', '--ignore=I0', *locations)  # TODO (isort): Remove flag
+    session.run('flake8', *locations)
 
     session.run('isort', '--version')
     session.run('isort', '--check-only', *locations)
