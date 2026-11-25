@@ -65,10 +65,10 @@ class TestCLIWithoutCommand:
 
     @pytest.mark.no_cover
     def test_no_options(self, cli):
-        """Exit with 0 status code and no output if run without options."""
+        """Exit with 2 status code (usage error) if run without options."""
         result = cli.invoke(main.entry_point)
 
-        assert result.exit_code == 0
+        assert result.exit_code == 2
 
     # The following test cases validate the --version / -V option.
 

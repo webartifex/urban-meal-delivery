@@ -31,7 +31,7 @@ requires-python = ">=3.13,<4.0"
 dependencies = [
     "Shapely>=1.7.1,<2.1",
     "alembic>=1.4.2",
-    "click>=7.1.2,<8.2",
+    "click>=7.1.2",
     "folium>=0.12.1,<0.19",
     "geopy>=2.1.0,<3",
     "googlemaps>=4.4.2,<5",
