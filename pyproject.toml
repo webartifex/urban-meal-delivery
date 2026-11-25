@@ -91,7 +91,7 @@ isort = ">=4.3.21,<6"
 
 # Code Analyzers
 flake8 = ">=3.8.3"
-flake8-annotations = ">=2.3.0,<3"
+flake8-annotations = ">=2.3.0"
 flake8-black = ">=0.2.1"
 flake8-pytest-style = ">=1.2.2,<2"
 mypy = ">=0.782,<1.15"
