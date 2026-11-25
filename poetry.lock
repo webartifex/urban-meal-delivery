@@ -5260,14 +5260,14 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 
 [[package]]
 name = "utm"
-version = "0.8.1"
+version = "0.9.0"
 description = "Bidirectional UTM-WGS84 converter for python"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "utm-0.8.1-py3-none-any.whl", hash = "sha256:e3d5e224082af138e40851dcaad08d7f99da1cc4b5c413a7de34eabee35f434a"},
-    {file = "utm-0.8.1.tar.gz", hash = "sha256:634d5b6221570ddc6a1e94afa5c51bae92bcead811ddc5c9bc0a20b847c2dafa"},
+    {file = "utm-0.9.0-py3-none-any.whl", hash = "sha256:767592281e457dfacd71323ac69ff38e2f290d74526af91ca0924637de0e1d53"},
+    {file = "utm-0.9.0.tar.gz", hash = "sha256:1c8ffa6032631379374ceef05e6fea0ad42e9f09be0c3f91f7cc1b23f27be8a7"},
 ]
 
 [[package]]
@@ -5570,4 +5570,4 @@ research = ["jupyterlab", "numpy", "pytz"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4.0"
-content-hash = "2a7e87a6502b344acbeae28717ff62b992a5168bbc06f0a5e92a5d0d743cc1f3"
+content-hash = "aaec31f7ca506bb17856c4f2fc9412a30f6c3e2c4126a82410ef38aeecac6139"

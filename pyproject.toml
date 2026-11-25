@@ -42,7 +42,7 @@ dependencies = [
     "rpy2>=3.4.1,<4",
     "sqlalchemy>=1.3.18",
     "statsmodels>=0.12.1",
-    "utm>=0.7.0,<0.9",
+    "utm>=0.7.0",
 ]
 
 
