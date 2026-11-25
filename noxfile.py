@@ -145,7 +145,7 @@ def format_(session):
     If no extra arguments are provided, all source files are formatted.
     Otherwise, they are interpreted as paths the formatters work on recursively.
     """
-    _begin(session)
+    start(session)
 
     # The formatting tools do not require the developed
     # package be installed in the virtual environment.
@@ -173,7 +173,7 @@ def lint(session):
     If no extra arguments are provided, all source files are linted.
     Otherwise, they are interpreted as paths the linters work on recursively.
     """
-    _begin(session)
+    start(session)
 
     # The linting tools do not require the developed
     # package be installed in the virtual environment.
@@ -230,7 +230,7 @@ def test(session):
     if session.virtualenv.reuse_existing:
         raise RuntimeError('The "test" session must be run without the "-r" option')
 
-    _begin(session)
+    start(session)
 
     # The testing tools require the developed package and its
     # non-develop dependencies be installed in the virtual environment.
@@ -310,7 +310,7 @@ def test(session):
 @nox.session(python=MAIN_PYTHON)
 def safety(session):
     """Check the dependencies for known security vulnerabilities."""
-    _begin(session)
+    start(session)
 
     # We do not pin the version of `safety` to always check with
     # the latest version. The risk this breaks the CI is rather low.
@@ -341,7 +341,7 @@ def docs(session):
     if session.virtualenv.reuse_existing:
         raise RuntimeError('The "docs" session must be run without the "-r" option')
 
-    _begin(session)
+    start(session)
 
     # The documentation tools require the developed package and its
     # non-develop dependencies be installed in the virtual environment.
@@ -583,21 +583,37 @@ def clean_pwd(session):
             session.run('rm', '-rf', path)
 
 
-def _begin(session):
+def start(session: Session) -> None:
     """Show generic info about a session."""
     if session.posargs:
-        # Part of the hack in pre_merge() to "drop" the extra arguments.
-        # Indicate to stdout that the passed in extra arguments are ignored.
-        if session.env.get('_drop_posargs') is None:
-            print('Provided extra argument(s):', *session.posargs)  # noqa:WPS421
-        else:
-            print('The provided extra arguments are ignored')  # noqa:WPS421
+        session.debug(f'Received extra arguments: {session.posargs}')
 
+    session.debug('Some generic information about the environment')
     session.run('python', '--version')
+    session.run('python', '-c', 'import sys; print(sys.executable)')
+    session.run('python', '-c', 'import sys; print(sys.path)')
+    session.run('python', '-c', 'import os; print(os.getcwd())')
+    session.run('python', '-c', 'import os; print(os.environ["PATH"])')
 
-    # Fake GNU's pwd.
-    session.log('pwd')
-    print(os.getcwd())  # noqa:WPS421
+    session.env['BLACK_CACHE_DIR'] = '.cache/black'
+
+    session.run(
+        'mkdir',
+        '-p',
+        *(
+            f'.cache/{dir_}'
+            for dir_ in (
+                'black',
+                'coverage',
+                'mypy',
+                'nox',
+                'pytest',
+                'tmp',
+            )
+        ),
+        external=True,
+        log=False,
+    )
 
 
 def install_pinned(
