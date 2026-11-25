@@ -46,7 +46,10 @@ class Forecast(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['pixel_id'], ['pixels.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['pixel_id'],
+            ['pixels.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         sa.CheckConstraint(
             """
@@ -63,7 +66,8 @@ class Forecast(meta.Base):
             name='start_at_minutes_must_be_quarters_of_the_hour',
         ),
         sa.CheckConstraint(
-            'EXTRACT(SECONDS FROM start_at) = 0', name='start_at_allows_no_seconds',
+            'EXTRACT(SECONDS FROM start_at) = 0',
+            name='start_at_allows_no_seconds',
         ),
         sa.CheckConstraint(
             'CAST(EXTRACT(MICROSECONDS FROM start_at) AS INTEGER) % 1000000 = 0',
@@ -71,7 +75,8 @@ class Forecast(meta.Base):
         ),
         sa.CheckConstraint('time_step > 0', name='time_step_must_be_positive'),
         sa.CheckConstraint(
-            'train_horizon > 0', name='training_horizon_must_be_positive',
+            'train_horizon > 0',
+            name='training_horizon_must_be_positive',
         ),
         sa.CheckConstraint('actual >= 0', name='actuals_must_be_non_negative'),
         sa.CheckConstraint(
@@ -124,7 +129,11 @@ class Forecast(meta.Base):
         ),
         # There can be only one prediction per forecasting setting.
         sa.UniqueConstraint(
-            'pixel_id', 'start_at', 'time_step', 'train_horizon', 'model',
+            'pixel_id',
+            'start_at',
+            'time_step',
+            'train_horizon',
+            'model',
         ),
     )
 

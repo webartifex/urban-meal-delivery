@@ -7,7 +7,8 @@ from matplotlib import colors
 
 
 def make_random_cmap(
-    n_colors: int, bright: bool = True,  # pragma: no cover
+    n_colors: int,
+    bright: bool = True,  # pragma: no cover
 ) -> colors.LinearSegmentedColormap:
     """Create a random `Colormap` with `n_colors` different colors.
 
@@ -48,7 +49,9 @@ def make_random_cmap(
         ]
 
     return colors.LinearSegmentedColormap.from_list(
-        'random_color_map', rgb_colors, N=n_colors,
+        'random_color_map',
+        rgb_colors,
+        N=n_colors,
     )
 
 

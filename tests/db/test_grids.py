@@ -44,7 +44,8 @@ class TestConstraints:
         stmt = sqla.delete(db.City).where(db.City.id == grid.city.id)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='fk_grids_to_cities_via_city_id',
+            sa_exc.IntegrityError,
+            match='fk_grids_to_cities_via_city_id',
         ):
             db_session.execute(stmt)
 
@@ -206,7 +207,13 @@ class TestGridification:
     @pytest.mark.no_cover
     @pytest.mark.parametrize('side_length', [250, 500, 1_000, 2_000, 4_000, 8_000])
     def test_make_random_grids(  # noqa:WPS211,WPS218
-        self, db_session, city, make_address, make_restaurant, make_order, side_length,
+        self,
+        db_session,
+        city,
+        make_address,
+        make_restaurant,
+        make_order,
+        side_length,
     ):
         """With 100 random `Address` objects, a grid must have ...
 

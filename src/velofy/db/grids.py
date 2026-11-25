@@ -23,7 +23,9 @@ class Grid(meta.Base):
 
     # Columns
     id = sa.Column(  # noqa:WPS125
-        sa.SmallInteger, primary_key=True, autoincrement=True,
+        sa.SmallInteger,
+        primary_key=True,
+        autoincrement=True,
     )
     city_id = sa.Column(sa.SmallInteger, nullable=False)
     side_length = sa.Column(sa.SmallInteger, nullable=False, unique=True)
@@ -31,7 +33,10 @@ class Grid(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['city_id'], ['cities.id'], onupdate='RESTRICT', ondelete='RESTRICT',
+            ['city_id'],
+            ['cities.id'],
+            onupdate='RESTRICT',
+            ondelete='RESTRICT',
         ),
         # Each `Grid`, characterized by its `.side_length`,
         # may only exists once for a given `.city`.
@@ -47,14 +52,15 @@ class Grid(meta.Base):
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}: {area} sqr. km>'.format(
-            cls=self.__class__.__name__, area=self.pixel_area,
+            cls=self.__class__.__name__,
+            area=self.pixel_area,
         )
 
     # Convenience properties
     @property
     def pixel_area(self) -> float:
         """The area of a `Pixel` on the grid in square kilometers."""
-        return round((self.side_length ** 2) / 1_000_000, 1)
+        return round((self.side_length**2) / 1_000_000, 1)
 
     @classmethod
     def gridify(cls, city: db.City, side_length: int) -> db.Grid:  # noqa:WPS210

@@ -57,7 +57,8 @@ class TestAggregateOrders:
         assert len(restaurant.orders) == 0  # noqa:WPS507  sanity check
 
         oh = timify.OrderHistory(
-            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+            grid=one_pixel_grid,
+            time_step=test_config.LONG_TIME_STEP,
         )
 
         result = oh.aggregate_orders()
@@ -65,7 +66,11 @@ class TestAggregateOrders:
         assert len(result) == 0  # noqa:WPS507
 
     def test_evenly_distributed_ad_hoc_orders(
-        self, db_session, one_pixel_grid, restaurant, make_order,
+        self,
+        db_session,
+        one_pixel_grid,
+        restaurant,
+        make_order,
     ):
         """12 ad-hoc orders, one per operating hour."""
         # Create one order per hour and 12 orders in total.
@@ -82,7 +87,8 @@ class TestAggregateOrders:
         assert len(restaurant.orders) == 12  # sanity check
 
         oh = timify.OrderHistory(
-            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+            grid=one_pixel_grid,
+            time_step=test_config.LONG_TIME_STEP,
         )
 
         result = oh.aggregate_orders()
@@ -94,7 +100,11 @@ class TestAggregateOrders:
         assert result['n_orders'].sum() == 12
 
     def test_evenly_distributed_ad_hoc_orders_with_no_demand_late(  # noqa:WPS218
-        self, db_session, one_pixel_grid, restaurant, make_order,
+        self,
+        db_session,
+        one_pixel_grid,
+        restaurant,
+        make_order,
     ):
         """10 ad-hoc orders, one per hour, no orders after 21."""
         # Create one order per hour and 10 orders in total.
@@ -111,7 +121,8 @@ class TestAggregateOrders:
         assert len(restaurant.orders) == 10  # sanity check
 
         oh = timify.OrderHistory(
-            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+            grid=one_pixel_grid,
+            time_step=test_config.LONG_TIME_STEP,
         )
 
         result = oh.aggregate_orders()
@@ -125,7 +136,11 @@ class TestAggregateOrders:
         assert result.iloc[10:]['n_orders'].sum() == 0
 
     def test_one_ad_hoc_order_every_other_hour(
-        self, db_session, one_pixel_grid, restaurant, make_order,
+        self,
+        db_session,
+        one_pixel_grid,
+        restaurant,
+        make_order,
     ):
         """6 ad-hoc orders, one every other hour."""
         # Create one order every other hour.
@@ -142,7 +157,8 @@ class TestAggregateOrders:
         assert len(restaurant.orders) == 6  # sanity check
 
         oh = timify.OrderHistory(
-            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+            grid=one_pixel_grid,
+            time_step=test_config.LONG_TIME_STEP,
         )
 
         result = oh.aggregate_orders()
@@ -154,7 +170,11 @@ class TestAggregateOrders:
         assert result['n_orders'].sum() == 6
 
     def test_one_ad_hoc_and_one_pre_order(
-        self, db_session, one_pixel_grid, restaurant, make_order,
+        self,
+        db_session,
+        one_pixel_grid,
+        restaurant,
+        make_order,
     ):
         """1 ad-hoc and 1 scheduled order.
 
@@ -180,7 +200,8 @@ class TestAggregateOrders:
         assert len(restaurant.orders) == 2  # sanity check
 
         oh = timify.OrderHistory(
-            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+            grid=one_pixel_grid,
+            time_step=test_config.LONG_TIME_STEP,
         )
 
         result = oh.aggregate_orders()
@@ -192,7 +213,11 @@ class TestAggregateOrders:
         assert result['n_orders'].sum() == 1
 
     def test_evenly_distributed_ad_hoc_orders_with_half_hour_time_steps(  # noqa:WPS218
-        self, db_session, one_pixel_grid, restaurant, make_order,
+        self,
+        db_session,
+        one_pixel_grid,
+        restaurant,
+        make_order,
     ):
         """12 ad-hoc orders, one per hour, with 30 minute time windows.
 
@@ -212,7 +237,8 @@ class TestAggregateOrders:
         assert len(restaurant.orders) == 12  # sanity check
 
         oh = timify.OrderHistory(
-            grid=one_pixel_grid, time_step=test_config.SHORT_TIME_STEP,
+            grid=one_pixel_grid,
+            time_step=test_config.SHORT_TIME_STEP,
         )
 
         result = oh.aggregate_orders()
@@ -226,7 +252,11 @@ class TestAggregateOrders:
         assert result.iloc[1::2]['n_orders'].sum() == 0
 
     def test_ad_hoc_orders_over_two_days(
-        self, db_session, one_pixel_grid, restaurant, make_order,
+        self,
+        db_session,
+        one_pixel_grid,
+        restaurant,
+        make_order,
     ):
         """First day 12 ad-hoc orders, one per operating hour ...
 
@@ -262,7 +292,8 @@ class TestAggregateOrders:
         assert len(restaurant.orders) == 18  # sanity check
 
         oh = timify.OrderHistory(
-            grid=one_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+            grid=one_pixel_grid,
+            time_step=test_config.LONG_TIME_STEP,
         )
 
         result = oh.aggregate_orders()
@@ -275,7 +306,12 @@ class TestAggregateOrders:
 
     @pytest.fixture
     def two_pixel_grid(  # noqa:WPS211
-        self, db_session, city, make_address, make_restaurant, addresses_mock,
+        self,
+        db_session,
+        city,
+        make_address,
+        make_restaurant,
+        addresses_mock,
     ):
         """A persisted `Grid` with two `Pixel` objects."""
         # One `Address` in the lower-left `Pixel`, ...
@@ -301,7 +337,10 @@ class TestAggregateOrders:
         return grid
 
     def test_two_pixels_with_shifted_orders(  # noqa:WPS218
-        self, db_session, two_pixel_grid, make_order,
+        self,
+        db_session,
+        two_pixel_grid,
+        make_order,
     ):
         """One restaurant with one order every other hour ...
 
@@ -356,7 +395,8 @@ class TestAggregateOrders:
         assert len(restaurant2.orders) == 24
 
         oh = timify.OrderHistory(
-            grid=two_pixel_grid, time_step=test_config.LONG_TIME_STEP,
+            grid=two_pixel_grid,
+            time_step=test_config.LONG_TIME_STEP,
         )
 
         result = oh.aggregate_orders()

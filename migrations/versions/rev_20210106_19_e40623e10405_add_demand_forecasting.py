@@ -64,7 +64,8 @@ def upgrade():
             name=op.f('ck_forecasts_on_start_at_allows_no_seconds'),
         ),
         sa.CheckConstraint(
-            'time_step > 0', name=op.f('ck_forecasts_on_time_step_must_be_positive'),
+            'time_step > 0',
+            name=op.f('ck_forecasts_on_time_step_must_be_positive'),
         ),
         sa.CheckConstraint(
             'training_horizon > 0',

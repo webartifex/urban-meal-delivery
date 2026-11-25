@@ -44,7 +44,8 @@ class TestConstraints:
         stmt = sqla.delete(db.Grid).where(db.Grid.id == pixel.grid.id)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='fk_pixels_to_grids_via_grid_id',
+            sa_exc.IntegrityError,
+            match='fk_pixels_to_grids_via_grid_id',
         ):
             db_session.execute(stmt)
 

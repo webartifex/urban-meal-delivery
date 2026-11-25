@@ -1,6 +1,5 @@
 """Factory to create `Courier` instances."""
 
-
 import factory
 from factory import alchemy
 

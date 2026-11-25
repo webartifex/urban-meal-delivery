@@ -22,7 +22,8 @@ class Customer(meta.Base):
     def __repr__(self) -> str:
         """Non-literal text representation."""
         return '<{cls}(#{customer_id})>'.format(
-            cls=self.__class__.__name__, customer_id=self.id,
+            cls=self.__class__.__name__,
+            customer_id=self.id,
         )
 
     # Relationships
@@ -43,7 +44,9 @@ class Customer(meta.Base):
         return self.orders[0].pickup_address.city.map  # noqa:WPS219
 
     def draw(  # noqa:C901,WPS210
-        self, restaurants: bool = True, order_counts: bool = False,  # pragma: no cover
+        self,
+        restaurants: bool = True,
+        order_counts: bool = False,  # pragma: no cover
     ) -> folium.Map:
         """Draw all the customer's delivery addresses on the `...city.map`.
 
@@ -110,7 +113,8 @@ class Customer(meta.Base):
 
             else:
                 address.draw(
-                    radius=1, color=config.CUSTOMER_COLOR,
+                    radius=1,
+                    color=config.CUSTOMER_COLOR,
                 )
 
         if restaurants:
@@ -178,7 +182,9 @@ class Customer(meta.Base):
 
                 else:
                     address.draw(  # noqa:WPS441
-                        radius=1, color=config.RESTAURANT_COLOR, tooltip=tooltip,
+                        radius=1,
+                        color=config.RESTAURANT_COLOR,
+                        tooltip=tooltip,
                     )
 
         return self.map

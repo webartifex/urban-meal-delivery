@@ -46,7 +46,8 @@ class TestConstraints:
         db_session.delete(address)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='fk_addresses_to_addresses_via_primary_id',
+            sa_exc.IntegrityError,
+            match='fk_addresses_to_addresses_via_primary_id',
         ):
             db_session.commit()
 
@@ -59,7 +60,8 @@ class TestConstraints:
         stmt = sqla.delete(db.City).where(db.City.id == address.city.id)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='fk_addresses_to_cities_via_city_id',
+            sa_exc.IntegrityError,
+            match='fk_addresses_to_cities_via_city_id',
         ):
             db_session.execute(stmt)
 
@@ -70,7 +72,8 @@ class TestConstraints:
         db_session.add(address)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='latitude_between_90_degrees',
+            sa_exc.IntegrityError,
+            match='latitude_between_90_degrees',
         ):
             db_session.commit()
 
@@ -81,7 +84,8 @@ class TestConstraints:
         db_session.add(address)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='longitude_between_180_degrees',
+            sa_exc.IntegrityError,
+            match='longitude_between_180_degrees',
         ):
             db_session.commit()
 

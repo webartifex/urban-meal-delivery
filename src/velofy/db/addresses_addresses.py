@@ -73,14 +73,16 @@ class Path(meta.Base):
             name='distances_are_symmetric_for_bicycles',
         ),
         sa.CheckConstraint(
-            '0 <= air_distance AND air_distance < 20000', name='realistic_air_distance',
+            '0 <= air_distance AND air_distance < 20000',
+            name='realistic_air_distance',
         ),
         sa.CheckConstraint(
             'bicycle_distance < 25000',  # `.bicycle_distance` may not be negative
             name='realistic_bicycle_distance',  # due to the constraint below.
         ),
         sa.CheckConstraint(
-            'air_distance <= bicycle_distance', name='air_distance_is_shortest',
+            'air_distance <= bicycle_distance',
+            name='air_distance_is_shortest',
         ),
         sa.CheckConstraint(
             '0 <= bicycle_duration AND bicycle_duration <= 3600',
@@ -90,7 +92,8 @@ class Path(meta.Base):
 
     # Relationships
     first_address = orm.relationship(
-        'Address', foreign_keys='[Path.first_address_id, Path.city_id]',
+        'Address',
+        foreign_keys='[Path.first_address_id, Path.city_id]',
     )
     second_address = orm.relationship(
         'Address',
@@ -100,7 +103,9 @@ class Path(meta.Base):
 
     @classmethod
     def from_addresses(
-        cls, *addresses: db.Address, google_maps: bool = False,
+        cls,
+        *addresses: db.Address,
+        google_maps: bool = False,
     ) -> List[Path]:
         """Calculate pair-wise paths for `Address` objects.
 
@@ -138,7 +143,8 @@ class Path(meta.Base):
             # ... create a new one.
             if path is None:
                 air_distance = geo_distance.great_circle(
-                    first.location.lat_lng, second.location.lat_lng,
+                    first.location.lat_lng,
+                    second.location.lat_lng,
                 )
 
                 path = cls(
@@ -174,7 +180,9 @@ class Path(meta.Base):
             path
         """
         return cls.from_addresses(
-            order.pickup_address, order.delivery_address, google_maps=google_maps,
+            order.pickup_address,
+            order.delivery_address,
+            google_maps=google_maps,
         )[0]
 
     def sync_with_google_maps(self) -> None:

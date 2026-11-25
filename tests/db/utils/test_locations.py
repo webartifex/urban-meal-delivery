@@ -80,7 +80,9 @@ class TestSpecialMethods:
         assert result is False
 
     def test_compare_utm_coordinates_to_far_away_coordinates(
-        self, location, faraway_location,
+        self,
+        location,
+        faraway_location,
     ):
         """Test `Location.__eq__()`."""
         with pytest.raises(ValueError, match='must be in the same zone'):
@@ -173,7 +175,9 @@ class TestRelateTo:
             location.relate_to(object())
 
     def test_call_relate_to_with_far_away_other(
-        self, location, faraway_location,
+        self,
+        location,
+        faraway_location,
     ):
         """The `other` origin must be in the same UTM zone."""
         with pytest.raises(ValueError, match='must be in the same zone'):

@@ -21,14 +21,24 @@ def forecast_interval():
     """
     future_day = test_config.END.date() + dt.timedelta(days=1)
     first_start_at = dt.datetime(
-        future_day.year, future_day.month, future_day.day, config.SERVICE_START, 0,
+        future_day.year,
+        future_day.month,
+        future_day.day,
+        config.SERVICE_START,
+        0,
     )
     end_of_day = dt.datetime(
-        future_day.year, future_day.month, future_day.day, config.SERVICE_END, 0,
+        future_day.year,
+        future_day.month,
+        future_day.day,
+        config.SERVICE_END,
+        0,
     )
 
     start_ats = pd.date_range(
-        first_start_at, end_of_day, freq=f'{test_config.LONG_TIME_STEP}T',
+        first_start_at,
+        end_of_day,
+        freq=f'{test_config.LONG_TIME_STEP}T',
     )
     gen = (
         start_at
@@ -48,7 +58,11 @@ def forecast_time_step():
     future_day = test_config.END.date() + dt.timedelta(days=1)
 
     start_at = dt.datetime(
-        future_day.year, future_day.month, future_day.day, test_config.NOON, 0,
+        future_day.year,
+        future_day.month,
+        future_day.day,
+        test_config.NOON,
+        0,
     )
 
     index = pd.Index([start_at])
@@ -59,13 +73,17 @@ def forecast_time_step():
 
 @pytest.mark.r
 @pytest.mark.parametrize(
-    'func', [arima.predict, ets.predict, extrapolate_season.predict],
+    'func',
+    [arima.predict, ets.predict, extrapolate_season.predict],
 )
 class TestMakePredictions:
     """Make predictions with `arima.predict()` and `ets.predict()`."""
 
     def test_training_data_contains_nan_values(
-        self, func, vertical_no_demand, forecast_interval,
+        self,
+        func,
+        vertical_no_demand,
+        forecast_interval,
     ):
         """`training_ts` must not contain `NaN` values."""
         vertical_no_demand.iloc[0] = pd.NA
@@ -78,7 +96,10 @@ class TestMakePredictions:
             )
 
     def test_structure_of_returned_dataframe(
-        self, func, vertical_no_demand, forecast_interval,
+        self,
+        func,
+        vertical_no_demand,
+        forecast_interval,
     ):
         """Both `.predict()` return a `pd.DataFrame` with five columns."""
         result = func(
@@ -97,7 +118,10 @@ class TestMakePredictions:
         ]
 
     def test_predict_horizontal_time_series_with_no_demand(
-        self, func, horizontal_no_demand, forecast_time_step,
+        self,
+        func,
+        horizontal_no_demand,
+        forecast_time_step,
     ):
         """Predicting a horizontal time series with no demand ...
 
@@ -114,7 +138,10 @@ class TestMakePredictions:
         assert result == 0
 
     def test_predict_vertical_time_series_with_no_demand(
-        self, func, vertical_no_demand, forecast_interval,
+        self,
+        func,
+        vertical_no_demand,
+        forecast_interval,
     ):
         """Predicting a vertical time series with no demand ...
 

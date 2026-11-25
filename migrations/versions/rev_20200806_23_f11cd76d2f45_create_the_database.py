@@ -78,7 +78,8 @@ def upgrade():
             name=op.f('ck_couriers_on_realistic_pay_per_order'),
         ),
         sa.CheckConstraint(
-            '0 <= speed AND speed <= 30', name=op.f('ck_couriers_on_realistic_speed'),
+            '0 <= speed AND speed <= 30',
+            name=op.f('ck_couriers_on_realistic_speed'),
         ),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_couriers')),
         *(
@@ -124,7 +125,8 @@ def upgrade():
             name=op.f('ck_addresses_on_latitude_between_90_degrees'),
         ),
         sa.CheckConstraint(
-            '0 <= floor AND floor <= 40', name=op.f('ck_addresses_on_realistic_floor'),
+            '0 <= floor AND floor <= 40',
+            name=op.f('ck_addresses_on_realistic_floor'),
         ),
         sa.CheckConstraint(
             '30000 <= zip_code AND zip_code <= 99999',
@@ -378,7 +380,8 @@ def upgrade():
             name=op.f('ck_orders_on_ordered_timestamps_19'),
         ),
         sa.CheckConstraint(
-            'cancelled_at > pickup_at', name=op.f('ck_orders_on_ordered_timestamps_18'),
+            'cancelled_at > pickup_at',
+            name=op.f('ck_orders_on_ordered_timestamps_18'),
         ),
         sa.CheckConstraint(
             'cancelled_at > reached_delivery_at',
@@ -457,7 +460,8 @@ def upgrade():
             name=op.f('ck_orders_on_ordered_timestamps_29'),
         ),
         sa.CheckConstraint(
-            'dispatch_at < pickup_at', name=op.f('ck_orders_on_ordered_timestamps_28'),
+            'dispatch_at < pickup_at',
+            name=op.f('ck_orders_on_ordered_timestamps_28'),
         ),
         sa.CheckConstraint(
             'dispatch_at < reached_delivery_at',
@@ -484,7 +488,8 @@ def upgrade():
             name=op.f('ck_orders_on_ordered_timestamps_50'),
         ),
         sa.CheckConstraint(
-            'pickup_at < delivery_at', name=op.f('ck_orders_on_ordered_timestamps_49'),
+            'pickup_at < delivery_at',
+            name=op.f('ck_orders_on_ordered_timestamps_49'),
         ),
         sa.CheckConstraint(
             'pickup_at < left_pickup_at',
@@ -495,7 +500,8 @@ def upgrade():
             name=op.f('ck_orders_on_ordered_timestamps_48'),
         ),
         sa.CheckConstraint(
-            'placed_at < cancelled_at', name=op.f('ck_orders_on_ordered_timestamps_2'),
+            'placed_at < cancelled_at',
+            name=op.f('ck_orders_on_ordered_timestamps_2'),
         ),
         sa.CheckConstraint(
             'placed_at < courier_accepted_at',
@@ -506,10 +512,12 @@ def upgrade():
             name=op.f('ck_orders_on_ordered_timestamps_6'),
         ),
         sa.CheckConstraint(
-            'placed_at < delivery_at', name=op.f('ck_orders_on_ordered_timestamps_11'),
+            'placed_at < delivery_at',
+            name=op.f('ck_orders_on_ordered_timestamps_11'),
         ),
         sa.CheckConstraint(
-            'placed_at < dispatch_at', name=op.f('ck_orders_on_ordered_timestamps_5'),
+            'placed_at < dispatch_at',
+            name=op.f('ck_orders_on_ordered_timestamps_5'),
         ),
         sa.CheckConstraint(
             'placed_at < first_estimated_delivery_at',

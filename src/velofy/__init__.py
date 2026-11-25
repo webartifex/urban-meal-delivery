@@ -5,6 +5,7 @@ Example:
     >>> velofy.__version__ != '0.0.0'
     True
 """
+
 # The config object must come before all other project-internal imports.
 from velofy.configuration import config  # isort:skip
 

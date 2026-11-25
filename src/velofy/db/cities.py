@@ -22,7 +22,9 @@ class City(meta.Base):
 
     # Generic columns
     id = sa.Column(  # noqa:WPS125
-        sa.SmallInteger, primary_key=True, autoincrement=False,
+        sa.SmallInteger,
+        primary_key=True,
+        autoincrement=False,
     )
     name = sa.Column(sa.Unicode(length=10), nullable=False)
     kml = sa.Column(sa.UnicodeText, nullable=False)
@@ -119,7 +121,8 @@ class City(meta.Base):
         return self._map
 
     def draw_restaurants(
-        self, order_counts: bool = False,  # pragma: no cover
+        self,
+        order_counts: bool = False,  # pragma: no cover
     ) -> folium.Map:
         """Draw all restaurants on the`.map`.
 
@@ -192,7 +195,9 @@ class City(meta.Base):
 
             else:
                 address.draw(
-                    radius=1, color=config.RESTAURANT_COLOR, tooltip=tooltip,
+                    radius=1,
+                    color=config.RESTAURANT_COLOR,
+                    tooltip=tooltip,
                 )
 
         return self.map

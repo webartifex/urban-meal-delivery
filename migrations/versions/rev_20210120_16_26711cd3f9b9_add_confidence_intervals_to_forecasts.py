@@ -25,7 +25,10 @@ config = configuration.make_config('testing' if os.getenv('TESTING') else 'produ
 def upgrade():
     """Upgrade to revision 26711cd3f9b9."""
     op.alter_column(
-        'forecasts', 'method', new_column_name='model', schema=config.CLEAN_SCHEMA,
+        'forecasts',
+        'method',
+        new_column_name='model',
+        schema=config.CLEAN_SCHEMA,
     )
     op.add_column(
         'forecasts',
@@ -108,17 +111,28 @@ def upgrade():
 def downgrade():
     """Downgrade to revision e40623e10405."""
     op.alter_column(
-        'forecasts', 'model', new_column_name='method', schema=config.CLEAN_SCHEMA,
+        'forecasts',
+        'model',
+        new_column_name='method',
+        schema=config.CLEAN_SCHEMA,
     )
     op.drop_column(
-        'forecasts', 'low80', schema=config.CLEAN_SCHEMA,
+        'forecasts',
+        'low80',
+        schema=config.CLEAN_SCHEMA,
     )
     op.drop_column(
-        'forecasts', 'high80', schema=config.CLEAN_SCHEMA,
+        'forecasts',
+        'high80',
+        schema=config.CLEAN_SCHEMA,
     )
     op.drop_column(
-        'forecasts', 'low95', schema=config.CLEAN_SCHEMA,
+        'forecasts',
+        'low95',
+        schema=config.CLEAN_SCHEMA,
     )
     op.drop_column(
-        'forecasts', 'high95', schema=config.CLEAN_SCHEMA,
+        'forecasts',
+        'high95',
+        schema=config.CLEAN_SCHEMA,
     )

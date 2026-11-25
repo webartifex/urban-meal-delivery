@@ -165,7 +165,19 @@ def stl(  # noqa:C901,WPS210,WPS211
     # Call the STL function in R.
     ts = robjects.r['ts'](pandas2ri.py2rpy(time_series), frequency=frequency)
     result = robjects.r['stl'](
-        ts, ns, ds, nt, dt, nl, dl, js, jt, jl, robust, ni, no,  # noqa:WPS221
+        ts,
+        ns,
+        ds,
+        nt,
+        dt,
+        nl,
+        dl,
+        js,
+        jt,
+        jl,
+        robust,
+        ni,
+        no,  # noqa:WPS221
     )
 
     # Unpack the result to a `pd.DataFrame`.

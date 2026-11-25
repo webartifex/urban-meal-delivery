@@ -79,13 +79,17 @@ class TestConstraints:
         stmt = sqla.delete(db.Pixel).where(db.Pixel.id == forecast.pixel.id)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='fk_forecasts_to_pixels_via_pixel_id',
+            sa_exc.IntegrityError,
+            match='fk_forecasts_to_pixels_via_pixel_id',
         ):
             db_session.execute(stmt)
 
     @pytest.mark.parametrize('hour', [10, 23])
     def test_invalid_start_at_outside_operating_hours(
-        self, db_session, forecast, hour,
+        self,
+        db_session,
+        forecast,
+        hour,
     ):
         """Insert an instance with invalid data."""
         forecast.start_at = dt.datetime(
@@ -97,7 +101,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='within_operating_hours',
+            sa_exc.IntegrityError,
+            match='within_operating_hours',
         ):
             db_session.commit()
 
@@ -107,7 +112,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='must_be_quarters_of_the_hour',
+            sa_exc.IntegrityError,
+            match='must_be_quarters_of_the_hour',
         ):
             db_session.commit()
 
@@ -117,7 +123,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='no_seconds',
+            sa_exc.IntegrityError,
+            match='no_seconds',
         ):
             db_session.commit()
 
@@ -127,7 +134,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='no_microseconds',
+            sa_exc.IntegrityError,
+            match='no_microseconds',
         ):
             db_session.commit()
 
@@ -138,7 +146,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='time_step_must_be_positive',
+            sa_exc.IntegrityError,
+            match='time_step_must_be_positive',
         ):
             db_session.commit()
 
@@ -149,7 +158,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='training_horizon_must_be_positive',
+            sa_exc.IntegrityError,
+            match='training_horizon_must_be_positive',
         ):
             db_session.commit()
 
@@ -159,7 +169,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='actuals_must_be_non_negative',
+            sa_exc.IntegrityError,
+            match='actuals_must_be_non_negative',
         ):
             db_session.commit()
 
@@ -184,7 +195,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ci_upper_and_lower_bounds',
+            sa_exc.IntegrityError,
+            match='ci_upper_and_lower_bounds',
         ):
             db_session.commit()
 
@@ -196,7 +208,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ci_upper_and_lower_bounds',
+            sa_exc.IntegrityError,
+            match='ci_upper_and_lower_bounds',
         ):
             db_session.commit()
 
@@ -208,7 +221,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ci_upper_and_lower_bounds',
+            sa_exc.IntegrityError,
+            match='ci_upper_and_lower_bounds',
         ):
             db_session.commit()
 
@@ -220,7 +234,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ci_upper_and_lower_bounds',
+            sa_exc.IntegrityError,
+            match='ci_upper_and_lower_bounds',
         ):
             db_session.commit()
 
@@ -233,12 +248,15 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='prediction_must_be_within_ci',
+            sa_exc.IntegrityError,
+            match='prediction_must_be_within_ci',
         ):
             db_session.commit()
 
     def test_prediction_smaller_than_low80_without_ci95_set(
-        self, db_session, forecast,
+        self,
+        db_session,
+        forecast,
     ):
         """Insert an instance with invalid data."""
         forecast.low95 = None
@@ -248,7 +266,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='prediction_must_be_within_ci',
+            sa_exc.IntegrityError,
+            match='prediction_must_be_within_ci',
         ):
             db_session.commit()
 
@@ -261,12 +280,15 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='prediction_must_be_within_ci',
+            sa_exc.IntegrityError,
+            match='prediction_must_be_within_ci',
         ):
             db_session.commit()
 
     def test_prediction_smaller_than_low95_without_ci80_set(
-        self, db_session, forecast,
+        self,
+        db_session,
+        forecast,
     ):
         """Insert an instance with invalid data."""
         forecast.low80 = None
@@ -276,7 +298,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='prediction_must_be_within_ci',
+            sa_exc.IntegrityError,
+            match='prediction_must_be_within_ci',
         ):
             db_session.commit()
 
@@ -289,12 +312,15 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='prediction_must_be_within_ci',
+            sa_exc.IntegrityError,
+            match='prediction_must_be_within_ci',
         ):
             db_session.commit()
 
     def test_prediction_greater_than_high80_without_ci95_set(
-        self, db_session, forecast,
+        self,
+        db_session,
+        forecast,
     ):
         """Insert an instance with invalid data."""
         forecast.low95 = None
@@ -304,7 +330,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='prediction_must_be_within_ci',
+            sa_exc.IntegrityError,
+            match='prediction_must_be_within_ci',
         ):
             db_session.commit()
 
@@ -317,12 +344,15 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='prediction_must_be_within_ci',
+            sa_exc.IntegrityError,
+            match='prediction_must_be_within_ci',
         ):
             db_session.commit()
 
     def test_prediction_greater_than_high95_without_ci80_set(
-        self, db_session, forecast,
+        self,
+        db_session,
+        forecast,
     ):
         """Insert an instance with invalid data."""
         forecast.low80 = None
@@ -332,7 +362,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='prediction_must_be_within_ci',
+            sa_exc.IntegrityError,
+            match='prediction_must_be_within_ci',
         ):
             db_session.commit()
 
@@ -353,7 +384,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ci_upper_bound_greater_than_lower_bound',
+            sa_exc.IntegrityError,
+            match='ci_upper_bound_greater_than_lower_bound',
         ):
             db_session.commit()
 
@@ -374,7 +406,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ci_upper_bound_greater_than_lower_bound',
+            sa_exc.IntegrityError,
+            match='ci_upper_bound_greater_than_lower_bound',
         ):
             db_session.commit()
 
@@ -388,7 +421,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ci95_must_be_wider_than_ci80',
+            sa_exc.IntegrityError,
+            match='ci95_must_be_wider_than_ci80',
         ):
             db_session.commit()
 
@@ -405,7 +439,8 @@ class TestConstraints:
         db_session.add(forecast)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='ci95_must_be_wider_than_ci80',
+            sa_exc.IntegrityError,
+            match='ci95_must_be_wider_than_ci80',
         ):
             db_session.commit()
 
@@ -490,7 +525,10 @@ class TestFromDataFrameConstructor:
 
     @pytest.mark.db
     def test_persist_predictions_into_database(
-        self, db_session, pixel, prediction_data,
+        self,
+        db_session,
+        pixel,
+        prediction_data,
     ):
         """Call `Forecast.from_dataframe()` and persist the results."""
         forecasts = db.Forecast.from_dataframe(

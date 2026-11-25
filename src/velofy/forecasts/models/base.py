@@ -33,7 +33,10 @@ class ForecastingModelABC(abc.ABC):
 
     @abc.abstractmethod
     def predict(
-        self, pixel: db.Pixel, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel: db.Pixel,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> pd.DataFrame:
         """Concrete implementation of how a `*Model` makes a prediction.
 
@@ -52,7 +55,10 @@ class ForecastingModelABC(abc.ABC):
         """  # noqa:DAR202
 
     def make_forecast(
-        self, pixel: db.Pixel, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel: db.Pixel,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> db.Forecast:
         """Make a forecast for the time step starting at `predict_at`.
 
@@ -82,7 +88,7 @@ class ForecastingModelABC(abc.ABC):
             .filter_by(train_horizon=train_horizon)
             .filter_by(model=self.name)
             .first()
-        ) :
+        ):
             return cached_forecast
 
         # Horizontal and real-time `*Model`s return a `pd.DataFrame` with one

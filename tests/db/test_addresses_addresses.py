@@ -22,7 +22,8 @@ def another_address(make_address):
 def path(address, another_address, make_address):
     """A `Path` from `address` to `another_address`."""
     air_distance = distance.great_circle(  # noqa:WPS317
-        address.location.lat_lng, another_address.location.lat_lng,
+        address.location.lat_lng,
+        another_address.location.lat_lng,
     ).meters
 
     # We put 5 latitude-longitude pairs as the "path" from
@@ -190,7 +191,8 @@ class TestConstraints:
         db_session.add(path)
 
         with pytest.raises(
-            sa_exc.IntegrityError, match='realistic_bicycle_travel_time',
+            sa_exc.IntegrityError,
+            match='realistic_bicycle_travel_time',
         ):
             db_session.commit()
 
@@ -214,7 +216,10 @@ class TestFromAddresses:
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_make_path_instance(
-        self, db_session, address, another_address,
+        self,
+        db_session,
+        address,
+        another_address,
     ):
         """Test instantiation of a new `Path` instance."""
         assert db_session.query(db.Path).count() == 0
@@ -225,7 +230,10 @@ class TestFromAddresses:
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_make_the_same_path_instance_twice(
-        self, db_session, address, another_address,
+        self,
+        db_session,
+        address,
+        another_address,
     ):
         """Test instantiation of a new `Path` instance."""
         assert db_session.query(db.Path).count() == 0
@@ -247,7 +255,10 @@ class TestFromAddresses:
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_instances_must_have_air_distance(
-        self, db_session, address, another_address,
+        self,
+        db_session,
+        address,
+        another_address,
     ):
         """Test instantiation of a new `Path` instance."""
         paths = db.Path.from_addresses(address, another_address)
@@ -258,7 +269,10 @@ class TestFromAddresses:
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_do_not_sync_instances_with_google_maps(
-        self, db_session, address, another_address,
+        self,
+        db_session,
+        address,
+        another_address,
     ):
         """Test instantiation of a new `Path` instance."""
         paths = db.Path.from_addresses(address, another_address)
@@ -270,7 +284,11 @@ class TestFromAddresses:
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_sync_instances_with_google_maps(
-        self, db_session, address, another_address, monkeypatch,
+        self,
+        db_session,
+        address,
+        another_address,
+        monkeypatch,
     ):
         """Test instantiation of a new `Path` instance."""
 
@@ -312,7 +330,9 @@ class TestFromAddresses:
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_make_path_instance_from_order(
-        self, db_session, order,
+        self,
+        db_session,
+        order,
     ):
         """Test instantiation of a new `Path` instance."""
         assert db_session.query(db.Path).count() == 0
@@ -323,7 +343,9 @@ class TestFromAddresses:
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_make_the_same_path_instance_from_order_twice(
-        self, db_session, order,
+        self,
+        db_session,
+        order,
     ):
         """Test instantiation of a new `Path` instance."""
         assert db_session.query(db.Path).count() == 0
@@ -345,7 +367,10 @@ class TestFromAddresses:
 
     @pytest.mark.usefixtures('_prepare_db')
     def test_sync_instance_from_order_with_google_maps(
-        self, db_session, order, monkeypatch,
+        self,
+        db_session,
+        order,
+        monkeypatch,
     ):
         """Test instantiation of a new `Path` instance."""
 

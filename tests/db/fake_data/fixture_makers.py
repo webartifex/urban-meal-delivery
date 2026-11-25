@@ -137,7 +137,10 @@ def make_replay_order(make_order, simulation):
             order = make_order()
 
         return factories.ReplayedOrderFactory.build(
-            simulation=simulation, actual=order, courier=order.courier, **kwargs,
+            simulation=simulation,
+            actual=order,
+            courier=order.courier,
+            **kwargs,
         )
 
     return func

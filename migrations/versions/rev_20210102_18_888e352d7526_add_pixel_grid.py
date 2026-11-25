@@ -37,7 +37,9 @@ def upgrade():
             ondelete='RESTRICT',
         ),
         sa.UniqueConstraint(
-            'city_id', 'side_length', name=op.f('uq_grids_on_city_id_side_length'),
+            'city_id',
+            'side_length',
+            name=op.f('uq_grids_on_city_id_side_length'),
         ),
         # This `UniqueConstraint` is needed by the `addresses_pixels` table below.
         sa.UniqueConstraint('id', 'city_id', name=op.f('uq_grids_on_id_city_id')),
@@ -61,7 +63,10 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_pixels')),
         sa.UniqueConstraint(
-            'grid_id', 'n_x', 'n_y', name=op.f('uq_pixels_on_grid_id_n_x_n_y'),
+            'grid_id',
+            'n_x',
+            'n_y',
+            name=op.f('uq_pixels_on_grid_id_n_x_n_y'),
         ),
         sa.UniqueConstraint('id', 'grid_id', name=op.f('uq_pixels_on_id_grid_id')),
         schema=config.CLEAN_SCHEMA,
@@ -134,7 +139,9 @@ def upgrade():
             ondelete='RESTRICT',
         ),
         sa.PrimaryKeyConstraint(
-            'address_id', 'pixel_id', name=op.f('pk_addresses_pixels'),
+            'address_id',
+            'pixel_id',
+            name=op.f('pk_addresses_pixels'),
         ),
         sa.UniqueConstraint(
             'address_id',
@@ -155,13 +162,19 @@ def downgrade():
         schema=config.CLEAN_SCHEMA,
     )
     op.drop_index(
-        op.f('ix_pixels_on_n_y'), table_name='pixels', schema=config.CLEAN_SCHEMA,
+        op.f('ix_pixels_on_n_y'),
+        table_name='pixels',
+        schema=config.CLEAN_SCHEMA,
     )
     op.drop_index(
-        op.f('ix_pixels_on_n_x'), table_name='pixels', schema=config.CLEAN_SCHEMA,
+        op.f('ix_pixels_on_n_x'),
+        table_name='pixels',
+        schema=config.CLEAN_SCHEMA,
     )
     op.drop_index(
-        op.f('ix_pixels_on_grid_id'), table_name='pixels', schema=config.CLEAN_SCHEMA,
+        op.f('ix_pixels_on_grid_id'),
+        table_name='pixels',
+        schema=config.CLEAN_SCHEMA,
     )
     op.drop_table('pixels', schema=config.CLEAN_SCHEMA)
     op.drop_table('grids', schema=config.CLEAN_SCHEMA)

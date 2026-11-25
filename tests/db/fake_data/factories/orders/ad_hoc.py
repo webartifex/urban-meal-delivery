@@ -42,7 +42,8 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
         # Timestamps after `cancelled_at` are discarded
         # by the `post_generation` hook at the end of the `OrderFactory`.
         cancel_ = factory.Trait(  # noqa:WPS120 -> leading underscore does not work
-            cancelled=True, cancelled_at_corrected=False,
+            cancelled=True,
+            cancelled_at_corrected=False,
         )
         cancel_before_pickup = factory.Trait(
             cancel_=True,

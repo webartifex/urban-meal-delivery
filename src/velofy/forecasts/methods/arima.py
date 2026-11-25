@@ -43,7 +43,8 @@ def predict(
 
     # Copy the data from Python to R.
     robjects.globalenv['data'] = robjects.r['ts'](
-        pandas2ri.py2rpy(training_ts), frequency=frequency,
+        pandas2ri.py2rpy(training_ts),
+        frequency=frequency,
     )
 
     seasonal = 'TRUE' if bool(seasonal_fit) else 'FALSE'

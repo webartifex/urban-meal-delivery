@@ -205,7 +205,10 @@ def test(session):
     # test cases that require the slow installation of R and some packages.
     if session.env.get('_slow_ci_tests'):
         session.run(
-            'pytest', '-m', 'r and not db', PYTEST_LOCATION,
+            'pytest',
+            '-m',
+            'r and not db',
+            PYTEST_LOCATION,
         )
 
         # In the "ci-tests-slow" session, we do not run any test tool
@@ -273,7 +276,10 @@ def safety(session):
             external=True,
         )
         session.run(
-            'safety', 'check', f'--file={requirements_txt.name}', '--full-report',
+            'safety',
+            'check',
+            f'--file={requirements_txt.name}',
+            '--full-report',
         )
 
 
@@ -434,7 +440,8 @@ def fix_branch_references(session):  # noqa:WPS210
     # the staged files passed in by pre-commit in most cases.
     if session.posargs and len(session.posargs) == 1:
         match = re.match(
-            pattern=r'^--branch=([\w\.-]+)$', string=session.posargs[0].strip(),
+            pattern=r'^--branch=([\w\.-]+)$',
+            string=session.posargs[0].strip(),
         )
         if match:
             branch = match.groups()[0]
@@ -582,7 +589,9 @@ def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) ->
             external=True,
         )
         session.install(
-            f'--constraint={requirements_txt.name}', *packages_or_pip_args, **kwargs,
+            f'--constraint={requirements_txt.name}',
+            *packages_or_pip_args,
+            **kwargs,
         )
 
 

@@ -22,7 +22,10 @@ class TrivialModel(base.ForecastingModelABC):
     name = 'trivial'
 
     def predict(
-        self, pixel: db.Pixel, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel: db.Pixel,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> pd.DataFrame:
         """Predict demand for a time step.
 
@@ -42,7 +45,9 @@ class TrivialModel(base.ForecastingModelABC):
         # Generate the historic order time series mainly to check if a valid
         # `training_ts` exists (i.e., the demand history is long enough).
         _, frequency, actuals_ts = self._order_history.make_horizontal_ts(
-            pixel_id=pixel.id, predict_at=predict_at, train_horizon=train_horizon,
+            pixel_id=pixel.id,
+            predict_at=predict_at,
+            train_horizon=train_horizon,
         )
 
         # Sanity checks.

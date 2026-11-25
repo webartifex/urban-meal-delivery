@@ -150,7 +150,10 @@ class OrderHistory:
         # Calculate the first and last "start_at" value ...
         start_day = data.index.levels[1].min().date()
         start = dt.datetime(
-            start_day.year, start_day.month, start_day.day, config.SERVICE_START,
+            start_day.year,
+            start_day.month,
+            start_day.day,
+            config.SERVICE_START,
         )
         end_day = data.index.levels[1].max().date()
         end = dt.datetime(end_day.year, end_day.month, end_day.day, config.SERVICE_END)
@@ -238,7 +241,10 @@ class OrderHistory:
         )
 
     def make_horizontal_ts(  # noqa:WPS210
-        self, pixel_id: int, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel_id: int,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a horizontal time series out of the `.totals`.
 
@@ -307,7 +313,10 @@ class OrderHistory:
         return training_ts, frequency, actuals_ts
 
     def make_vertical_ts(  # noqa:WPS210
-        self, pixel_id: int, predict_day: dt.date, train_horizon: int,
+        self,
+        pixel_id: int,
+        predict_day: dt.date,
+        train_horizon: int,
     ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a vertical time series out of the `.totals`.
 
@@ -393,7 +402,10 @@ class OrderHistory:
         return training_ts, frequency, actuals_ts
 
     def make_realtime_ts(  # noqa:WPS210
-        self, pixel_id: int, predict_at: dt.datetime, train_horizon: int,
+        self,
+        pixel_id: int,
+        predict_at: dt.datetime,
+        train_horizon: int,
     ) -> Tuple[pd.Series, int, pd.Series]:
         """Slice a vertical real-time time series out of the `.totals`.
 
@@ -486,7 +498,10 @@ class OrderHistory:
         return training_ts, frequency, actuals_ts
 
     def avg_daily_demand(
-        self, pixel_id: int, predict_day: dt.date, train_horizon: int,
+        self,
+        pixel_id: int,
+        predict_day: dt.date,
+        train_horizon: int,
     ) -> float:
         """Calculate the average daily demand (ADD) for a `Pixel`.
 
@@ -510,7 +525,9 @@ class OrderHistory:
             average number of orders per day
         """
         training_ts, _, _ = self.make_vertical_ts(  # noqa:WPS434
-            pixel_id=pixel_id, predict_day=predict_day, train_horizon=train_horizon,
+            pixel_id=pixel_id,
+            predict_day=predict_day,
+            train_horizon=train_horizon,
         )
 
         first_day = training_ts.index.min().date()
@@ -521,7 +538,10 @@ class OrderHistory:
         return round(training_ts.sum() / n_days, 1)
 
     def choose_tactical_model(
-        self, pixel_id: int, predict_day: dt.date, train_horizon: int,
+        self,
+        pixel_id: int,
+        predict_day: dt.date,
+        train_horizon: int,
     ) -> models.ForecastingModelABC:
         """Choose the most promising forecasting `*Model` for tactical purposes.
 
@@ -548,7 +568,9 @@ class OrderHistory:
         # noqa:DAR401 RuntimeError
         """  # noqa:RST215
         add = self.avg_daily_demand(
-            pixel_id=pixel_id, predict_day=predict_day, train_horizon=train_horizon,
+            pixel_id=pixel_id,
+            predict_day=predict_day,
+            train_horizon=train_horizon,
         )
 
         # For now, we only make forecasts with 7 and 8 weeks
