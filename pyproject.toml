@@ -108,6 +108,214 @@ source = ["velofy"]
 
 
 
+[tool.flake8]
+# Source: https://flake8.pycqa.org/en/latest/user/configuration.html
+
+# Include error classes only explicitly
+# to avoid forward compatibility issues.
+select = [
+    # =============
+    # flake8's base
+    # =============
+    # mccabe => cyclomatic complexity
+    "C901",
+    # pycodestyle => PEP8 compliance
+    "E", "W",
+    # pyflakes => basic errors
+    "F4", "F5", "F6", "F7", "F8", "F9",
+    # ========================
+    # wemake-python-styleguide
+    # Source: https://wemake-python-stylegui.de/en/latest/pages/usage/violations/index.html
+    # ========================
+    "WPS1", "WPS2", "WPS3", "WPS4", "WPS5", "WPS6",
+    # darglint => docstring matches implementation
+    "DAR0", "DAR1", "DAR2", "DAR3", "DAR4", "DAR5",
+    # flake8-bandit => common security issues
+    "S1", "S2", "S3", "S4", "S5", "S6", "S7",
+    # flake8-broken-line => no \ to end a line
+    "N400",
+    # flake8-bugbear => opinionated bugs and design flaws
+    "B0", "B3", "B9",
+    # flake8-commas => better comma placements
+    "C8",
+    # flake8-comprehensions => better comprehensions
+    "C4",
+    # flake8-debugger => no debugger usage
+    "T100",
+    # flake8-docstrings => PEP257 compliance
+    "D1", "D2", "D3", "D4",
+    # flake8-eradicate => no commented out code
+    "E800",
+    # flake8-isort => isort would make changes
+    "I0",
+    # flake8-rst-docstrings => valid rst in docstrings
+    "RST2", "RST3", "RST4",
+    # flake8-string-format => unify usage of str.format()
+    "P1", "P2", "P3",
+    # flake8-quotes => use double quotes everywhere (complying with black)
+    "Q0",
+    # pep8-naming
+    "N8",
+    # =====
+    # other
+    # =====
+    # flake8-annotations => enforce type checking for functions
+    "ANN0", "ANN2", "ANN3",
+    # flake8-black => complain if black would make changes
+    "BLK1", "BLK9",
+    # flake8-pytest-style => enforce a consistent style with pytest
+    "PT0",
+]
+
+# By default, flake8 ignores some errors.
+# Instead, do not ignore anything.
+ignore = []
+
+# If --ignore is passed on the command
+# line, still ignore the following:
+extend-ignore = [
+    # TODO: New in `wemake-python-styleguide` v0.15 - v0.17, revisit in the tooling goal
+    "WPS110",
+    "WPS237",
+    "WPS238",
+    "WPS358",
+    "WPS456",
+    "WPS458",
+    "WPS459",
+    "WPS462",
+    "WPS469",
+    # Too long line => duplicate with E501.
+    "B950",
+    # Comply with black's style.
+    # Source: https://github.com/psf/black/blob/master/docs/compatible_configs.md#flake8
+    "E203", "W503", "WPS348",
+    # Let's not do `@pytest.mark.no_cover()` instead of `@pytest.mark.no_cover`.
+    "PT023",
+    # Google's Python Style Guide is not reStructuredText
+    # until after being processed by Sphinx Napoleon.
+    # Source: https://github.com/peterjc/flake8-rst-docstrings/issues/17
+    "RST201", "RST203", "RST210", "RST213", "RST301",
+    # The "too deep nesting" violation fires off "too early" and cannot be configured.
+    "WPS220",
+    # String constant over-use is checked visually by the programmer.
+    "WPS226",
+    # Function complexity is checked by `mccabe` (=C901),
+    # which yields the same result in most cases.
+    "WPS231",
+    # Modules as a whole are assumed to be not "too complex".
+    "WPS232",
+    # Allow underscores in numbers.
+    "WPS303",
+    # f-strings are ok.
+    "WPS305",
+    # Classes should not have to specify a base class.
+    "WPS306",
+    # Let's be modern: The Walrus is ok.
+    "WPS332",
+    # Let's not worry about the number of noqa's.
+    # Multi-line loops are ok.
+    "WPS352",
+    "WPS402",
+    # Putting logic into __init__.py files may be justified.
+    "WPS412",
+    # Allow multiple assignment, e.g., x = y = 123
+    "WPS429",
+    # There are no magic numbers.
+    "WPS432",
+]
+
+per-file-ignores = [
+    # Top-levels of a sub-packages are intended to import a lot.
+    "**/__init__.py:F401,WPS201",
+    # Allow shadowing built-ins and reading __*__ variables.
+    "docs/conf.py:WPS125,WPS609",
+    # Type annotations are not strictly enforced.
+    "migrations/env.py:ANN0,ANN2",
+    # - ANN0, ANN2 => Type annotations are not strictly enforced.
+    # - S608 => Do not worry about SQL injection here.
+    # - WPS114, WPS118 => File names of revisions are ok.
+    # - WPS204, WPS213 => Revisions may have too many expressions.
+    "migrations/versions/*.py:ANN0,ANN2,S608,WPS114,WPS118,WPS204,WPS213",
+    # - ANN0, ANN2 => Type annotations are not strictly enforced.
+    # - WPS202 => TODO (isort): Check if still too many module members.
+    # - WPS213 => TODO (isort): Remove after simplifying the nox session "lint".
+    "noxfile.py:ANN0,ANN2,WPS202,WPS213",
+    # Allow upper case class variables within classes.
+    "src/velofy/configuration.py:WPS115",
+    # The module does not have too many imports.
+    "src/velofy/db/addresses_addresses.py:WPS201",
+    # The many noqa's are ok.
+    "src/velofy/forecasts/models/tactical/horizontal.py:WPS403",
+    # - S608 => No SQL injection as the inputs come from a safe source.
+    # - WPS403 => The many noqa's are ok.
+    "src/velofy/forecasts/timify.py:S608,WPS403",
+    # - ANN0, ANN2 => Type annotations are not strictly enforced.
+    # - D106 => The `Meta` class inside the factory_boy models do not need a docstring.
+    # - S101 => `assert` statements are ok in the test suite.
+    # - S311 => The `random` module is not used for cryptography.
+    # - WPS442 => Shadowing outer scopes occurs naturally with mocks.
+    # - WPS100 => `utils` should be a valid module name.
+    # - WPS118 => Test names may be longer than 40 characters.
+    # - WPS202, WPS204, WPS214 => Modules may have many test cases.
+    # - WPS221 => Do not check for Jones complexity in the test suite.
+    # - WPS338 => "Private" methods are really just a convention for
+    #   fixtures without a return value.
+    # - WPS402 => We do not care about the number of "# noqa"s in the test suite.
+    # - WPS430 => Allow closures.
+    # - WPS437 => When testing, it is normal to use implementation details.
+    "tests/*.py:ANN0,ANN2,D106,S101,S311,WPS442,WPS100,WPS118,WPS202,WPS204,WPS214,WPS221,WPS338,WPS402,WPS430,WPS437",
+]
+
+# Explicitly set mccabe's maximum complexity to 10 as recommended by
+# Thomas McCabe, the inventor of the McCabe complexity, and the NIST.
+# Source: https://en.wikipedia.org/wiki/Cyclomatic_complexity#Limiting_complexity_during_development
+max-complexity = 10
+
+# Allow more than wemake-python-styleguide's 5 local variables per function.
+max-local-variables = 8
+
+# Allow more than wemake-python-styleguide's 7 methods per class.
+max-methods = 15
+
+# Comply with black's style.
+# Source: https://github.com/psf/black/blob/master/docs/the_black_code_style.md#line-length
+max-line-length = 88
+
+# Preview the code lines that cause errors.
+show-source = true
+
+# ===================================
+# wemake-python-styleguide's settings
+# ===================================
+allowed-domain-names = [
+    "data",
+    "obj",
+    "param",
+    "result",
+    "results",
+    "value",
+]
+max-name-length = 40
+# darglint
+strictness = "long"
+# flake8-docstrings
+docstring-convention = "google"
+# flake8-eradicate
+eradicate-aggressive = true
+
+# ==============================
+# flake8-pytest-style's settings
+# ==============================
+# Prefer @pytest.fixture over @pytest.fixture().
+pytest-fixture-no-parentheses = true
+# Prefer @pytest.mark.parametrize(['param1', 'param2'], [(1, 2), (3, 4)])
+# over @pytest.mark.parametrize(('param1', 'param2'), ([1, 2], [3, 4]))
+pytest-parametrize-names-type = "list"
+pytest-parametrize-values-row-type = "tuple"
+pytest-parametrize-values-type = "list"
+
+
+
 [tool.isort]
 # Source: https://pycqa.github.io/isort/docs/configuration/options.html
 
@@ -194,6 +402,7 @@ isort = ">=9.0.2,<10"
 flake8 = ">=7.5.0,<8"
 flake8-annotations = ">=3.3.1,<4"
 flake8-black = ">=0.5.0,<0.6"
+flake8-pyproject = ">=1.2.4,<2"
 flake8-pytest-style = ">=2.2.0,<3"
 mypy = ">=2.4.1,<3"
 
