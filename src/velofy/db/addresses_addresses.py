@@ -5,8 +5,7 @@ from __future__ import annotations
 import functools
 import itertools
 import json
-from typing import List
-from typing import Tuple
+from typing import List, Tuple
 
 import folium
 import googlemaps as gm
