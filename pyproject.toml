@@ -30,7 +30,7 @@ requires-python = ">=3.13,<4.0"
 # Package => Code developed in *.py files and packaged under src/velofy
 dependencies = [
     "Shapely>=1.7.1,<2.1",
-    "alembic>=1.4.2,<1.15",
+    "alembic>=1.4.2",
     "click>=7.1.2,<8.2",
     "folium>=0.12.1,<0.19",
     "geopy>=2.1.0,<3",
