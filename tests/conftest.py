@@ -19,7 +19,7 @@ from velofy import db
 
 
 # The TESTING environment variable is set
-# in setup.cfg in pytest's config section.
+# in pyproject.toml in pytest's config section.
 if not os.getenv('TESTING'):
     raise RuntimeError('Tests must be executed with TESTING set in the environment')
 
