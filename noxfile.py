@@ -115,6 +115,8 @@ SUPPORTED_PYTHONS = load_supported_python_versions()
 # of this file, and satisfy `requires-python` in pyproject.toml
 MAIN_PYTHON = '3.13'
 
+nox.options.default_venv_backend = 'uv'
+
 # Use a unified .cache/ folder for all tools.
 nox.options.envdir = '.cache/nox'
 
@@ -131,6 +133,10 @@ nox.options.sessions = (
     'docs',
 )
 
+# Make `uv` use its own Python no matter what
+# because only then are the headers needed to build `rpy2` from source included
+os.environ.setdefault('UV_PYTHON_PREFERENCE', 'only-managed')
+
 
 @nox.session(name='format', python=MAIN_PYTHON)
 def format_(session):
@@ -143,7 +149,7 @@ def format_(session):
 
     # The formatting tools do not require the developed
     # package be installed in the virtual environment.
-    _install_packages(session, 'autoflake', 'black', 'isort')
+    install_pinned(session, 'autoflake', 'black', 'isort')
 
     # Interpret extra arguments as locations of source files.
     locations = session.posargs or SRC_LOCATIONS
@@ -171,13 +177,14 @@ def lint(session):
 
     # The linting tools do not require the developed
     # package be installed in the virtual environment.
-    _install_packages(
+    install_pinned(
         session,
         'flake8',
         'flake8-annotations',
         'flake8-black',
         'flake8-pyproject',
         'flake8-pytest-style',
+        'isort',
         'mypy',
     )
 
@@ -227,12 +234,13 @@ def test(session):
 
     # The testing tools require the developed package and its
     # non-develop dependencies be installed in the virtual environment.
-    session.run('poetry', 'install', '--no-dev', external=True)
-    _install_packages(
+    # As the package is not installed in editable mode, the coverage report
+    # relies on "[tool.coverage.paths]" in pyproject.toml to map to src/.
+    install_pinned(
         session,
+        '.',
         'Faker',
         'factory-boy',
-        'geopy',
         'packaging',
         'pytest',
         'pytest-cov',
@@ -338,8 +346,7 @@ def docs(session):
     # The documentation tools require the developed package and its
     # non-develop dependencies be installed in the virtual environment.
     # Otherwise, sphinx's autodoc could not include the docstrings.
-    session.run('poetry', 'install', '--no-dev', external=True)
-    _install_packages(session, 'sphinx', 'sphinx-autodoc-typehints')
+    install_pinned(session, '.', 'sphinx', 'sphinx-autodoc-typehints')
 
     # The "TESTING" environment variable forces the global `engine`, `connection`,
     # and `session` objects to be set to `None` and avoid any database connection.
@@ -549,7 +556,7 @@ def _line_by_line_replace(path: str) -> Generator[Tuple[IO, IO], None, None]:
 def init_project(session):
     """Install the pre-commit hooks."""
     for type_ in ('pre-commit', 'pre-merge-commit', 'pre-push'):
-        session.run('poetry', 'run', 'pre-commit', 'install', f'--hook-type={type_}')
+        session.run('uv', 'run', 'pre-commit', 'install', f'--hook-type={type_}')
 
 
 @nox.session(name='clean-pwd', python=MAIN_PYTHON, venv_backend='none')
@@ -593,45 +600,45 @@ def _begin(session):
     print(os.getcwd())  # noqa:WPS421
 
 
-def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) -> None:
-    """Install packages respecting the poetry.lock file.
+def install_pinned(
+    session: Session,
+    *packages_or_pip_args: str,
+    **kwargs: Any,
+) -> None:
+    """Install packages respecting the uv.lock file.
 
-    This function wraps nox.sessions.Session.install() such that it installs
-    packages respecting the pinnned versions specified in poetry's lock file.
-    This makes nox sessions even more deterministic.
+    Wraps `nox.Session.install()` such that it installs packages
+    respecting the versions pinned in the uv.lock file,
+    exported into a temporary constraints file.
+    This makes nox sessions more deterministic.
+
+    The developed package itself (i.e., ".") is only rebuilt
+    if a file listed in the "cache-keys" in the "[tool.uv]" section
+    in pyproject.toml changes; otherwise, `uv` re-uses a cached build.
 
     IMPORTANT: This function skips installation if the current nox session
     is run with the "-r" flag to re-use an existing virtual environment.
-    That turns nox into a fast task runner provided that a virtual
-    environment actually existed and does not need to be changed (e.g.,
-    new dependencies added in the meantime). Do not use the "-r" flag on CI
-    or as part of pre-commit hooks!
-
-    Args:
-        session: the Session object
-        *packages_or_pip_args: the packages to be installed or pip options
-        **kwargs: passed on to nox.sessions.Session.install()
-    """  # noqa:RST210,RST213
+    """
     if session.virtualenv.reuse_existing:
         session.log(
             'No dependencies are installed as an existing environment is re-used',
         )
         return
 
-    session.log('Dependencies are installed respecting the poetry.lock file')
-
-    with tempfile.NamedTemporaryFile() as requirements_txt:
+    with tempfile.NamedTemporaryFile(suffix='.txt') as constraints_txt:
         session.run(
-            'poetry',
+            'uv',
             'export',
-            '--dev',
-            '--format=requirements.txt',
-            f'--output={requirements_txt.name}',
-            '--without-hashes',
-            external=True,
+            '--all-extras',
+            '--all-groups',
+            '--locked',
+            '--no-emit-project',
+            '--no-hashes',
+            '--quiet',
+            f'--output-file={constraints_txt.name}',
         )
         session.install(
-            f'--constraint={requirements_txt.name}',
+            f'--constraint={constraints_txt.name}',
             *packages_or_pip_args,
             **kwargs,
         )

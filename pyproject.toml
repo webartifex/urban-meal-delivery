@@ -477,3 +477,10 @@ markers = [
 # `uv sync` installs all [dependency-groups] into the local develop environment
 # whereas the `nox` sessions install only the groups they need
 default-groups = "all"
+
+# Rebuild the package when its source files change;
+# by default, `uv` only watches the pyproject.toml file
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "src/**/*.py" },
+]
