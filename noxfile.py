@@ -27,6 +27,7 @@ as unified tasks to assure the quality of the source code:
     => may be paths or options
 """
 
+import collections
 import contextlib
 import glob
 import os
@@ -34,10 +35,55 @@ import re
 import shutil
 import subprocess  # noqa:S404
 import tempfile
-from typing import Generator, IO, Tuple
+from collections.abc import Mapping
+from typing import Any, Generator, IO, Tuple
 
 import nox
 from nox.sessions import Session
+from packaging import version as pkg_version
+
+
+def nested_defaultdict() -> collections.defaultdict[str, Any]:
+    """Create a multi-level `defaultdict` with variable depth.
+
+    The returned `dict`ionary never raises a `KeyError`
+    but always returns an empty `dict`ionary instead.
+    This behavior occurs recursively.
+
+    Adjusted from: https://stackoverflow.com/a/8702435
+    """
+    return collections.defaultdict(nested_defaultdict)
+
+
+def defaultify(obj: Any) -> Any:
+    """Turn nested `dict`s into nested `defaultdict`s."""
+    if isinstance(obj, Mapping):
+        return collections.defaultdict(
+            nested_defaultdict,
+            {key: defaultify(val) for key, val in obj.items()},
+        )
+    return obj
+
+
+def load_pyproject_toml() -> collections.defaultdict[str, Any]:
+    """Load the contents of the pyproject.toml file.
+
+    The contents are represented as a `nested_defaultdict`;
+    so, missing keys and tables (i.e., "sections" in the .ini format)
+    do not result in `KeyError`s but return empty `nested_defaultdict`s.
+    """
+    return defaultify(nox.project.load_toml('pyproject.toml'))
+
+
+def load_supported_python_versions(*, reverse: bool = False) -> list[str]:
+    """Parse the Python versions from the pyproject.toml file."""
+    pyproject = load_pyproject_toml()
+    version_names = {
+        classifier.rsplit(' ')[-1]
+        for classifier in pyproject['project']['classifiers']
+        if classifier.startswith('Programming Language :: Python :: ')
+    }
+    return sorted(version_names, key=pkg_version.Version, reverse=reverse)
 
 
 FORGEJO_REPOSITORY = 'code.webartifex.de/alexander/velofy'
@@ -63,7 +109,11 @@ SRC_LOCATIONS = (
     PYTEST_LOCATION,
 )
 
-PYTHON = '3.13'
+SUPPORTED_PYTHONS = load_supported_python_versions()
+
+# Must be listed in the "classifiers", which is checked at the bottom
+# of this file, and satisfy `requires-python` in pyproject.toml
+MAIN_PYTHON = '3.13'
 
 # Use a unified .cache/ folder for all tools.
 nox.options.envdir = '.cache/nox'
@@ -82,7 +132,7 @@ nox.options.sessions = (
 )
 
 
-@nox.session(name='format', python=PYTHON)
+@nox.session(name='format', python=MAIN_PYTHON)
 def format_(session):
     """Format source files with autoflake, black, and isort.
 
@@ -110,7 +160,7 @@ def format_(session):
     session.run('isort', *locations)
 
 
-@nox.session(python=PYTHON)
+@nox.session(python=MAIN_PYTHON)
 def lint(session):
     """Lint source files with flake8 and mypy.
 
@@ -153,7 +203,7 @@ def lint(session):
         session.log('No paths to be checked with mypy')
 
 
-@nox.session(python=PYTHON)
+@nox.session(python=MAIN_PYTHON)
 def test(session):
     """Test the code base.
 
@@ -249,7 +299,7 @@ def test(session):
     session.run('xdoctest', '--quiet', *args)  # --quiet => less verbose output
 
 
-@nox.session(python=PYTHON)
+@nox.session(python=MAIN_PYTHON)
 def safety(session):
     """Check the dependencies for known security vulnerabilities."""
     _begin(session)
@@ -275,7 +325,7 @@ def safety(session):
         )
 
 
-@nox.session(python=PYTHON)
+@nox.session(python=MAIN_PYTHON)
 def docs(session):
     """Build the documentation with sphinx."""
     # The latest version of the package needs to be installed
@@ -302,7 +352,7 @@ def docs(session):
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
-@nox.session(name='ci-tests-fast', python=PYTHON)
+@nox.session(name='ci-tests-fast', python=MAIN_PYTHON)
 def fast_ci_tests(session):
     """Fast tests run by the GitHub Actions CI server.
 
@@ -328,7 +378,7 @@ def fast_ci_tests(session):
     test(session)
 
 
-@nox.session(name='ci-tests-slow', python=PYTHON)
+@nox.session(name='ci-tests-slow', python=MAIN_PYTHON)
 def slow_ci_tests(session):
     """Slow tests run by the GitHub Actions CI server.
 
@@ -356,7 +406,7 @@ def slow_ci_tests(session):
     test(session)
 
 
-@nox.session(name='test-suite', python=PYTHON)
+@nox.session(name='test-suite', python=MAIN_PYTHON)
 def test_suite(session):
     """Run the entire test suite as a pre-commit hook.
 
@@ -381,7 +431,7 @@ def test_suite(session):
     test(session)
 
 
-@nox.session(name='fix-branch-references', python=PYTHON, venv_backend='none')
+@nox.session(name='fix-branch-references', python=MAIN_PYTHON, venv_backend='none')
 def fix_branch_references(session):  # noqa:WPS210
     """Replace branch references with the current branch.
 
@@ -495,14 +545,14 @@ def _line_by_line_replace(path: str) -> Generator[Tuple[IO, IO], None, None]:
     shutil.move(new_file_path, path)
 
 
-@nox.session(name='init-project', python=PYTHON, venv_backend='none')
+@nox.session(name='init-project', python=MAIN_PYTHON, venv_backend='none')
 def init_project(session):
     """Install the pre-commit hooks."""
     for type_ in ('pre-commit', 'pre-merge-commit', 'pre-push'):
         session.run('poetry', 'run', 'pre-commit', 'install', f'--hook-type={type_}')
 
 
-@nox.session(name='clean-pwd', python=PYTHON, venv_backend='none')
+@nox.session(name='clean-pwd', python=MAIN_PYTHON, venv_backend='none')
 def clean_pwd(session):
     """Remove (almost) all glob patterns listed in .gitignore.
 
@@ -585,3 +635,8 @@ def _install_packages(session: Session, *packages_or_pip_args: str, **kwargs) ->
             *packages_or_pip_args,
             **kwargs,
         )
+
+
+if MAIN_PYTHON not in SUPPORTED_PYTHONS:
+    msg = f'MAIN_PYTHON version, v{MAIN_PYTHON}, is not in SUPPORTED_PYTHONS'
+    raise RuntimeError(msg)
