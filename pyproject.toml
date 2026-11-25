@@ -139,3 +139,28 @@ xdoctest = { version=">=1.3.2,<2", extras=["optional"] }
 # Documentation
 sphinx = ">=9.2.0,<10"
 sphinx-autodoc-typehints = ">=3.17.7,<4"
+
+
+
+[tool.pytest.ini_options]
+# Source: https://docs.pytest.org/en/stable/reference/reference.html#ini-options-ref
+
+cache_dir = ".cache/pytest"
+
+addopts = "--strict-markers"
+
+console_output_style = "count"
+
+env = [
+    "TESTING=true",
+]
+
+filterwarnings = [
+    "ignore:::patsy.*",
+]
+
+markers = [
+    "db: (integration) tests touching the database",
+    "e2e: non-db and non-r integration tests",
+    "r: (integration) tests using rpy2",
+]
