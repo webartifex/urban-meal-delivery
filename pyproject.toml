@@ -108,6 +108,50 @@ source = ["velofy"]
 
 
 
+[tool.mypy]
+# Source: https://mypy.readthedocs.io/en/stable/config_file.html
+
+cache_dir = ".cache/mypy"
+
+# Check the interior of functions without type annotations
+check_untyped_defs = true
+
+# Disallow generic types without explicit type parameters
+disallow_any_generics = true
+
+# Disallow functions with incomplete type annotations
+disallow_incomplete_defs = true
+
+# Disallow calling functions without type annotations
+disallow_untyped_calls = true
+
+# Disallow functions without type annotations (or incomplete annotations)
+disallow_untyped_defs = true
+
+
+[[tool.mypy.overrides]]
+
+module = [
+    "folium.*",
+    "geopy.*",
+    "googlemaps.*",
+    "matplotlib.*",
+    "nox.*",
+    "numpy.*",
+    "ordered_set.*",
+    "packaging",
+    "pandas",
+    "pytest",
+    "rpy2.*",
+    "sqlalchemy.*",
+    "statsmodels.*",
+    "utm.*",
+]
+
+ignore_missing_imports = true
+
+
+
 [tool.poetry.group.dev.dependencies]
 
 # Task Runners
