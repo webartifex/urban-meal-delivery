@@ -350,6 +350,26 @@ def docs(session):
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
+@nox.session(name='deps-lock', python=MAIN_PYTHON, venv_backend='none')
+def lock_dependencies(session: Session) -> None:
+    """Lock dependencies in pyproject.toml into uv.lock.
+
+    Convenience task to run after manual changes of dependencies
+    in the pyproject.toml file.
+
+    Use `git diff uv.lock` to review the newly pinned versions.
+    """
+    do_not_accept_arguments(session)
+
+    # Little hack: Create a flag in the env(ironment)
+    # and call `upgrade_dependencies()` directly
+    # because `session.notify()` starts sessions with a new
+    # `nox.Session` object that does not have the flag set
+    session.env['_lock_only'] = 'true'
+
+    upgrade_dependencies(session)
+
+
 @nox.session(name='deps-upgrade', python=MAIN_PYTHON, venv_backend='none')
 def upgrade_dependencies(session: Session) -> None:
     """Pin dependencies in uv.lock to their latest MINOR/PATCH versions.
