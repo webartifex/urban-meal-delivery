@@ -350,6 +350,39 @@ def docs(session):
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
+@nox.session(name='deps-upgrade', python=MAIN_PYTHON, venv_backend='none')
+def upgrade_dependencies(session: Session) -> None:
+    """Pin dependencies in uv.lock to their latest MINOR/PATCH versions.
+
+    The allowed versions are the ranges in the pyproject.toml file.
+
+    If no arguments are provided, i.e., `nox -s deps-upgrade`,
+    all packages are upgraded!
+
+    If package names are provided as positional arguments,
+    e.g., `nox -s deps-upgrade -- pandas`, only those are upgraded.
+
+    The upgrades are not yet synced into the local develop environment!
+    Use `nox -s venv` for that.
+
+    Use `git diff uv.lock` to review them.
+
+    So, the obtained upgrades must still be manually
+    `git commit`ed into the repository.
+    """
+    if session.env.get('_lock_only'):
+        upgrade = []
+    elif session.posargs:
+        upgrade = [f'--upgrade-package={pkg_name}' for pkg_name in session.posargs]
+    else:
+        upgrade = ['--upgrade']
+
+    session.run('uv', '--version', external=True)
+    session.run('uv', 'lock', *upgrade, external=True)
+
+    session.run('git', 'diff', '--stat', 'uv.lock', external=True)
+
+
 @nox.session(name='venv', python=MAIN_PYTHON, venv_backend='none')
 def create_develop_environment(session: Session) -> None:
     """Set up the local develop environment in ".venv".
