@@ -124,6 +124,13 @@ nox.options.envdir = '.cache/nox'
 # => Avoid accidental successes if the environment is not set up properly
 nox.options.error_on_external_run = True
 
+# Always start with fresh virtual environments
+# unless the "-r" or "-R" flags are passed in
+nox.options.reuse_venv = 'no'
+
+# Do not run further sessions once one fails
+nox.options.stop_on_first_error = True
+
 # Run only local checks by default.
 nox.options.sessions = (
     'format',
