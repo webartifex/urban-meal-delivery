@@ -255,47 +255,19 @@ def test(session):
 
     session.run('pytest', '--version')
 
-    # When the CI server runs the slow tests, we only execute the R related
-    # test cases that require the slow installation of R and some packages.
-    if session.env.get('_slow_ci_tests'):
-        session.run(
-            'pytest',
-            '-m',
-            'r and not db',
-            PYTEST_LOCATION,
-        )
-
-        # In the "ci-tests-slow" session, we do not run any test tool
-        # other than pytest. So, xdoctest, for example, is only run
-        # locally or in the "ci-tests-fast" session.
-        return
-
-    # When the CI server executes pytest, no database is available.
-    # Therefore, the CI server does not measure coverage.
-    elif session.env.get('_fast_ci_tests'):
-        pytest_args = (
-            '-m',
-            'not (db or r)',
-            PYTEST_LOCATION,
-        )
-
-    # When pytest is executed in the local develop environment,
-    # both R and a database are available.
+    # Both R and a database are available locally and on the CI server.
     # Therefore, we require 100% coverage.
-    else:
-        pytest_args = (
-            '--cov',
-            '--no-cov-on-fail',
-            '--cov-branch',
-            '--cov-fail-under=100',
-            '--cov-report=term-missing:skip-covered',
-            PYTEST_LOCATION,
-        )
+    pytest_args = (
+        '--cov',
+        '--no-cov-on-fail',
+        '--cov-branch',
+        '--cov-fail-under=100',
+        '--cov-report=term-missing:skip-covered',
+        PYTEST_LOCATION,
+    )
 
     # Interpret extra arguments as options for pytest.
-    # They are "dropped" by the hack in the test_suite() function
-    # if this function is run within the "test-suite" session.
-    posargs = () if session.env.get('_drop_posargs') else session.posargs
+    posargs = session.posargs
 
     session.run('pytest', *(posargs or pytest_args))
 
@@ -358,67 +330,6 @@ def docs(session):
     session.run('sphinx-build', '-b', 'linkcheck', DOCS_SRC, DOCS_BUILD)
 
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
-
-
-@nox.session(name='ci-tests-fast', python=MAIN_PYTHON)
-def fast_ci_tests(session):
-    """Fast tests run by the GitHub Actions CI server.
-
-    These regards all test cases NOT involving R via `rpy2`.
-
-    Also, coverage is not measured as full coverage can only be
-    achieved by running the tests in the local develop environment
-    that has access to a database.
-    """
-
-    # Little hack to pass arguments to the "test" session.
-    session.env['_fast_ci_tests'] = 'true'
-
-    # Cannot use session.notify() to trigger the "test" session
-    # as that would create a new Session object without the flag
-    # in the env(ironment).
-    test(session)
-
-
-@nox.session(name='ci-tests-slow', python=MAIN_PYTHON)
-def slow_ci_tests(session):
-    """Slow tests run by the GitHub Actions CI server.
-
-    These regards all test cases involving R via `rpy2`.
-    They are slow as the CI server needs to install R and some packages
-    first, which takes a couple of minutes.
-
-    Also, coverage is not measured as full coverage can only be
-    achieved by running the tests in the local develop environment
-    that has access to a database.
-    """
-
-    # Little hack to pass arguments to the "test" session.
-    session.env['_slow_ci_tests'] = 'true'
-
-    # Cannot use session.notify() to trigger the "test" session
-    # as that would create a new Session object without the flag
-    # in the env(ironment).
-    test(session)
-
-
-@nox.session(name='test-suite', python=MAIN_PYTHON)
-def test_suite(session):
-    """Run the entire test suite as a pre-commit hook.
-
-    Ignores the paths passed in by the pre-commit framework
-    and runs the entire test suite.
-    """
-
-    # Little hack to not work with the extra arguments provided
-    # by the pre-commit framework. Create a flag in the
-    # env(ironment) that must contain only `str`-like objects.
-    session.env['_drop_posargs'] = 'true'
-
-    # Cannot use session.notify() to trigger the "test" session
-    # as that would create a new Session object without the flag
-    # in the env(ironment).
-    test(session)
 
 
 @nox.session(name='fix-branch-references', python=MAIN_PYTHON, venv_backend='none')
