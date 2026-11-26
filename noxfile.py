@@ -145,7 +145,7 @@ os.makedirs(tempfile.tempdir, exist_ok=True)
 
 
 @nox.session(name='format', python=MAIN_PYTHON)
-def format_(session):
+def format_code(session: Session) -> None:
     """Format source files with autoflake, black, and isort.
 
     If no extra arguments are provided, all source files are formatted.
@@ -172,8 +172,8 @@ def format_(session):
     session.run('isort', *locations)
 
 
-@nox.session(python=MAIN_PYTHON)
-def lint(session):
+@nox.session(name='lint', python=MAIN_PYTHON)
+def lint_code(session: Session) -> None:
     """Lint source files with flake8 and mypy.
 
     If no extra arguments are provided, all source files are linted.
@@ -216,8 +216,8 @@ def lint(session):
         session.log('No paths to be checked with mypy')
 
 
-@nox.session(python=MAIN_PYTHON)
-def test(session):
+@nox.session(name='test', python=MAIN_PYTHON)
+def test_code(session: Session) -> None:
     """Test the code base.
 
     Runs the unit and integration tests with pytest and
@@ -325,8 +325,8 @@ def audit_pinned_dependencies(session: Session) -> None:
         )
 
 
-@nox.session(python=MAIN_PYTHON)
-def docs(session):
+@nox.session(name='docs', python=MAIN_PYTHON)
+def build_docs(session: Session) -> None:
     """Build the documentation with sphinx."""
 
     start(session)
@@ -467,7 +467,7 @@ def _expand(*patterns: str) -> Generator[pathlib.Path, None, None]:
 
 
 @nox.session(name='init-project', python=MAIN_PYTHON, venv_backend='none')
-def init_project(session):
+def initialize_project(session: Session) -> None:
     """Install the pre-commit hooks."""
     for type_ in ('pre-commit', 'pre-merge-commit', 'pre-push'):
         session.run('uv', 'run', 'pre-commit', 'install', f'--hook-type={type_}')
