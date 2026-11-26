@@ -28,15 +28,11 @@ as unified tasks to assure the quality of the source code:
 """
 
 import collections
-import contextlib
 import glob
 import os
-import re
-import shutil
-import subprocess  # noqa:S404
 import tempfile
 from collections.abc import Mapping
-from typing import Any, Generator, IO, Tuple
+from typing import Any, Generator
 
 import nox
 from nox.sessions import Session
@@ -86,7 +82,6 @@ def load_supported_python_versions(*, reverse: bool = False) -> list[str]:
     return sorted(version_names, key=pkg_version.Version, reverse=reverse)
 
 
-FORGEJO_REPOSITORY = 'code.webartifex.de/alexander/velofy'
 PACKAGE_IMPORT_NAME = 'velofy'
 
 # Docs/sphinx locations.
@@ -451,81 +446,6 @@ def create_develop_environment(session: Session) -> None:
     )
 
 
-@nox.session(name='fix-branch-references', python=MAIN_PYTHON, venv_backend='none')
-def fix_branch_references(session):  # noqa:WPS210
-    """Replace branch references with the current branch.
-
-    Intended to be run as a pre-commit hook.
-
-    Many files in the project (e.g., README.md) contain links to resources
-    on Forgejo that contain branch labels.
-
-    This task rewrites these links such that they contain branch references
-    that make sense given the context:
-
-    - If the branch is only a temporary one that is to be merged into
-      the 'main' branch, all references are adjusted to 'main' as well.
-
-    - If the branch is not named after a default branch in the GitFlow
-      model, it is interpreted as a feature branch and the references
-      are adjusted into 'develop'.
-
-    This task may be called with one positional argument that is interpreted
-    as the branch to which all references are changed into.
-    The format must be "--branch=BRANCH_NAME".
-    """
-    # Adjust this to add/remove glob patterns
-    # whose links are re-written.
-    paths = ['*.md', '**/*.md', '**/*.ipynb']
-
-    # Get the branch git is currently on.
-    # This is the branch to which all references are changed into
-    # if none of the two exceptions below apply.
-    branch = (
-        subprocess.check_output(  # noqa:S603
-            ('git', 'rev-parse', '--abbrev-ref', 'HEAD'),
-        )
-        .decode()
-        .strip()
-    )
-    # If the current branch is only a temporary one that is to be merged
-    # into 'main', we adjust all branch references to 'main' as well.
-    if branch.startswith('release') or branch.startswith('research'):
-        branch = 'main'
-    # If the current branch appears to be a feature branch, we adjust
-    # all branch references to 'develop'.
-    elif branch != 'main':
-        branch = 'develop'
-    # If a "--branch=BRANCH_NAME" argument is passed in
-    # as the only positional argument, we use BRANCH_NAME.
-    # Note: The --branch is required as session.posargs contains
-    # the staged files passed in by pre-commit in most cases.
-    if session.posargs and len(session.posargs) == 1:
-        match = re.match(
-            pattern=r'^--branch=([\w\.-]+)$',
-            string=session.posargs[0].strip(),
-        )
-        if match:
-            branch = match.groups()[0]
-
-    rewrites = [
-        {
-            'name': 'forgejo',
-            'pattern': re.compile(
-                fr'((https://{FORGEJO_REPOSITORY}/src/branch/)([\w\.-]+)/)',
-            ),
-            'replacement': fr'\2{branch}/',
-        },
-    ]
-
-    for expanded in _expand(*paths):
-        with _line_by_line_replace(expanded) as (old_file, new_file):
-            for line in old_file:
-                for rewrite in rewrites:
-                    line = re.sub(rewrite['pattern'], rewrite['replacement'], line)
-                new_file.write(line)
-
-
 def _expand(*patterns: str) -> Generator[str, None, None]:
     """Expand glob patterns into paths.
 
@@ -537,32 +457,6 @@ def _expand(*patterns: str) -> Generator[str, None, None]:
     """  # noqa:RST213
     for pattern in patterns:
         yield from glob.glob(pattern.strip())
-
-
-@contextlib.contextmanager
-def _line_by_line_replace(path: str) -> Generator[Tuple[IO, IO], None, None]:
-    """Replace/change the lines in a file one by one.
-
-    This generator function yields two file handles, one to the current file
-    (i.e., `old_file`) and one to its replacement (i.e., `new_file`).
-
-    Usage: loop over the lines in `old_file` and write the files to be kept
-    to `new_file`. Files not written to `new_file` are removed!
-
-    Args:
-        path: the file whose lines are to be replaced
-
-    Yields:
-        old_file, new_file: handles to a file and its replacement
-    """
-    file_handle, new_file_path = tempfile.mkstemp()
-    with os.fdopen(file_handle, 'w') as new_file:
-        with open(path) as old_file:
-            yield old_file, new_file
-
-    shutil.copymode(path, new_file_path)
-    os.remove(path)
-    shutil.move(new_file_path, path)
 
 
 @nox.session(name='init-project', python=MAIN_PYTHON, venv_backend='none')
