@@ -284,29 +284,47 @@ def test(session):
     session.run('xdoctest', '--quiet', *args)  # --quiet => less verbose output
 
 
-@nox.session(python=MAIN_PYTHON)
-def safety(session):
-    """Check the dependencies for known security vulnerabilities."""
+@nox.session(name='deps-audit', python=MAIN_PYTHON, reuse_venv=False)
+def audit_pinned_dependencies(session: Session) -> None:
+    """Check dependencies for vulnerabilities with `pip-audit`.
+
+    The dependencies are all those pinned in the uv.lock file.
+
+    `pip-audit` uses the Python Packaging Advisory Database,
+    see https://github.com/pypa/advisory-database for details.
+    """
+    do_not_accept_arguments(session)
+    do_not_reuse(session)  # Explicit guard in case `reuse_venv=False` above is removed
+
     start(session)
 
-    # We do not pin the version of `safety` to always check with
-    # the latest version. The risk this breaks the CI is rather low.
-    session.install('safety')
+    # `pip-audit` is not pinned to always check with its latest version
+    session.install('pip-audit')
 
-    with tempfile.NamedTemporaryFile() as requirements_txt:
+    with tempfile.NamedTemporaryFile(suffix='.txt') as requirements_txt:
         session.run(
-            'poetry',
+            'uv',
             'export',
-            '--dev',
-            '--format=requirements.txt',
-            f'--output={requirements_txt.name}',
-            external=True,
+            '--all-extras',
+            '--all-groups',
+            '--locked',
+            '--no-emit-project',
+            '--quiet',
+            f'--output-file={requirements_txt.name}',
         )
+
+        session.run('pip-audit', '--version')
         session.run(
-            'safety',
-            'check',
-            f'--file={requirements_txt.name}',
-            '--full-report',
+            'pip-audit',
+            '--cache-dir=.cache/pip-audit',
+            '--disable-pip',
+            '--progress-spinner=off',
+            f'--requirement={requirements_txt.name}',
+            '--strict',
+            # TODO: Remove these ignores once we upgrade to `black` v26
+            '--ignore-vuln=PYSEC-2026-2120',
+            '--ignore-vuln=PYSEC-2026-2121',
+            '--ignore-vuln=CVE-2026-114134',
         )
 
 
@@ -475,6 +493,26 @@ def clean_pwd(session):
                 break
         else:
             session.run('rm', '-rf', path)
+
+
+def do_not_accept_arguments(session: Session, *, raise_error: bool = True) -> None:
+    """Do not accept any `session.posargs`."""
+    if session.posargs:
+        msg = 'be run without any positional arguments behind the "--"'
+        if raise_error:
+            session.error(f'Must {msg}')
+        else:
+            session.warn(f'Should {msg}')
+
+
+def do_not_reuse(session: Session, *, raise_error: bool = True) -> None:
+    """Do not reuse a session with the "-r" flag."""
+    if session._runner.venv._reused:
+        msg = 'be run without the "-r" and "-R" flags'
+        if raise_error:
+            session.error(f'Must {msg}')
+        else:
+            session.warn(f'Should {msg}')
 
 
 def start(session: Session) -> None:
