@@ -136,8 +136,6 @@ nox.options.sessions = (
     'format',
     'lint',
     'test',
-    'safety',
-    'docs',
 )
 
 # Make `uv` use its own Python no matter what
