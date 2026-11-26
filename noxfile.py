@@ -144,6 +144,10 @@ nox.options.sessions = (
 # because only then are the headers needed to build `rpy2` from source included
 os.environ.setdefault('UV_PYTHON_PREFERENCE', 'only-managed')
 
+# Where to keep temporary files (e.g., the constraints file in `install_pinned()`)
+tempfile.tempdir = '.cache/tmp'
+os.makedirs(tempfile.tempdir, exist_ok=True)
+
 
 @nox.session(name='format', python=MAIN_PYTHON)
 def format_(session):
