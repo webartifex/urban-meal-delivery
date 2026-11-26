@@ -295,7 +295,8 @@ def test(session):
 
     # The "TESTING" environment variable forces the global `engine`, `connection`,
     # and `session` objects to be set to `None` and avoid any database connection.
-    # For pytest above this is not necessary as pytest sets this variable itself.
+    # For `pytest` above, `pytest-env` sets it with the "env" option
+    # in the "[tool.pytest.ini_options]" section in pyproject.toml.
     session.env['TESTING'] = 'true'
 
     session.run('xdoctest', '--version')
