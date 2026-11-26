@@ -28,8 +28,9 @@ as unified tasks to assure the quality of the source code:
 """
 
 import collections
-import glob
+import itertools
 import os
+import pathlib
 import tempfile
 from collections.abc import Mapping
 from typing import Any, Generator
@@ -446,17 +447,23 @@ def create_develop_environment(session: Session) -> None:
     )
 
 
-def _expand(*patterns: str) -> Generator[str, None, None]:
-    """Expand glob patterns into paths.
+def _expand(*patterns: str) -> Generator[pathlib.Path, None, None]:
+    """Expand glob patterns into (resolved) paths.
 
     Args:
-        *patterns: the patterns to be expanded
+        *patterns: patterns to be expanded
 
     Yields:
-        expanded: a single expanded path
-    """  # noqa:RST213
+        expanded: an expanded path
+    """
     for pattern in patterns:
-        yield from glob.glob(pattern.strip())
+        if not (pattern := pattern.strip()):
+            continue
+
+        expanded_paths = pathlib.Path.cwd().glob(pattern)
+
+        for path in expanded_paths:
+            yield path.resolve()
 
 
 @nox.session(name='init-project', python=MAIN_PYTHON, venv_backend='none')
@@ -466,28 +473,45 @@ def init_project(session):
         session.run('uv', 'run', 'pre-commit', 'install', f'--hook-type={type_}')
 
 
-@nox.session(name='clean-pwd', python=MAIN_PYTHON, venv_backend='none')
-def clean_pwd(session):
-    """Remove (almost) all glob patterns listed in .gitignore.
+@nox.session(name='clean-cwd', python=MAIN_PYTHON, venv_backend='none')
+def clean_cwd(session: Session) -> None:
+    """Remove (almost) all glob patterns listed in git's ignore file.
 
-    The difference compared to `git clean -X` is that this task
-    does not remove pyenv's .python-version file and poetry's
-    virtual environment.
+    Compared to `git clean -X`, never remove local environment variables
+    in the ".env" and ".envrc" files, pyenv's ".python-version" file,
+    and the local develop environment in ".venv".
+
+    An existing ".cache/" folder is always deleted first.
     """
-    exclude = frozenset(('.env', '.python-version', '.venv/', 'venv/'))
+    do_not_accept_arguments(session)
 
-    with open('.gitignore') as file_handle:
-        paths = file_handle.readlines()
+    do_not_remove = {
+        '.env',
+        '.envrc',
+        '.python-version',
+        '.venv',
+    }
 
-    for path in _expand(*paths):
-        if path.startswith('#'):
+    with pathlib.Path('.gitignore').open() as fp:
+        ignored_patterns = {
+            pattern for pattern in fp if pattern and not pattern.startswith(('#', '!'))
+        }
+
+    with pathlib.Path('.gitignore').open() as fp:
+        excluded_patterns = {pattern[1:] for pattern in fp if pattern.startswith('!')}
+
+    # Paths are resolved into absolute ones to avoid accidental matches
+    excluded_paths = {
+        pathlib.Path(path).resolve()
+        for path in do_not_remove | set(_expand(*excluded_patterns))
+    }
+
+    for path in itertools.chain([pathlib.Path('.cache')], _expand(*ignored_patterns)):
+        # The `path` must not be a sub-path of an `excluded_path`
+        if {path, *path.parents} & excluded_paths:
             continue
 
-        for excluded in exclude:
-            if path.startswith(excluded):
-                break
-        else:
-            session.run('rm', '-rf', path)
+        session.run('rm', '-rf', path)
 
 
 def do_not_accept_arguments(session: Session, *, raise_error: bool = True) -> None:
