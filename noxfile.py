@@ -350,6 +350,36 @@ def docs(session):
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
+@nox.session(name='venv', python=MAIN_PYTHON, venv_backend='none')
+def create_develop_environment(session: Session) -> None:
+    """Set up the local develop environment in ".venv".
+
+    All dependency groups and extras are installed
+    with the versions pinned in the uv.lock file.
+
+    If one extra argument is provided, e.g., `uv run nox -s venv -- other-venv`,
+    it is used as the location of the environment instead of ".venv".
+
+    Then, `uv run` only uses that environment
+    with "UV_PROJECT_ENVIRONMENT" set to the same location.
+    """
+    location, *further_args = session.posargs or ('.venv',)
+
+    if further_args:
+        session.error('Must provide exactly one location')
+
+    # All dependency groups are installed because of "default-groups = 'all'"
+    # in the "[tool.uv]" section in pyproject.toml
+    session.run(
+        'uv',
+        'sync',
+        '--all-extras',
+        '--locked',
+        env={'UV_PROJECT_ENVIRONMENT': location},
+        external=True,
+    )
+
+
 @nox.session(name='fix-branch-references', python=MAIN_PYTHON, venv_backend='none')
 def fix_branch_references(session):  # noqa:WPS210
     """Replace branch references with the current branch.
