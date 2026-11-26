@@ -105,6 +105,7 @@ SRC_LOCATIONS = (
     'migrations/env.py',
     'migrations/versions/',
     'noxfile.py',
+    'scripts/',
     PACKAGE_SOURCE_LOCATION,
     PYTEST_LOCATION,
 )
@@ -401,6 +402,23 @@ def upgrade_dependencies(session: Session) -> None:
     session.run('uv', 'lock', *upgrade, external=True)
 
     session.run('git', 'diff', '--stat', 'uv.lock', external=True)
+
+
+@nox.session(name='deps-upgrade-check', python=MAIN_PYTHON)
+def check_dependency_upgrades(session: Session) -> None:
+    """Check the dependencies in uv.lock for upgrades.
+
+    This task checks if upgrades are available for the PyPI
+    packages pinned in the uv.lock file. Also, it obtains
+    information about the age of the pinned releases.
+
+    The output is written to ".cache/dependencies_checked.txt".
+    """
+    do_not_accept_arguments(session)
+    start(session)
+
+    # The script only uses the standard library => Nothing to install
+    session.run('python', 'scripts/get_update_info_for_dependencies.py')
 
 
 @nox.session(name='venv', python=MAIN_PYTHON, venv_backend='none')
