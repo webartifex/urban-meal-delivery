@@ -6,13 +6,13 @@ repos:
   hooks:
   - id: local-format
     name: Format the source files
-    entry: poetry run nox -s format --
+    entry: uv run nox -s format --
     language: system
     stages: [pre-commit]
     types: [python]
   - id: local-lint
     name: Lint the source files
-    entry: poetry run nox -s lint --
+    entry: uv run nox -s lint --
     language: system
     stages: [pre-commit]
     types: [python]
