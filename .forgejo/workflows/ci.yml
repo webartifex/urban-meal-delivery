@@ -45,7 +45,7 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - name: Install system packages (R)
+      - name: Install R via system packages
         run: |
             apt-get update
             apt-get install --no-install-recommends \
@@ -54,15 +54,14 @@ jobs:
                 r-cran-zoo \
                 -y
 
-      - name: Install development tool chain (Python, uv)
+      - name: Install `uv` and `python3.13`
         run: |
             curl -LsSf https://astral.sh/uv/install.sh | sh
             echo "$HOME/.local/bin" >> "$GITHUB_PATH"
             "$HOME/.local/bin/uv" python install 3.13
 
-      - name: Install the project
-        run: |
-            uv sync --locked
+      - name: Install `velofy` and its dependencies
+        run: uv sync --locked
 
       # `TESTING=true` comes from `pyproject.toml`
       - name: Run the test suite
