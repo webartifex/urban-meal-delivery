@@ -1,7 +1,8 @@
 [build-system]
 
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "uv_build"
+
+requires = ["uv_build (>=0.13.10,<0.14.0)"]  # Same range as in "[tool.uv]" below
 
 
 
@@ -24,25 +25,32 @@ license = "MIT"
 
 readme = "README.md"
 
+classifiers = [
+    # All `SUPPORTED_PYTHONS` listed here are automatically
+    # loaded by `nox`, our task runner, and made available
+    # for testing in isolated environments
+    "Programming Language :: Python :: 3.13",
+]
+
 requires-python = ">=3.13,<4.0"
 
 
 # Package => Code developed in *.py files and packaged under src/velofy
 dependencies = [
-    "Shapely>=2.2.0,<3",
-    "alembic>=1.20.1,<2",
-    "click>=8.5.1,<9",
-    "folium>=1.0.0,<2",
-    "geopy>=2.5.0,<3",
-    "googlemaps>=4.10.0,<5",
-    "matplotlib>=3.11.2,<4",
-    "ordered-set>=4.1.0,<5",
-    "pandas>=3.1.1,<4",
-    "psycopg[binary]>=3.3.9,<4",  # Adapter for PostgreSQL
-    "rpy2>=3.6.9,<4",
-    "sqlalchemy>=2.1.9,<3",
-    "statsmodels>=0.15.0,<0.16",
-    "utm>=0.9.0,<0.10",
+    "Shapely (>=2.2.0,<3.0.0)",
+    "alembic (>=1.20.1,<2.0.0)",
+    "click (>=8.5.1,<9.0.0)",
+    "folium (>=1.0.0,<2.0.0)",
+    "geopy (>=2.5.0,<3.0.0)",
+    "googlemaps (>=4.10.0,<5.0.0)",
+    "matplotlib (>=3.11.2,<4.0.0)",
+    "ordered-set (>=4.1.0,<5.0.0)",
+    "pandas (>=3.1.1,<4.0.0)",
+    "psycopg[binary] (>=3.3.9,<4.0.0)",  # Adapter for PostgreSQL
+    "rpy2 (>=3.6.9,<4.0.0)",
+    "sqlalchemy (>=2.1.9,<3.0.0)",
+    "statsmodels (>=0.15.0,<0.16.0)",
+    "utm (>=0.9.0,<0.10.0)",
 ]
 
 
@@ -50,9 +58,9 @@ dependencies = [
 
 # `jupyter lab` => Notebooks with analyses using the developed package
 research = [
-    "jupyterlab>=4.6.6,<5",
-    "numpy>=2.5.5,<3",
-    "pytz>=2026.6",
+    "jupyterlab (>=4.6.6,<5.0.0)",
+    "numpy (>=2.5.5,<3.0.0)",
+    "pytz (>=2026.6)",
 ]
 
 
@@ -65,6 +73,58 @@ manage = "velofy.console:cli"
 
 homepage = "https://code.webartifex.de/alexander/velofy"
 repository = "https://code.webartifex.de/alexander/velofy"
+
+
+
+[dependency-groups]
+
+dev = [
+    # Task Runners
+    "nox (>=2026.10.20)",
+    "pre-commit (>=4.7.0,<5.0.0)",
+
+    # Code Formatters
+    "autoflake (>=2.4.0,<3.0.0)",
+    "black (>=25.12.0,<26.0.0)",
+    "isort (>=9.0.2,<10.0.0)",
+
+    # Code Analyzers
+    "flake8 (>=7.5.0,<8.0.0)",
+    "flake8-annotations (>=3.3.1,<4.0.0)",
+    "flake8-black (>=0.5.0,<0.6.0)",
+    "flake8-pyproject (>=1.2.4,<2.0.0)",
+    "flake8-pytest-style (>=2.2.0,<3.0.0)",
+    "mypy (>=2.4.1,<3.0.0)",
+]
+
+test = [
+    "factory-boy (>=3.3.3,<4.0.0)",
+    "Faker (>=40.63.0,<41.0.0)",
+    "packaging (>=26.4)",  # Used to test the packaged version
+    "pytest-cov (>=7.1.0,<8.0.0)",
+    "pytest-env (>=1.8.8,<2.0.0)",
+    "pytest-mock (>=3.17.0,<4.0.0)",
+    "pytest (>=9.2.0,<10.0.0)",
+    "xdoctest[colors] (>=1.3.2,<2.0.0)",
+]
+
+docs = [
+    "sphinx (>=9.2.0,<10.0.0)",
+    "sphinx-autodoc-typehints (>=3.17.7,<4.0.0)",
+]
+
+
+
+[tool.autoflake]
+# Source: https://github.com/PyCQA/autoflake#configuration
+
+in-place = true
+recursive = true
+expand-star-imports = true
+remove-all-unused-imports = true
+ignore-init-module-imports = true  # modifies "remove-all-unused-imports"
+remove-duplicate-keys = true
+remove-unused-variables = true
 
 
 
@@ -387,49 +447,25 @@ ignore_missing_imports = true
 
 
 
-[tool.poetry.group.dev.dependencies]
-
-# Task Runners
-nox = ">=2026.10.20"
-pre-commit = ">=4.7.0,<5"
-
-# Code Formatters
-autoflake = ">=2.4.0,<3"
-black = ">=25.12.0,<26"
-isort = ">=9.0.2,<10"
-
-# Code Analyzers
-flake8 = ">=7.5.0,<8"
-flake8-annotations = ">=3.3.1,<4"
-flake8-black = ">=0.5.0,<0.6"
-flake8-pyproject = ">=1.2.4,<2"
-flake8-pytest-style = ">=2.2.0,<3"
-mypy = ">=2.4.1,<3"
-
-# Test Suite
-Faker = ">=40.63.0,<41"
-factory-boy = ">=3.3.3,<4"
-packaging = ">=26.4"  # Used to test the packaged version
-pytest = ">=9.2.0,<10"
-pytest-cov = ">=7.1.0,<8"
-pytest-env = ">=1.8.8,<2"
-pytest-mock = ">=3.17.0,<4"
-xdoctest = { version=">=1.3.2,<2", extras=["optional"] }
-
-# Documentation
-sphinx = ">=9.2.0,<10"
-sphinx-autodoc-typehints = ">=3.17.7,<4"
-
-
-
 [tool.pytest.ini_options]
 # Source: https://docs.pytest.org/en/stable/reference/reference.html#ini-options-ref
 
 cache_dir = ".cache/pytest"
 
-addopts = "--strict-markers"
+testpaths = ["tests"]
+
+# "-ra" => Summarize skipped and `xfailed tests at the end
+addopts = "-ra --strict-config --strict-markers"
 
 console_output_style = "count"
+
+xfail_strict = true
+
+required_plugins = [
+    "pytest-cov",
+    "pytest-env",
+    "pytest-mock",
+]
 
 env = [
     "TESTING=true",
@@ -443,4 +479,22 @@ markers = [
     "db: (integration) tests touching the database",
     "e2e: non-db and non-r integration tests",
     "r: (integration) tests using rpy2",
+]
+
+
+
+[tool.uv]
+# Source: https://docs.astral.sh/uv/reference/settings/
+
+required-version = ">=0.13.10,<0.14.0"  # Same range as "uv_build" above
+
+# `uv sync` installs all [dependency-groups] into the local develop environment
+# whereas the `nox` sessions install only the groups they need
+default-groups = "all"
+
+# Rebuild the package when its source files change;
+# by default, `uv` only watches the pyproject.toml file
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "src/**/*.py" },
 ]
