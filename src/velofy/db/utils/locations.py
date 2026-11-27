@@ -47,7 +47,8 @@ class Location:  # noqa:WPS214
         Convention is {ZONE} {EASTING} {NORTHING}.
 
         Example:
-            `<Location: 17T 630084 4833438>'`
+            >>> Location(43.6532, -79.3832)
+            <Location: 17T 630378 4834625>
         """
         return f'<Location: {self.zone} {self.easting} {self.northing}>'  # noqa:WPS221
 

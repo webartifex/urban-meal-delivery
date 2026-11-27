@@ -133,6 +133,7 @@ nox.options.sessions = (
     'format',
     'lint',
     'test',
+    'doctest',
 )
 
 # Make `uv` use its own Python no matter what
@@ -250,6 +251,31 @@ def test_code(session: Session) -> None:
     )
 
     session.run('pytest', *(session.posargs or pytest_default_args))
+
+
+@nox.session(name='doctest', python=MAIN_PYTHON)
+def test_docstrings(session: Session) -> None:
+    """Test the code snippets in the docstrings with `xdoctest`.
+
+    By default, all docstrings in the package are checked.
+
+    Extra arguments are forwarded to `xdoctest`.
+    """
+    start(session)
+
+    install_pinned(session, '.', 'xdoctest[colors]')
+
+    # As `pytest-env` does for `pytest`,
+    # keep `velofy` from connecting to the production database
+    session.env['TESTING'] = 'true'
+
+    session.run(
+        'python',
+        '-m',
+        'xdoctest',
+        PACKAGE_IMPORT_NAME,
+        *(session.posargs or ('all',)),
+    )
 
 
 @nox.session(name='deps-audit', python=MAIN_PYTHON, reuse_venv=False)
