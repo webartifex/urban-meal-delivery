@@ -26,6 +26,12 @@ jobs:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: password
           POSTGRES_DB: db
+        # Start the steps only once the database accepts connections
+        options: >-
+          --health-cmd "pg_isready --username=user --dbname=db"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 15
 
     # Same variables as in `.env` on `nehemiah`, the main development machine
     env:
