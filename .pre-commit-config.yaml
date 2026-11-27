@@ -25,7 +25,7 @@ repos:
 # Enable hooks provided by the pre-commit project to
 # enforce rules that local tools could not that easily.
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v3.2.0
+  rev: v6.0.0
   hooks:
   - id: check-added-large-files
     args: [--maxkb=100]
