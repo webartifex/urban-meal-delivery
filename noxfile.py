@@ -444,8 +444,8 @@ def check_dependency_upgrades(session: Session) -> None:
 @nox.session(name='init-project', python=MAIN_PYTHON, venv_backend='none')
 def initialize_project(session: Session) -> None:
     """Install the `pre-commit` hooks."""
-    for type_ in ('pre-commit', 'pre-merge-commit', 'pre-push'):
-        session.run('uv', 'run', 'pre-commit', 'install', f'--hook-type={type_}')
+    # .pre-commit-config.yaml sets the hook types via "default_install_hook_types"
+    session.run('uv', 'run', 'pre-commit', 'install')
 
 
 @nox.session(name='clean-cwd', python=MAIN_PYTHON, venv_backend='none')
