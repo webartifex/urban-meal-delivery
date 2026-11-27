@@ -38,6 +38,7 @@ jobs:
       DATABASE_URI: postgresql://user:password@postgres:5432/db
       GOOGLE_MAPS_API_KEY: AIzaDummyKeyForTests  # Fake key to mock the Google API
       R_LIBS: /usr/lib/R/site-library
+      UV_PYTHON_PREFERENCE: only-managed  # Only uv's Python has the headers to build `rpy2`
 
 
     steps:
@@ -61,7 +62,7 @@ jobs:
 
       - name: Install the project
         run: |
-            uv sync --locked --python-preference only-managed
+            uv sync --locked
 
       # `TESTING=true` comes from `pyproject.toml`
       - name: Run the test suite
