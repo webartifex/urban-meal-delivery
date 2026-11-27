@@ -1,7 +1,8 @@
 [build-system]
 
 build-backend = "uv_build"
-requires = ["uv_build (>=0.12.20,<0.13.0)"]
+
+requires = ["uv_build (>=0.13.10,<0.14.0)"]  # Same range as in "[tool.uv]" below
 
 
 
@@ -484,6 +485,8 @@ markers = [
 
 [tool.uv]
 # Source: https://docs.astral.sh/uv/reference/settings/
+
+required-version = ">=0.13.10,<0.14.0"  # Same range as "uv_build" above
 
 # `uv sync` installs all [dependency-groups] into the local develop environment
 # whereas the `nox` sessions install only the groups they need
