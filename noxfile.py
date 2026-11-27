@@ -1,30 +1,25 @@
-"""Configure nox as the task runner, including CI and pre-commit hooks.
+"""Maintenance tasks run in isolated environments.
 
-Generic maintainance tasks:
+By default, `uv run nox` runs the sessions that assure code quality:
 
-- "init-project": set up the pre-commit hooks
+- "format": Format the source files with `autoflake`, `black`, and `isort`
+- "lint": Lint the source files with `flake8` and `isort`
+- "test": Run the test suite with `pytest`
+- "doctest": Check if code snippets in the docstrings run
 
-- "clean-pwd": ~ `git clean -X` with minor exceptions
+Further sessions run on demand with `uv run nox -s <session>`:
 
+- "docs": Build the documentation with `sphinx`
+- "venv": Set up the local develop environment in ".venv"
+- "deps-audit": Check dependencies for known vulnerabilities
+- "deps-lock": Lock dependencies after manual changes in pyproject.toml
+- "deps-upgrade": Upgrade dependencies within their allowed ranges
+- "deps-upgrade-check": Show newer versions and the age of all pinned releases
+- "init-project": Install the `pre-commit` hooks
+- "clean-cwd": Run approx. `git clean -X` with minor exceptions
 
-For local development, use the "format", "lint", and "test" sessions
-as unified tasks to assure the quality of the source code:
-
-- "format" (autoflake, black, isort):
-
-  + check all source files [default]
-  + accept extra arguments, e.g., `poetry run nox -s format -- noxfile.py`,
-    that are then interpreted as the paths the formatters and linters work
-    on recursively
-
-- "lint" (flake8, mypy): same as "format"
-
-- "test" (pytest, xdoctest):
-
-  + run the entire test suite [default]
-  + accepts extra arguments, e.g., `poetry run nox -s test -- --no-cov`,
-    that are passed on to `pytest` and `xdoctest` with no changes
-    => may be paths or options
+Most sessions accept extra arguments after the "--",
+e.g., `uv run nox -s test -- tests/test_config.py`.
 """
 
 import collections
