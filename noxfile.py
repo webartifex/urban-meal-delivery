@@ -78,38 +78,36 @@ def load_supported_python_versions(*, reverse: bool = False) -> list[str]:
     return sorted(version_names, key=pkg_version.Version, reverse=reverse)
 
 
-PACKAGE_IMPORT_NAME = 'velofy'
+PACKAGE = 'velofy'
+PACKAGE_LOCATION = 'src/'
 
-# Docs/sphinx locations.
-DOCS_SRC = 'docs/'
 DOCS_BUILD = '.cache/docs/'
+DOCS_LOCATION = 'docs/'
 
-# Path to the *.py files to be packaged.
-PACKAGE_SOURCE_LOCATION = 'src/'
+TESTS_LOCATION = 'tests/'
 
-# Path to the test suite.
-PYTEST_LOCATION = 'tests/'
-
-# Paths with all *.py files.
+# Locations of all *.py files
 SRC_LOCATIONS = (
-    f'{DOCS_SRC}conf.py',
+    f'{DOCS_LOCATION}conf.py',
     'migrations/env.py',
     'migrations/versions/',
     'noxfile.py',
     'scripts/',
-    PACKAGE_SOURCE_LOCATION,
-    PYTEST_LOCATION,
+    PACKAGE_LOCATION,
+    TESTS_LOCATION,
 )
+
 
 SUPPORTED_PYTHONS = load_supported_python_versions()
 
 # Must be listed in the "classifiers", which is checked at the bottom
-# of this file, and satisfy `requires-python` in pyproject.toml
+# of this file, and satisfy "requires-python" in pyproject.toml
 MAIN_PYTHON = '3.13'
+
 
 nox.options.default_venv_backend = 'uv'
 
-# Use a unified .cache/ folder for all tools.
+# Use a unified .cache/ folder for all tools
 nox.options.envdir = '.cache/nox'
 
 # All tools except `git` and `uv` are project dependencies
@@ -123,7 +121,7 @@ nox.options.reuse_venv = 'no'
 # Do not run further sessions once one fails
 nox.options.stop_on_first_error = True
 
-# Run only local checks by default.
+# Run only the code quality checks by default
 nox.options.sessions = (
     'format',
     'lint',
@@ -131,7 +129,8 @@ nox.options.sessions = (
     'doctest',
 )
 
-# Make `uv` use its own Python no matter what
+
+# Make `uv` use its own `python`
 # because only then are the headers needed to build `rpy2` from source included
 os.environ.setdefault('UV_PYTHON_PREFERENCE', 'only-managed')
 
@@ -142,21 +141,21 @@ os.makedirs(tempfile.tempdir, exist_ok=True)
 
 @nox.session(name='format', python=MAIN_PYTHON)
 def format_code(session: Session) -> None:
-    """Format source files with autoflake, black, and isort.
+    """Format source files with `autoflake`, `black`, and `isort`.
 
     If no extra arguments are provided, all source files are formatted.
     Otherwise, they are interpreted as paths the formatters work on recursively.
     """
     start(session)
 
-    # The formatting tools do not require the developed
-    # package be installed in the virtual environment.
+    # The formatters do not need `velofy` installed
+    # because they work on the source files directly
     install_pinned(session, 'autoflake', 'black', 'isort')
 
-    # Interpret extra arguments as locations of source files.
+    # Interpret extra arguments as `locations` of source files
     locations = session.posargs or SRC_LOCATIONS
 
-    # `autoflake` only changes files because of "in-place = true"
+    # `autoflake` changes files only with the "in-place = true"
     # in the "[tool.autoflake]" section in pyproject.toml
     session.run('autoflake', '--version')
     session.run('autoflake', *locations)
@@ -170,15 +169,15 @@ def format_code(session: Session) -> None:
 
 @nox.session(name='lint', python=MAIN_PYTHON)
 def lint_code(session: Session) -> None:
-    """Lint source files with flake8 and mypy.
+    """Lint source files with `flake8` and `isort`.
 
     If no extra arguments are provided, all source files are linted.
     Otherwise, they are interpreted as paths the linters work on recursively.
     """
     start(session)
 
-    # The linting tools do not require the developed
-    # package be installed in the virtual environment.
+    # The linters do not need `velofy` installed
+    # because they work on the source files directly
     install_pinned(
         session,
         'flake8',
@@ -191,7 +190,7 @@ def lint_code(session: Session) -> None:
         # 'mypy',
     )
 
-    # Interpret extra arguments as locations of source files.
+    # Interpret extra arguments as `locations` of source files
     locations = session.posargs or SRC_LOCATIONS
 
     # `flake8` reads the "[tool.flake8]" section in pyproject.toml
@@ -207,7 +206,7 @@ def lint_code(session: Session) -> None:
     #  - It then needs the developed package and its dependencies installed
     #    as it treats missing packages as `Any` and reports false successes
     # session.run('mypy', '--version')
-    # session.run('mypy', PACKAGE_SOURCE_LOCATION)
+    # session.run('mypy', PACKAGE_LOCATION)
 
 
 @nox.session(name='test', python=MAIN_PYTHON)
@@ -242,7 +241,7 @@ def test_code(session: Session) -> None:
         '--cov',
         '--no-cov-on-fail',
         '--cov-fail-under=100',
-        PYTEST_LOCATION,
+        TESTS_LOCATION,
     )
 
     session.run('pytest', *(session.posargs or pytest_default_args))
@@ -268,7 +267,7 @@ def test_docstrings(session: Session) -> None:
         'python',
         '-m',
         'xdoctest',
-        PACKAGE_IMPORT_NAME,
+        PACKAGE,
         *(session.posargs or ('all',)),
     )
 
@@ -319,22 +318,24 @@ def audit_pinned_dependencies(session: Session) -> None:
 
 @nox.session(name='docs', python=MAIN_PYTHON)
 def build_docs(session: Session) -> None:
-    """Build the documentation with sphinx."""
+    """Build the documentation with `sphinx`.
 
+    Also, verify that all external links work.
+    """
     start(session)
 
-    # The documentation tools require the developed package and its
-    # non-develop dependencies be installed in the virtual environment.
-    # Otherwise, sphinx's autodoc could not include the docstrings.
+    # The `sphinx-autodoc` extension imports `velofy` to read the docstrings
+    # => `velofy` and its dependencies must be installed
     install_pinned(session, '.', 'sphinx', 'sphinx-autodoc-typehints')
 
-    # The "TESTING" environment variable forces the global `engine`, `connection`,
-    # and `session` objects to be set to `None` and avoid any database connection.
+    # As `pytest-env` does for `pytest`,
+    # keep `velofy` from connecting to the production database
     session.env['TESTING'] = 'true'
 
-    session.run('sphinx-build', DOCS_SRC, DOCS_BUILD)
-    # Verify all external links return 200 OK.
-    session.run('sphinx-build', '-b', 'linkcheck', DOCS_SRC, DOCS_BUILD)
+    session.run('sphinx-build', DOCS_LOCATION, DOCS_BUILD)
+
+    # Verify that all external links return 200 OK
+    session.run('sphinx-build', '-b', 'linkcheck', DOCS_LOCATION, DOCS_BUILD)
 
     print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
@@ -403,6 +404,7 @@ def check_dependency_upgrades(session: Session) -> None:
     The output is written to ".cache/dependencies_checked.txt".
     """
     do_not_accept_arguments(session)
+
     start(session)
 
     # The script only uses the standard library => Nothing to install
@@ -460,7 +462,7 @@ def _expand(*patterns: str) -> Generator[pathlib.Path, None, None]:
 
 @nox.session(name='init-project', python=MAIN_PYTHON, venv_backend='none')
 def initialize_project(session: Session) -> None:
-    """Install the pre-commit hooks."""
+    """Install the `pre-commit` hooks."""
     for type_ in ('pre-commit', 'pre-merge-commit', 'pre-push'):
         session.run('uv', 'run', 'pre-commit', 'install', f'--hook-type={type_}')
 
@@ -510,6 +512,7 @@ def do_not_accept_arguments(session: Session, *, raise_error: bool = True) -> No
     """Do not accept any `session.posargs`."""
     if session.posargs:
         msg = 'be run without any positional arguments behind the "--"'
+
         if raise_error:
             session.error(f'Must {msg}')
         else:
@@ -517,9 +520,10 @@ def do_not_accept_arguments(session: Session, *, raise_error: bool = True) -> No
 
 
 def do_not_reuse(session: Session, *, raise_error: bool = True) -> None:
-    """Do not reuse a session with the "-r" flag."""
+    """Do not reuse a session with the "-r" or "-R" flags."""
     if session._runner.venv._reused:
         msg = 'be run without the "-r" and "-R" flags'
+
         if raise_error:
             session.error(f'Must {msg}')
         else:
@@ -532,6 +536,7 @@ def start(session: Session) -> None:
         session.debug(f'Received extra arguments: {session.posargs}')
 
     session.debug('Some generic information about the environment')
+
     session.run('python', '--version')
     session.run('python', '-c', 'import sys; print(sys.executable)')
     session.run('python', '-c', 'import sys; print(sys.path)')
@@ -569,7 +574,7 @@ def install_pinned(
     Wraps `nox.Session.install()` such that it installs packages
     respecting the versions pinned in the uv.lock file,
     exported into a temporary constraints file.
-    This makes nox sessions more deterministic.
+    This makes `nox` sessions more deterministic.
 
     The developed package itself (i.e., ".") is only rebuilt
     if a file listed in the "cache-keys" in the "[tool.uv]" section
@@ -603,7 +608,7 @@ def skip_install(session: Session) -> bool:
     Skipping package installations must be requested with the "-R" flag.
     """
     # Same logic to skip package installation as in core `nox`
-    # See: https://github.com/wntrblm/nox/blob/2024.10.09/nox/sessions.py#L816
+    # See: https://github.com/wntrblm/nox/blob/2026.10.20/nox/sessions.py#L905
     venv = session._runner.venv
     if session._runner.global_config.no_install and venv._reused:
         return True
