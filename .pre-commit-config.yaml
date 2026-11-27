@@ -1,4 +1,4 @@
-default_stages: [commit]  # only used if a hook does not specify stages
+default_stages: [pre-commit]  # only used if a hook does not specify stages
 fail_fast: true
 repos:
 # Run the local formatting, linting, and testing tool chains.
@@ -8,19 +8,19 @@ repos:
     name: Format the source files
     entry: poetry run nox -s format --
     language: system
-    stages: [commit]
+    stages: [pre-commit]
     types: [python]
   - id: local-lint
     name: Lint the source files
     entry: poetry run nox -s lint --
     language: system
-    stages: [commit]
+    stages: [pre-commit]
     types: [python]
   - id: local-test-suite
     name: Run the entire test suite
     entry: poetry run nox -s test-suite --
     language: system
-    stages: [merge-commit]
+    stages: [pre-merge-commit]
     types: [text]
 # Enable hooks provided by the pre-commit project to
 # enforce rules that local tools could not that easily.
@@ -35,10 +35,10 @@ repos:
   - id: check-toml
   - id: check-yaml
   - id: end-of-file-fixer
-    stages: [commit]  # overwrite the default
+    stages: [pre-commit]  # overwrite the default
   - id: mixed-line-ending
     args: [--fix=no]
   - id: no-commit-to-branch
     args: [--branch, main]
   - id: trailing-whitespace
-    stages: [commit]  # overwrite the default
+    stages: [pre-commit]  # overwrite the default
