@@ -451,9 +451,20 @@ ignore_missing_imports = true
 
 cache_dir = ".cache/pytest"
 
-addopts = "--strict-markers"
+testpaths = ["tests"]
+
+# "-ra" => Summarize skipped and `xfailed tests at the end
+addopts = "-ra --strict-config --strict-markers"
 
 console_output_style = "count"
+
+xfail_strict = true
+
+required_plugins = [
+    "pytest-cov",
+    "pytest-env",
+    "pytest-mock",
+]
 
 env = [
     "TESTING=true",

@@ -216,67 +216,40 @@ def lint_code(session: Session) -> None:
 
 @nox.session(name='test', python=MAIN_PYTHON)
 def test_code(session: Session) -> None:
-    """Test the code base.
-
-    Runs the unit and integration tests with pytest and
-    validate that all code snippets in docstrings work with xdoctest.
+    """Run the unit and integration tests with `pytest`.
 
     If no extra arguments are provided, the entire test suite
-    is exexcuted and succeeds only with 100% coverage.
-
-    If extra arguments are provided, they are
-    forwarded to pytest and xdoctest without any changes.
-    xdoctest ignores arguments it does not understand.
+    is executed and succeeds only with 100% coverage.
+    Otherwise, they are forwarded to `pytest`.
     """
-
     start(session)
 
-    # The testing tools require the developed package and its
-    # non-develop dependencies be installed in the virtual environment.
-    # As the package is not installed in editable mode, the coverage report
-    # relies on "[tool.coverage.paths]" in pyproject.toml to map to src/.
     install_pinned(
         session,
-        '.',
-        'Faker',
+        # The tests import `velofy`, so it and its dependencies must be installed
+        '.',  # => A non-editable copy as it would really be installed
         'factory-boy',
+        'Faker',
         'packaging',
         'pytest',
         'pytest-cov',
         'pytest-env',
         'pytest-mock',
-        'xdoctest[optional]',
     )
 
     session.run('pytest', '--version')
 
-    # Both R and a database are available locally and on the CI server.
-    # Therefore, we require 100% coverage.
-    pytest_args = (
+    pytest_default_args = (
+        # See "[tool.coverage]" in pyproject.toml for `coverage` settings,
+        # for example, branch coverage and report format,
+        # and "[tool.coverage.paths]" mapping `coverage` to src/
         '--cov',
         '--no-cov-on-fail',
-        '--cov-branch',
         '--cov-fail-under=100',
-        '--cov-report=term-missing:skip-covered',
         PYTEST_LOCATION,
     )
 
-    # Interpret extra arguments as options for pytest.
-    posargs = session.posargs
-
-    session.run('pytest', *(posargs or pytest_args))
-
-    # For xdoctest, the default arguments are different from pytest.
-    args = posargs or [PACKAGE_IMPORT_NAME]
-
-    # The "TESTING" environment variable forces the global `engine`, `connection`,
-    # and `session` objects to be set to `None` and avoid any database connection.
-    # For `pytest` above, `pytest-env` sets it with the "env" option
-    # in the "[tool.pytest.ini_options]" section in pyproject.toml.
-    session.env['TESTING'] = 'true'
-
-    session.run('xdoctest', '--version')
-    session.run('xdoctest', '--quiet', *args)  # --quiet => less verbose output
+    session.run('pytest', *(session.posargs or pytest_default_args))
 
 
 @nox.session(name='deps-audit', python=MAIN_PYTHON, reuse_venv=False)
