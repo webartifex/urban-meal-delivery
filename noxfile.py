@@ -272,6 +272,60 @@ def test_docstrings(session: Session) -> None:
     )
 
 
+@nox.session(name='docs', python=MAIN_PYTHON)
+def build_docs(session: Session) -> None:
+    """Build the documentation with `sphinx`.
+
+    Also, verify that all external links work.
+    """
+    start(session)
+
+    # The `sphinx-autodoc` extension imports `velofy` to read the docstrings
+    # => `velofy` and its dependencies must be installed
+    install_pinned(session, '.', 'sphinx', 'sphinx-autodoc-typehints')
+
+    # As `pytest-env` does for `pytest`,
+    # keep `velofy` from connecting to the production database
+    session.env['TESTING'] = 'true'
+
+    session.run('sphinx-build', DOCS_LOCATION, DOCS_BUILD)
+
+    # Verify that all external links return 200 OK
+    session.run('sphinx-build', '-b', 'linkcheck', DOCS_LOCATION, DOCS_BUILD)
+
+    print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
+
+
+@nox.session(name='venv', python=MAIN_PYTHON, venv_backend='none')
+def create_develop_environment(session: Session) -> None:
+    """Set up the local develop environment in ".venv".
+
+    All dependency groups and extras are installed
+    with the versions pinned in the uv.lock file.
+
+    If one extra argument is provided, e.g., `uv run nox -s venv -- other-venv`,
+    it is used as the location of the environment instead of ".venv".
+
+    Then, `uv run` only uses that environment
+    with "UV_PROJECT_ENVIRONMENT" set to the same location.
+    """
+    location, *further_args = session.posargs or ('.venv',)
+
+    if further_args:
+        session.error('Must provide exactly one location')
+
+    # All dependency groups are installed because of "default-groups = 'all'"
+    # in the "[tool.uv]" section in pyproject.toml
+    session.run(
+        'uv',
+        'sync',
+        '--all-extras',
+        '--locked',
+        env={'UV_PROJECT_ENVIRONMENT': location},
+        external=True,
+    )
+
+
 @nox.session(name='deps-audit', python=MAIN_PYTHON, reuse_venv=False)
 def audit_pinned_dependencies(session: Session) -> None:
     """Check dependencies for vulnerabilities with `pip-audit`.
@@ -314,30 +368,6 @@ def audit_pinned_dependencies(session: Session) -> None:
             '--ignore-vuln=PYSEC-2026-2121',
             '--ignore-vuln=CVE-2026-114134',
         )
-
-
-@nox.session(name='docs', python=MAIN_PYTHON)
-def build_docs(session: Session) -> None:
-    """Build the documentation with `sphinx`.
-
-    Also, verify that all external links work.
-    """
-    start(session)
-
-    # The `sphinx-autodoc` extension imports `velofy` to read the docstrings
-    # => `velofy` and its dependencies must be installed
-    install_pinned(session, '.', 'sphinx', 'sphinx-autodoc-typehints')
-
-    # As `pytest-env` does for `pytest`,
-    # keep `velofy` from connecting to the production database
-    session.env['TESTING'] = 'true'
-
-    session.run('sphinx-build', DOCS_LOCATION, DOCS_BUILD)
-
-    # Verify that all external links return 200 OK
-    session.run('sphinx-build', '-b', 'linkcheck', DOCS_LOCATION, DOCS_BUILD)
-
-    print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
 
 
 @nox.session(name='deps-lock', python=MAIN_PYTHON, venv_backend='none')
@@ -411,55 +441,6 @@ def check_dependency_upgrades(session: Session) -> None:
     session.run('python', 'scripts/get_update_info_for_dependencies.py')
 
 
-@nox.session(name='venv', python=MAIN_PYTHON, venv_backend='none')
-def create_develop_environment(session: Session) -> None:
-    """Set up the local develop environment in ".venv".
-
-    All dependency groups and extras are installed
-    with the versions pinned in the uv.lock file.
-
-    If one extra argument is provided, e.g., `uv run nox -s venv -- other-venv`,
-    it is used as the location of the environment instead of ".venv".
-
-    Then, `uv run` only uses that environment
-    with "UV_PROJECT_ENVIRONMENT" set to the same location.
-    """
-    location, *further_args = session.posargs or ('.venv',)
-
-    if further_args:
-        session.error('Must provide exactly one location')
-
-    # All dependency groups are installed because of "default-groups = 'all'"
-    # in the "[tool.uv]" section in pyproject.toml
-    session.run(
-        'uv',
-        'sync',
-        '--all-extras',
-        '--locked',
-        env={'UV_PROJECT_ENVIRONMENT': location},
-        external=True,
-    )
-
-
-def _expand(*patterns: str) -> Generator[pathlib.Path, None, None]:
-    """Expand glob patterns into (resolved) paths.
-
-    Args:
-        *patterns: patterns to be expanded
-
-    Yields:
-        expanded: an expanded path
-    """
-    for pattern in patterns:
-        if not (pattern := pattern.strip()):
-            continue
-
-        expanded_paths = pathlib.Path.cwd().glob(pattern)
-
-        for path in expanded_paths:
-            yield path.resolve()
-
-
 @nox.session(name='init-project', python=MAIN_PYTHON, venv_backend='none')
 def initialize_project(session: Session) -> None:
     """Install the `pre-commit` hooks."""
@@ -506,6 +487,25 @@ def clean_cwd(session: Session) -> None:
             continue
 
         session.run('rm', '-rf', path)
+
+
+def _expand(*patterns: str) -> Generator[pathlib.Path, None, None]:
+    """Expand glob patterns into (resolved) paths.
+
+    Args:
+        *patterns: patterns to be expanded
+
+    Yields:
+        expanded: an expanded path
+    """
+    for pattern in patterns:
+        if not (pattern := pattern.strip()):
+            continue
+
+        expanded_paths = pathlib.Path.cwd().glob(pattern)
+
+        for path in expanded_paths:
+            yield path.resolve()
 
 
 def do_not_accept_arguments(session: Session, *, raise_error: bool = True) -> None:
