@@ -16,12 +16,20 @@ repos:
     language: system
     stages: [pre-commit]
     types: [python]
-  - id: local-test-suite
-    name: Run the entire test suite
-    entry: poetry run nox -s test-suite --
+  - id: local-test
+    name: Run the test suite
+    entry: uv run nox -s test
     language: system
     stages: [pre-merge-commit]
-    types: [text]
+    pass_filenames: false
+    always_run: true
+  - id: local-doctest
+    name: Run the doctests
+    entry: uv run nox -s doctest
+    language: system
+    stages: [pre-merge-commit]
+    pass_filenames: false
+    always_run: true
 # Enable hooks provided by the pre-commit project to
 # enforce rules that local tools could not that easily.
 - repo: https://github.com/pre-commit/pre-commit-hooks
