@@ -1,60 +1,93 @@
-default_install_hook_types: [pre-commit, pre-merge-commit]  # used by a plain `pre-commit install`
-default_stages: [pre-commit]  # only used if a hook does not specify stages
+# Hooks run by `git commit` and `git merge`,
+# installed with `uv run nox -s init-project`
+
+# Used by a plain `pre-commit install`
+default_install_hook_types:
+  - pre-commit
+  - pre-merge-commit
+
+# Used if a hook does not specify stages
+default_stages:
+  - pre-commit
+
 fail_fast: true
+
+
 repos:
-# Run the local formatting, linting, and testing tool chains.
-- repo: local
-  hooks:
-  - id: local-format
-    name: Format the source files
-    entry: uv run nox -s format --
-    language: system
-    stages: [pre-commit]
-    types: [python]
-  - id: local-lint
-    name: Lint the source files
-    entry: uv run nox -s lint --
-    language: system
-    stages: [pre-commit]
-    types: [python]
-  - id: local-test
-    name: Run the test suite
-    entry: uv run nox -s test
-    language: system
-    stages: [pre-merge-commit]
-    pass_filenames: false
-    always_run: true
-  - id: local-doctest
-    name: Run the doctests
-    entry: uv run nox -s doctest
-    language: system
-    stages: [pre-merge-commit]
-    pass_filenames: false
-    always_run: true
-# Keep requirements.txt in sync with uv.lock
-- repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.13.10
-  hooks:
-  - id: uv-export
-    args: [--extra=research, --no-default-groups, --no-emit-project, --frozen, --quiet, --output-file=requirements.txt]
-# Enable hooks provided by the pre-commit project to
-# enforce rules that local tools could not that easily.
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v6.0.0
-  hooks:
-  - id: check-added-large-files
-    args: [--maxkb=100]
-    exclude: ^requirements\.txt$  # Large only because of the hashes
-  - id: check-case-conflict
-  - id: check-builtin-literals
-  - id: check-merge-conflict
-  - id: check-toml
-  - id: check-yaml
-  - id: end-of-file-fixer
-    stages: [pre-commit]  # overwrite the default
-  - id: mixed-line-ending
-    args: [--fix=no]
-  - id: no-commit-to-branch
-    args: [--branch, main]
-  - id: trailing-whitespace
-    stages: [pre-commit]  # overwrite the default
+
+  # Format, lint, and test with the `nox` sessions
+  - repo: local
+    hooks:
+
+      - id: local-format
+        name: Format the source files
+        entry: uv run nox -s format --
+        language: system
+        stages: [pre-commit]
+        types: [python]
+
+      - id: local-lint
+        name: Lint the source files
+        entry: uv run nox -s lint --
+        language: system
+        stages: [pre-commit]
+        types: [python]
+
+      - id: local-test
+        name: Run the test suite
+        entry: uv run nox -s test
+        language: system
+        stages: [pre-merge-commit]
+        pass_filenames: false  # => No `--` at the end of the "entry"
+        always_run: true
+
+      - id: local-doctest
+        name: Run the doctests
+        entry: uv run nox -s doctest
+        language: system
+        stages: [pre-merge-commit]
+        pass_filenames: false  # => No `--` at the end of the "entry"
+        always_run: true
+
+  # Keep requirements.txt in sync with uv.lock
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.13.10
+    hooks:
+
+      - id: uv-export
+        args:
+          - --extra=research
+          - --no-default-groups
+          - --no-emit-project
+          - --frozen
+          - --quiet
+          - --output-file=requirements.txt
+
+  # Generic checks that the "local" tools can not cover
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+
+      - id: check-added-large-files
+        args: [--maxkb=100]
+        exclude: ^requirements\.txt$  # Large because of the hashes
+
+      - id: check-builtin-literals
+
+      - id: check-case-conflict
+
+      - id: check-merge-conflict
+
+      - id: check-toml
+
+      - id: check-yaml
+
+      - id: end-of-file-fixer
+
+      - id: mixed-line-ending
+        args: [--fix=no]
+
+      - id: no-commit-to-branch
+        args: [--branch, main]
+
+      - id: trailing-whitespace
