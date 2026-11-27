@@ -14,8 +14,8 @@ defaults:
 
 
 jobs:
-  test:
-    name: Tests (Python 3.13)
+  checks:
+    name: Checks (Python 3.13)
     runs-on: debian-13
 
     # Throwaway database, reachable from the job as host `postgres`
@@ -63,6 +63,14 @@ jobs:
       - name: Install `velofy` and its dependencies
         run: uv sync --locked
 
-      # `TESTING=true` comes from `pyproject.toml`
+      - name: Ensure `nox -s format` changes nothing
+        run: uv run nox -s format && git diff --exit-code
+
+      - name: Lint the source files
+        run: uv run nox -s lint
+
       - name: Run the test suite
-        run: uv run pytest -q
+        run: uv run nox -s test
+
+      - name: Run the doctests
+        run: uv run nox -s doctest
