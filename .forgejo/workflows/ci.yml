@@ -75,3 +75,8 @@ jobs:
 
       - name: Run the doctests
         run: uv run nox -s doctest
+
+      - name: Run the `pre-commit` hooks not covered by `nox`
+        run: uv run pre-commit run --all-files --show-diff-on-failure
+        env:
+          SKIP: local-format,local-lint,local-test,local-doctest,no-commit-to-branch
