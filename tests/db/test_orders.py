@@ -1094,7 +1094,7 @@ def test_make_random_orders(  # noqa:C901
 
     Ensure that all generated `Address`, `Courier`, `Customer`, `Restaurant`,
     and `Order` objects adhere to the database constraints.
-    """  # noqa:D202
+    """
     # Generate a large number of `Order`s to obtain a large variance of data.
     for _ in range(1_000):
 
