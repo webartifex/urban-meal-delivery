@@ -45,12 +45,16 @@ class ScheduledOrderFactory(ad_hoc.AdHocOrderFactory):
 
     # Restaurant-related attributes
     restaurant_notified_at = factory.LazyAttribute(
-        lambda obj: obj.scheduled_delivery_at
-        - utils.random_timespan(min_minutes=45, max_minutes=50),
+        lambda obj: (
+            obj.scheduled_delivery_at
+            - utils.random_timespan(min_minutes=45, max_minutes=50)
+        ),
     )
 
     # Dispatch-related attributes
     dispatch_at = factory.LazyAttribute(
-        lambda obj: obj.scheduled_delivery_at
-        - utils.random_timespan(min_minutes=40, max_minutes=45),
+        lambda obj: (
+            obj.scheduled_delivery_at
+            - utils.random_timespan(min_minutes=40, max_minutes=45)
+        ),
     )

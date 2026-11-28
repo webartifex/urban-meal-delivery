@@ -2,7 +2,7 @@
 
 By default, `uv run nox` runs the sessions that assure code quality:
 
-- "format": Format the source files with `autoflake`, `black`, and `isort`
+- "format": Format the source files with `autoflake`, `black`, `isort`, and `ruff`
 - "lint": Lint the source files with `flake8`, `isort`, and `ruff`
 - "test": Run the test suite with `pytest`
 - "doctest": Check if code snippets in the docstrings run
@@ -141,7 +141,7 @@ os.makedirs(tempfile.tempdir, exist_ok=True)
 
 @nox.session(name="format", python=MAIN_PYTHON)
 def format_code(session: Session) -> None:
-    """Format source files with `autoflake`, `black`, and `isort`.
+    """Format source files with `autoflake`, `black`, `isort`, and `ruff`.
 
     If no extra arguments are provided, all source files are formatted.
     Otherwise, they are interpreted as paths the formatters work on recursively.
@@ -150,7 +150,7 @@ def format_code(session: Session) -> None:
 
     # The formatters do not need `velofy` installed
     # because they work on the source files directly
-    install_pinned(session, "autoflake", "black", "isort")
+    install_pinned(session, "autoflake", "black", "isort", "ruff")
 
     # Interpret extra arguments as `locations` of source files
     locations = session.posargs or SRC_LOCATIONS
@@ -165,6 +165,10 @@ def format_code(session: Session) -> None:
 
     session.run("isort", "--version")
     session.run("isort", *locations)
+
+    session.run("ruff", "--version")
+    session.run("ruff", "check", "--fix-only", *locations)
+    session.run("ruff", "format", *locations)
 
 
 @nox.session(name="lint", python=MAIN_PYTHON)
