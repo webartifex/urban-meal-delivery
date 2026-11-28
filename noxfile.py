@@ -182,6 +182,7 @@ def lint_code(session: Session) -> None:
         session,
         'flake8',
         'flake8-annotations',
+        'flake8-bandit',
         'flake8-black',
         'flake8-pyproject',
         'flake8-pytest-style',

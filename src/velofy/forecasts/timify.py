@@ -70,7 +70,7 @@ class OrderHistory:
         # This happens when there is no demand in the `Pixel` in the given `time_step`.
         data = pd.read_sql_query(
             sa.text(
-                f"""
+                f"""  -- # noqa:S608
                 SELECT
                     pixel_id,
                     start_at,
