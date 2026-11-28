@@ -33,7 +33,7 @@ class Path(meta.Base):
     Implements an association pattern between `Address` and `Address`.
 
     Further info:
-        https://docs.sqlalchemy.org/en/stable/orm/basic_relationships.html#association-object  # noqa:E501
+        https://docs.sqlalchemy.org/en/stable/orm/basic_relationships.html#association-object
     """
 
     __tablename__ = "addresses_addresses"

@@ -3,7 +3,7 @@
 By default, `uv run nox` runs the sessions that assure code quality:
 
 - "format": Format the source files with `autoflake`, `black`, and `isort`
-- "lint": Lint the source files with `flake8` and `isort`
+- "lint": Lint the source files with `flake8`, `isort`, and `ruff`
 - "test": Run the test suite with `pytest`
 - "doctest": Check if code snippets in the docstrings run
 
@@ -169,7 +169,7 @@ def format_code(session: Session) -> None:
 
 @nox.session(name="lint", python=MAIN_PYTHON)
 def lint_code(session: Session) -> None:
-    """Lint source files with `flake8` and `isort`.
+    """Lint source files with `flake8`, `isort`, and `ruff`.
 
     If no extra arguments are provided, all source files are linted.
     Otherwise, they are interpreted as paths the linters work on recursively.
@@ -201,6 +201,7 @@ def lint_code(session: Session) -> None:
         # 'mypy',
         "pep8-naming",
         "pydoclint[flake8]",
+        "ruff",
     )
 
     # Interpret extra arguments as `locations` of source files
@@ -213,6 +214,9 @@ def lint_code(session: Session) -> None:
 
     session.run("isort", "--version")
     session.run("isort", "--check-only", *locations)
+
+    session.run("ruff", "--version")
+    session.run("ruff", "check", *locations)
 
     # TODO: Include `mypy` once it passes
     #  - Only for the *.py files to be packaged
@@ -306,7 +310,7 @@ def build_docs(session: Session) -> None:
     # Verify that all external links return 200 OK
     session.run("sphinx-build", "-b", "linkcheck", DOCS_LOCATION, DOCS_BUILD)
 
-    print(f"Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html")
+    session.log(f"Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html")
 
 
 @nox.session(name="venv", python=MAIN_PYTHON, venv_backend="none")
