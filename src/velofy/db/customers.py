@@ -21,10 +21,7 @@ class Customer(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}(#{customer_id})>".format(
-            cls=self.__class__.__name__,
-            customer_id=self.id,
-        )
+        return f"<{self.__class__.__name__}(#{self.id})>"
 
     # Relationships
     orders = orm.relationship("Order", back_populates="customer")

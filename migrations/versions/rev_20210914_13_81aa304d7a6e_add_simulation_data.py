@@ -299,7 +299,7 @@ def upgrade():
         *(
             sa.CheckConstraint(
                 constraint,
-                name="ordered_timestamps_{index}".format(index=index),
+                name=f"ordered_timestamps_{index}",
             )
             for index, constraint in enumerate(
                 (

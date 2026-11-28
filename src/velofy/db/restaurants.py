@@ -58,7 +58,7 @@ class Restaurant(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}({name})>".format(cls=self.__class__.__name__, name=self.name)
+        return f"<{self.__class__.__name__}({self.name})>"
 
     def clear_map(self) -> Restaurant:  # pragma: no cover
         """Shortcut to the `.address.city.clear_map()` method.

@@ -56,11 +56,7 @@ class Pixel(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}: ({x}|{y})>".format(
-            cls=self.__class__.__name__,
-            x=self.n_x,
-            y=self.n_y,
-        )
+        return f"<{self.__class__.__name__}: ({self.n_x}|{self.n_y})>"
 
     # Convenience properties
 

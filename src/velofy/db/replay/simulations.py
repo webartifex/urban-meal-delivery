@@ -40,9 +40,5 @@ class ReplaySimulation(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}({strategy} #{run} in {city})>".format(
-            cls=self.__class__.__name__,
-            strategy=self.strategy,
-            run=self.run,
-            city=self.city.name,
-        )
+        cls = self.__class__.__name__
+        return f"<{cls}({self.strategy} #{self.run} in {self.city.name})>"

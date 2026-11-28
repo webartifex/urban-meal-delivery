@@ -142,13 +142,9 @@ class Forecast(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}: {prediction} for pixel ({n_x}|{n_y}) at {start_at}>".format(
-            cls=self.__class__.__name__,
-            prediction=self.prediction,
-            n_x=self.pixel.n_x,
-            n_y=self.pixel.n_y,
-            start_at=self.start_at,
-        )
+        cls = self.__class__.__name__
+        pixel = f"({self.pixel.n_x}|{self.pixel.n_y})"
+        return f"<{cls}: {self.prediction} for pixel {pixel} at {self.start_at}>"
 
     @classmethod
     def from_dataframe(

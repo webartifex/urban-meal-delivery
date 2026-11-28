@@ -51,10 +51,7 @@ class Grid(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}: {area} sqr. km>".format(
-            cls=self.__class__.__name__,
-            area=self.pixel_area,
-        )
+        return f"<{self.__class__.__name__}: {self.pixel_area} sqr. km>"
 
     # Convenience properties
     @property

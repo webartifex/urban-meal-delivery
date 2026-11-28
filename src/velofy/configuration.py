@@ -16,11 +16,9 @@ import warnings
 
 def random_schema_name() -> str:
     """Generate a random PostgreSQL schema name for testing."""
-    return "temp_{name}".format(
-        name="".join(
-            (random.choice(string.ascii_lowercase) for _ in range(10)),  # noqa:S311
-        ),
-    )
+    letters = (random.choice(string.ascii_lowercase) for _ in range(10))  # noqa:S311
+    name = "".join(letters)
+    return f"temp_{name}"
 
 
 class Config:

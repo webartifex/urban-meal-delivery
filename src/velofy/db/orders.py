@@ -266,7 +266,7 @@ class Order(meta.Base):
         *(
             sa.CheckConstraint(
                 constraint,
-                name="ordered_timestamps_{index}".format(index=index),
+                name=f"ordered_timestamps_{index}",
             )
             for index, constraint in enumerate(
                 (
@@ -550,10 +550,7 @@ class Order(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}(#{order_id})>".format(
-            cls=self.__class__.__name__,
-            order_id=self.id,
-        )
+        return f"<{self.__class__.__name__}(#{self.id})>"
 
     def draw(self) -> folium.Map:  # pragma: no cover
         """Draw the `.waypoints` from `.pickup_address` to `.delivery_address`.

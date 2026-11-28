@@ -33,17 +33,14 @@ def include_object(obj, _name, type_, _reflected, _compare_to):
 
 engine = sa.create_engine(velofy_config.DATABASE_URI)
 
+test_schema = f"_{velofy_config.CLEAN_SCHEMA}" if os.getenv("TESTING") else ""
+
 with engine.connect() as connection:
     context.configure(
         connection=connection,
         include_object=include_object,
         target_metadata=db.Base.metadata,
-        version_table="{alembic_table}{test_schema}".format(
-            alembic_table=velofy_config.ALEMBIC_TABLE,
-            test_schema=(
-                f"_{velofy_config.CLEAN_SCHEMA}" if os.getenv("TESTING") else ""
-            ),
-        ),
+        version_table=f"{velofy_config.ALEMBIC_TABLE}{test_schema}",
         version_table_schema=velofy_config.ALEMBIC_TABLE_SCHEMA,
     )
 

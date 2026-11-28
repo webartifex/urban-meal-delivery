@@ -105,7 +105,7 @@ def stl(  # noqa:C901
         if nt % 2 == 0 or nt < default_nt:
             raise ValueError(
                 "`nt` must be odd and `>= (1.5 * frequency) / [1 - (1.5 / ns)]`, "
-                + "which is {0}".format(default_nt),
+                + f"which is {default_nt}",
             )
     else:
         nt = default_nt

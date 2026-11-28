@@ -82,11 +82,7 @@ class Address(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}({street} in {city})>".format(
-            cls=self.__class__.__name__,
-            street=self.street,
-            city=self.city_name,
-        )
+        return f"<{self.__class__.__name__}({self.street} in {self.city_name})>"
 
     @hybrid.hybrid_property
     def is_primary(self) -> bool:

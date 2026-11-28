@@ -266,7 +266,7 @@ class ReplayedOrder(meta.Base):
             # and the non-simulated columns removed.
             sa.CheckConstraint(
                 constraint,
-                name="ordered_timestamps_{index}".format(index=index),
+                name=f"ordered_timestamps_{index}",
             )
             for index, constraint in enumerate(
                 (
@@ -338,10 +338,7 @@ class ReplayedOrder(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}(#{order_id})>".format(
-            cls=self.__class__.__name__,
-            order_id=self.actual.id,
-        )
+        return f"<{self.__class__.__name__}(#{self.actual.id})>"
 
     # Convenience properties
 

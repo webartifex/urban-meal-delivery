@@ -48,7 +48,7 @@ class City(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}({name})>".format(cls=self.__class__.__name__, name=self.name)
+        return f"<{self.__class__.__name__}({self.name})>"
 
     @functools.cached_property
     def center(self) -> utils.Location:

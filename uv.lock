@@ -1031,6 +1031,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/dd/57/a173e3eb86072b7ee77650aca496b15d6886367d257f58ea9de5276e330a/flake8-quotes-3.4.0.tar.gz", hash = "sha256:aad8492fb710a2d3eabe68c5f86a1428de650c8484127e14c43d0504ba30276c", size = 14107, upload-time = "2024-02-10T21:58:22.357Z" }
 
 [[package]]
+name = "flake8-sfs"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/10/d0/f382713010bb429934fd03b9b0cc8726ef620719fec49c942e8fc41454e7/flake8_sfs-1.0.1.tar.gz", hash = "sha256:0cab211f805efe2b29a8480fda0d46a8cedba1d45b4dd71b9bd0675804097149", size = 6531, upload-time = "2025-09-21T09:31:42.454Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d1/a8/dc3b3dbe52808d3f09504950d20963a3e19ab1bf6492790b70b8b2e32565/flake8_sfs-1.0.1-py3-none-any.whl", hash = "sha256:ef5f6b3e6d958894fe4c953ecf8e6156d9ab620c7e138f68af5c0f9bfdb4f6b4", size = 6651, upload-time = "2025-09-21T09:31:41.166Z" },
+]
+
+[[package]]
 name = "folium"
 version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3680,6 +3692,7 @@ dev = [
     { name = "flake8-pyproject" },
     { name = "flake8-pytest-style" },
     { name = "flake8-quotes" },
+    { name = "flake8-sfs" },
     { name = "isort" },
     { name = "mypy" },
     { name = "nox" },
@@ -3739,6 +3752,7 @@ dev = [
     { name = "flake8-pyproject", specifier = ">=1.2.4,<2.0.0" },
     { name = "flake8-pytest-style", specifier = ">=2.2.0,<3.0.0" },
     { name = "flake8-quotes", specifier = ">=3.4.0,<4.0.0" },
+    { name = "flake8-sfs", specifier = ">=1.0.1,<2.0.0" },
     { name = "isort", specifier = ">=9.0.2,<10.0.0" },
     { name = "mypy", specifier = ">=2.4.1,<3.0.0" },
     { name = "nox", specifier = ">=2026.10.20" },

@@ -47,7 +47,4 @@ class Courier(meta.Base):
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return "<{cls}(#{courier_id})>".format(
-            cls=self.__class__.__name__,
-            courier_id=self.id,
-        )
+        return f"<{self.__class__.__name__}(#{self.id})>"
