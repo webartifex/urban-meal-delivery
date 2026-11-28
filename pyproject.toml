@@ -203,8 +203,6 @@ select = [
     "T100",
     # flake8-docstrings => PEP257 compliance
     "D1", "D2", "D3", "D4",
-    # flake8-string-format => unify usage of str.format()
-    "P1", "P2", "P3",
     # flake8-quotes => use double quotes everywhere (complying with black)
     "Q0",
     # pep8-naming
