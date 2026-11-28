@@ -26,7 +26,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
 
     class Meta:
         model = db.Order
-        sqlalchemy_get_or_create = ('id',)
+        sqlalchemy_get_or_create = ("id",)
 
     class Params:
         """Define flags that overwrite some attributes.
@@ -41,7 +41,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
 
         # Timestamps after `cancelled_at` are discarded
         # by the `post_generation` hook at the end of the `OrderFactory`.
-        cancel_ = factory.Trait(  # noqa:WPS120 -> leading underscore does not work
+        cancel_ = factory.Trait(  # -> leading underscore does not work
             cancelled=True,
             cancelled_at_corrected=False,
         )
@@ -65,7 +65,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
         )
 
     # Generic attributes
-    id = factory.Sequence(lambda num: num)  # noqa:WPS125
+    id = factory.Sequence(lambda num: num)
     # customer -> set by the `make_order` fixture for better control
 
     # Attributes regarding the specialization of an `Order`: ad-hoc or scheduled.
@@ -182,12 +182,12 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
 
     # Statistical attributes -> calculate realistic stats
     logged_delivery_distance = factory.LazyAttribute(
-        lambda obj: distance.great_circle(  # noqa:WPS317
+        lambda obj: distance.great_circle(
             (obj.pickup_address.latitude, obj.pickup_address.longitude),
             (obj.delivery_address.latitude, obj.delivery_address.longitude),
         ).meters,
     )
-    logged_avg_speed = factory.LazyAttribute(  # noqa:ECE001
+    logged_avg_speed = factory.LazyAttribute(
         lambda obj: round(
             (
                 obj.logged_avg_speed_distance

@@ -7,7 +7,7 @@ from typing import Optional, Tuple
 import utm
 
 
-class Location:  # noqa:WPS214
+class Location:
     """A location represented in WGS84 and UTM coordinates.
 
     WGS84:
@@ -46,11 +46,14 @@ class Location:  # noqa:WPS214
 
         Convention is {ZONE} {EASTING} {NORTHING}.
 
+        Returns:
+            text representation in the UTM system
+
         Example:
             >>> Location(43.6532, -79.3832)
             <Location: 17T 630378 4834625>
         """
-        return f'<Location: {self.zone} {self.easting} {self.northing}>'  # noqa:WPS221
+        return f"<Location: {self.zone} {self.easting} {self.northing}>"
 
     @property
     def latitude(self) -> float:
@@ -86,7 +89,7 @@ class Location:  # noqa:WPS214
     @property
     def zone(self) -> str:
         """The UTM zone of the location."""
-        return f'{self._zone}{self._band}'
+        return f"{self._zone}{self._band}"
 
     @property
     def zone_details(self) -> Tuple[int, str]:
@@ -99,29 +102,29 @@ class Location:  # noqa:WPS214
             return NotImplemented
 
         if self.zone != other.zone:
-            raise ValueError('locations must be in the same zone, including the band')
+            raise ValueError("locations must be in the same zone, including the band")
 
         return (self.easting, self.northing) == (other.easting, other.northing)
 
     @property
-    def x(self) -> int:  # noqa:WPS111
+    def x(self) -> int:
         """The `.easting` of the location in meters, relative to some origin.
 
         The origin, which defines the `(0, 0)` coordinate, is set with `.relate_to()`.
         """
         if self._normalized_easting is None:
-            raise RuntimeError('an origin to relate to must be set first')
+            raise RuntimeError("an origin to relate to must be set first")
 
         return self._normalized_easting
 
     @property
-    def y(self) -> int:  # noqa:WPS111
+    def y(self) -> int:
         """The `.northing` of the location in meters, relative to some origin.
 
         The origin, which defines the `(0, 0)` coordinate, is set with `.relate_to()`.
         """
         if self._normalized_northing is None:
-            raise RuntimeError('an origin to relate to must be set first')
+            raise RuntimeError("an origin to relate to must be set first")
 
         return self._normalized_northing
 
@@ -136,13 +139,13 @@ class Location:  # noqa:WPS214
         properties, the `other` origin may only be set once!
         """
         if self._normalized_easting is not None:
-            raise RuntimeError('the `other` origin may only be set once')
+            raise RuntimeError("the `other` origin may only be set once")
 
         if not isinstance(other, Location):
-            raise TypeError('`other` is not a `Location` object')
+            raise TypeError("`other` is not a `Location` object")
 
         if self.zone != other.zone:
-            raise ValueError('`other` must be in the same zone, including the band')
+            raise ValueError("`other` must be in the same zone, including the band")
 
         self._normalized_easting = self.easting - other.easting
         self._normalized_northing = self.northing - other.northing

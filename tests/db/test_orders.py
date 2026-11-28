@@ -22,7 +22,7 @@ class TestSpecialMethods:
         """`Order` has a non-literal text representation."""
         result = repr(order)
 
-        assert result == f'<Order(#{order.id})>'
+        assert result == f"<Order(#{order.id})>"
 
 
 @pytest.mark.db
@@ -60,7 +60,7 @@ class TestConstraints:
         # Must delete without ORM as otherwise an UPDATE statement is emitted.
         stmt = sqla.delete(db.Customer).where(db.Customer.id == order.customer.id)
 
-        with pytest.raises(sa_exc.IntegrityError, match='fk_orders_to_customers'):
+        with pytest.raises(sa_exc.IntegrityError, match="fk_orders_to_customers"):
             db_session.execute(stmt)
 
     def test_delete_a_referenced_courier(self, db_session, order):
@@ -71,7 +71,7 @@ class TestConstraints:
         # Must delete without ORM as otherwise an UPDATE statement is emitted.
         stmt = sqla.delete(db.Courier).where(db.Courier.id == order.courier.id)
 
-        with pytest.raises(sa_exc.IntegrityError, match='fk_orders_to_couriers'):
+        with pytest.raises(sa_exc.IntegrityError, match="fk_orders_to_couriers"):
             db_session.execute(stmt)
 
     def test_delete_a_referenced_restaurant(self, db_session, order):
@@ -82,7 +82,7 @@ class TestConstraints:
         # Must delete without ORM as otherwise an UPDATE statement is emitted.
         stmt = sqla.delete(db.Restaurant).where(db.Restaurant.id == order.restaurant.id)
 
-        with pytest.raises(sa_exc.IntegrityError, match='fk_orders_to_restaurants'):
+        with pytest.raises(sa_exc.IntegrityError, match="fk_orders_to_restaurants"):
             db_session.execute(stmt)
 
     def test_change_a_referenced_pickup_address(self, db_session, order, make_address):
@@ -97,7 +97,7 @@ class TestConstraints:
         order.restaurant.address = make_address()
         db_session.add(order.restaurant.address)
 
-        with pytest.raises(sa_exc.IntegrityError, match='fk_orders_to_restaurants'):
+        with pytest.raises(sa_exc.IntegrityError, match="fk_orders_to_restaurants"):
             db_session.commit()
 
     # Here should be a test to check deletion of a referenced pickup address, so
@@ -114,7 +114,7 @@ class TestConstraints:
         # Must delete without ORM as otherwise an UPDATE statement is emitted.
         stmt = sqla.delete(db.Address).where(db.Address.id == order.delivery_address.id)
 
-        with pytest.raises(sa_exc.IntegrityError, match='fk_orders_to_addresses'):
+        with pytest.raises(sa_exc.IntegrityError, match="fk_orders_to_addresses"):
             db_session.execute(stmt)
 
     def test_ad_hoc_order_with_scheduled_delivery_at(self, db_session, order):
@@ -128,7 +128,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='either_ad_hoc_or_scheduled_order',
+            match="either_ad_hoc_or_scheduled_order",
         ):
             db_session.commit()
 
@@ -143,7 +143,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='either_ad_hoc_or_scheduled_order',
+            match="either_ad_hoc_or_scheduled_order",
         ):
             db_session.commit()
 
@@ -155,7 +155,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ad_hoc_orders_within_business_hours',
+            match="ad_hoc_orders_within_business_hours",
         ):
             db_session.commit()
 
@@ -167,7 +167,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ad_hoc_orders_within_business_hours',
+            match="ad_hoc_orders_within_business_hours",
         ):
             db_session.commit()
 
@@ -182,7 +182,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_within_business_hours',
+            match="scheduled_orders_within_business_hours",
         ):
             db_session.commit()
 
@@ -197,7 +197,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_within_business_hours',
+            match="scheduled_orders_within_business_hours",
         ):
             db_session.commit()
 
@@ -229,11 +229,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_within_business_hours',
+            match="scheduled_orders_within_business_hours",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('minute', [min_ for min_ in range(60) if min_ % 15 != 0])
+    @pytest.mark.parametrize("minute", [min_ for min_ in range(60) if min_ % 15 != 0])
     def test_scheduled_order_at_non_quarter_of_an_hour(
         self,
         db_session,
@@ -254,11 +254,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_must_be_at_quarters_of_an_hour',
+            match="scheduled_orders_must_be_at_quarters_of_an_hour",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('second', list(range(1, 60)))
+    @pytest.mark.parametrize("second", list(range(1, 60)))
     def test_scheduled_order_at_non_quarter_of_an_hour_by_seconds(
         self,
         db_session,
@@ -280,7 +280,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_must_be_at_quarters_of_an_hour',
+            match="scheduled_orders_must_be_at_quarters_of_an_hour",
         ):
             db_session.commit()
 
@@ -309,7 +309,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_not_within_30_minutes',
+            match="scheduled_orders_not_within_30_minutes",
         ):
             db_session.commit()
 
@@ -326,7 +326,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='only_cancelled_orders_may_have_cancelled_at',
+            match="only_cancelled_orders_may_have_cancelled_at",
         ):
             db_session.commit()
 
@@ -340,11 +340,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='cancelled_orders_must_not_be_delivered',
+            match="cancelled_orders_must_not_be_delivered",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('duration', [-1, 2701])
+    @pytest.mark.parametrize("duration", [-1, 2701])
     def test_estimated_prep_duration_out_of_range(self, db_session, order, duration):
         """Insert an instance with invalid data."""
         order.estimated_prep_duration = duration
@@ -352,11 +352,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='between_0_and_2700',
+            match="between_0_and_2700",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('duration', [1, 59, 119, 2699])
+    @pytest.mark.parametrize("duration", [1, 59, 119, 2699])
     def test_estimated_prep_duration_not_whole_minute(
         self,
         db_session,
@@ -369,11 +369,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='must_be_whole_minutes',
+            match="must_be_whole_minutes",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('duration', [-1, 901])
+    @pytest.mark.parametrize("duration", [-1, 901])
     def test_estimated_prep_buffer_out_of_range(self, db_session, order, duration):
         """Insert an instance with invalid data."""
         order.estimated_prep_buffer = duration
@@ -381,11 +381,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='between_0_and_900',
+            match="between_0_and_900",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('duration', [1, 59, 119, 899])
+    @pytest.mark.parametrize("duration", [1, 59, 119, 899])
     def test_estimated_prep_buffer_not_whole_minute(self, db_session, order, duration):
         """Insert an instance with invalid data."""
         order.estimated_prep_buffer = duration
@@ -393,11 +393,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='must_be_whole_minutes',
+            match="must_be_whole_minutes",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('utilization', [-1, 101])
+    @pytest.mark.parametrize("utilization", [-1, 101])
     def test_utilization_out_of_range(self, db_session, order, utilization):
         """Insert an instance with invalid data."""
         order.utilization = utilization
@@ -405,25 +405,25 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='between_0_and_100',
+            match="between_0_and_100",
         ):
             db_session.commit()
 
     @pytest.mark.parametrize(
-        'column',
+        "column",
         [
-            'scheduled_delivery_at',
-            'cancelled_at',
-            'restaurant_notified_at',
-            'restaurant_confirmed_at',
-            'estimated_prep_duration',
-            'dispatch_at',
-            'courier_notified_at',
-            'courier_accepted_at',
-            'left_pickup_at',
+            "scheduled_delivery_at",
+            "cancelled_at",
+            "restaurant_notified_at",
+            "restaurant_confirmed_at",
+            "estimated_prep_duration",
+            "dispatch_at",
+            "courier_notified_at",
+            "courier_accepted_at",
+            "left_pickup_at",
         ],
     )
-    def test_unset_timestamp_column_not_marked_as_uncorrected(  # noqa:WPS213
+    def test_unset_timestamp_column_not_marked_as_uncorrected(
         self,
         db_session,
         order,
@@ -438,25 +438,25 @@ class TestConstraints:
         setattr(order, column, None)
 
         # Setting both the timestamp and its correction column to NULL is allowed.
-        setattr(order, f'{column}_corrected', None)
+        setattr(order, f"{column}_corrected", None)
 
         db_session.add(order)
         db_session.commit()
 
         # Also, an unset timestamp column may always be marked as corrected.
-        setattr(order, f'{column}_corrected', True)
+        setattr(order, f"{column}_corrected", True)
 
         db_session.add(order)
         db_session.commit()
 
         # Without a timestamp set, a column may not be marked as uncorrected.
-        setattr(order, f'{column}_corrected', False)
+        setattr(order, f"{column}_corrected", False)
 
         db_session.add(order)
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='corrections_only_for_set_value',
+            match="corrections_only_for_set_value",
         ):
             db_session.commit()
 
@@ -473,7 +473,7 @@ class TestConstraints:
         self.test_unset_timestamp_column_not_marked_as_uncorrected(
             db_session,
             order,
-            'pickup_at',
+            "pickup_at",
         )
 
     def test_unset_timestamp_column_not_marked_as_uncorrected_special_case2(
@@ -490,24 +490,24 @@ class TestConstraints:
         self.test_unset_timestamp_column_not_marked_as_uncorrected(
             db_session,
             order,
-            'delivery_at',
+            "delivery_at",
         )
 
     @pytest.mark.parametrize(
-        'column',
+        "column",
         [
-            'restaurant_notified_at',
-            'restaurant_confirmed_at',
-            'estimated_prep_duration',
-            'dispatch_at',
-            'courier_notified_at',
-            'courier_accepted_at',
-            'pickup_at',
-            'left_pickup_at',
-            'delivery_at',
+            "restaurant_notified_at",
+            "restaurant_confirmed_at",
+            "estimated_prep_duration",
+            "dispatch_at",
+            "courier_notified_at",
+            "courier_accepted_at",
+            "pickup_at",
+            "left_pickup_at",
+            "delivery_at",
         ],
     )
-    def test_set_timestamp_column_is_not_unmarked(  # noqa:WPS213
+    def test_set_timestamp_column_is_not_unmarked(
         self,
         db_session,
         order,
@@ -523,24 +523,24 @@ class TestConstraints:
 
         # A set timestamp may be marked as either corrected or uncorrected.
 
-        setattr(order, f'{column}_corrected', True)
+        setattr(order, f"{column}_corrected", True)
 
         db_session.add(order)
         db_session.commit()
 
-        setattr(order, f'{column}_corrected', False)
+        setattr(order, f"{column}_corrected", False)
 
         db_session.add(order)
         db_session.commit()
 
         # A set timestamp may not be left unmarked.
-        setattr(order, f'{column}_corrected', None)
+        setattr(order, f"{column}_corrected", None)
 
         db_session.add(order)
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='corrections_only_for_set_value',
+            match="corrections_only_for_set_value",
         ):
             db_session.commit()
 
@@ -556,7 +556,7 @@ class TestConstraints:
         self.test_set_timestamp_column_is_not_unmarked(
             db_session,
             pre_order,
-            'scheduled_delivery_at',
+            "scheduled_delivery_at",
         )
 
     def test_set_timestamp_column_is_not_unmarked_special_case2(
@@ -579,54 +579,54 @@ class TestConstraints:
         self.test_set_timestamp_column_is_not_unmarked(
             db_session,
             order,
-            'cancelled_at',
+            "cancelled_at",
         )
 
     @pytest.mark.parametrize(
-        'comparison',
+        "comparison",
         [
-            'placed_at < first_estimated_delivery_at',
-            'placed_at < restaurant_notified_at',
-            'placed_at < restaurant_confirmed_at',
-            'placed_at < dispatch_at',
-            'placed_at < courier_notified_at',
-            'placed_at < courier_accepted_at',
-            'placed_at < reached_pickup_at',
-            'placed_at < pickup_at',
-            'placed_at < left_pickup_at',
-            'placed_at < reached_delivery_at',
-            'placed_at < delivery_at',
-            'restaurant_notified_at < restaurant_confirmed_at',
-            'restaurant_notified_at < pickup_at',
-            'restaurant_confirmed_at < pickup_at',
-            'dispatch_at < courier_notified_at',
-            'dispatch_at < courier_accepted_at',
-            'dispatch_at < reached_pickup_at',
-            'dispatch_at < pickup_at',
-            'dispatch_at < left_pickup_at',
-            'dispatch_at < reached_delivery_at',
-            'dispatch_at < delivery_at',
-            'courier_notified_at < courier_accepted_at',
-            'courier_notified_at < reached_pickup_at',
-            'courier_notified_at < pickup_at',
-            'courier_notified_at < left_pickup_at',
-            'courier_notified_at < reached_delivery_at',
-            'courier_notified_at < delivery_at',
-            'courier_accepted_at < reached_pickup_at',
-            'courier_accepted_at < pickup_at',
-            'courier_accepted_at < left_pickup_at',
-            'courier_accepted_at < reached_delivery_at',
-            'courier_accepted_at < delivery_at',
-            'reached_pickup_at < pickup_at',
-            'reached_pickup_at < left_pickup_at',
-            'reached_pickup_at < reached_delivery_at',
-            'reached_pickup_at < delivery_at',
-            'pickup_at < left_pickup_at',
-            'pickup_at < reached_delivery_at',
-            'pickup_at < delivery_at',
-            'left_pickup_at < reached_delivery_at',
-            'left_pickup_at < delivery_at',
-            'reached_delivery_at < delivery_at',
+            "placed_at < first_estimated_delivery_at",
+            "placed_at < restaurant_notified_at",
+            "placed_at < restaurant_confirmed_at",
+            "placed_at < dispatch_at",
+            "placed_at < courier_notified_at",
+            "placed_at < courier_accepted_at",
+            "placed_at < reached_pickup_at",
+            "placed_at < pickup_at",
+            "placed_at < left_pickup_at",
+            "placed_at < reached_delivery_at",
+            "placed_at < delivery_at",
+            "restaurant_notified_at < restaurant_confirmed_at",
+            "restaurant_notified_at < pickup_at",
+            "restaurant_confirmed_at < pickup_at",
+            "dispatch_at < courier_notified_at",
+            "dispatch_at < courier_accepted_at",
+            "dispatch_at < reached_pickup_at",
+            "dispatch_at < pickup_at",
+            "dispatch_at < left_pickup_at",
+            "dispatch_at < reached_delivery_at",
+            "dispatch_at < delivery_at",
+            "courier_notified_at < courier_accepted_at",
+            "courier_notified_at < reached_pickup_at",
+            "courier_notified_at < pickup_at",
+            "courier_notified_at < left_pickup_at",
+            "courier_notified_at < reached_delivery_at",
+            "courier_notified_at < delivery_at",
+            "courier_accepted_at < reached_pickup_at",
+            "courier_accepted_at < pickup_at",
+            "courier_accepted_at < left_pickup_at",
+            "courier_accepted_at < reached_delivery_at",
+            "courier_accepted_at < delivery_at",
+            "reached_pickup_at < pickup_at",
+            "reached_pickup_at < left_pickup_at",
+            "reached_pickup_at < reached_delivery_at",
+            "reached_pickup_at < delivery_at",
+            "pickup_at < left_pickup_at",
+            "pickup_at < reached_delivery_at",
+            "pickup_at < delivery_at",
+            "left_pickup_at < reached_delivery_at",
+            "left_pickup_at < delivery_at",
+            "reached_delivery_at < delivery_at",
         ],
     )
     def test_timestamps_unordered(
@@ -640,17 +640,17 @@ class TestConstraints:
         There are two special cases for this test case below,
         where other attributes on `order` must be unset.
         """
-        smaller, bigger = comparison.split(' < ')
+        smaller, bigger = comparison.split(" < ")
 
         assert smaller is not None
 
         violating_timestamp = getattr(order, smaller) - dt.timedelta(seconds=1)
         setattr(order, bigger, violating_timestamp)
-        setattr(order, f'{bigger}_corrected', False)
+        setattr(order, f"{bigger}_corrected", False)
 
         db_session.add(order)
 
-        with pytest.raises(sa_exc.IntegrityError, match='ordered_timestamps'):
+        with pytest.raises(sa_exc.IntegrityError, match="ordered_timestamps"):
             db_session.commit()
 
     def test_timestamps_unordered_scheduled(self, db_session, pre_order):
@@ -664,22 +664,22 @@ class TestConstraints:
         self.test_timestamps_unordered(
             db_session,
             pre_order,
-            'placed_at < scheduled_delivery_at',
+            "placed_at < scheduled_delivery_at",
         )
 
     @pytest.mark.parametrize(
-        'comparison',
+        "comparison",
         [
-            'placed_at < cancelled_at',
-            'restaurant_notified_at < cancelled_at',
-            'restaurant_confirmed_at < cancelled_at',
-            'dispatch_at < cancelled_at',
-            'courier_notified_at < cancelled_at',
-            'courier_accepted_at < cancelled_at',
-            'reached_pickup_at < cancelled_at',
-            'pickup_at < cancelled_at',
-            'left_pickup_at < cancelled_at',
-            'reached_delivery_at < cancelled_at',
+            "placed_at < cancelled_at",
+            "restaurant_notified_at < cancelled_at",
+            "restaurant_confirmed_at < cancelled_at",
+            "dispatch_at < cancelled_at",
+            "courier_notified_at < cancelled_at",
+            "courier_accepted_at < cancelled_at",
+            "reached_pickup_at < cancelled_at",
+            "pickup_at < cancelled_at",
+            "left_pickup_at < cancelled_at",
+            "reached_delivery_at < cancelled_at",
         ],
     )
     def test_timestamps_unordered_cancelled(
@@ -758,23 +758,23 @@ class TestProperties:
         assert result is False
 
     @pytest.mark.parametrize(
-        'column',
+        "column",
         [
-            'scheduled_delivery_at',
-            'cancelled_at',
-            'restaurant_notified_at',
-            'restaurant_confirmed_at',
-            'dispatch_at',
-            'courier_notified_at',
-            'courier_accepted_at',
-            'pickup_at',
-            'left_pickup_at',
-            'delivery_at',
+            "scheduled_delivery_at",
+            "cancelled_at",
+            "restaurant_notified_at",
+            "restaurant_confirmed_at",
+            "dispatch_at",
+            "courier_notified_at",
+            "courier_accepted_at",
+            "pickup_at",
+            "left_pickup_at",
+            "delivery_at",
         ],
     )
     def test_is_corrected(self, order, column):
         """Test `Order.corrected` property."""
-        setattr(order, f'{column}_corrected', True)
+        setattr(order, f"{column}_corrected", True)
 
         result = order.corrected
 
@@ -784,14 +784,14 @@ class TestProperties:
         """Test `Order.time_to_accept` property."""
         order.dispatch_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_to_accept)
 
     def test_time_to_accept_no_courier_accepted(self, order):
         """Test `Order.time_to_accept` property."""
         order.courier_accepted_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_to_accept)
 
     def test_time_to_accept_success(self, order):
@@ -804,14 +804,14 @@ class TestProperties:
         """Test `Order.time_to_react` property."""
         order.courier_notified_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_to_react)
 
     def test_time_to_react_no_courier_accepted(self, order):
         """Test `Order.time_to_react` property."""
         order.courier_accepted_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_to_react)
 
     def test_time_to_react_success(self, order):
@@ -824,14 +824,14 @@ class TestProperties:
         """Test `Order.time_to_pickup` property."""
         order.reached_pickup_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_to_pickup)
 
     def test_time_to_pickup_no_courier_accepted(self, order):
         """Test `Order.time_to_pickup` property."""
         order.courier_accepted_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_to_pickup)
 
     def test_time_to_pickup_success(self, order):
@@ -844,14 +844,14 @@ class TestProperties:
         """Test `Order.time_at_pickup` property."""
         order.reached_pickup_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_at_pickup)
 
     def test_time_at_pickup_no_pickup_at(self, order):
         """Test `Order.time_at_pickup` property."""
         order.pickup_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_at_pickup)
 
     def test_time_at_pickup_success(self, order):
@@ -860,18 +860,18 @@ class TestProperties:
 
         assert result > dt.timedelta(0)
 
-    def test_scheduled_pickup_at_no_restaurant_notified(self, order):  # noqa:WPS118
+    def test_scheduled_pickup_at_no_restaurant_notified(self, order):
         """Test `Order.scheduled_pickup_at` property."""
         order.restaurant_notified_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.scheduled_pickup_at)
 
-    def test_scheduled_pickup_at_no_est_prep_duration(self, order):  # noqa:WPS118
+    def test_scheduled_pickup_at_no_est_prep_duration(self, order):
         """Test `Order.scheduled_pickup_at` property."""
         order.estimated_prep_duration = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.scheduled_pickup_at)
 
     def test_scheduled_pickup_at_success(self, order):
@@ -952,18 +952,18 @@ class TestProperties:
 
         assert bool(result) is False
 
-    def test_time_to_delivery_no_reached_delivery_at(self, order):  # noqa:WPS118
+    def test_time_to_delivery_no_reached_delivery_at(self, order):
         """Test `Order.time_to_delivery` property."""
         order.reached_delivery_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_to_delivery)
 
     def test_time_to_delivery_no_pickup_at(self, order):
         """Test `Order.time_to_delivery` property."""
         order.pickup_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_to_delivery)
 
     def test_time_to_delivery_success(self, order):
@@ -972,18 +972,18 @@ class TestProperties:
 
         assert result > dt.timedelta(0)
 
-    def test_time_at_delivery_no_reached_delivery_at(self, order):  # noqa:WPS118
+    def test_time_at_delivery_no_reached_delivery_at(self, order):
         """Test `Order.time_at_delivery` property."""
         order.reached_delivery_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_at_delivery)
 
     def test_time_at_delivery_no_delivery_at(self, order):
         """Test `Order.time_at_delivery` property."""
         order.delivery_at = None
 
-        with pytest.raises(RuntimeError, match='not set'):
+        with pytest.raises(RuntimeError, match="not set"):
             int(order.time_at_delivery)
 
     def test_time_at_delivery_success(self, order):
@@ -1011,7 +1011,7 @@ class TestProperties:
     def test_ad_hoc_order_cannot_be_early(self, order):
         """Test `Order.delivery_early` property."""
         # By default, the `OrderFactory` creates ad-hoc orders.
-        with pytest.raises(AttributeError, match='scheduled'):
+        with pytest.raises(AttributeError, match="scheduled"):
             int(order.delivery_early)
 
     def test_scheduled_order_delivered_early(self, make_order):
@@ -1037,7 +1037,7 @@ class TestProperties:
     def test_ad_hoc_order_cannot_be_late(self, order):
         """Test Order.delivery_late property."""
         # By default, the `OrderFactory` creates ad-hoc orders.
-        with pytest.raises(AttributeError, match='scheduled'):
+        with pytest.raises(AttributeError, match="scheduled"):
             int(order.delivery_late)
 
     def test_scheduled_order_delivered_late(self, make_order):
@@ -1064,14 +1064,14 @@ class TestProperties:
         """Test `Order.total_time` property."""
         order = make_order(scheduled=True)
 
-        with pytest.raises(AttributeError, match='Scheduled'):
+        with pytest.raises(AttributeError, match="Scheduled"):
             int(order.total_time)
 
     def test_no_total_time_for_cancelled_order(self, make_order):
         """Test `Order.total_time` property."""
         order = make_order(cancel_before_pickup=True)
 
-        with pytest.raises(RuntimeError, match='Cancelled'):
+        with pytest.raises(RuntimeError, match="Cancelled"):
             int(order.total_time)
 
     def test_total_time_success(self, order):
@@ -1083,7 +1083,7 @@ class TestProperties:
 
 @pytest.mark.db
 @pytest.mark.no_cover
-def test_make_random_orders(  # noqa:C901,WPS211,WPS213
+def test_make_random_orders(  # noqa:C901
     db_session,
     make_address,
     make_courier,
@@ -1094,9 +1094,9 @@ def test_make_random_orders(  # noqa:C901,WPS211,WPS213
 
     Ensure that all generated `Address`, `Courier`, `Customer`, `Restaurant`,
     and `Order` objects adhere to the database constraints.
-    """  # noqa:D202
+    """
     # Generate a large number of `Order`s to obtain a large variance of data.
-    for _ in range(1_000):  # noqa:WPS122
+    for _ in range(1_000):
 
         # Ad-hoc `Order`s are far more common than pre-orders.
         scheduled = random.choice([True, False, False, False, False])

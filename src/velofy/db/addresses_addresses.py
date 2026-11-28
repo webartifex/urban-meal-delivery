@@ -36,7 +36,7 @@ class Path(meta.Base):
         https://docs.sqlalchemy.org/en/stable/orm/basic_relationships.html#association-object  # noqa:E501
     """
 
-    __tablename__ = 'addresses_addresses'
+    __tablename__ = "addresses_addresses"
 
     # Columns
     first_address_id = sa.Column(sa.Integer, primary_key=True)
@@ -48,56 +48,56 @@ class Path(meta.Base):
     # The duration is measured in seconds.
     bicycle_duration = sa.Column(sa.Integer, nullable=True)
     # An array of latitude-longitude pairs approximating a courier's way.
-    _directions = sa.Column('directions', postgresql.JSON, nullable=True)
+    _directions = sa.Column("directions", postgresql.JSON, nullable=True)
 
     # Constraints
     __table_args__ = (
         # The two `Address` objects must be in the same `.city`.
         sa.ForeignKeyConstraint(
-            ['first_address_id', 'city_id'],
-            ['addresses.id', 'addresses.city_id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["first_address_id", "city_id"],
+            ["addresses.id", "addresses.city_id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.ForeignKeyConstraint(
-            ['second_address_id', 'city_id'],
-            ['addresses.id', 'addresses.city_id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["second_address_id", "city_id"],
+            ["addresses.id", "addresses.city_id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         # Each `Address`-`Address` pair only has one distance.
-        sa.UniqueConstraint('first_address_id', 'second_address_id'),
+        sa.UniqueConstraint("first_address_id", "second_address_id"),
         sa.CheckConstraint(
-            'first_address_id < second_address_id',
-            name='distances_are_symmetric_for_bicycles',
+            "first_address_id < second_address_id",
+            name="distances_are_symmetric_for_bicycles",
         ),
         sa.CheckConstraint(
-            '0 <= air_distance AND air_distance < 20000',
-            name='realistic_air_distance',
+            "0 <= air_distance AND air_distance < 20000",
+            name="realistic_air_distance",
         ),
         sa.CheckConstraint(
-            'bicycle_distance < 25000',  # `.bicycle_distance` may not be negative
-            name='realistic_bicycle_distance',  # due to the constraint below.
+            "bicycle_distance < 25000",  # `.bicycle_distance` may not be negative
+            name="realistic_bicycle_distance",  # due to the constraint below.
         ),
         sa.CheckConstraint(
-            'air_distance <= bicycle_distance',
-            name='air_distance_is_shortest',
+            "air_distance <= bicycle_distance",
+            name="air_distance_is_shortest",
         ),
         sa.CheckConstraint(
-            '0 <= bicycle_duration AND bicycle_duration <= 3600',
-            name='realistic_bicycle_travel_time',
+            "0 <= bicycle_duration AND bicycle_duration <= 3600",
+            name="realistic_bicycle_travel_time",
         ),
     )
 
     # Relationships
     first_address = orm.relationship(
-        'Address',
-        foreign_keys='[Path.first_address_id, Path.city_id]',
+        "Address",
+        foreign_keys="[Path.first_address_id, Path.city_id]",
     )
     second_address = orm.relationship(
-        'Address',
-        foreign_keys='[Path.second_address_id, Path.city_id]',
-        overlaps='first_address',
+        "Address",
+        foreign_keys="[Path.second_address_id, Path.city_id]",
+        overlaps="first_address",
     )
 
     @classmethod
@@ -128,9 +128,7 @@ class Path(meta.Base):
         # We consider all 2-tuples of `Address`es. The symmetric graph is ...
         for first, second in itertools.combinations(addresses, 2):
             # ... implicitly enforced by a precedence constraint for the `.id`s.
-            first, second = (  # noqa:WPS211
-                (first, second) if first.id < second.id else (second, first)
-            )
+            first, second = (first, second) if first.id < second.id else (second, first)
 
             # If there is no `Path` object in the database ...
             path = (
@@ -158,7 +156,7 @@ class Path(meta.Base):
             paths.append(path)
 
         if google_maps:
-            for path in paths:  # noqa:WPS440
+            for path in paths:
                 path.sync_with_google_maps()
 
         return paths
@@ -204,40 +202,40 @@ class Path(meta.Base):
         response = client.directions(
             origin=self.first_address.location.lat_lng,
             destination=self.second_address.location.lat_lng,
-            mode='bicycling',
+            mode="bicycling",
             alternatives=False,
         )
         # Without "alternatives" and "waypoints", the `response` contains
         # exactly one "route" that consists of exactly one "leg".
         # Source: https://developers.google.com/maps/documentation/directions/get-directions#Legs  # noqa:E501
-        route = response[0]['legs'][0]
+        route = response[0]["legs"][0]
 
-        self.bicycle_distance = route['distance']['value']  # noqa:WPS601
-        self.bicycle_duration = route['duration']['value']  # noqa:WPS601
+        self.bicycle_distance = route["distance"]["value"]
+        self.bicycle_duration = route["duration"]["value"]
 
         # Each route consists of many "steps" that are instructions as to how to
         # get from A to B. As a step's "start_location" may equal the previous step's
         # "end_location", we use an `OrderedSet` to find the unique latitude-longitude
         # pairs that make up the path from `.first_address` to `.second_address`.
         steps: ordered_set.OrderedSet[Tuple[float, float]] = ordered_set.OrderedSet()
-        for step in route['steps']:
-            steps.add(  # noqa:WPS221
-                (step['start_location']['lat'], step['start_location']['lng']),
+        for step in route["steps"]:
+            steps.add(
+                (step["start_location"]["lat"], step["start_location"]["lng"]),
             )
-            steps.add(  # noqa:WPS221
-                (step['end_location']['lat'], step['end_location']['lng']),
+            steps.add(
+                (step["end_location"]["lat"], step["end_location"]["lng"]),
             )
 
         steps.discard(self.first_address.location.lat_lng)
         steps.discard(self.second_address.location.lat_lng)
 
-        self._directions = json.dumps(list(steps))  # noqa:WPS601
+        self._directions = json.dumps(list(steps))
 
         db.session.add(self)
         db.session.commit()
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Convenience property to obtain the underlying `City.map`."""
         return self.first_address.city.map
 
@@ -256,15 +254,15 @@ class Path(meta.Base):
 
         return points
 
-    def draw(  # noqa:WPS211
+    def draw(
         self,
         *,
         reverse: bool = False,
-        start_tooltip: str = 'Start',
-        end_tooltip: str = 'End',
-        start_color: str = 'green',
-        end_color: str = 'red',
-        path_color: str = 'black',
+        start_tooltip: str = "Start",
+        end_tooltip: str = "End",
+        start_color: str = "green",
+        end_color: str = "red",
+        path_color: str = "black",
     ) -> folium.Map:  # pragma: no cover
         """Draw the `.waypoints` from `.first_address` to `.second_address`.
 

@@ -7,7 +7,7 @@ the one starting at `predict_at`). Thus, the training time series have a
 day. For example, for 60-minute time steps, the `frequency` becomes `7 * 12`
 (= operating hours from 11 am to 11 pm), which is `84`. Real-time `*Model`s
 train the forecasting `methods` on a seasonally decomposed time series internally.
-"""  # noqa:RST215
+"""
 
 import datetime as dt
 
@@ -21,7 +21,7 @@ from velofy.forecasts.models import base
 class RealtimeARIMAModel(base.ForecastingModelABC):
     """The ARIMA model applied on a real-time time series."""
 
-    name = 'rtarima'
+    name = "rtarima"
 
     def predict(
         self,
@@ -42,7 +42,8 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
                 confidence intervals (i.e, the four "low/high/80/95" columns);
                 contains one row for the `predict_at` time step
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: an internal consistency check fails
         """
         # Generate the historic (and real-time) order time series.
         training_ts, frequency, actuals_ts = self._order_history.make_realtime_ts(
@@ -63,7 +64,7 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
 
         # Make predictions for the seasonal component by linear extrapolation.
         seasonal_predictions = methods.extrapolate_season.predict(
-            training_ts=decomposed_training_ts['seasonal'],
+            training_ts=decomposed_training_ts["seasonal"],
             forecast_interval=pd.DatetimeIndex(actuals_ts.index),
             frequency=frequency,
         )
@@ -71,7 +72,7 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
         # Make predictions with the ARIMA model on the seasonally adjusted time series.
         seasonally_adjusted_predictions = methods.arima.predict(
             training_ts=(
-                decomposed_training_ts['trend'] + decomposed_training_ts['residual']
+                decomposed_training_ts["trend"] + decomposed_training_ts["residual"]
             ),
             forecast_interval=pd.DatetimeIndex(actuals_ts.index),
             # Because the seasonality was taken out before,
@@ -86,26 +87,26 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
         # the extrapolated seasonal component.
         predictions = pd.DataFrame(
             data={
-                'actual': actuals_ts,
-                'prediction': (
-                    seasonal_predictions['prediction']  # noqa:WPS204
-                    + seasonally_adjusted_predictions['prediction']
+                "actual": actuals_ts,
+                "prediction": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["prediction"]
                 ),
-                'low80': (
-                    seasonal_predictions['prediction']
-                    + seasonally_adjusted_predictions['low80']
+                "low80": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["low80"]
                 ),
-                'high80': (
-                    seasonal_predictions['prediction']
-                    + seasonally_adjusted_predictions['high80']
+                "high80": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["high80"]
                 ),
-                'low95': (
-                    seasonal_predictions['prediction']
-                    + seasonally_adjusted_predictions['low95']
+                "low95": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["low95"]
                 ),
-                'high95': (
-                    seasonal_predictions['prediction']
-                    + seasonally_adjusted_predictions['high95']
+                "high95": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["high95"]
                 ),
             },
             index=actuals_ts.index,
@@ -113,10 +114,10 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
 
         # Sanity checks.
         if len(predictions) != 1:  # pragma: no cover
-            raise RuntimeError('real-time models should predict exactly one time step')
+            raise RuntimeError("real-time models should predict exactly one time step")
         if predictions.isnull().sum().any():  # pragma: no cover
-            raise RuntimeError('missing predictions in rtarima model')
+            raise RuntimeError("missing predictions in rtarima model")
         if predict_at not in predictions.index:  # pragma: no cover
-            raise RuntimeError('missing prediction for `predict_at`')
+            raise RuntimeError("missing prediction for `predict_at`")
 
         return predictions

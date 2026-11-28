@@ -19,10 +19,10 @@ class Grid(meta.Base):
     That is configures via the `Grid.side_length` attribute.
     """
 
-    __tablename__ = 'grids'
+    __tablename__ = "grids"
 
     # Columns
-    id = sa.Column(  # noqa:WPS125
+    id = sa.Column(
         sa.SmallInteger,
         primary_key=True,
         autoincrement=True,
@@ -33,28 +33,25 @@ class Grid(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['city_id'],
-            ['cities.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["city_id"],
+            ["cities.id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         # Each `Grid`, characterized by its `.side_length`,
         # may only exists once for a given `.city`.
-        sa.UniqueConstraint('city_id', 'side_length'),
+        sa.UniqueConstraint("city_id", "side_length"),
         # Needed by a `ForeignKeyConstraint` in `address_pixel_association`.
-        sa.UniqueConstraint('id', 'city_id'),
+        sa.UniqueConstraint("id", "city_id"),
     )
 
     # Relationships
-    city = orm.relationship('City', back_populates='grids')
-    pixels = orm.relationship('Pixel', back_populates='grid')
+    city = orm.relationship("City", back_populates="grids")
+    pixels = orm.relationship("Pixel", back_populates="grid")
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}: {area} sqr. km>'.format(
-            cls=self.__class__.__name__,
-            area=self.pixel_area,
-        )
+        return f"<{self.__class__.__name__}: {self.pixel_area} sqr. km>"
 
     # Convenience properties
     @property
@@ -63,7 +60,7 @@ class Grid(meta.Base):
         return round((self.side_length**2) / 1_000_000, 1)
 
     @classmethod
-    def gridify(cls, city: db.City, side_length: int) -> db.Grid:  # noqa:WPS210
+    def gridify(cls, city: db.City, side_length: int) -> db.Grid:
         """Create a fully populated `Grid` for a `city`.
 
         The `Grid` contains only `Pixel`s that have at least one
@@ -119,12 +116,12 @@ class Grid(meta.Base):
 
         Returns:
             self: enabling method chaining
-        """  # noqa:D402,DAR203
+        """  # noqa:D402
         self.city.clear_map()
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Shortcut to the `.city.map` object."""
         return self.city.map
 

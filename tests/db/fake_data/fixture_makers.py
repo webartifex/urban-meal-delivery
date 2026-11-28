@@ -78,7 +78,7 @@ def make_order(make_address, make_courier, make_customer, make_restaurant):
             scheduled: if an `Order` is a pre-order
             restaurant: who receives the `Order`; defaults to a new `Restaurant`
             courier: who delivered the `Order`; defaults to a new `Courier`
-            kwargs: additional keyword arguments forwarded to the `OrderFactory`
+            **kwargs: additional keyword arguments forwarded to the `OrderFactory`
 
         Returns:
             order
@@ -119,7 +119,7 @@ def make_replay_order(make_order, simulation):
         Args:
             scheduled: if an `Order` is a pre-order
             order: the `Order` that is replayed
-            kwargs: keyword arguments forwarded to the `ReplayedOrderFactory`
+            **kwargs: keyword arguments forwarded to the `ReplayedOrderFactory`
 
         Returns:
             order
@@ -130,7 +130,7 @@ def make_replay_order(make_order, simulation):
         """
         if scheduled:
             if order and order.ad_hoc is False:
-                raise RuntimeError('`order` must be scheduled')
+                raise RuntimeError("`order` must be scheduled")
             elif order is None:
                 order = make_order(scheduled=True)
         elif order is None:

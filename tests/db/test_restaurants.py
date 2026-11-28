@@ -18,7 +18,7 @@ class TestSpecialMethods:
         """`Restaurant` has a non-literal text representation."""
         result = repr(restaurant)
 
-        assert result == f'<Restaurant({restaurant.name})>'
+        assert result == f"<Restaurant({restaurant.name})>"
 
 
 @pytest.mark.db
@@ -45,7 +45,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_restaurants_to_addresses_via_address_id',
+            match="fk_restaurants_to_addresses_via_address_id",
         ):
             db_session.execute(stmt)
 
@@ -56,7 +56,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='realistic_estimated_prep_duration',
+            match="realistic_estimated_prep_duration",
         ):
             db_session.commit()
 
@@ -67,6 +67,6 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='realistic_estimated_prep_duration',
+            match="realistic_estimated_prep_duration",
         ):
             db_session.commit()

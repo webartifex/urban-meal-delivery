@@ -18,7 +18,7 @@ class TestSpecialMethods:
         """`Grid` has a non-literal text representation."""
         result = repr(grid)
 
-        assert result == f'<Grid: {grid.pixel_area} sqr. km>'
+        assert result == f"<Grid: {grid.pixel_area} sqr. km>"
 
 
 @pytest.mark.db
@@ -45,7 +45,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_grids_to_cities_via_city_id',
+            match="fk_grids_to_cities_via_city_id",
         ):
             db_session.execute(stmt)
 
@@ -58,7 +58,7 @@ class TestConstraints:
         another_grid = db.Grid(city=grid.city, side_length=grid.side_length)
         db_session.add(another_grid)
 
-        with pytest.raises(sa_exc.IntegrityError, match='duplicate key value'):
+        with pytest.raises(sa_exc.IntegrityError, match="duplicate key value"):
             db_session.commit()
 
 
@@ -83,10 +83,10 @@ class TestGridification:
         all considered `Order.pickup_address` attributes for some orders.
         """
         mock = mocker.Mock()
-        query = (  # noqa:ECE001
-            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501,WPS219
+        query = (
+            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501
         )
-        monkeypatch.setattr(db, 'session', mock)
+        monkeypatch.setattr(db, "session", mock)
 
         return query
 
@@ -105,7 +105,7 @@ class TestGridification:
         result = db.Grid.gridify(city=city, side_length=side_length)
 
         assert isinstance(result, db.Grid)
-        assert len(result.pixels) == 0  # noqa:WPS507
+        assert len(result.pixels) == 0
 
     def test_one_pixel_with_one_address(self, city, order, addresses_mock):
         """At the very least, there must be one `Pixel` ...
@@ -155,7 +155,7 @@ class TestGridification:
         result = db.Grid.gridify(city=city, side_length=side_length)
 
         assert isinstance(result, db.Grid)
-        assert len(result.pixels) == 0  # noqa:WPS507
+        assert len(result.pixels) == 0
 
     @pytest.mark.no_cover
     def test_no_pixel_with_one_address_too_far_west(self, city, order, addresses_mock):
@@ -174,7 +174,7 @@ class TestGridification:
         result = db.Grid.gridify(city=city, side_length=side_length)
 
         assert isinstance(result, db.Grid)
-        assert len(result.pixels) == 0  # noqa:WPS507
+        assert len(result.pixels) == 0
 
     @pytest.mark.no_cover
     def test_two_pixels_with_two_addresses(self, city, make_address, addresses_mock):
@@ -205,8 +205,8 @@ class TestGridification:
 
     @pytest.mark.db
     @pytest.mark.no_cover
-    @pytest.mark.parametrize('side_length', [250, 500, 1_000, 2_000, 4_000, 8_000])
-    def test_make_random_grids(  # noqa:WPS211,WPS218
+    @pytest.mark.parametrize("side_length", [250, 500, 1_000, 2_000, 4_000, 8_000])
+    def test_make_random_grids(
         self,
         db_session,
         city,

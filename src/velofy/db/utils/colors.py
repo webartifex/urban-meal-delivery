@@ -49,7 +49,7 @@ def make_random_cmap(
         ]
 
     return colors.LinearSegmentedColormap.from_list(
-        'random_color_map',
+        "random_color_map",
         rgb_colors,
         N=n_colors,
     )
@@ -69,4 +69,4 @@ def rgb_to_hex(*args: float) -> str:  # pragma: no cover
         int(255 * args[1]),
         int(255 * args[2]),
     )
-    return f'#{red:02x}{green:02x}{blue:02x}'  # noqa:WPS221
+    return f"#{red:02x}{green:02x}{blue:02x}"

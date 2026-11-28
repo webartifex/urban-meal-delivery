@@ -20,7 +20,7 @@ class TestInvalidArguments:
         """`stl()` requires a `time_series` without `NaN` values."""
         time_series = pd.Series(dtype=float, index=vertical_datetime_index)
 
-        with pytest.raises(ValueError, match='`NaN` values'):
+        with pytest.raises(ValueError, match="`NaN` values"):
             decomposition.stl(
                 time_series,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -29,17 +29,17 @@ class TestInvalidArguments:
 
     def test_ns_not_odd(self, vertical_no_demand):
         """`ns` must be odd and `>= 7`."""
-        with pytest.raises(ValueError, match='`ns`'):
+        with pytest.raises(ValueError, match="`ns`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
                 ns=8,
             )
 
-    @pytest.mark.parametrize('ns', [-99, -1, 1, 5])
+    @pytest.mark.parametrize("ns", [-99, -1, 1, 5])
     def test_ns_smaller_than_seven(self, vertical_no_demand, ns):
         """`ns` must be odd and `>= 7`."""
-        with pytest.raises(ValueError, match='`ns`'):
+        with pytest.raises(ValueError, match="`ns`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -55,7 +55,7 @@ class TestInvalidArguments:
 
         assert nt > default_nt  # sanity check
 
-        with pytest.raises(ValueError, match='`nt`'):
+        with pytest.raises(ValueError, match="`nt`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -63,7 +63,7 @@ class TestInvalidArguments:
                 nt=nt,
             )
 
-    @pytest.mark.parametrize('nt', [-99, -1, 0, 1, 99, 125])
+    @pytest.mark.parametrize("nt", [-99, -1, 0, 1, 99, 125])
     def test_nt_not_at_least_the_default(self, vertical_no_demand, nt):
         """`nt` must be odd and `>= default_nt`."""
         # `default_nt` becomes 161.
@@ -73,7 +73,7 @@ class TestInvalidArguments:
 
         assert nt < default_nt  # sanity check
 
-        with pytest.raises(ValueError, match='`nt`'):
+        with pytest.raises(ValueError, match="`nt`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -87,7 +87,7 @@ class TestInvalidArguments:
 
         assert nl > test_config.VERTICAL_FREQUENCY_LONG  # sanity check
 
-        with pytest.raises(ValueError, match='`nl`'):
+        with pytest.raises(ValueError, match="`nl`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -101,7 +101,7 @@ class TestInvalidArguments:
 
         assert nl < test_config.VERTICAL_FREQUENCY_LONG  # sanity check
 
-        with pytest.raises(ValueError, match='`nl`'):
+        with pytest.raises(ValueError, match="`nl`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -111,7 +111,7 @@ class TestInvalidArguments:
 
     def test_ds_not_zero_or_one(self, vertical_no_demand):
         """`ds` must be `0` or `1`."""
-        with pytest.raises(ValueError, match='`ds`'):
+        with pytest.raises(ValueError, match="`ds`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -121,7 +121,7 @@ class TestInvalidArguments:
 
     def test_dt_not_zero_or_one(self, vertical_no_demand):
         """`dt` must be `0` or `1`."""
-        with pytest.raises(ValueError, match='`dt`'):
+        with pytest.raises(ValueError, match="`dt`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -131,7 +131,7 @@ class TestInvalidArguments:
 
     def test_dl_not_zero_or_one(self, vertical_no_demand):
         """`dl` must be `0` or `1`."""
-        with pytest.raises(ValueError, match='`dl`'):
+        with pytest.raises(ValueError, match="`dl`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -139,10 +139,10 @@ class TestInvalidArguments:
                 dl=2,
             )
 
-    @pytest.mark.parametrize('js', [-1, 0])
+    @pytest.mark.parametrize("js", [-1, 0])
     def test_js_not_positive(self, vertical_no_demand, js):
         """`js` must be positive."""
-        with pytest.raises(ValueError, match='`js`'):
+        with pytest.raises(ValueError, match="`js`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -150,10 +150,10 @@ class TestInvalidArguments:
                 js=js,
             )
 
-    @pytest.mark.parametrize('jt', [-1, 0])
+    @pytest.mark.parametrize("jt", [-1, 0])
     def test_jt_not_positive(self, vertical_no_demand, jt):
         """`jt` must be positive."""
-        with pytest.raises(ValueError, match='`jt`'):
+        with pytest.raises(ValueError, match="`jt`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -161,10 +161,10 @@ class TestInvalidArguments:
                 jt=jt,
             )
 
-    @pytest.mark.parametrize('jl', [-1, 0])
+    @pytest.mark.parametrize("jl", [-1, 0])
     def test_jl_not_positive(self, vertical_no_demand, jl):
         """`jl` must be positive."""
-        with pytest.raises(ValueError, match='`jl`'):
+        with pytest.raises(ValueError, match="`jl`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -172,10 +172,10 @@ class TestInvalidArguments:
                 jl=jl,
             )
 
-    @pytest.mark.parametrize('ni', [-1, 0])
+    @pytest.mark.parametrize("ni", [-1, 0])
     def test_ni_not_positive(self, vertical_no_demand, ni):
         """`ni` must be positive."""
-        with pytest.raises(ValueError, match='`ni`'):
+        with pytest.raises(ValueError, match="`ni`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -185,7 +185,7 @@ class TestInvalidArguments:
 
     def test_no_not_non_negative(self, vertical_no_demand):
         """`no` must be non-negative."""
-        with pytest.raises(ValueError, match='`no`'):
+        with pytest.raises(ValueError, match="`no`"):
             decomposition.stl(
                 vertical_no_demand,
                 frequency=test_config.VERTICAL_FREQUENCY_LONG,
@@ -207,21 +207,21 @@ class TestValidArguments:
         )
 
         assert isinstance(result, pd.DataFrame)
-        assert list(result.columns) == ['seasonal', 'trend', 'residual']
+        assert list(result.columns) == ["seasonal", "trend", "residual"]
 
     # Run the `stl()` function with all possible combinations of arguments,
     # including default ones and explicitly set non-default ones.
-    @pytest.mark.parametrize('nt', [None, 163])
-    @pytest.mark.parametrize('nl', [None, 777])
-    @pytest.mark.parametrize('ds', [0, 1])
-    @pytest.mark.parametrize('dt', [0, 1])
-    @pytest.mark.parametrize('dl', [0, 1])
-    @pytest.mark.parametrize('js', [None, 1])
-    @pytest.mark.parametrize('jt', [None, 1])
-    @pytest.mark.parametrize('jl', [None, 1])
-    @pytest.mark.parametrize('ni', [2, 3])
-    @pytest.mark.parametrize('no', [0, 1])
-    def test_decompose_time_series_with_no_demand(  # noqa:WPS211,WPS216
+    @pytest.mark.parametrize("nt", [None, 163])
+    @pytest.mark.parametrize("nl", [None, 777])
+    @pytest.mark.parametrize("ds", [0, 1])
+    @pytest.mark.parametrize("dt", [0, 1])
+    @pytest.mark.parametrize("dl", [0, 1])
+    @pytest.mark.parametrize("js", [None, 1])
+    @pytest.mark.parametrize("jt", [None, 1])
+    @pytest.mark.parametrize("jl", [None, 1])
+    @pytest.mark.parametrize("ni", [2, 3])
+    @pytest.mark.parametrize("no", [0, 1])
+    def test_decompose_time_series_with_no_demand(
         self,
         vertical_no_demand,
         nt,
@@ -233,7 +233,7 @@ class TestValidArguments:
         jt,
         jl,
         ni,
-        no,  # noqa:WPS110
+        no,
     ):
         """Decomposing a time series with no demand ...
 
@@ -252,7 +252,7 @@ class TestValidArguments:
             jt=jt,
             jl=jl,
             ni=ni,
-            no=no,  # noqa:WPS110
+            no=no,
         )
 
         result = decomposed.sum().sum()

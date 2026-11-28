@@ -26,10 +26,10 @@ class TestAggregateOrders:
         Note: This fixture also exists in `tests.db.test_grids`.
         """
         mock = mocker.Mock()
-        query = (  # noqa:ECE001
-            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501,WPS219
+        query = (
+            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501
         )
-        monkeypatch.setattr(db, 'session', mock)
+        monkeypatch.setattr(db, "session", mock)
 
         return query
 
@@ -54,7 +54,7 @@ class TestAggregateOrders:
     def test_no_orders(self, db_session, one_pixel_grid, restaurant):
         """Edge case that does not occur for real-life data."""
         db_session.commit()
-        assert len(restaurant.orders) == 0  # noqa:WPS507  sanity check
+        assert len(restaurant.orders) == 0  # sanity check
 
         oh = timify.OrderHistory(
             grid=one_pixel_grid,
@@ -63,7 +63,7 @@ class TestAggregateOrders:
 
         result = oh.aggregate_orders()
 
-        assert len(result) == 0  # noqa:WPS507
+        assert len(result) == 0
 
     def test_evenly_distributed_ad_hoc_orders(
         self,
@@ -95,11 +95,11 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 12 rows holding `1`s.
         assert len(result) == 12
-        assert result['n_orders'].min() == 1
-        assert result['n_orders'].max() == 1
-        assert result['n_orders'].sum() == 12
+        assert result["n_orders"].min() == 1
+        assert result["n_orders"].max() == 1
+        assert result["n_orders"].sum() == 12
 
-    def test_evenly_distributed_ad_hoc_orders_with_no_demand_late(  # noqa:WPS218
+    def test_evenly_distributed_ad_hoc_orders_with_no_demand_late(
         self,
         db_session,
         one_pixel_grid,
@@ -130,10 +130,10 @@ class TestAggregateOrders:
         # Even though there are only 10 orders, there are 12 rows in the `DataFrame`.
         # That is so as `0`s are filled in for hours without any demand at the end.
         assert len(result) == 12
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result.iloc[:10]['n_orders'].sum() == 10
-        assert result.iloc[10:]['n_orders'].sum() == 0
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result.iloc[:10]["n_orders"].sum() == 10
+        assert result.iloc[10:]["n_orders"].sum() == 0
 
     def test_one_ad_hoc_order_every_other_hour(
         self,
@@ -165,9 +165,9 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 12 rows, 6 holding `0`s, and 6 holding `1`s.
         assert len(result) == 12
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result['n_orders'].sum() == 6
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result["n_orders"].sum() == 6
 
     def test_one_ad_hoc_and_one_pre_order(
         self,
@@ -208,11 +208,11 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 12 rows, 11 holding `0`s, and one holding a `1`.
         assert len(result) == 12
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result['n_orders'].sum() == 1
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result["n_orders"].sum() == 1
 
-    def test_evenly_distributed_ad_hoc_orders_with_half_hour_time_steps(  # noqa:WPS218
+    def test_evenly_distributed_ad_hoc_orders_with_half_hour_time_steps(
         self,
         db_session,
         one_pixel_grid,
@@ -246,10 +246,10 @@ class TestAggregateOrders:
         # The resulting `DataFrame` has 24 rows for the 24 30-minute time steps.
         # The rows' values are `0` and `1` alternating.
         assert len(result) == 24
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result.iloc[::2]['n_orders'].sum() == 12
-        assert result.iloc[1::2]['n_orders'].sum() == 0
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result.iloc[::2]["n_orders"].sum() == 12
+        assert result.iloc[1::2]["n_orders"].sum() == 0
 
     def test_ad_hoc_orders_over_two_days(
         self,
@@ -273,7 +273,7 @@ class TestAggregateOrders:
             db_session.add(order)
 
         # Create one order every other hour and 6 orders in total.
-        for hour in range(11, 23, 2):  # noqa:WPS440
+        for hour in range(11, 23, 2):
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant,
@@ -281,7 +281,7 @@ class TestAggregateOrders:
                     test_config.YEAR,
                     test_config.MONTH,
                     test_config.DAY + 1,
-                    hour,  # noqa:WPS441
+                    hour,
                     11,
                 ),
             )
@@ -300,12 +300,12 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 24 rows, 12 for each day.
         assert len(result) == 24
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result['n_orders'].sum() == 18
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result["n_orders"].sum() == 18
 
     @pytest.fixture
-    def two_pixel_grid(  # noqa:WPS211
+    def two_pixel_grid(
         self,
         db_session,
         city,
@@ -336,7 +336,7 @@ class TestAggregateOrders:
 
         return grid
 
-    def test_two_pixels_with_shifted_orders(  # noqa:WPS218
+    def test_two_pixels_with_shifted_orders(
         self,
         db_session,
         two_pixel_grid,
@@ -361,7 +361,7 @@ class TestAggregateOrders:
             db_session.add(order)
 
         # Create two orders per hour for `restaurant2`.
-        for hour in range(11, 23):  # noqa:WPS440
+        for hour in range(11, 23):
             order = make_order(
                 scheduled=False,
                 restaurant=restaurant2,
@@ -369,7 +369,7 @@ class TestAggregateOrders:
                     test_config.YEAR,
                     test_config.MONTH,
                     test_config.DAY,
-                    hour,  # noqa:WPS441
+                    hour,
                     13,
                 ),
             )
@@ -382,7 +382,7 @@ class TestAggregateOrders:
                     test_config.YEAR,
                     test_config.MONTH,
                     test_config.DAY,
-                    hour,  # noqa:WPS441
+                    hour,
                     14,
                 ),
             )
@@ -403,6 +403,6 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 24 rows, 12 for each pixel.
         assert len(result) == 24
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 2
-        assert result['n_orders'].sum() == 30
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 2
+        assert result["n_orders"].sum() == 30

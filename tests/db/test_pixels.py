@@ -18,7 +18,7 @@ class TestSpecialMethods:
         """`Pixel` has a non-literal text representation."""
         result = repr(pixel)
 
-        assert result == f'<Pixel: ({pixel.n_x}|{pixel.n_y})>'
+        assert result == f"<Pixel: ({pixel.n_x}|{pixel.n_y})>"
 
 
 @pytest.mark.db
@@ -45,7 +45,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_pixels_to_grids_via_grid_id',
+            match="fk_pixels_to_grids_via_grid_id",
         ):
             db_session.execute(stmt)
 
@@ -54,7 +54,7 @@ class TestConstraints:
         pixel.n_x = -1
         db_session.add(pixel)
 
-        with pytest.raises(sa_exc.IntegrityError, match='n_x_is_positive'):
+        with pytest.raises(sa_exc.IntegrityError, match="n_x_is_positive"):
             db_session.commit()
 
     def test_negative_n_y(self, db_session, pixel):
@@ -62,7 +62,7 @@ class TestConstraints:
         pixel.n_y = -1
         db_session.add(pixel)
 
-        with pytest.raises(sa_exc.IntegrityError, match='n_y_is_positive'):
+        with pytest.raises(sa_exc.IntegrityError, match="n_y_is_positive"):
             db_session.commit()
 
     def test_non_unique_coordinates_within_a_grid(self, db_session, pixel):
@@ -70,7 +70,7 @@ class TestConstraints:
         another_pixel = db.Pixel(grid=pixel.grid, n_x=pixel.n_x, n_y=pixel.n_y)
         db_session.add(another_pixel)
 
-        with pytest.raises(sa_exc.IntegrityError, match='duplicate key value'):
+        with pytest.raises(sa_exc.IntegrityError, match="duplicate key value"):
             db_session.commit()
 
 
@@ -121,20 +121,20 @@ class TestProperties:
     def _restaurants_mock(self, mocker, monkeypatch, restaurant):
         """A `Mock` whose `.return_value` is `[restaurant]`."""
         mock = mocker.Mock()
-        query = (  # noqa:ECE001
-            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501,WPS219
+        query = (
+            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501
         )
         query.return_value = [restaurant]
-        monkeypatch.setattr(db, 'session', mock)
+        monkeypatch.setattr(db, "session", mock)
 
-    @pytest.mark.usefixtures('_restaurants_mock')
+    @pytest.mark.usefixtures("_restaurants_mock")
     def test_restaurants(self, pixel, restaurant):
         """Test `Pixel.restaurants` property."""
         result = pixel.restaurants
 
         assert result == [restaurant]
 
-    @pytest.mark.usefixtures('_restaurants_mock')
+    @pytest.mark.usefixtures("_restaurants_mock")
     def test_restaurants_is_cached(self, pixel):
         """Test `Pixel.restaurants` property."""
         result1 = pixel.restaurants

@@ -16,7 +16,7 @@ class TestSpecialMethods:
         """`Customer` has a non-literal text representation."""
         result = repr(customer)
 
-        assert result == f'<Customer(#{customer.id})>'
+        assert result == f"<Customer(#{customer.id})>"
 
 
 @pytest.mark.db

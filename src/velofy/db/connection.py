@@ -16,7 +16,7 @@ from sqlalchemy import orm
 import velofy
 
 
-if os.getenv('TESTING'):
+if os.getenv("TESTING"):
     # Specify the types explicitly to make mypy happy.
     engine: engine_mod.Engine = None
     connection: engine_mod.Connection = None

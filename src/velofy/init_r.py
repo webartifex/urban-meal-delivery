@@ -13,15 +13,15 @@ from rpy2.robjects import packages as rpackages
 
 # Suppress R's messages to stdout and stderr.
 # Source: https://stackoverflow.com/a/63220287
-rcallbacks.consolewrite_print = lambda msg: None  # pragma: no cover
-rcallbacks.consolewrite_warnerror = lambda msg: None  # pragma: no cover
+rcallbacks.consolewrite_print = lambda _msg: None  # pragma: no cover
+rcallbacks.consolewrite_warnerror = lambda _msg: None  # pragma: no cover
 
 
 # For clarity and convenience, re-raise the error that results from missing R
 # dependencies with clearer instructions as to how to deal with it.
-try:  # noqa:WPS229
-    rpackages.importr('forecast')
-    rpackages.importr('zoo')
+try:
+    rpackages.importr("forecast")
+    rpackages.importr("zoo")
 
 except rpackages.PackageNotInstalledError:  # pragma: no cover
     msg = 'See the "research/00_r_dependencies.ipynb" notebook!'

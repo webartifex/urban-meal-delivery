@@ -52,7 +52,7 @@ class ForecastingModelABC(abc.ABC):
             actuals, predictions, and possibly 80%/95% confidence intervals;
                 includes a row for the time step starting at `predict_at` and
                 may contain further rows for other time steps on the same day
-        """  # noqa:DAR202
+        """
 
     def make_forecast(
         self,
@@ -78,10 +78,11 @@ class ForecastingModelABC(abc.ABC):
             actual, prediction, and possibly 80%/95% confidence intervals
                 for the time step starting at `predict_at`
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: `*Model.predict()` misses the prediction for `predict_at`
         """
-        if (  # noqa:WPS337
-            cached_forecast := db.session.query(db.Forecast)  # noqa:WPS221
+        if (
+            cached_forecast := db.session.query(db.Forecast)
             .filter_by(pixel=pixel)
             .filter_by(start_at=predict_at)
             .filter_by(time_step=self._order_history.time_step)
@@ -118,5 +119,5 @@ class ForecastingModelABC(abc.ABC):
 
         # ..., however, we put in a loud error, just in case.
         raise RuntimeError(  # pragma: no cover
-            '`Forecast` for `predict_at` was not returned by `*Model.predict()`',
+            "`Forecast` for `predict_at` was not returned by `*Model.predict()`",
         )

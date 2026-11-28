@@ -20,14 +20,14 @@ from velofy import db
 
 # The TESTING environment variable is set
 # in pyproject.toml in pytest's config section.
-if not os.getenv('TESTING'):
-    raise RuntimeError('Tests must be executed with TESTING set in the environment')
+if not os.getenv("TESTING"):
+    raise RuntimeError("Tests must be executed with TESTING set in the environment")
 
 if not config.TESTING:
-    raise RuntimeError('The testing configuration was not loaded')
+    raise RuntimeError("The testing configuration was not loaded")
 
 
-@pytest.fixture(scope='session', params=['all_at_once', 'sequentially'])
+@pytest.fixture(scope="session", params=["all_at_once", "sequentially"])
 def db_connection(request):
     """Create all tables given the ORM models.
 
@@ -53,13 +53,13 @@ def db_connection(request):
     db.engine = engine
     db.connection = connection
 
-    if request.param == 'all_at_once':
+    if request.param == "all_at_once":
         with connection.begin():
-            connection.execute(sa.text(f'CREATE SCHEMA {config.CLEAN_SCHEMA};'))
+            connection.execute(sa.text(f"CREATE SCHEMA {config.CLEAN_SCHEMA};"))
             db.Base.metadata.create_all(connection)
     else:
-        cfg = migrations_config.Config('alembic.ini')
-        migrations_cmd.upgrade(cfg, 'head')
+        cfg = migrations_config.Config("alembic.ini")
+        migrations_cmd.upgrade(cfg, "head")
 
     try:
         yield connection
@@ -70,13 +70,13 @@ def db_connection(request):
         connection.close()
 
         with engine.begin() as cleanup:
-            cleanup.execute(sa.text(f'DROP SCHEMA {config.CLEAN_SCHEMA} CASCADE;'))
+            cleanup.execute(sa.text(f"DROP SCHEMA {config.CLEAN_SCHEMA} CASCADE;"))
 
-            if request.param == 'sequentially':
-                tmp_alembic_version = f'{config.ALEMBIC_TABLE}_{config.CLEAN_SCHEMA}'
+            if request.param == "sequentially":
+                tmp_alembic_version = f"{config.ALEMBIC_TABLE}_{config.CLEAN_SCHEMA}"
                 cleanup.execute(
                     sa.text(
-                        f'DROP TABLE {config.ALEMBIC_TABLE_SCHEMA}.{tmp_alembic_version};',  # noqa:E501
+                        f"DROP TABLE {config.ALEMBIC_TABLE_SCHEMA}.{tmp_alembic_version};",  # noqa:E501
                     ),
                 )
 

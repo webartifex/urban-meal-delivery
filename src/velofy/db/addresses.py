@@ -19,17 +19,17 @@ from velofy.db import utils
 class Address(meta.Base):
     """An address of a `Customer` or a `Restaurant` on the UDP."""
 
-    __tablename__ = 'addresses'
+    __tablename__ = "addresses"
 
     # Columns
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)
     primary_id = sa.Column(sa.Integer, nullable=False, index=True)
     created_at = sa.Column(sa.DateTime, nullable=False)
     place_id = sa.Column(sa.Unicode(length=120), nullable=False, index=True)
     latitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
     longitude = sa.Column(postgresql.DOUBLE_PRECISION, nullable=False)
     city_id = sa.Column(sa.SmallInteger, nullable=False, index=True)
-    city_name = sa.Column('city', sa.Unicode(length=25), nullable=False)
+    city_name = sa.Column("city", sa.Unicode(length=25), nullable=False)
     zip_code = sa.Column(sa.Integer, nullable=False, index=True)
     street = sa.Column(sa.Unicode(length=80), nullable=False)
     floor = sa.Column(sa.SmallInteger)
@@ -37,56 +37,52 @@ class Address(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['primary_id'],
-            ['addresses.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["primary_id"],
+            ["addresses.id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.ForeignKeyConstraint(
-            ['city_id'],
-            ['cities.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["city_id"],
+            ["cities.id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.CheckConstraint(
-            '-90 <= latitude AND latitude <= 90',
-            name='latitude_between_90_degrees',
+            "-90 <= latitude AND latitude <= 90",
+            name="latitude_between_90_degrees",
         ),
         sa.CheckConstraint(
-            '-180 <= longitude AND longitude <= 180',
-            name='longitude_between_180_degrees',
+            "-180 <= longitude AND longitude <= 180",
+            name="longitude_between_180_degrees",
         ),
         # Needed by a `ForeignKeyConstraint` in `AddressPixelAssociation`.
-        sa.UniqueConstraint('id', 'city_id'),
+        sa.UniqueConstraint("id", "city_id"),
         sa.CheckConstraint(
-            '30000 <= zip_code AND zip_code <= 99999',
-            name='valid_zip_code',
+            "30000 <= zip_code AND zip_code <= 99999",
+            name="valid_zip_code",
         ),
-        sa.CheckConstraint('0 <= floor AND floor <= 40', name='realistic_floor'),
+        sa.CheckConstraint("0 <= floor AND floor <= 40", name="realistic_floor"),
     )
 
     # Relationships
-    city = orm.relationship('City', back_populates='addresses')
-    restaurants = orm.relationship('Restaurant', back_populates='address')
+    city = orm.relationship("City", back_populates="addresses")
+    restaurants = orm.relationship("Restaurant", back_populates="address")
     orders_picked_up = orm.relationship(
-        'Order',
-        back_populates='pickup_address',
-        foreign_keys='[Order.pickup_address_id]',
+        "Order",
+        back_populates="pickup_address",
+        foreign_keys="[Order.pickup_address_id]",
     )
     orders_delivered = orm.relationship(
-        'Order',
-        back_populates='delivery_address',
-        foreign_keys='[Order.delivery_address_id]',
+        "Order",
+        back_populates="delivery_address",
+        foreign_keys="[Order.delivery_address_id]",
     )
-    pixels = orm.relationship('AddressPixelAssociation', back_populates='address')
+    pixels = orm.relationship("AddressPixelAssociation", back_populates="address")
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}({street} in {city})>'.format(
-            cls=self.__class__.__name__,
-            street=self.street,
-            city=self.city_name,
-        )
+        return f"<{self.__class__.__name__}({self.street} in {self.city_name})>"
 
     @hybrid.hybrid_property
     def is_primary(self) -> bool:
@@ -116,7 +112,7 @@ class Address(meta.Base):
         return location
 
     @property
-    def x(self) -> int:  # noqa=WPS111
+    def x(self) -> int:
         """The relative x-coordinate within the `.city` in meters.
 
         On the implied x-y plane, the `.city`'s southwest corner is the origin.
@@ -126,7 +122,7 @@ class Address(meta.Base):
         return self.location.x
 
     @property
-    def y(self) -> int:  # noqa=WPS111
+    def y(self) -> int:
         """The relative y-coordinate within the `.city` in meters.
 
         On the implied x-y plane, the `.city`'s southwest corner is the origin.
@@ -140,12 +136,12 @@ class Address(meta.Base):
 
         Returns:
             self: enabling method chaining
-        """  # noqa:D402,DAR203
+        """  # noqa:D402
         self.city.clear_map()
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Shortcut to the `.city.map` object."""
         return self.city.map
 
@@ -162,8 +158,8 @@ class Address(meta.Base):
             `.city.map` for convenience in interactive usage
         """
         defaults = {
-            'color': f'{config.NEUTRAL_COLOR}',
-            'popup': f'{self.street}, {self.zip_code} {self.city_name}',
+            "color": f"{config.NEUTRAL_COLOR}",
+            "popup": f"{self.street}, {self.zip_code} {self.city_name}",
         }
         defaults.update(kwargs)
 

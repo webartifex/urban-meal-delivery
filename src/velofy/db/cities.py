@@ -18,10 +18,10 @@ from velofy.db import utils
 class City(meta.Base):
     """A city where the UDP operates in."""
 
-    __tablename__ = 'cities'
+    __tablename__ = "cities"
 
     # Generic columns
-    id = sa.Column(  # noqa:WPS125
+    id = sa.Column(
         sa.SmallInteger,
         primary_key=True,
         autoincrement=False,
@@ -39,16 +39,16 @@ class City(meta.Base):
     initial_zoom = sa.Column(sa.SmallInteger, nullable=False)
 
     # Relationships
-    addresses = orm.relationship('Address', back_populates='city')
-    grids = orm.relationship('Grid', back_populates='city')
-    replays = orm.relationship('ReplaySimulation', back_populates='city')
+    addresses = orm.relationship("Address", back_populates="city")
+    grids = orm.relationship("Grid", back_populates="city")
+    replays = orm.relationship("ReplaySimulation", back_populates="city")
 
     # We do not implement a `.__init__()` method and use SQLAlchemy's default.
     # The uninitialized attribute `._map` is computed on the fly.  note:d334120ei
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}({name})>'.format(cls=self.__class__.__name__, name=self.name)
+        return f"<{self.__class__.__name__}({self.name})>"
 
     @functools.cached_property
     def center(self) -> utils.Location:
@@ -101,7 +101,7 @@ class City(meta.Base):
 
         Returns:
             self: enabling method chaining
-        """  # noqa:DAR203  note:d334120e
+        """  # note:d334120e
         self._map = folium.Map(
             location=[self.center_latitude, self.center_longitude],
             zoom_start=self.initial_zoom,
@@ -110,12 +110,12 @@ class City(meta.Base):
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """A `folium.Map` object aligned with the city's viewport.
 
         See docstring for `.clear_map()` for further info.
         """
-        if not hasattr(self, '_map'):  # noqa:WPS421  note:d334120e
+        if not hasattr(self, "_map"):  # note:d334120e
             self.clear_map()
 
         return self._map
@@ -137,7 +137,7 @@ class City(meta.Base):
             db.session.query(db.Address)
             .filter(
                 db.Address.id.in_(
-                    db.session.query(db.Address.primary_id)  # noqa:WPS221
+                    db.session.query(db.Address.primary_id)
                     .join(db.Restaurant, db.Address.id == db.Restaurant.address_id)
                     .filter(db.Address.city == self)
                     .distinct()
@@ -157,10 +157,10 @@ class City(meta.Base):
                 .all()
             )
             if len(restaurants) == 1:
-                tooltip = f'{restaurants[0].name} (#{restaurants[0].id})'  # noqa:WPS221
+                tooltip = f"{restaurants[0].name} (#{restaurants[0].id})"
             else:
-                tooltip = 'Restaurants ' + ', '.join(  # noqa:WPS336
-                    f'#{restaurant.id}' for restaurant in restaurants
+                tooltip = "Restaurants " + ", ".join(
+                    f"#{restaurant.id}" for restaurant in restaurants
                 )
 
             if order_counts:
@@ -183,7 +183,7 @@ class City(meta.Base):
                 else:
                     radius = 1
 
-                tooltip += f' | n_orders={n_orders}'  # noqa:WPS336
+                tooltip += f" | n_orders={n_orders}"
 
                 address.draw(
                     radius=radius,
@@ -239,7 +239,7 @@ class City(meta.Base):
             if not address.is_primary:
                 continue
 
-            marker = folium.Circle(  # noqa:WPS317
+            marker = folium.Circle(
                 (address.latitude, address.longitude),
                 color=colors[address.zip_code],
                 radius=1,

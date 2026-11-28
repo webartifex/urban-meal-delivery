@@ -6,7 +6,7 @@ import random
 from tests import config as test_config
 
 
-def random_timespan(  # noqa:WPS211
+def random_timespan(
     *,
     min_hours=0,
     min_minutes=0,
@@ -19,7 +19,10 @@ def random_timespan(  # noqa:WPS211
     total_min_seconds = min_hours * 3600 + min_minutes * 60 + min_seconds
     total_max_seconds = max_hours * 3600 + max_minutes * 60 + max_seconds
     return dt.timedelta(
-        seconds=random.randint(int(total_min_seconds), int(total_max_seconds))
+        seconds=random.randint(
+            int(total_min_seconds),
+            int(total_max_seconds),
+        ),
     )
 
 

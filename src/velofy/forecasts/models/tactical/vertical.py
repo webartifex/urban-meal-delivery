@@ -7,7 +7,7 @@ Thus, the training time series have a `frequency` of the number of weekdays,
 steps, the `frequency` becomes `7 * 12` (= operating hours from 11 am to 11 pm),
 which is `84`. Vertical `*Model`s train the forecasting `methods` on a seasonally
 decomposed time series internally.
-"""  # noqa:RST215
+"""
 
 import datetime as dt
 
@@ -21,7 +21,7 @@ from velofy.forecasts.models import base
 class VerticalARIMAModel(base.ForecastingModelABC):
     """The ARIMA model applied on a vertical time series."""
 
-    name = 'varima'
+    name = "varima"
 
     def predict(
         self,
@@ -42,7 +42,8 @@ class VerticalARIMAModel(base.ForecastingModelABC):
                 confidence intervals (i.e, the four "low/high/80/95" columns);
                 contains several rows, including one for the `predict_at` time step
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: an internal consistency check fails
         """
         # Generate the historic (and vertical) order time series.
         training_ts, frequency, actuals_ts = self._order_history.make_vertical_ts(
@@ -63,7 +64,7 @@ class VerticalARIMAModel(base.ForecastingModelABC):
 
         # Make predictions for the seasonal component by linear extrapolation.
         seasonal_predictions = methods.extrapolate_season.predict(
-            training_ts=decomposed_training_ts['seasonal'],
+            training_ts=decomposed_training_ts["seasonal"],
             forecast_interval=pd.DatetimeIndex(actuals_ts.index),
             frequency=frequency,
         )
@@ -71,7 +72,7 @@ class VerticalARIMAModel(base.ForecastingModelABC):
         # Make predictions with the ARIMA model on the seasonally adjusted time series.
         seasonally_adjusted_predictions = methods.arima.predict(
             training_ts=(
-                decomposed_training_ts['trend'] + decomposed_training_ts['residual']
+                decomposed_training_ts["trend"] + decomposed_training_ts["residual"]
             ),
             forecast_interval=pd.DatetimeIndex(actuals_ts.index),
             # Because the seasonality was taken out before,
@@ -86,26 +87,26 @@ class VerticalARIMAModel(base.ForecastingModelABC):
         # the extrapolated seasonal component.
         predictions = pd.DataFrame(
             data={
-                'actual': actuals_ts,
-                'prediction': (
-                    seasonal_predictions['prediction']  # noqa:WPS204
-                    + seasonally_adjusted_predictions['prediction']
+                "actual": actuals_ts,
+                "prediction": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["prediction"]
                 ),
-                'low80': (
-                    seasonal_predictions['prediction']
-                    + seasonally_adjusted_predictions['low80']
+                "low80": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["low80"]
                 ),
-                'high80': (
-                    seasonal_predictions['prediction']
-                    + seasonally_adjusted_predictions['high80']
+                "high80": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["high80"]
                 ),
-                'low95': (
-                    seasonal_predictions['prediction']
-                    + seasonally_adjusted_predictions['low95']
+                "low95": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["low95"]
                 ),
-                'high95': (
-                    seasonal_predictions['prediction']
-                    + seasonally_adjusted_predictions['high95']
+                "high95": (
+                    seasonal_predictions["prediction"]
+                    + seasonally_adjusted_predictions["high95"]
                 ),
             },
             index=actuals_ts.index,
@@ -113,10 +114,10 @@ class VerticalARIMAModel(base.ForecastingModelABC):
 
         # Sanity checks.
         if len(predictions) <= 1:  # pragma: no cover
-            raise RuntimeError('vertical models should predict several time steps')
+            raise RuntimeError("vertical models should predict several time steps")
         if predictions.isnull().sum().any():  # pragma: no cover
-            raise RuntimeError('missing predictions in varima model')
+            raise RuntimeError("missing predictions in varima model")
         if predict_at not in predictions.index:  # pragma: no cover
-            raise RuntimeError('missing prediction for `predict_at`')
+            raise RuntimeError("missing prediction for `predict_at`")
 
         return predictions

@@ -16,19 +16,19 @@ def db_revision(
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @functools.wraps(func)
-        def ensure(*args: Any, **kwargs: Any) -> Any:  # noqa:WPS430
+        def ensure(*args: Any, **kwargs: Any) -> Any:
             """Do not execute the `func` if the revision does not match."""
-            if not os.getenv('TESTING'):
+            if not os.getenv("TESTING"):
                 result = subprocess.run(  # noqa:S603,S607
-                    ['alembic', 'current'],
+                    ["alembic", "current"],
                     capture_output=True,
                     check=False,
-                    encoding='utf8',
+                    encoding="utf8",
                 )
 
                 if not result.stdout.startswith(rev):
                     click.echo(
-                        click.style(f'Database is not at revision {rev}', fg='red'),
+                        click.style(f"Database is not at revision {rev}", fg="red"),
                     )
                     sys.exit(1)
 

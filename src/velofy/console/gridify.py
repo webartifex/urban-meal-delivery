@@ -8,7 +8,7 @@ from velofy.console import decorators
 
 
 @click.command()
-@decorators.db_revision('e86290e7305e')
+@decorators.db_revision("e86290e7305e")
 def gridify() -> None:  # pragma: no cover  note:b1f68d24
     """Create grids for all cities.
 
@@ -21,18 +21,18 @@ def gridify() -> None:  # pragma: no cover  note:b1f68d24
     All data are persisted to the database.
     """
     cities = db.session.query(db.City).all()
-    click.echo(f'{len(cities)} cities retrieved from the database')
+    click.echo(f"{len(cities)} cities retrieved from the database")
 
     for city in cities:
-        click.echo(f'\nCreating grids for {city.name}')
+        click.echo(f"\nCreating grids for {city.name}")
 
         for side_length in config.GRID_SIDE_LENGTHS:
-            click.echo(f'Creating grid with a side length of {side_length} meters')
+            click.echo(f"Creating grid with a side length of {side_length} meters")
 
             grid = db.Grid.gridify(city=city, side_length=side_length)
             db.session.add(grid)
 
-            click.echo(f' -> created {len(grid.pixels)} pixels')
+            click.echo(f" -> created {len(grid.pixels)} pixels")
 
         # Because the number of assigned addresses is the same across
         # different `side_length`s, we can take any `grid` from the `city`.
@@ -43,7 +43,7 @@ def gridify() -> None:  # pragma: no cover  note:b1f68d24
             .count()
         )
         click.echo(
-            f'=> assigned {n_assigned} out of {len(city.addresses)} addresses in {city.name}',  # noqa:E501
+            f"=> assigned {n_assigned} out of {len(city.addresses)} addresses in {city.name}",  # noqa:E501
         )
 
     db.session.commit()

@@ -37,7 +37,7 @@ def predict(
             could not be made for time steps in the `forecast_interval`
     """
     if training_ts.isnull().any():
-        raise ValueError('`training_ts` must not contain `NaN` values')
+        raise ValueError("`training_ts` must not contain `NaN` values")
 
     extrapolated_ts = pd.Series(index=forecast_interval, dtype=float)
     seasonal_lag = frequency * (training_ts.index[1] - training_ts.index[0])
@@ -61,15 +61,15 @@ def predict(
 
     # Sanity check.
     if extrapolated_ts.isnull().any():  # pragma: no cover
-        raise ValueError('missing predictions in the `forecast_interval`')
+        raise ValueError("missing predictions in the `forecast_interval`")
 
     return pd.DataFrame(
         data={
-            'prediction': extrapolated_ts.round(5),
-            'low80': float('NaN'),
-            'high80': float('NaN'),
-            'low95': float('NaN'),
-            'high95': float('NaN'),
+            "prediction": extrapolated_ts.round(5),
+            "low80": float("NaN"),
+            "high80": float("NaN"),
+            "low95": float("NaN"),
+            "high95": float("NaN"),
         },
         index=forecast_interval,
     )

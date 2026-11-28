@@ -19,10 +19,10 @@ class Restaurant(meta.Base):
     which in most cases is also the only one.
     """
 
-    __tablename__ = 'restaurants'
+    __tablename__ = "restaurants"
 
     # Columns
-    id = sa.Column(  # noqa:WPS125
+    id = sa.Column(
         sa.SmallInteger,
         primary_key=True,
         autoincrement=False,
@@ -35,42 +35,42 @@ class Restaurant(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['address_id'],
-            ['addresses.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["address_id"],
+            ["addresses.id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.CheckConstraint(
-            '0 <= estimated_prep_duration AND estimated_prep_duration <= 2400',
-            name='realistic_estimated_prep_duration',
+            "0 <= estimated_prep_duration AND estimated_prep_duration <= 2400",
+            name="realistic_estimated_prep_duration",
         ),
         # Needed by a `ForeignKeyConstraint` in `Order`.
-        sa.UniqueConstraint('id', 'address_id'),
+        sa.UniqueConstraint("id", "address_id"),
     )
 
     # Relationships
-    address = orm.relationship('Address', back_populates='restaurants')
+    address = orm.relationship("Address", back_populates="restaurants")
     orders = orm.relationship(
-        'Order',
-        back_populates='restaurant',
-        overlaps='orders_picked_up,pickup_address',
+        "Order",
+        back_populates="restaurant",
+        overlaps="orders_picked_up,pickup_address",
     )
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}({name})>'.format(cls=self.__class__.__name__, name=self.name)
+        return f"<{self.__class__.__name__}({self.name})>"
 
     def clear_map(self) -> Restaurant:  # pragma: no cover
         """Shortcut to the `.address.city.clear_map()` method.
 
         Returns:
             self: enabling method chaining
-        """  # noqa:D402,DAR203
+        """  # noqa:D402
         self.address.city.clear_map()
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Shortcut to the `.address.city.map` object."""
         return self.address.city.map
 
@@ -100,7 +100,7 @@ class Restaurant(meta.Base):
                     db.Address.id.in_(
                         row.primary_id
                         for row in (
-                            db.session.query(db.Address.primary_id)  # noqa:WPS221
+                            db.session.query(db.Address.primary_id)
                             .join(
                                 db.Order,
                                 db.Address.id == db.Order.delivery_address_id,
@@ -139,7 +139,7 @@ class Restaurant(meta.Base):
                         color=config.CUSTOMER_COLOR,
                         fill_color=config.CUSTOMER_COLOR,
                         fill_opacity=0.3,
-                        tooltip=f'n_orders={n_orders}',
+                        tooltip=f"n_orders={n_orders}",
                     )
 
                 else:
@@ -153,7 +153,7 @@ class Restaurant(meta.Base):
             color=config.RESTAURANT_COLOR,
             fill_color=config.RESTAURANT_COLOR,
             fill_opacity=0.3,
-            tooltip=f'{self.name} (#{self.id}) | n_orders={len(self.orders)}',
+            tooltip=f"{self.name} (#{self.id}) | n_orders={len(self.orders)}",
         )
 
         return self.map

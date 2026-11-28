@@ -21,7 +21,7 @@ class TestSpecialMethods:
         """`ReplayedOrder` has a non-literal text representation."""
         result = repr(replayed_order)
 
-        assert result == f'<ReplayedOrder(#{replayed_order.actual.id})>'
+        assert result == f"<ReplayedOrder(#{replayed_order.actual.id})>"
 
 
 @pytest.mark.db
@@ -50,7 +50,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_replayed_orders_to_replay_simulations',
+            match="fk_replayed_orders_to_replay_simulations",
         ):
             db_session.execute(stmt)
 
@@ -62,7 +62,7 @@ class TestConstraints:
         # Must delete without ORM as otherwise an UPDATE statement is emitted.
         stmt = sqla.delete(db.Order).where(db.Order.id == replayed_order.actual.id)
 
-        with pytest.raises(sa_exc.IntegrityError, match='fk_replayed_orders_to_orders'):
+        with pytest.raises(sa_exc.IntegrityError, match="fk_replayed_orders_to_orders"):
             db_session.execute(stmt)
 
     def test_delete_a_referenced_courier(
@@ -84,7 +84,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_replayed_orders_to_couriers',
+            match="fk_replayed_orders_to_couriers",
         ):
             db_session.execute(stmt)
 
@@ -98,7 +98,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='either_ad_hoc_or_scheduled_order',
+            match="either_ad_hoc_or_scheduled_order",
         ):
             db_session.commit()
 
@@ -118,7 +118,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='either_ad_hoc_or_scheduled_order',
+            match="either_ad_hoc_or_scheduled_order",
         ):
             db_session.commit()
 
@@ -132,7 +132,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ad_hoc_orders_within_business_hours',
+            match="ad_hoc_orders_within_business_hours",
         ):
             db_session.commit()
 
@@ -146,7 +146,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ad_hoc_orders_within_business_hours',
+            match="ad_hoc_orders_within_business_hours",
         ):
             db_session.commit()
 
@@ -165,7 +165,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_within_business_hours',
+            match="scheduled_orders_within_business_hours",
         ):
             db_session.commit()
 
@@ -184,7 +184,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_within_business_hours',
+            match="scheduled_orders_within_business_hours",
         ):
             db_session.commit()
 
@@ -224,11 +224,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_within_business_hours',
+            match="scheduled_orders_within_business_hours",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('minute', [min_ for min_ in range(60) if min_ % 15 != 0])
+    @pytest.mark.parametrize("minute", [min_ for min_ in range(60) if min_ % 15 != 0])
     def test_scheduled_order_at_non_quarter_of_an_hour(
         self,
         db_session,
@@ -253,11 +253,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_must_be_at_quart',  # constraint name too long
+            match="scheduled_orders_must_be_at_quart",  # constraint name too long
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('second', list(range(1, 60)))
+    @pytest.mark.parametrize("second", list(range(1, 60)))
     def test_scheduled_order_at_non_quarter_of_an_hour_by_seconds(
         self,
         db_session,
@@ -283,7 +283,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_must_be_at_quart',  # constraint name too long
+            match="scheduled_orders_must_be_at_quart",  # constraint name too long
         ):
             db_session.commit()
 
@@ -315,25 +315,25 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='scheduled_orders_not_within_30_minutes',
+            match="scheduled_orders_not_within_30_minutes",
         ):
             db_session.commit()
 
     @pytest.mark.parametrize(
-        'column',
+        "column",
         [
-            'restaurant_notified_at',
-            'restaurant_confirmed_at',
-            'restaurant_ready_at',
-            'dispatch_at',
-            'courier',  # not `.courier_id`
-            'courier_notified_at',
-            'courier_accepted_at',
-            'reached_pickup_at',
-            'pickup_at',
-            'left_pickup_at',
-            'reached_delivery_at',
-            'delivery_at',
+            "restaurant_notified_at",
+            "restaurant_confirmed_at",
+            "restaurant_ready_at",
+            "dispatch_at",
+            "courier",  # not `.courier_id`
+            "courier_notified_at",
+            "courier_accepted_at",
+            "reached_pickup_at",
+            "pickup_at",
+            "left_pickup_at",
+            "reached_delivery_at",
+            "delivery_at",
         ],
     )
     def test_not_fully_simulated_order(self, db_session, replayed_order, column):
@@ -346,21 +346,21 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='either_cancelled_o',  # constraint name too long
+            match="either_cancelled_o",  # constraint name too long
         ):
             db_session.commit()
 
     @pytest.mark.parametrize(
-        'column',
+        "column",
         [
-            'restaurant_notified_at',
-            'restaurant_confirmed_at',
-            'restaurant_ready_at',
-            'dispatch_at',
-            'courier_id',
-            'courier_notified_at',
-            'courier_accepted_at',
-            'reached_pickup_at',
+            "restaurant_notified_at",
+            "restaurant_confirmed_at",
+            "restaurant_ready_at",
+            "dispatch_at",
+            "courier_id",
+            "courier_notified_at",
+            "courier_accepted_at",
+            "reached_pickup_at",
         ],
     )
     def test_simulated_cancellation(self, db_session, replayed_order, column):
@@ -381,8 +381,8 @@ class TestConstraints:
         db_session.commit()
 
     @pytest.mark.parametrize(
-        'column',
-        ['pickup_at', 'left_pickup_at', 'reached_delivery_at', 'delivery_at'],
+        "column",
+        ["pickup_at", "left_pickup_at", "reached_delivery_at", "delivery_at"],
     )
     def test_no_simulated_cancellation_after_pickup(
         self,
@@ -398,10 +398,10 @@ class TestConstraints:
         # Set all timestamps after `.reached_pickup_at` to NULL
         # except the one under test.
         for unset_column in (
-            'pickup_at',
-            'left_pickup_at',
-            'reached_delivery_at',
-            'delivery_at',
+            "pickup_at",
+            "left_pickup_at",
+            "reached_delivery_at",
+            "delivery_at",
         ):
             if unset_column != column:
                 setattr(replayed_order, unset_column, None)
@@ -410,11 +410,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='cancellations_may_only_occur_befo',  # constraint name too long
+            match="cancellations_may_only_occur_befo",  # constraint name too long
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('duration', [-1, 3601])
+    @pytest.mark.parametrize("duration", [-1, 3601])
     def test_estimated_prep_duration_out_of_range(
         self,
         db_session,
@@ -427,11 +427,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='between_0',  # constraint name too long
+            match="between_0",  # constraint name too long
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('duration', [1, 59, 119, 3599])
+    @pytest.mark.parametrize("duration", [1, 59, 119, 3599])
     def test_estimated_prep_duration_not_whole_minute(
         self,
         db_session,
@@ -444,11 +444,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='must_be_w',  # constraint name too long
+            match="must_be_w",  # constraint name too long
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('utilization', [-1, 101])
+    @pytest.mark.parametrize("utilization", [-1, 101])
     def test_utilization_out_of_range(self, db_session, replayed_order, utilization):
         """Insert an instance with invalid data."""
         replayed_order.utilization = utilization
@@ -456,12 +456,12 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='between_0_and_100',
+            match="between_0_and_100",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('column', ['restaurant_notified_at', 'dispatch_at'])
-    @pytest.mark.parametrize('hour', [0, 10])
+    @pytest.mark.parametrize("column", ["restaurant_notified_at", "dispatch_at"])
+    @pytest.mark.parametrize("hour", [0, 10])
     def test_order_dispatched_in_non_business_hour(
         self,
         db_session,
@@ -480,60 +480,60 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='business_hours',
+            match="business_hours",
         ):
             db_session.commit()
 
     @pytest.mark.parametrize(
-        'comparison',
+        "comparison",
         [
-            'placed_at < restaurant_notified_at',
-            'placed_at < restaurant_confirmed_at',
-            'placed_at < restaurant_ready_at',
-            'placed_at < dispatch_at',
-            'placed_at < first_estimated_delivery_at',
-            'placed_at < courier_notified_at',
-            'placed_at < courier_accepted_at',
-            'placed_at < reached_pickup_at',
-            'placed_at < pickup_at',
-            'placed_at < left_pickup_at',
-            'placed_at < reached_delivery_at',
-            'placed_at < delivery_at',
-            'restaurant_notified_at < restaurant_confirmed_at',
-            'restaurant_notified_at < restaurant_ready_at',
-            'restaurant_notified_at < pickup_at',
-            'restaurant_confirmed_at < restaurant_ready_at',
-            'restaurant_confirmed_at < pickup_at',
-            'restaurant_ready_at < pickup_at',
-            'dispatch_at < first_estimated_delivery_at',
-            'dispatch_at < courier_notified_at',
-            'dispatch_at < courier_accepted_at',
-            'dispatch_at < reached_pickup_at',
-            'dispatch_at < pickup_at',
-            'dispatch_at < left_pickup_at',
-            'dispatch_at < reached_delivery_at',
-            'dispatch_at < delivery_at',
-            'courier_notified_at < courier_accepted_at',
-            'courier_notified_at < reached_pickup_at',
-            'courier_notified_at < pickup_at',
-            'courier_notified_at < left_pickup_at',
-            'courier_notified_at < reached_delivery_at',
-            'courier_notified_at < delivery_at',
-            'courier_accepted_at < reached_pickup_at',
-            'courier_accepted_at < pickup_at',
-            'courier_accepted_at < left_pickup_at',
-            'courier_accepted_at < reached_delivery_at',
-            'courier_accepted_at < delivery_at',
-            'reached_pickup_at < pickup_at',
-            'reached_pickup_at < left_pickup_at',
-            'reached_pickup_at < reached_delivery_at',
-            'reached_pickup_at < delivery_at',
-            'pickup_at < left_pickup_at',
-            'pickup_at < reached_delivery_at',
-            'pickup_at < delivery_at',
-            'left_pickup_at < reached_delivery_at',
-            'left_pickup_at < delivery_at',
-            'reached_delivery_at < delivery_at',
+            "placed_at < restaurant_notified_at",
+            "placed_at < restaurant_confirmed_at",
+            "placed_at < restaurant_ready_at",
+            "placed_at < dispatch_at",
+            "placed_at < first_estimated_delivery_at",
+            "placed_at < courier_notified_at",
+            "placed_at < courier_accepted_at",
+            "placed_at < reached_pickup_at",
+            "placed_at < pickup_at",
+            "placed_at < left_pickup_at",
+            "placed_at < reached_delivery_at",
+            "placed_at < delivery_at",
+            "restaurant_notified_at < restaurant_confirmed_at",
+            "restaurant_notified_at < restaurant_ready_at",
+            "restaurant_notified_at < pickup_at",
+            "restaurant_confirmed_at < restaurant_ready_at",
+            "restaurant_confirmed_at < pickup_at",
+            "restaurant_ready_at < pickup_at",
+            "dispatch_at < first_estimated_delivery_at",
+            "dispatch_at < courier_notified_at",
+            "dispatch_at < courier_accepted_at",
+            "dispatch_at < reached_pickup_at",
+            "dispatch_at < pickup_at",
+            "dispatch_at < left_pickup_at",
+            "dispatch_at < reached_delivery_at",
+            "dispatch_at < delivery_at",
+            "courier_notified_at < courier_accepted_at",
+            "courier_notified_at < reached_pickup_at",
+            "courier_notified_at < pickup_at",
+            "courier_notified_at < left_pickup_at",
+            "courier_notified_at < reached_delivery_at",
+            "courier_notified_at < delivery_at",
+            "courier_accepted_at < reached_pickup_at",
+            "courier_accepted_at < pickup_at",
+            "courier_accepted_at < left_pickup_at",
+            "courier_accepted_at < reached_delivery_at",
+            "courier_accepted_at < delivery_at",
+            "reached_pickup_at < pickup_at",
+            "reached_pickup_at < left_pickup_at",
+            "reached_pickup_at < reached_delivery_at",
+            "reached_pickup_at < delivery_at",
+            "pickup_at < left_pickup_at",
+            "pickup_at < reached_delivery_at",
+            "pickup_at < delivery_at",
+            "left_pickup_at < reached_delivery_at",
+            "left_pickup_at < delivery_at",
+            "reached_delivery_at < delivery_at",
         ],
     )
     def test_timestamps_unordered(
@@ -547,7 +547,7 @@ class TestConstraints:
         There are two special cases for this test case below,
         where other attributes on `replayed_order` must be unset.
         """
-        smaller, bigger = comparison.split(' < ')
+        smaller, bigger = comparison.split(" < ")
 
         assert smaller is not None
 
@@ -556,7 +556,7 @@ class TestConstraints:
 
         db_session.add(replayed_order)
 
-        with pytest.raises(sa_exc.IntegrityError, match='ordered_timestamps'):
+        with pytest.raises(sa_exc.IntegrityError, match="ordered_timestamps"):
             db_session.commit()
 
     def test_timestamps_unordered_scheduled(self, db_session, make_replay_order):
@@ -571,20 +571,20 @@ class TestConstraints:
         self.test_timestamps_unordered(
             db_session,
             replayed_pre_order,
-            'placed_at < scheduled_delivery_at',
+            "placed_at < scheduled_delivery_at",
         )
 
     @pytest.mark.parametrize(
-        'comparison',
+        "comparison",
         [
-            'placed_at < cancelled_at',
-            'restaurant_notified_at < cancelled_at',
-            'restaurant_confirmed_at < cancelled_at',
-            'restaurant_ready_at < cancelled_at',
-            'dispatch_at < cancelled_at',
-            'courier_notified_at < cancelled_at',
-            'courier_accepted_at < cancelled_at',
-            'reached_pickup_at < cancelled_at',
+            "placed_at < cancelled_at",
+            "restaurant_notified_at < cancelled_at",
+            "restaurant_confirmed_at < cancelled_at",
+            "restaurant_ready_at < cancelled_at",
+            "dispatch_at < cancelled_at",
+            "courier_notified_at < cancelled_at",
+            "courier_accepted_at < cancelled_at",
+            "reached_pickup_at < cancelled_at",
         ],
     )
     def test_timestamps_unordered_cancelled(

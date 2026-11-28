@@ -8,7 +8,7 @@ from velofy.console import gridify
 
 
 @pytest.mark.db
-def test_two_pixels_with_two_addresses(  # noqa:WPS211
+def test_two_pixels_with_two_addresses(
     cli,
     db_session,
     monkeypatch,
@@ -44,7 +44,7 @@ def test_two_pixels_with_two_addresses(  # noqa:WPS211
     side_length = max(city.total_x // 2, city.total_y // 2) + 1
 
     # Hack the configuration regarding the grids to be created.
-    monkeypatch.setattr(velofy.config, 'GRID_SIDE_LENGTHS', [side_length])
+    monkeypatch.setattr(velofy.config, "GRID_SIDE_LENGTHS", [side_length])
 
     result = cli.invoke(gridify.gridify)
 

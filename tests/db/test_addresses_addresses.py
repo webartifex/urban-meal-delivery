@@ -21,7 +21,7 @@ def another_address(make_address):
 @pytest.fixture
 def path(address, another_address, make_address):
     """A `Path` from `address` to `another_address`."""
-    air_distance = distance.great_circle(  # noqa:WPS317
+    air_distance = distance.great_circle(
         address.location.lat_lng,
         another_address.location.lat_lng,
     ).meters
@@ -31,7 +31,7 @@ def path(address, another_address, make_address):
     directions = json.dumps(
         [
             (float(add.latitude), float(add.longitude))
-            for add in (make_address() for _ in range(5))  # noqa:WPS335
+            for add in (make_address() for _ in range(5))
         ],
     )
 
@@ -77,7 +77,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_addresses_to_addresses_via_first_address',  # shortened
+            match="fk_addresses_addresses_to_addresses_via_first_address",  # shortened
         ):
             db_session.execute(stmt)
 
@@ -91,7 +91,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_addresses_to_addresses_via_second_address',  # shortened
+            match="fk_addresses_addresses_to_addresses_via_second_address",  # shortened
         ):
             db_session.execute(stmt)
 
@@ -112,7 +112,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_addresses_to_addresses_via_first_address',  # shortened
+            match="fk_addresses_addresses_to_addresses_via_first_address",  # shortened
         ):
             db_session.execute(stmt)
 
@@ -130,7 +130,7 @@ class TestConstraints:
             air_distance=path.air_distance,
         )
 
-        with pytest.raises(sa_exc.IntegrityError, match='duplicate key value'):
+        with pytest.raises(sa_exc.IntegrityError, match="duplicate key value"):
             db_session.execute(stmt)
 
     def test_symmetric_addresses(self, db_session, path):
@@ -147,7 +147,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ck_addresses_addresses_on_distances_are_symmetric_for_bicycles',
+            match="ck_addresses_addresses_on_distances_are_symmetric_for_bicycles",
         ):
             db_session.commit()
 
@@ -156,7 +156,7 @@ class TestConstraints:
         path.air_distance = -1
         db_session.add(path)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_air_distance'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_air_distance"):
             db_session.commit()
 
     def test_air_distance_too_large(self, db_session, path):
@@ -165,7 +165,7 @@ class TestConstraints:
         path.bicycle_distance = 21_000
         db_session.add(path)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_air_distance'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_air_distance"):
             db_session.commit()
 
     def test_bicycle_distance_too_large(self, db_session, path):
@@ -173,7 +173,7 @@ class TestConstraints:
         path.bicycle_distance = 25_000
         db_session.add(path)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_bicycle_distance'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_bicycle_distance"):
             db_session.commit()
 
     def test_air_distance_shorter_than_bicycle_distance(self, db_session, path):
@@ -181,10 +181,10 @@ class TestConstraints:
         path.bicycle_distance = round(0.75 * path.air_distance)
         db_session.add(path)
 
-        with pytest.raises(sa_exc.IntegrityError, match='air_distance_is_shortest'):
+        with pytest.raises(sa_exc.IntegrityError, match="air_distance_is_shortest"):
             db_session.commit()
 
-    @pytest.mark.parametrize('duration', [-1, 3601])
+    @pytest.mark.parametrize("duration", [-1, 3601])
     def test_unrealistic_bicycle_travel_time(self, db_session, path, duration):
         """Insert an instance with invalid data."""
         path.bicycle_duration = duration
@@ -192,12 +192,13 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='realistic_bicycle_travel_time',
+            match="realistic_bicycle_travel_time",
         ):
             db_session.commit()
 
 
 @pytest.mark.db
+@pytest.mark.usefixtures("_prepare_db")
 class TestFromAddresses:
     """Test the alternative constructor `Path.from_addresses()`.
 
@@ -214,7 +215,6 @@ class TestFromAddresses:
         """
         db_session.add(address)
 
-    @pytest.mark.usefixtures('_prepare_db')
     def test_make_path_instance(
         self,
         db_session,
@@ -228,7 +228,6 @@ class TestFromAddresses:
 
         assert db_session.query(db.Path).count() == 1
 
-    @pytest.mark.usefixtures('_prepare_db')
     def test_make_the_same_path_instance_twice(
         self,
         db_session,
@@ -246,17 +245,14 @@ class TestFromAddresses:
 
         assert db_session.query(db.Path).count() == 1
 
-    @pytest.mark.usefixtures('_prepare_db')
-    def test_structure_of_return_value(self, db_session, address, another_address):
+    def test_structure_of_return_value(self, address, another_address):
         """Test instantiation of a new `Path` instance."""
         results = db.Path.from_addresses(address, another_address)
 
         assert isinstance(results, list)
 
-    @pytest.mark.usefixtures('_prepare_db')
     def test_instances_must_have_air_distance(
         self,
-        db_session,
         address,
         another_address,
     ):
@@ -267,10 +263,8 @@ class TestFromAddresses:
 
         assert result.air_distance is not None
 
-    @pytest.mark.usefixtures('_prepare_db')
     def test_do_not_sync_instances_with_google_maps(
         self,
-        db_session,
         address,
         another_address,
     ):
@@ -282,10 +276,8 @@ class TestFromAddresses:
         assert result.bicycle_distance is None
         assert result.bicycle_duration is None
 
-    @pytest.mark.usefixtures('_prepare_db')
     def test_sync_instances_with_google_maps(
         self,
-        db_session,
         address,
         another_address,
         monkeypatch,
@@ -296,7 +288,7 @@ class TestFromAddresses:
             self.bicycle_distance = 1.25 * self.air_distance
             self.bicycle_duration = 300
 
-        monkeypatch.setattr(db.Path, 'sync_with_google_maps', sync)
+        monkeypatch.setattr(db.Path, "sync_with_google_maps", sync)
 
         paths = db.Path.from_addresses(address, another_address, google_maps=True)
 
@@ -305,22 +297,19 @@ class TestFromAddresses:
         assert result.bicycle_distance is not None
         assert result.bicycle_duration is not None
 
-    @pytest.mark.usefixtures('_prepare_db')
-    def test_one_path_for_two_addresses(self, db_session, address, another_address):
+    def test_one_path_for_two_addresses(self, address, another_address):
         """Test instantiation of a new `Path` instance."""
         result = len(db.Path.from_addresses(address, another_address))
 
         assert result == 1
 
-    @pytest.mark.usefixtures('_prepare_db')
-    def test_two_paths_for_three_addresses(self, db_session, make_address):
+    def test_two_paths_for_three_addresses(self, make_address):
         """Test instantiation of a new `Path` instance."""
         result = len(db.Path.from_addresses(*[make_address() for _ in range(3)]))
 
         assert result == 3
 
-    @pytest.mark.usefixtures('_prepare_db')
-    def test_six_paths_for_four_addresses(self, db_session, make_address):
+    def test_six_paths_for_four_addresses(self, make_address):
         """Test instantiation of a new `Path` instance."""
         result = len(db.Path.from_addresses(*[make_address() for _ in range(4)]))
 
@@ -328,7 +317,6 @@ class TestFromAddresses:
 
     # Tests for the `Path.from_order()` convenience method.
 
-    @pytest.mark.usefixtures('_prepare_db')
     def test_make_path_instance_from_order(
         self,
         db_session,
@@ -341,7 +329,6 @@ class TestFromAddresses:
 
         assert db_session.query(db.Path).count() == 1
 
-    @pytest.mark.usefixtures('_prepare_db')
     def test_make_the_same_path_instance_from_order_twice(
         self,
         db_session,
@@ -358,17 +345,14 @@ class TestFromAddresses:
 
         assert db_session.query(db.Path).count() == 1
 
-    @pytest.mark.usefixtures('_prepare_db')
-    def test_structure_of_return_value_from_order(self, db_session, order):
+    def test_structure_of_return_value_from_order(self, order):
         """Test instantiation of a new `Path` instance."""
         result = db.Path.from_order(order)
 
         assert isinstance(result, db.Path)
 
-    @pytest.mark.usefixtures('_prepare_db')
     def test_sync_instance_from_order_with_google_maps(
         self,
-        db_session,
         order,
         monkeypatch,
     ):
@@ -378,7 +362,7 @@ class TestFromAddresses:
             self.bicycle_distance = 1.25 * self.air_distance
             self.bicycle_duration = 300
 
-        monkeypatch.setattr(db.Path, 'sync_with_google_maps', sync)
+        monkeypatch.setattr(db.Path, "sync_with_google_maps", sync)
 
         result = db.Path.from_order(order, google_maps=True)
 
@@ -387,259 +371,260 @@ class TestFromAddresses:
 
 
 @pytest.mark.db
+@pytest.mark.usefixtures("_fake_google_api", "db_session")
 class TestSyncWithGoogleMaps:
     """Test the `Path.sync_with_google_maps()` method."""
 
     @pytest.fixture
     def api_response(self):
         """A typical (shortened) response by the Google Maps Directions API."""
-        return [  # noqa:ECE001
+        return [
             {
-                'bounds': {
-                    'northeast': {'lat': 44.8554284, 'lng': -0.5652398},
-                    'southwest': {'lat': 44.8342256, 'lng': -0.5708206},
+                "bounds": {
+                    "northeast": {"lat": 44.8554284, "lng": -0.5652398},
+                    "southwest": {"lat": 44.8342256, "lng": -0.5708206},
                 },
-                'copyrights': 'Map data ©2021',
-                'legs': [
+                "copyrights": "Map data ©2021",
+                "legs": [
                     {
                         # We choose an artificially high distance of `9999`
                         # so that the synced bicycle distance is longer than
                         # the randomized air distance (i.e., fake data) for sure.
-                        'distance': {'text': '3.0 km', 'value': 9999},
-                        'duration': {'text': '10 mins', 'value': 596},
-                        'end_address': '13 Place Paul et Jean Paul Avisseau, ...',
-                        'end_location': {'lat': 44.85540839999999, 'lng': -0.5672105},
-                        'start_address': '59 Rue Saint-François, 33000 Bordeaux, ...',
-                        'start_location': {'lat': 44.8342256, 'lng': -0.570372},
-                        'steps': [
+                        "distance": {"text": "3.0 km", "value": 9999},
+                        "duration": {"text": "10 mins", "value": 596},
+                        "end_address": "13 Place Paul et Jean Paul Avisseau, ...",
+                        "end_location": {"lat": 44.85540839999999, "lng": -0.5672105},
+                        "start_address": "59 Rue Saint-François, 33000 Bordeaux, ...",
+                        "start_location": {"lat": 44.8342256, "lng": -0.570372},
+                        "steps": [
                             {
-                                'distance': {'text': '0.1 km', 'value': 138},
-                                'duration': {'text': '1 min', 'value': 43},
-                                'end_location': {
-                                    'lat': 44.83434380000001,
-                                    'lng': -0.5690105999999999,
+                                "distance": {"text": "0.1 km", "value": 138},
+                                "duration": {"text": "1 min", "value": 43},
+                                "end_location": {
+                                    "lat": 44.83434380000001,
+                                    "lng": -0.5690105999999999,
                                 },
-                                'html_instructions': 'Head <b>east</b> on <b> ...',
-                                'polyline': {'points': '}tspGxknBKcDIkB'},
-                                'start_location': {'lat': 44.8342256, 'lng': -0.57032},
-                                'travel_mode': 'BICYCLING',
+                                "html_instructions": "Head <b>east</b> on <b> ...",
+                                "polyline": {"points": "}tspGxknBKcDIkB"},
+                                "start_location": {"lat": 44.8342256, "lng": -0.57032},
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.1 km', 'value': 115},
-                                'duration': {'text': '1 min', 'value': 22},
-                                'end_location': {'lat': 44.8353651, 'lng': -0.569199},
-                                'html_instructions': 'Turn <b>left</b> onto <b> ...',
-                                'maneuver': 'turn-left',
-                                'polyline': {'points': 'suspGhcnBc@JE@_@DiAHA?w@F'},
-                                'start_location': {
-                                    'lat': 44.83434380000001,
-                                    'lng': -0.5690105999999999,
+                                "distance": {"text": "0.1 km", "value": 115},
+                                "duration": {"text": "1 min", "value": 22},
+                                "end_location": {"lat": 44.8353651, "lng": -0.569199},
+                                "html_instructions": "Turn <b>left</b> onto <b> ...",
+                                "maneuver": "turn-left",
+                                "polyline": {"points": "suspGhcnBc@JE@_@DiAHA?w@F"},
+                                "start_location": {
+                                    "lat": 44.83434380000001,
+                                    "lng": -0.5690105999999999,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.3 km', 'value': 268},
-                                'duration': {'text': '1 min', 'value': 59},
-                                'end_location': {'lat': 44.8362675, 'lng': -0.5660914},
-                                'html_instructions': 'Turn <b>right</b> onto <b> ...',
-                                'maneuver': 'turn-right',
-                                'polyline': {
-                                    'points': 'a|spGndnBEYEQKi@Mi@Is@CYCOE]CQIq@ ...',
+                                "distance": {"text": "0.3 km", "value": 268},
+                                "duration": {"text": "1 min", "value": 59},
+                                "end_location": {"lat": 44.8362675, "lng": -0.5660914},
+                                "html_instructions": "Turn <b>right</b> onto <b> ...",
+                                "maneuver": "turn-right",
+                                "polyline": {
+                                    "points": "a|spGndnBEYEQKi@Mi@Is@CYCOE]CQIq@ ...",
                                 },
-                                'start_location': {'lat': 44.8353651, 'lng': -0.56919},
-                                'travel_mode': 'BICYCLING',
+                                "start_location": {"lat": 44.8353651, "lng": -0.56919},
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.1 km', 'value': 95},
-                                'duration': {'text': '1 min', 'value': 29},
-                                'end_location': {'lat': 44.8368458, 'lng': -0.5652398},
-                                'html_instructions': 'Slight <b>left</b> onto <b> ...',
-                                'maneuver': 'turn-slight-left',
-                                'polyline': {
-                                    'points': 'uatpG`qmBg@aAGM?ACE[k@CICGACEGCCAAEAG?',
+                                "distance": {"text": "0.1 km", "value": 95},
+                                "duration": {"text": "1 min", "value": 29},
+                                "end_location": {"lat": 44.8368458, "lng": -0.5652398},
+                                "html_instructions": "Slight <b>left</b> onto <b> ...",
+                                "maneuver": "turn-slight-left",
+                                "polyline": {
+                                    "points": "uatpG`qmBg@aAGM?ACE[k@CICGACEGCCAAEAG?",
                                 },
-                                'start_location': {
-                                    'lat': 44.8362675,
-                                    'lng': -0.5660914,
+                                "start_location": {
+                                    "lat": 44.8362675,
+                                    "lng": -0.5660914,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '23 m', 'value': 23},
-                                'duration': {'text': '1 min', 'value': 4},
-                                'end_location': {'lat': 44.83697, 'lng': -0.5654425},
-                                'html_instructions': 'Slight <b>left</b> to stay ...',
-                                'maneuver': 'turn-slight-left',
-                                'polyline': {
-                                    'points': 'ietpGvkmBA@C?CBCBEHA@AB?B?B?B?@',
+                                "distance": {"text": "23 m", "value": 23},
+                                "duration": {"text": "1 min", "value": 4},
+                                "end_location": {"lat": 44.83697, "lng": -0.5654425},
+                                "html_instructions": "Slight <b>left</b> to stay ...",
+                                "maneuver": "turn-slight-left",
+                                "polyline": {
+                                    "points": "ietpGvkmBA@C?CBCBEHA@AB?B?B?B?@",
                                 },
-                                'start_location': {
-                                    'lat': 44.8368458,
-                                    'lng': -0.5652398,
+                                "start_location": {
+                                    "lat": 44.8368458,
+                                    "lng": -0.5652398,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.2 km', 'value': 185},
-                                'duration': {'text': '1 min', 'value': 23},
-                                'end_location': {'lat': 44.8382126, 'lng': -0.5669969},
-                                'html_instructions': 'Take the ramp to <b>Le Lac ...',
-                                'polyline': {
-                                    'points': 'aftpG~lmBY^[^sAdB]`@CDKLQRa@h@A@IZ',
+                                "distance": {"text": "0.2 km", "value": 185},
+                                "duration": {"text": "1 min", "value": 23},
+                                "end_location": {"lat": 44.8382126, "lng": -0.5669969},
+                                "html_instructions": "Take the ramp to <b>Le Lac ...",
+                                "polyline": {
+                                    "points": "aftpG~lmBY^[^sAdB]`@CDKLQRa@h@A@IZ",
                                 },
-                                'start_location': {'lat': 44.83697, 'lng': -0.5654425},
-                                'travel_mode': 'BICYCLING',
+                                "start_location": {"lat": 44.83697, "lng": -0.5654425},
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.3 km', 'value': 253},
-                                'duration': {'text': '1 min', 'value': 43},
-                                'end_location': {'lat': 44.840163, 'lng': -0.5686525},
-                                'html_instructions': 'Merge onto <b>Quai Richelieu</b>',
-                                'maneuver': 'merge',
-                                'polyline': {
-                                    'points': 'ymtpGvvmBeAbAe@b@_@ZUN[To@f@e@^A?g ...',
+                                "distance": {"text": "0.3 km", "value": 253},
+                                "duration": {"text": "1 min", "value": 43},
+                                "end_location": {"lat": 44.840163, "lng": -0.5686525},
+                                "html_instructions": "Merge onto <b>Quai Richelieu</b>",
+                                "maneuver": "merge",
+                                "polyline": {
+                                    "points": "ymtpGvvmBeAbAe@b@_@ZUN[To@f@e@^A?g ...",
                                 },
-                                'start_location': {
-                                    'lat': 44.8382126,
-                                    'lng': -0.5669969,
+                                "start_location": {
+                                    "lat": 44.8382126,
+                                    "lng": -0.5669969,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.1 km', 'value': 110},
-                                'duration': {'text': '1 min', 'value': 21},
-                                'end_location': {'lat': 44.841079, 'lng': -0.5691835},
-                                'html_instructions': 'Continue onto <b>Quai de la ...',
-                                'polyline': {'points': '_ztpG`anBUNQLULUJOHMFKDWN'},
-                                'start_location': {'lat': 44.840163, 'lng': -0.56865},
-                                'travel_mode': 'BICYCLING',
+                                "distance": {"text": "0.1 km", "value": 110},
+                                "duration": {"text": "1 min", "value": 21},
+                                "end_location": {"lat": 44.841079, "lng": -0.5691835},
+                                "html_instructions": "Continue onto <b>Quai de la ...",
+                                "polyline": {"points": "_ztpG`anBUNQLULUJOHMFKDWN"},
+                                "start_location": {"lat": 44.840163, "lng": -0.56865},
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.3 km', 'value': 262},
-                                'duration': {'text': '1 min', 'value': 44},
-                                'end_location': {'lat': 44.8433375, 'lng': -0.5701161},
-                                'html_instructions': 'Continue onto <b>Quai du ...',
-                                'polyline': {
-                                    'points': 'w_upGjdnBeBl@sBn@gA^[JIBc@Nk@Nk@L',
+                                "distance": {"text": "0.3 km", "value": 262},
+                                "duration": {"text": "1 min", "value": 44},
+                                "end_location": {"lat": 44.8433375, "lng": -0.5701161},
+                                "html_instructions": "Continue onto <b>Quai du ...",
+                                "polyline": {
+                                    "points": "w_upGjdnBeBl@sBn@gA^[JIBc@Nk@Nk@L",
                                 },
-                                'start_location': {'lat': 44.841079, 'lng': -0.56915},
-                                'travel_mode': 'BICYCLING',
+                                "start_location": {"lat": 44.841079, "lng": -0.56915},
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.6 km', 'value': 550},
-                                'duration': {'text': '2 mins', 'value': 97},
-                                'end_location': {
-                                    'lat': 44.84822339999999,
-                                    'lng': -0.5705307,
+                                "distance": {"text": "0.6 km", "value": 550},
+                                "duration": {"text": "2 mins", "value": 97},
+                                "end_location": {
+                                    "lat": 44.84822339999999,
+                                    "lng": -0.5705307,
                                 },
-                                'html_instructions': 'Continue onto <b>Quai ...',
-                                'polyline': {
-                                    'points': '{mupGfjnBYFI@IBaAPUD{AX}@NK@]Fe@H ...',
+                                "html_instructions": "Continue onto <b>Quai ...",
+                                "polyline": {
+                                    "points": "{mupGfjnBYFI@IBaAPUD{AX}@NK@]Fe@H ...",
                                 },
-                                'start_location': {
-                                    'lat': 44.8433375,
-                                    'lng': -0.5701161,
+                                "start_location": {
+                                    "lat": 44.8433375,
+                                    "lng": -0.5701161,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.5 km', 'value': 508},
-                                'duration': {'text': '1 min', 'value': 87},
-                                'end_location': {'lat': 44.8523224, 'lng': -0.5678223},
-                                'html_instructions': 'Continue onto ...',
-                                'polyline': {
-                                    'points': 'klvpGxlnBWEUGWGSGMEOEOE[KMEQGIA] ...',
+                                "distance": {"text": "0.5 km", "value": 508},
+                                "duration": {"text": "1 min", "value": 87},
+                                "end_location": {"lat": 44.8523224, "lng": -0.5678223},
+                                "html_instructions": "Continue onto ...",
+                                "polyline": {
+                                    "points": "klvpGxlnBWEUGWGSGMEOEOE[KMEQGIA] ...",
                                 },
-                                'start_location': {
-                                    'lat': 44.84822339999999,
-                                    'lng': -0.5705307,
+                                "start_location": {
+                                    "lat": 44.84822339999999,
+                                    "lng": -0.5705307,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '28 m', 'value': 28},
-                                'duration': {'text': '1 min', 'value': 45},
-                                'end_location': {
-                                    'lat': 44.85245620000001,
-                                    'lng': -0.5681259,
+                                "distance": {"text": "28 m", "value": 28},
+                                "duration": {"text": "1 min", "value": 45},
+                                "end_location": {
+                                    "lat": 44.85245620000001,
+                                    "lng": -0.5681259,
                                 },
-                                'html_instructions': 'Turn <b>left</b> onto <b> ...',
-                                'maneuver': 'turn-left',
-                                'polyline': {'points': '_fwpGz{mBGLADGPCFEN'},
-                                'start_location': {
-                                    'lat': 44.8523224,
-                                    'lng': -0.5678223,
+                                "html_instructions": "Turn <b>left</b> onto <b> ...",
+                                "maneuver": "turn-left",
+                                "polyline": {"points": "_fwpGz{mBGLADGPCFEN"},
+                                "start_location": {
+                                    "lat": 44.8523224,
+                                    "lng": -0.5678223,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.2 km', 'value': 176},
-                                'duration': {'text': '1 min', 'value': 31},
-                                'end_location': {'lat': 44.8536857, 'lng': -0.5667282},
-                                'html_instructions': 'Turn <b>right</b> onto <b> ...',
-                                'maneuver': 'turn-right',
-                                'polyline': {
-                                    'points': '{fwpGx}mB_@c@mAuAOQi@m@m@y@_@c@',
+                                "distance": {"text": "0.2 km", "value": 176},
+                                "duration": {"text": "1 min", "value": 31},
+                                "end_location": {"lat": 44.8536857, "lng": -0.5667282},
+                                "html_instructions": "Turn <b>right</b> onto <b> ...",
+                                "maneuver": "turn-right",
+                                "polyline": {
+                                    "points": "{fwpGx}mB_@c@mAuAOQi@m@m@y@_@c@",
                                 },
-                                'start_location': {
-                                    'lat': 44.85245620000001,
-                                    'lng': -0.5681259,
+                                "start_location": {
+                                    "lat": 44.85245620000001,
+                                    "lng": -0.5681259,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.2 km', 'value': 172},
-                                'duration': {'text': '1 min', 'value': 28},
-                                'end_location': {'lat': 44.8547766, 'lng': -0.5682825},
-                                'html_instructions': 'Turn <b>left</b> onto <b> ... ',
-                                'maneuver': 'turn-left',
-                                'polyline': {'points': 'qnwpG`umBW`@UkDtF'},
-                                'start_location': {
-                                    'lat': 44.8536857,
-                                    'lng': -0.5667282,
+                                "distance": {"text": "0.2 km", "value": 172},
+                                "duration": {"text": "1 min", "value": 28},
+                                "end_location": {"lat": 44.8547766, "lng": -0.5682825},
+                                "html_instructions": "Turn <b>left</b> onto <b> ... ",
+                                "maneuver": "turn-left",
+                                "polyline": {"points": "qnwpG`umBW`@UkDtF"},
+                                "start_location": {
+                                    "lat": 44.8536857,
+                                    "lng": -0.5667282,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '0.1 km', 'value': 101},
-                                'duration': {'text': '1 min', 'value': 17},
-                                'end_location': {'lat': 44.8554284, 'lng': -0.5673822},
-                                'html_instructions': 'Turn <b>right</b> onto ...',
-                                'maneuver': 'turn-right',
-                                'polyline': {'points': 'kuwpGv~mBa@q@cA_B[a@'},
-                                'start_location': {
-                                    'lat': 44.8547766,
-                                    'lng': -0.5682825,
+                                "distance": {"text": "0.1 km", "value": 101},
+                                "duration": {"text": "1 min", "value": 17},
+                                "end_location": {"lat": 44.8554284, "lng": -0.5673822},
+                                "html_instructions": "Turn <b>right</b> onto ...",
+                                "maneuver": "turn-right",
+                                "polyline": {"points": "kuwpGv~mBa@q@cA_B[a@"},
+                                "start_location": {
+                                    "lat": 44.8547766,
+                                    "lng": -0.5682825,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                             {
-                                'distance': {'text': '15 m', 'value': 15},
-                                'duration': {'text': '1 min', 'value': 3},
-                                'end_location': {
-                                    'lat': 44.85540839999999,
-                                    'lng': -0.5672105,
+                                "distance": {"text": "15 m", "value": 15},
+                                "duration": {"text": "1 min", "value": 3},
+                                "end_location": {
+                                    "lat": 44.85540839999999,
+                                    "lng": -0.5672105,
                                 },
-                                'html_instructions': 'Turn <b>right</b> onto <b> ...',
-                                'maneuver': 'turn-right',
-                                'polyline': {'points': 'mywpGbymBBC@C?E?C?E?EAC'},
-                                'start_location': {
-                                    'lat': 44.8554284,
-                                    'lng': -0.5673822,
+                                "html_instructions": "Turn <b>right</b> onto <b> ...",
+                                "maneuver": "turn-right",
+                                "polyline": {"points": "mywpGbymBBC@C?E?C?E?EAC"},
+                                "start_location": {
+                                    "lat": 44.8554284,
+                                    "lng": -0.5673822,
                                 },
-                                'travel_mode': 'BICYCLING',
+                                "travel_mode": "BICYCLING",
                             },
                         ],
-                        'traffic_speed_entry': [],
-                        'via_waypoint': [],
+                        "traffic_speed_entry": [],
+                        "via_waypoint": [],
                     },
                 ],
-                'overview_polyline': {
-                    'points': '}tspGxknBUoGi@LcDVe@_CW{Ba@sC[eA_@} ...',
+                "overview_polyline": {
+                    "points": "}tspGxknBUoGi@LcDVe@_CW{Ba@sC[eA_@} ...",
                 },
-                'summary': 'Quai des Chartrons',
-                'warnings': ['Bicycling directions are in beta ...'],
-                'waypoint_order': [],
+                "summary": "Quai des Chartrons",
+                "warnings": ["Bicycling directions are in beta ..."],
+                "waypoint_order": [],
             },
         ]
 
@@ -650,10 +635,9 @@ class TestSyncWithGoogleMaps:
         def directions(_self, *_args, **_kwargs):
             return api_response
 
-        monkeypatch.setattr(googlemaps.Client, 'directions', directions)
+        monkeypatch.setattr(googlemaps.Client, "directions", directions)
 
-    @pytest.mark.usefixtures('_fake_google_api')
-    def test_sync_instances_with_google_maps(self, db_session, path):
+    def test_sync_instances_with_google_maps(self, path):
         """Call the method for a `Path` object without Google data."""
         path.bicycle_distance = None
         path.bicycle_duration = None
@@ -665,8 +649,7 @@ class TestSyncWithGoogleMaps:
         assert path.bicycle_duration == 596
         assert path._directions is not None
 
-    @pytest.mark.usefixtures('_fake_google_api')
-    def test_repeated_sync_instances_with_google_maps(self, db_session, path):
+    def test_repeated_sync_instances_with_google_maps(self, path):
         """Call the method for a `Path` object with Google data.
 
         That call should immediately return without changing any data.

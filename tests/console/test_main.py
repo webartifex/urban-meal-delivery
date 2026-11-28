@@ -25,35 +25,35 @@ class TestShowVersion:
 
     def test_no_version(self, capsys, ctx):
         """Test the early exit branch without any output."""
-        main.show_version(ctx, _param='discarded', value=False)
+        main.show_version(ctx, _param="discarded", value=False)
 
         captured = capsys.readouterr()
 
-        assert captured.out == ''
+        assert captured.out == ""
 
     def test_final_version(self, capsys, ctx, monkeypatch):
         """For final versions, NO "development" warning is emitted."""
-        version = '1.2.3'
-        monkeypatch.setattr(main.velofy, '__version__', version)
+        version = "1.2.3"
+        monkeypatch.setattr(main.velofy, "__version__", version)
 
         with pytest.raises(click.exceptions.Exit):
-            main.show_version(ctx, _param='discarded', value=True)
+            main.show_version(ctx, _param="discarded", value=True)
 
         captured = capsys.readouterr()
 
-        assert captured.out.endswith(f', version {version}\n')
+        assert captured.out.endswith(f", version {version}\n")
 
     def test_develop_version(self, capsys, ctx, monkeypatch):
         """For develop versions, a warning thereof is emitted."""
-        version = '1.2.3.dev0'
-        monkeypatch.setattr(main.velofy, '__version__', version)
+        version = "1.2.3.dev0"
+        monkeypatch.setattr(main.velofy, "__version__", version)
 
         with pytest.raises(click.exceptions.Exit):
-            main.show_version(ctx, _param='discarded', value=True)
+            main.show_version(ctx, _param="discarded", value=True)
 
         captured = capsys.readouterr()
 
-        assert captured.out.strip().endswith(f', version {version} (development)')
+        assert captured.out.strip().endswith(f", version {version} (development)")
 
 
 class TestCLIWithoutCommand:
@@ -72,28 +72,28 @@ class TestCLIWithoutCommand:
 
     # The following test cases validate the --version / -V option.
 
-    version_options = ('--version', '-V')
+    version_options = ("--version", "-V")
 
     @pytest.mark.no_cover
-    @pytest.mark.parametrize('option', version_options)
+    @pytest.mark.parametrize("option", version_options)
     def test_final_version(self, cli, monkeypatch, option):
         """For final versions, NO "development" warning is emitted."""
-        version = '1.2.3'
-        monkeypatch.setattr(main.velofy, '__version__', version)
+        version = "1.2.3"
+        monkeypatch.setattr(main.velofy, "__version__", version)
 
         result = cli.invoke(main.entry_point, option)
 
         assert result.exit_code == 0
-        assert result.output.strip().endswith(f', version {version}')
+        assert result.output.strip().endswith(f", version {version}")
 
     @pytest.mark.no_cover
-    @pytest.mark.parametrize('option', version_options)
+    @pytest.mark.parametrize("option", version_options)
     def test_develop_version(self, cli, monkeypatch, option):
         """For develop versions, a warning thereof is emitted."""
-        version = '1.2.3.dev0'
-        monkeypatch.setattr(main.velofy, '__version__', version)
+        version = "1.2.3.dev0"
+        monkeypatch.setattr(main.velofy, "__version__", version)
 
         result = cli.invoke(main.entry_point, option)
 
         assert result.exit_code == 0
-        assert result.output.strip().endswith(f', version {version} (development)')
+        assert result.output.strip().endswith(f", version {version} (development)")

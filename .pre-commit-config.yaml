@@ -19,12 +19,16 @@ repos:
   - repo: local
     hooks:
 
+        # `require_serial: true`
+        # => Parallel runs would recreate the same `nox` environment
+
       - id: local-format
         name: Format the source files
         entry: uv run nox -s format --
         language: unsupported
         stages: [pre-commit]
         types: [python]
+        require_serial: true
 
       - id: local-lint
         name: Lint the source files
@@ -32,6 +36,7 @@ repos:
         language: unsupported
         stages: [pre-commit]
         types: [python]
+        require_serial: true
 
       - id: local-test
         name: Run the test suite
@@ -40,6 +45,7 @@ repos:
         stages: [pre-merge-commit]
         pass_filenames: false  # => No `--` at the end of the "entry"
         always_run: true
+        require_serial: true
 
       - id: local-doctest
         name: Run the doctests
@@ -48,6 +54,7 @@ repos:
         stages: [pre-merge-commit]
         pass_filenames: false  # => No `--` at the end of the "entry"
         always_run: true
+        require_serial: true
 
   # Keep requirements.txt in sync with uv.lock
   - repo: https://github.com/astral-sh/uv-pre-commit

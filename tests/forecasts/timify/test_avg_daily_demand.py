@@ -43,7 +43,7 @@ class TestAverageDailyDemand:
         predict_at,
     ):
         """Without demand, the average daily demand must be `0.0`."""
-        order_history._data.loc[:, 'n_orders'] = 0
+        order_history._data.loc[:, "n_orders"] = 0
 
         result = order_history.avg_daily_demand(
             pixel_id=good_pixel_id,
@@ -65,7 +65,7 @@ class TestChooseTacticalModel:
     ):
         """With high demand, the average daily demand is `.>= 25.0`."""
         # With 12 time steps per day, the ADD becomes `36.0`.
-        order_history._data.loc[:, 'n_orders'] = 3
+        order_history._data.loc[:, "n_orders"] = 3
 
         result = order_history.choose_tactical_model(
             pixel_id=good_pixel_id,
@@ -83,7 +83,7 @@ class TestChooseTacticalModel:
     ):
         """With medium demand, the average daily demand is `>= 10.0` and `< 25.0`."""
         # With 12 time steps per day, the ADD becomes `24.0`.
-        order_history._data.loc[:, 'n_orders'] = 2
+        order_history._data.loc[:, "n_orders"] = 2
 
         result = order_history.choose_tactical_model(
             pixel_id=good_pixel_id,
@@ -102,23 +102,23 @@ class TestChooseTacticalModel:
         """With low demand, the average daily demand is `>= 2.5` and `< 10.0`."""
         # With 12 time steps per day, the ADD becomes `12.0` ...
         data = order_history._data
-        data.loc[:, 'n_orders'] = 1
+        data.loc[:, "n_orders"] = 1
 
         # ... and we set three additional time steps per day to `0`.
-        data.loc[  # noqa:ECE001
+        data.loc[
             # all `Pixel`s, all `Order`s in time steps starting at 11 am
             (slice(None), slice(data.index.levels[1][0], None, 12)),
-            'n_orders',
+            "n_orders",
         ] = 0
-        data.loc[  # noqa:ECE001
+        data.loc[
             # all `Pixel`s, all `Order`s in time steps starting at 12 am
             (slice(None), slice(data.index.levels[1][1], None, 12)),
-            'n_orders',
+            "n_orders",
         ] = 0
-        data.loc[  # noqa:ECE001
+        data.loc[
             # all `Pixel`s, all `Order`s in time steps starting at 1 pm
             (slice(None), slice(data.index.levels[1][2], None, 12)),
-            'n_orders',
+            "n_orders",
         ] = 0
 
         result = order_history.choose_tactical_model(
@@ -136,7 +136,7 @@ class TestChooseTacticalModel:
         predict_at,
     ):
         """Without demand, the average daily demand is `< 2.5`."""
-        order_history._data.loc[:, 'n_orders'] = 0
+        order_history._data.loc[:, "n_orders"] = 0
 
         result = order_history.choose_tactical_model(
             pixel_id=good_pixel_id,
@@ -150,13 +150,13 @@ class TestChooseTacticalModel:
         self,
         order_history,
         good_pixel_id,
-        predict_at,  # noqa:RST215
+        predict_at,
     ):
         """For `train_horizon` values not included in the rule-based system ...
 
         ... the method raises a `RuntimeError`.
         """
-        with pytest.raises(RuntimeError, match='no rule'):
+        with pytest.raises(RuntimeError, match="no rule"):
             order_history.choose_tactical_model(
                 pixel_id=good_pixel_id,
                 predict_day=predict_at.date(),

@@ -12,7 +12,7 @@ from rpy2 import robjects
 from rpy2.robjects import pandas2ri
 
 
-def stl(  # noqa:C901,WPS210,WPS211
+def stl(  # noqa:C901
     time_series: pd.Series,
     *,
     frequency: int,
@@ -26,7 +26,7 @@ def stl(  # noqa:C901,WPS210,WPS211
     jt: Optional[int] = None,
     jl: Optional[int] = None,
     ni: int = 2,
-    no: int = 0,  # noqa:WPS110
+    no: int = 0,
 ) -> pd.DataFrame:
     """Decompose a time series into seasonal, trend, and residual components.
 
@@ -95,17 +95,17 @@ def stl(  # noqa:C901,WPS210,WPS211
     # Validate all arguments and set default values.
 
     if time_series.isnull().any():
-        raise ValueError('`time_series` must not contain `NaN` values')
+        raise ValueError("`time_series` must not contain `NaN` values")
 
     if ns % 2 == 0 or ns < 7:
-        raise ValueError('`ns` must be odd and `>= 7`')
+        raise ValueError("`ns` must be odd and `>= 7`")
 
     default_nt = math.ceil((1.5 * frequency) / (1 - (1.5 / ns)))
     if nt is not None:
         if nt % 2 == 0 or nt < default_nt:
             raise ValueError(
-                '`nt` must be odd and `>= (1.5 * frequency) / [1 - (1.5 / ns)]`, '
-                + 'which is {0}'.format(default_nt),
+                "`nt` must be odd and `>= (1.5 * frequency) / [1 - (1.5 / ns)]`, "
+                + f"which is {default_nt}",
             )
     else:
         nt = default_nt
@@ -114,42 +114,42 @@ def stl(  # noqa:C901,WPS210,WPS211
 
     if nl is not None:
         if nl % 2 == 0 or nl < frequency:
-            raise ValueError('`nl` must be odd and `>= frequency`')
+            raise ValueError("`nl` must be odd and `>= frequency`")
     elif frequency % 2 == 0:
         nl = frequency + 1
     else:  # pragma: no cover => hard to construct edge case
         nl = frequency
 
     if ds not in {0, 1}:
-        raise ValueError('`ds` must be either `0` or `1`')
+        raise ValueError("`ds` must be either `0` or `1`")
     if dt not in {0, 1}:
-        raise ValueError('`dt` must be either `0` or `1`')
+        raise ValueError("`dt` must be either `0` or `1`")
     if dl not in {0, 1}:
-        raise ValueError('`dl` must be either `0` or `1`')
+        raise ValueError("`dl` must be either `0` or `1`")
 
     if js is not None:
         if js <= 0:
-            raise ValueError('`js` must be positive')
+            raise ValueError("`js` must be positive")
     else:
         js = math.ceil(ns / 10)
 
     if jt is not None:
         if jt <= 0:
-            raise ValueError('`jt` must be positive')
+            raise ValueError("`jt` must be positive")
     else:
         jt = math.ceil(nt / 10)
 
     if jl is not None:
         if jl <= 0:
-            raise ValueError('`jl` must be positive')
+            raise ValueError("`jl` must be positive")
     else:
         jl = math.ceil(nl / 10)
 
     if ni <= 0:
-        raise ValueError('`ni` must be positive')
+        raise ValueError("`ni` must be positive")
 
     if no < 0:
-        raise ValueError('`no` must be non-negative')
+        raise ValueError("`no` must be non-negative")
     elif no > 0:
         robust = True
     else:
@@ -157,14 +157,14 @@ def stl(  # noqa:C901,WPS210,WPS211
 
     # Initialize R only if it is actually used.
     # For example, the nox session "ci-tests-fast" does not use it.
-    from velofy import init_r  # noqa:F401,WPS433
+    from velofy import init_r  # noqa:F401
 
     # Re-seed R every time it is used to ensure reproducibility.
-    robjects.r('set.seed(42)')
+    robjects.r("set.seed(42)")
 
     # Call the STL function in R.
-    ts = robjects.r['ts'](pandas2ri.py2rpy(time_series), frequency=frequency)
-    result = robjects.r['stl'](
+    ts = robjects.r["ts"](pandas2ri.py2rpy(time_series), frequency=frequency)
+    result = robjects.r["stl"](
         ts,
         ns,
         ds,
@@ -177,16 +177,16 @@ def stl(  # noqa:C901,WPS210,WPS211
         jl,
         robust,
         ni,
-        no,  # noqa:WPS221
+        no,
     )
 
     # Unpack the result to a `pd.DataFrame`.
     result = pandas2ri.rpy2py(result[0])
     result = pd.DataFrame(
         data={
-            'seasonal': result[:, 0],
-            'trend': result[:, 1],
-            'residual': result[:, 2],
+            "seasonal": result[:, 0],
+            "trend": result[:, 1],
+            "residual": result[:, 2],
         },
         index=time_series.index,
     )
