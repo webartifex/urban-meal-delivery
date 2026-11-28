@@ -1,10 +1,9 @@
 name: CI
 
 
-# Run on every push and on pull requests
+# Run on every push, which also covers pull requests from this repository
 on:
   push:
-  pull_request:
 
 
 # Use `bash` instead of the container's default `sh`
