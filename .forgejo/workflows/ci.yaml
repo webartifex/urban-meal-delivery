@@ -43,6 +43,12 @@ jobs:
     steps:
 
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # Fetch all branches with their history for the next step
+
+      - name: Ensure feature branches contain no merge commits
+        if: forgejo.ref_name != 'develop' && forgejo.ref_name != 'main'
+        run: "! git rev-list --merges origin/develop..HEAD | grep ."
 
       - name: Install R via system packages
         run: |
