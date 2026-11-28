@@ -1,0 +1,5 @@
+# Mechanical commits that `git blame` skips
+# => Enable locally with `git config blame.ignoreRevsFile .git-blame-ignore-revs`
+
+# Use double quotes
+ea8f1a13e34bfce01ea66951311e5f5fb5ab967f

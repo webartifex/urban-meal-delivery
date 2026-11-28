@@ -15,7 +15,7 @@ Further sessions run on demand with `uv run nox -s <session>`:
 - "deps-lock": Lock dependencies after manual changes in pyproject.toml
 - "deps-upgrade": Upgrade dependencies within their allowed ranges
 - "deps-upgrade-check": Show newer versions and the age of all pinned releases
-- "init-project": Install the `pre-commit` hooks
+- "init-project": Install the `pre-commit` hooks and configure `git blame`
 - "clean-cwd": Run approx. `git clean -X` with minor exceptions
 
 Most sessions accept extra arguments after the "--",
@@ -450,9 +450,18 @@ def check_dependency_upgrades(session: Session) -> None:
 
 @nox.session(name="init-project", python=MAIN_PYTHON, venv_backend="none")
 def initialize_project(session: Session) -> None:
-    """Install the `pre-commit` hooks."""
+    """Install the `pre-commit` hooks and configure `git blame`."""
     # .pre-commit-config.yaml sets the hook types via "default_install_hook_types"
     session.run("uv", "run", "pre-commit", "install")
+
+    # Skip the commits listed in .git-blame-ignore-revs in `git blame`
+    session.run(
+        "git",
+        "config",
+        "blame.ignoreRevsFile",
+        ".git-blame-ignore-revs",
+        external=True,
+    )
 
 
 @nox.session(name="clean-cwd", python=MAIN_PYTHON, venv_backend="none")
