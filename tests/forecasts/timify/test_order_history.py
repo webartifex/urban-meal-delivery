@@ -70,7 +70,7 @@ class TestMethods:
 
         assert result == test_config.START
 
-    def test_first_order_at_non_existing_pixel(self, order_history, good_pixel_id):
+    def test_first_order_at_non_existing_pixel(self, order_history):
         """Test `OrderHistory.first_order_at()` with bad input."""
         with pytest.raises(
             LookupError,
@@ -85,7 +85,7 @@ class TestMethods:
         one_time_step = dt.timedelta(minutes=test_config.LONG_TIME_STEP)
         assert result == test_config.END - one_time_step
 
-    def test_last_order_at_non_existing_pixel(self, order_history, good_pixel_id):
+    def test_last_order_at_non_existing_pixel(self, order_history):
         """Test `OrderHistory.last_order_at()` with bad input."""
         with pytest.raises(
             LookupError,

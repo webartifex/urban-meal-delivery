@@ -13,8 +13,8 @@ from rpy2.robjects import packages as rpackages
 
 # Suppress R's messages to stdout and stderr.
 # Source: https://stackoverflow.com/a/63220287
-rcallbacks.consolewrite_print = lambda msg: None  # pragma: no cover
-rcallbacks.consolewrite_warnerror = lambda msg: None  # pragma: no cover
+rcallbacks.consolewrite_print = lambda _msg: None  # pragma: no cover
+rcallbacks.consolewrite_warnerror = lambda _msg: None  # pragma: no cover
 
 
 # For clarity and convenience, re-raise the error that results from missing R

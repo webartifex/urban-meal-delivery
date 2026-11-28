@@ -136,9 +136,9 @@ class TestGenericForecastingModelProperties:
 
     @pytest.mark.db
     @pytest.mark.r
+    @pytest.mark.usefixtures("db_session")
     def test_make_forecast(
         self,
-        db_session,
         model_cls,
         order_history,
         pixel,

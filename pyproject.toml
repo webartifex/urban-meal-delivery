@@ -104,6 +104,7 @@ dev = [
     "flake8-quotes (>=3.4.0,<4.0.0)",
     "flake8-sfs (>=1.0.1,<2.0.0)",
     "flake8-todos (>=0.3.1,<0.4.0)",
+    "flake8-unused-arguments (>=0.0.14,<0.1.0)",
     "mypy (>=2.4.1,<3.0.0)",
 ]
 
@@ -228,6 +229,8 @@ select = [
     "SFS",
     # flake8-todos => unify TODOs
     "T00",
+    # flake8-unused-arguments => declared function arguments must be used
+    "U100",
 ]
 
 # By default, flake8 ignores some errors.
@@ -289,6 +292,8 @@ avoid-escape = true
 docstring-quotes = "double"
 inline-quotes = "double"
 multiline-quotes = "double"
+# flake8-unused-arguments
+unused-arguments-ignore-abstract-functions = true
 
 # ==============================
 # flake8-pytest-style's settings

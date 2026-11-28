@@ -195,6 +195,7 @@ def lint_code(session: Session) -> None:
         "flake8-quotes",
         "flake8-sfs",
         "flake8-todos",
+        "flake8-unused-arguments",
         "isort",
         # TODO: See comment on `mypy` below
         # 'mypy',

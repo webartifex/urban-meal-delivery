@@ -1056,6 +1056,18 @@ wheels = [
 ]
 
 [[package]]
+name = "flake8-unused-arguments"
+version = "0.0.14"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1b/6a/12e072814ac64c4ed18c039738d97e7326df1352f696f16872aa0cea482c/flake8_unused_arguments-0.0.14.tar.gz", hash = "sha256:5b6cac6ecb325c0d5460edc6c52e2861c146eca03ddedc36dcb32beafeacbbec", size = 5514, upload-time = "2025-10-27T22:22:55.946Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b3/0b/1d658aca231a3e4b3c0b9e7fed71ced551cbfd955a41cfd32b221b396edc/flake8_unused_arguments-0.0.14-py3-none-any.whl", hash = "sha256:6c0b7ce7236a156f4bd90adec67ad0e5d0139efcd15c2a1fc0fb3a6ffd7e435e", size = 6190, upload-time = "2025-10-27T22:22:54.888Z" },
+]
+
+[[package]]
 name = "folium"
 version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3707,6 +3719,7 @@ dev = [
     { name = "flake8-quotes" },
     { name = "flake8-sfs" },
     { name = "flake8-todos" },
+    { name = "flake8-unused-arguments" },
     { name = "isort" },
     { name = "mypy" },
     { name = "nox" },
@@ -3768,6 +3781,7 @@ dev = [
     { name = "flake8-quotes", specifier = ">=3.4.0,<4.0.0" },
     { name = "flake8-sfs", specifier = ">=1.0.1,<2.0.0" },
     { name = "flake8-todos", specifier = ">=0.3.1,<0.4.0" },
+    { name = "flake8-unused-arguments", specifier = ">=0.0.14,<0.1.0" },
     { name = "isort", specifier = ">=9.0.2,<10.0.0" },
     { name = "mypy", specifier = ">=2.4.1,<3.0.0" },
     { name = "nox", specifier = ">=2026.10.20" },

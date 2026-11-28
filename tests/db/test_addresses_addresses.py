@@ -247,7 +247,7 @@ class TestFromAddresses:
         assert db_session.query(db.Path).count() == 1
 
     @pytest.mark.usefixtures("_prepare_db")
-    def test_structure_of_return_value(self, db_session, address, another_address):
+    def test_structure_of_return_value(self, address, another_address):
         """Test instantiation of a new `Path` instance."""
         results = db.Path.from_addresses(address, another_address)
 
@@ -256,7 +256,6 @@ class TestFromAddresses:
     @pytest.mark.usefixtures("_prepare_db")
     def test_instances_must_have_air_distance(
         self,
-        db_session,
         address,
         another_address,
     ):
@@ -270,7 +269,6 @@ class TestFromAddresses:
     @pytest.mark.usefixtures("_prepare_db")
     def test_do_not_sync_instances_with_google_maps(
         self,
-        db_session,
         address,
         another_address,
     ):
@@ -285,7 +283,6 @@ class TestFromAddresses:
     @pytest.mark.usefixtures("_prepare_db")
     def test_sync_instances_with_google_maps(
         self,
-        db_session,
         address,
         another_address,
         monkeypatch,
@@ -306,21 +303,21 @@ class TestFromAddresses:
         assert result.bicycle_duration is not None
 
     @pytest.mark.usefixtures("_prepare_db")
-    def test_one_path_for_two_addresses(self, db_session, address, another_address):
+    def test_one_path_for_two_addresses(self, address, another_address):
         """Test instantiation of a new `Path` instance."""
         result = len(db.Path.from_addresses(address, another_address))
 
         assert result == 1
 
     @pytest.mark.usefixtures("_prepare_db")
-    def test_two_paths_for_three_addresses(self, db_session, make_address):
+    def test_two_paths_for_three_addresses(self, make_address):
         """Test instantiation of a new `Path` instance."""
         result = len(db.Path.from_addresses(*[make_address() for _ in range(3)]))
 
         assert result == 3
 
     @pytest.mark.usefixtures("_prepare_db")
-    def test_six_paths_for_four_addresses(self, db_session, make_address):
+    def test_six_paths_for_four_addresses(self, make_address):
         """Test instantiation of a new `Path` instance."""
         result = len(db.Path.from_addresses(*[make_address() for _ in range(4)]))
 
@@ -359,7 +356,7 @@ class TestFromAddresses:
         assert db_session.query(db.Path).count() == 1
 
     @pytest.mark.usefixtures("_prepare_db")
-    def test_structure_of_return_value_from_order(self, db_session, order):
+    def test_structure_of_return_value_from_order(self, order):
         """Test instantiation of a new `Path` instance."""
         result = db.Path.from_order(order)
 
@@ -368,7 +365,6 @@ class TestFromAddresses:
     @pytest.mark.usefixtures("_prepare_db")
     def test_sync_instance_from_order_with_google_maps(
         self,
-        db_session,
         order,
         monkeypatch,
     ):
@@ -652,8 +648,8 @@ class TestSyncWithGoogleMaps:
 
         monkeypatch.setattr(googlemaps.Client, "directions", directions)
 
-    @pytest.mark.usefixtures("_fake_google_api")
-    def test_sync_instances_with_google_maps(self, db_session, path):
+    @pytest.mark.usefixtures("_fake_google_api", "db_session")
+    def test_sync_instances_with_google_maps(self, path):
         """Call the method for a `Path` object without Google data."""
         path.bicycle_distance = None
         path.bicycle_duration = None
@@ -665,8 +661,8 @@ class TestSyncWithGoogleMaps:
         assert path.bicycle_duration == 596
         assert path._directions is not None
 
-    @pytest.mark.usefixtures("_fake_google_api")
-    def test_repeated_sync_instances_with_google_maps(self, db_session, path):
+    @pytest.mark.usefixtures("_fake_google_api", "db_session")
+    def test_repeated_sync_instances_with_google_maps(self, path):
         """Call the method for a `Path` object with Google data.
 
         That call should immediately return without changing any data.
