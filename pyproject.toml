@@ -203,8 +203,6 @@ select = [
     "T100",
     # flake8-docstrings => PEP257 compliance
     "D1", "D2", "D3", "D4",
-    # flake8-isort => isort would make changes
-    "I0",
     # flake8-rst-docstrings => valid rst in docstrings
     "RST2", "RST3", "RST4",
     # flake8-string-format => unify usage of str.format()
