@@ -22,21 +22,21 @@ repos:
       - id: local-format
         name: Format the source files
         entry: uv run nox -s format --
-        language: system
+        language: unsupported
         stages: [pre-commit]
         types: [python]
 
       - id: local-lint
         name: Lint the source files
         entry: uv run nox -s lint --
-        language: system
+        language: unsupported
         stages: [pre-commit]
         types: [python]
 
       - id: local-test
         name: Run the test suite
         entry: uv run nox -s test
-        language: system
+        language: unsupported
         stages: [pre-merge-commit]
         pass_filenames: false  # => No `--` at the end of the "entry"
         always_run: true
@@ -44,7 +44,7 @@ repos:
       - id: local-doctest
         name: Run the doctests
         entry: uv run nox -s doctest
-        language: system
+        language: unsupported
         stages: [pre-merge-commit]
         pass_filenames: false  # => No `--` at the end of the "entry"
         always_run: true
