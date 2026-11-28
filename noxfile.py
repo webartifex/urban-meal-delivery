@@ -199,6 +199,7 @@ def lint_code(session: Session) -> None:
         "isort",
         # TODO: See comment on `mypy` below
         # 'mypy',
+        "pep8-naming",
     )
 
     # Interpret extra arguments as `locations` of source files
