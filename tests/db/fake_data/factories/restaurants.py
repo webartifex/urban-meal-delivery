@@ -18,7 +18,7 @@ class RestaurantFactory(alchemy.SQLAlchemyModelFactory):
         model = db.Restaurant
         sqlalchemy_get_or_create = ('id',)
 
-    id = factory.Sequence(lambda num: num)  # noqa:WPS125
+    id = factory.Sequence(lambda num: num)
     created_at = factory.LazyFunction(utils.early_in_the_morning)
     name = factory.LazyFunction(
         lambda: f"{_restaurant_names.first_name()}'s Restaurant",

@@ -28,7 +28,7 @@ class Pixel(meta.Base):
     __tablename__ = 'pixels'
 
     # Columns
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)  # noqa:WPS125
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     grid_id = sa.Column(sa.SmallInteger, nullable=False, index=True)
     n_x = sa.Column(sa.SmallInteger, nullable=False, index=True)
     n_y = sa.Column(sa.SmallInteger, nullable=False, index=True)
@@ -141,11 +141,11 @@ class Pixel(meta.Base):
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Shortcut to the `.city.map` object."""
         return self.grid.city.map
 
-    def draw(  # noqa:C901,WPS210
+    def draw(  # noqa:C901
         self,
         restaurants: bool = True,
         order_counts: bool = False,  # pragma: no cover
@@ -223,7 +223,7 @@ class Pixel(meta.Base):
                         f'{restaurants[0].name} (#{restaurants[0].id})'  # type:ignore
                     )
                 else:
-                    tooltip = 'Restaurants ' + ', '.join(  # noqa:WPS336
+                    tooltip = 'Restaurants ' + ', '.join(
                         f'#{restaurant.id}' for restaurant in restaurants  # type:ignore
                     )
 
@@ -247,7 +247,7 @@ class Pixel(meta.Base):
                     else:
                         radius = 1
 
-                    tooltip += f' | n_orders={n_orders}'  # noqa:WPS336
+                    tooltip += f' | n_orders={n_orders}'
 
                     address.draw(
                         radius=radius,

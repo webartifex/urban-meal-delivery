@@ -22,7 +22,7 @@ class Grid(meta.Base):
     __tablename__ = 'grids'
 
     # Columns
-    id = sa.Column(  # noqa:WPS125
+    id = sa.Column(
         sa.SmallInteger,
         primary_key=True,
         autoincrement=True,
@@ -63,7 +63,7 @@ class Grid(meta.Base):
         return round((self.side_length**2) / 1_000_000, 1)
 
     @classmethod
-    def gridify(cls, city: db.City, side_length: int) -> db.Grid:  # noqa:WPS210
+    def gridify(cls, city: db.City, side_length: int) -> db.Grid:
         """Create a fully populated `Grid` for a `city`.
 
         The `Grid` contains only `Pixel`s that have at least one
@@ -124,7 +124,7 @@ class Grid(meta.Base):
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Shortcut to the `.city.map` object."""
         return self.city.map
 

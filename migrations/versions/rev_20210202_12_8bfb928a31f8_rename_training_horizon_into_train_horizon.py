@@ -31,7 +31,7 @@ def upgrade():
             TO
             train_horizon;
         """,
-    )  # noqa:WPS355
+    )
 
 
 def downgrade():
@@ -45,4 +45,4 @@ def downgrade():
             TO
             training_horizon;
         """,
-    )  # noqa:WPS355
+    )

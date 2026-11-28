@@ -13,4 +13,4 @@ class CustomerFactory(alchemy.SQLAlchemyModelFactory):
         model = db.Customer
         sqlalchemy_get_or_create = ('id',)
 
-    id = factory.Sequence(lambda num: num)  # noqa:WPS125
+    id = factory.Sequence(lambda num: num)

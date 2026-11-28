@@ -13,7 +13,7 @@ class Courier(meta.Base):
     __tablename__ = 'couriers'
 
     # Columns
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)
     created_at = sa.Column(sa.DateTime, nullable=False)
     vehicle = sa.Column(sa.Unicode(length=10), nullable=False)
     historic_speed = sa.Column('speed', postgresql.DOUBLE_PRECISION, nullable=False)

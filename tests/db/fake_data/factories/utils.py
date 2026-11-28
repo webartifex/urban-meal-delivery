@@ -6,7 +6,7 @@ import random
 from tests import config as test_config
 
 
-def random_timespan(  # noqa:WPS211
+def random_timespan(
     *,
     min_hours=0,
     min_minutes=0,

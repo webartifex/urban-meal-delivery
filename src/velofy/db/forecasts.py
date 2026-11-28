@@ -23,7 +23,7 @@ class Forecast(meta.Base):
     __tablename__ = 'forecasts'
 
     # Columns
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)  # noqa:WPS125
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     pixel_id = sa.Column(sa.Integer, nullable=False, index=True)
     start_at = sa.Column(sa.DateTime, nullable=False)
     time_step = sa.Column(sa.SmallInteger, nullable=False)
@@ -151,7 +151,7 @@ class Forecast(meta.Base):
         )
 
     @classmethod
-    def from_dataframe(  # noqa:WPS210,WPS211
+    def from_dataframe(
         cls,
         pixel: db.Pixel,
         time_step: int,

@@ -16,7 +16,7 @@ def db_revision(
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @functools.wraps(func)
-        def ensure(*args: Any, **kwargs: Any) -> Any:  # noqa:WPS430
+        def ensure(*args: Any, **kwargs: Any) -> Any:
             """Do not execute the `func` if the revision does not match."""
             if not os.getenv('TESTING'):
                 result = subprocess.run(  # noqa:S603,S607

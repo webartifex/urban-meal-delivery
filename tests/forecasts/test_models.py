@@ -136,7 +136,7 @@ class TestGenericForecastingModelProperties:
 
     @pytest.mark.db
     @pytest.mark.r
-    def test_make_forecast(  # noqa:WPS211
+    def test_make_forecast(
         self,
         db_session,
         model_cls,
@@ -160,7 +160,7 @@ class TestGenericForecastingModelProperties:
 
     @pytest.mark.db
     @pytest.mark.r
-    def test_make_forecast_is_cached(  # noqa:WPS211
+    def test_make_forecast_is_cached(
         self,
         db_session,
         model_cls,

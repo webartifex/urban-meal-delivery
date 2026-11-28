@@ -19,7 +19,7 @@ rcallbacks.consolewrite_warnerror = lambda msg: None  # pragma: no cover
 
 # For clarity and convenience, re-raise the error that results from missing R
 # dependencies with clearer instructions as to how to deal with it.
-try:  # noqa:WPS229
+try:
     rpackages.importr('forecast')
     rpackages.importr('zoo')
 

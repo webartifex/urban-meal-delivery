@@ -17,7 +17,7 @@ class Customer(meta.Base):
     __tablename__ = 'customers'
 
     # Columns
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
@@ -35,15 +35,15 @@ class Customer(meta.Base):
         Returns:
             self: enabling method chaining
         """  # noqa:D402,DAR203
-        self.orders[0].pickup_address.city.clear_map()  # noqa:WPS219
+        self.orders[0].pickup_address.city.clear_map()
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Shortcut to the `...city.map` object."""
-        return self.orders[0].pickup_address.city.map  # noqa:WPS219
+        return self.orders[0].pickup_address.city.map
 
-    def draw(  # noqa:C901,WPS210
+    def draw(  # noqa:C901
         self,
         restaurants: bool = True,
         order_counts: bool = False,  # pragma: no cover
@@ -72,7 +72,7 @@ class Customer(meta.Base):
                 db.Address.id.in_(
                     row.primary_id
                     for row in (
-                        db.session.query(db.Address.primary_id)  # noqa:WPS221
+                        db.session.query(db.Address.primary_id)
                         .join(db.Order, db.Address.id == db.Order.delivery_address_id)
                         .filter(db.Order.customer_id == self.id)
                         .distinct()
@@ -122,7 +122,7 @@ class Customer(meta.Base):
                 db.session.query(db.Address)
                 .filter(
                     db.Address.id.in_(
-                        db.session.query(db.Address.primary_id)  # noqa:WPS221
+                        db.session.query(db.Address.primary_id)
                         .join(db.Order, db.Address.id == db.Order.pickup_address_id)
                         .filter(db.Order.customer_id == self.id)
                         .distinct()
@@ -132,14 +132,14 @@ class Customer(meta.Base):
                 .all()
             )
 
-            for address in pickup_addresses:  # noqa:WPS440
+            for address in pickup_addresses:
                 # Show the restaurant's name if there is only one.
                 # Otherwise, list all the restaurants' ID's.
                 # We cannot show the `Order.restaurant.name` due to the aggregation.
                 restaurants = (
                     db.session.query(db.Restaurant)
                     .join(db.Address, db.Restaurant.address_id == db.Address.id)
-                    .filter(db.Address.primary_id == address.id)  # noqa:WPS441
+                    .filter(db.Address.primary_id == address.id)
                     .all()
                 )
                 if len(restaurants) == 1:  # type:ignore
@@ -147,7 +147,7 @@ class Customer(meta.Base):
                         f'{restaurants[0].name} (#{restaurants[0].id})'  # type:ignore
                     )
                 else:
-                    tooltip = 'Restaurants ' + ', '.join(  # noqa:WPS336
+                    tooltip = 'Restaurants ' + ', '.join(
                         f'#{restaurant.id}' for restaurant in restaurants  # type:ignore
                     )
 
@@ -156,7 +156,7 @@ class Customer(meta.Base):
                         db.session.query(db.Order)
                         .join(db.Address, db.Order.pickup_address_id == db.Address.id)
                         .filter(db.Order.customer_id == self.id)
-                        .filter(db.Address.primary_id == address.id)  # noqa:WPS441
+                        .filter(db.Address.primary_id == address.id)
                         .count()
                     )
                     if n_orders >= 25:
@@ -170,9 +170,9 @@ class Customer(meta.Base):
                     else:
                         radius = 1
 
-                    tooltip += f' | n_orders={n_orders}'  # noqa:WPS336
+                    tooltip += f' | n_orders={n_orders}'
 
-                    address.draw(  # noqa:WPS441
+                    address.draw(
                         radius=radius,
                         color=config.RESTAURANT_COLOR,
                         fill_color=config.RESTAURANT_COLOR,
@@ -181,7 +181,7 @@ class Customer(meta.Base):
                     )
 
                 else:
-                    address.draw(  # noqa:WPS441
+                    address.draw(
                         radius=1,
                         color=config.RESTAURANT_COLOR,
                         tooltip=tooltip,

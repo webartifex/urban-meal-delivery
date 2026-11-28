@@ -221,7 +221,7 @@ class TestValidArguments:
     @pytest.mark.parametrize('jl', [None, 1])
     @pytest.mark.parametrize('ni', [2, 3])
     @pytest.mark.parametrize('no', [0, 1])
-    def test_decompose_time_series_with_no_demand(  # noqa:WPS211,WPS216
+    def test_decompose_time_series_with_no_demand(
         self,
         vertical_no_demand,
         nt,
@@ -233,7 +233,7 @@ class TestValidArguments:
         jt,
         jl,
         ni,
-        no,  # noqa:WPS110
+        no,
     ):
         """Decomposing a time series with no demand ...
 
@@ -252,7 +252,7 @@ class TestValidArguments:
             jt=jt,
             jl=jl,
             ni=ni,
-            no=no,  # noqa:WPS110
+            no=no,
         )
 
         result = decomposed.sum().sum()

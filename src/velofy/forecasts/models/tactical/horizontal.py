@@ -129,7 +129,7 @@ class HorizontalSMAModel(base.ForecastingModelABC):
         )
 
         # Sanity checks.
-        if (  # noqa:WPS337
+        if (
             predictions[['actual', 'prediction']].isnull().any().any()
         ):  # pragma: no cover
 

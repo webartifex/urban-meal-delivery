@@ -8,7 +8,7 @@ from velofy.console import gridify
 
 
 @pytest.mark.db
-def test_two_pixels_with_two_addresses(  # noqa:WPS211
+def test_two_pixels_with_two_addresses(
     cli,
     db_session,
     monkeypatch,

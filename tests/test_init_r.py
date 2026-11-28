@@ -14,6 +14,6 @@ def test_r_packages_installed():
     in the "research/r_dependencies.ipynb" notebook or
     in the GitHub Actions CI.
     """
-    from velofy import init_r  # noqa:WPS433
+    from velofy import init_r
 
     assert init_r is not None

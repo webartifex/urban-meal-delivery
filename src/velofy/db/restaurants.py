@@ -22,7 +22,7 @@ class Restaurant(meta.Base):
     __tablename__ = 'restaurants'
 
     # Columns
-    id = sa.Column(  # noqa:WPS125
+    id = sa.Column(
         sa.SmallInteger,
         primary_key=True,
         autoincrement=False,
@@ -70,7 +70,7 @@ class Restaurant(meta.Base):
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Shortcut to the `.address.city.map` object."""
         return self.address.city.map
 
@@ -100,7 +100,7 @@ class Restaurant(meta.Base):
                     db.Address.id.in_(
                         row.primary_id
                         for row in (
-                            db.session.query(db.Address.primary_id)  # noqa:WPS221
+                            db.session.query(db.Address.primary_id)
                             .join(
                                 db.Order,
                                 db.Address.id == db.Order.delivery_address_id,

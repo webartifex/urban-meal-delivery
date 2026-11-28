@@ -128,9 +128,7 @@ class Path(meta.Base):
         # We consider all 2-tuples of `Address`es. The symmetric graph is ...
         for first, second in itertools.combinations(addresses, 2):
             # ... implicitly enforced by a precedence constraint for the `.id`s.
-            first, second = (  # noqa:WPS211
-                (first, second) if first.id < second.id else (second, first)
-            )
+            first, second = (first, second) if first.id < second.id else (second, first)
 
             # If there is no `Path` object in the database ...
             path = (
@@ -158,7 +156,7 @@ class Path(meta.Base):
             paths.append(path)
 
         if google_maps:
-            for path in paths:  # noqa:WPS440
+            for path in paths:
                 path.sync_with_google_maps()
 
         return paths
@@ -212,8 +210,8 @@ class Path(meta.Base):
         # Source: https://developers.google.com/maps/documentation/directions/get-directions#Legs  # noqa:E501
         route = response[0]['legs'][0]
 
-        self.bicycle_distance = route['distance']['value']  # noqa:WPS601
-        self.bicycle_duration = route['duration']['value']  # noqa:WPS601
+        self.bicycle_distance = route['distance']['value']
+        self.bicycle_duration = route['duration']['value']
 
         # Each route consists of many "steps" that are instructions as to how to
         # get from A to B. As a step's "start_location" may equal the previous step's
@@ -221,23 +219,23 @@ class Path(meta.Base):
         # pairs that make up the path from `.first_address` to `.second_address`.
         steps: ordered_set.OrderedSet[Tuple[float, float]] = ordered_set.OrderedSet()
         for step in route['steps']:
-            steps.add(  # noqa:WPS221
+            steps.add(
                 (step['start_location']['lat'], step['start_location']['lng']),
             )
-            steps.add(  # noqa:WPS221
+            steps.add(
                 (step['end_location']['lat'], step['end_location']['lng']),
             )
 
         steps.discard(self.first_address.location.lat_lng)
         steps.discard(self.second_address.location.lat_lng)
 
-        self._directions = json.dumps(list(steps))  # noqa:WPS601
+        self._directions = json.dumps(list(steps))
 
         db.session.add(self)
         db.session.commit()
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Convenience property to obtain the underlying `City.map`."""
         return self.first_address.city.map
 
@@ -256,7 +254,7 @@ class Path(meta.Base):
 
         return points
 
-    def draw(  # noqa:WPS211
+    def draw(
         self,
         *,
         reverse: bool = False,

@@ -21,7 +21,7 @@ def another_address(make_address):
 @pytest.fixture
 def path(address, another_address, make_address):
     """A `Path` from `address` to `another_address`."""
-    air_distance = distance.great_circle(  # noqa:WPS317
+    air_distance = distance.great_circle(
         address.location.lat_lng,
         another_address.location.lat_lng,
     ).meters
@@ -31,7 +31,7 @@ def path(address, another_address, make_address):
     directions = json.dumps(
         [
             (float(add.latitude), float(add.longitude))
-            for add in (make_address() for _ in range(5))  # noqa:WPS335
+            for add in (make_address() for _ in range(5))
         ],
     )
 

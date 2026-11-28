@@ -22,7 +22,7 @@ class Address(meta.Base):
     __tablename__ = 'addresses'
 
     # Columns
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)
     primary_id = sa.Column(sa.Integer, nullable=False, index=True)
     created_at = sa.Column(sa.DateTime, nullable=False)
     place_id = sa.Column(sa.Unicode(length=120), nullable=False, index=True)
@@ -116,7 +116,7 @@ class Address(meta.Base):
         return location
 
     @property
-    def x(self) -> int:  # noqa=WPS111
+    def x(self) -> int:
         """The relative x-coordinate within the `.city` in meters.
 
         On the implied x-y plane, the `.city`'s southwest corner is the origin.
@@ -126,7 +126,7 @@ class Address(meta.Base):
         return self.location.x
 
     @property
-    def y(self) -> int:  # noqa=WPS111
+    def y(self) -> int:
         """The relative y-coordinate within the `.city` in meters.
 
         On the implied x-y plane, the `.city`'s southwest corner is the origin.
@@ -145,7 +145,7 @@ class Address(meta.Base):
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """Shortcut to the `.city.map` object."""
         return self.city.map
 

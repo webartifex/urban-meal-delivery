@@ -423,7 +423,7 @@ class TestConstraints:
             'left_pickup_at',
         ],
     )
-    def test_unset_timestamp_column_not_marked_as_uncorrected(  # noqa:WPS213
+    def test_unset_timestamp_column_not_marked_as_uncorrected(
         self,
         db_session,
         order,
@@ -507,7 +507,7 @@ class TestConstraints:
             'delivery_at',
         ],
     )
-    def test_set_timestamp_column_is_not_unmarked(  # noqa:WPS213
+    def test_set_timestamp_column_is_not_unmarked(
         self,
         db_session,
         order,
@@ -860,14 +860,14 @@ class TestProperties:
 
         assert result > dt.timedelta(0)
 
-    def test_scheduled_pickup_at_no_restaurant_notified(self, order):  # noqa:WPS118
+    def test_scheduled_pickup_at_no_restaurant_notified(self, order):
         """Test `Order.scheduled_pickup_at` property."""
         order.restaurant_notified_at = None
 
         with pytest.raises(RuntimeError, match='not set'):
             int(order.scheduled_pickup_at)
 
-    def test_scheduled_pickup_at_no_est_prep_duration(self, order):  # noqa:WPS118
+    def test_scheduled_pickup_at_no_est_prep_duration(self, order):
         """Test `Order.scheduled_pickup_at` property."""
         order.estimated_prep_duration = None
 
@@ -952,7 +952,7 @@ class TestProperties:
 
         assert bool(result) is False
 
-    def test_time_to_delivery_no_reached_delivery_at(self, order):  # noqa:WPS118
+    def test_time_to_delivery_no_reached_delivery_at(self, order):
         """Test `Order.time_to_delivery` property."""
         order.reached_delivery_at = None
 
@@ -972,7 +972,7 @@ class TestProperties:
 
         assert result > dt.timedelta(0)
 
-    def test_time_at_delivery_no_reached_delivery_at(self, order):  # noqa:WPS118
+    def test_time_at_delivery_no_reached_delivery_at(self, order):
         """Test `Order.time_at_delivery` property."""
         order.reached_delivery_at = None
 
@@ -1083,7 +1083,7 @@ class TestProperties:
 
 @pytest.mark.db
 @pytest.mark.no_cover
-def test_make_random_orders(  # noqa:C901,WPS211,WPS213
+def test_make_random_orders(  # noqa:C901
     db_session,
     make_address,
     make_courier,
@@ -1096,7 +1096,7 @@ def test_make_random_orders(  # noqa:C901,WPS211,WPS213
     and `Order` objects adhere to the database constraints.
     """  # noqa:D202
     # Generate a large number of `Order`s to obtain a large variance of data.
-    for _ in range(1_000):  # noqa:WPS122
+    for _ in range(1_000):
 
         # Ad-hoc `Order`s are far more common than pre-orders.
         scheduled = random.choice([True, False, False, False, False])

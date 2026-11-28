@@ -376,7 +376,7 @@ class TestConstraints:
         forecast.low95 = None
         forecast.high95 = None
 
-        forecast.low80, forecast.high80 = (  # noqa:WPS414
+        forecast.low80, forecast.high80 = (
             forecast.high80,
             forecast.low80,
         )
@@ -398,7 +398,7 @@ class TestConstraints:
         forecast.low80 = None
         forecast.high80 = None
 
-        forecast.low95, forecast.high95 = (  # noqa:WPS414
+        forecast.low95, forecast.high95 = (
             forecast.high95,
             forecast.low95,
         )
@@ -416,7 +416,7 @@ class TestConstraints:
         assert forecast.low80 is not None
         assert forecast.low95 is not None
 
-        forecast.low80, forecast.low95 = (forecast.low95, forecast.low80)  # noqa:WPS414
+        forecast.low80, forecast.low95 = (forecast.low95, forecast.low80)
 
         db_session.add(forecast)
 
@@ -431,7 +431,7 @@ class TestConstraints:
         assert forecast.high80 is not None
         assert forecast.high95 is not None
 
-        forecast.high80, forecast.high95 = (  # noqa:WPS414
+        forecast.high80, forecast.high95 = (
             forecast.high95,
             forecast.high80,
         )

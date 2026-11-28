@@ -122,7 +122,7 @@ class TestProperties:
         """A `Mock` whose `.return_value` is `[restaurant]`."""
         mock = mocker.Mock()
         query = (  # noqa:ECE001
-            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501,WPS219
+            mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501
         )
         query.return_value = [restaurant]
         monkeypatch.setattr(db, 'session', mock)

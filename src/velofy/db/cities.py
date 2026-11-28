@@ -21,7 +21,7 @@ class City(meta.Base):
     __tablename__ = 'cities'
 
     # Generic columns
-    id = sa.Column(  # noqa:WPS125
+    id = sa.Column(
         sa.SmallInteger,
         primary_key=True,
         autoincrement=False,
@@ -110,12 +110,12 @@ class City(meta.Base):
         return self
 
     @property  # pragma: no cover
-    def map(self) -> folium.Map:  # noqa:WPS125
+    def map(self) -> folium.Map:
         """A `folium.Map` object aligned with the city's viewport.
 
         See docstring for `.clear_map()` for further info.
         """
-        if not hasattr(self, '_map'):  # noqa:WPS421  note:d334120e
+        if not hasattr(self, '_map'):  # note:d334120e
             self.clear_map()
 
         return self._map
@@ -137,7 +137,7 @@ class City(meta.Base):
             db.session.query(db.Address)
             .filter(
                 db.Address.id.in_(
-                    db.session.query(db.Address.primary_id)  # noqa:WPS221
+                    db.session.query(db.Address.primary_id)
                     .join(db.Restaurant, db.Address.id == db.Restaurant.address_id)
                     .filter(db.Address.city == self)
                     .distinct()
@@ -157,9 +157,9 @@ class City(meta.Base):
                 .all()
             )
             if len(restaurants) == 1:
-                tooltip = f'{restaurants[0].name} (#{restaurants[0].id})'  # noqa:WPS221
+                tooltip = f'{restaurants[0].name} (#{restaurants[0].id})'
             else:
-                tooltip = 'Restaurants ' + ', '.join(  # noqa:WPS336
+                tooltip = 'Restaurants ' + ', '.join(
                     f'#{restaurant.id}' for restaurant in restaurants
                 )
 
@@ -183,7 +183,7 @@ class City(meta.Base):
                 else:
                     radius = 1
 
-                tooltip += f' | n_orders={n_orders}'  # noqa:WPS336
+                tooltip += f' | n_orders={n_orders}'
 
                 address.draw(
                     radius=radius,
@@ -239,7 +239,7 @@ class City(meta.Base):
             if not address.is_primary:
                 continue
 
-            marker = folium.Circle(  # noqa:WPS317
+            marker = folium.Circle(
                 (address.latitude, address.longitude),
                 color=colors[address.zip_code],
                 radius=1,

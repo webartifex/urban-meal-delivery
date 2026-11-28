@@ -15,7 +15,7 @@ class ReplaySimulation(meta.Base):
     __tablename__ = 'replay_simulations'
 
     # Columns
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)  # noqa:WPS125
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     city_id = sa.Column(sa.SmallInteger, nullable=False, index=True)
     strategy = sa.Column(sa.Unicode(length=100), nullable=False, index=True)
     # `.run` may be used as random seed.

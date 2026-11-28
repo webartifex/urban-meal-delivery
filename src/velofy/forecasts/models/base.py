@@ -80,8 +80,8 @@ class ForecastingModelABC(abc.ABC):
 
         # noqa:DAR401 RuntimeError
         """
-        if (  # noqa:WPS337
-            cached_forecast := db.session.query(db.Forecast)  # noqa:WPS221
+        if (
+            cached_forecast := db.session.query(db.Forecast)
             .filter_by(pixel=pixel)
             .filter_by(start_at=predict_at)
             .filter_by(time_step=self._order_history.time_step)

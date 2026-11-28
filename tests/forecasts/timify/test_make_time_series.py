@@ -119,7 +119,7 @@ class TestMakeHorizontalTimeSeries:
             train_horizon=train_horizon,
         )
 
-        _, frequency, _ = result  # noqa:WPS434
+        _, frequency, _ = result
 
         assert frequency == 7
 
@@ -243,7 +243,7 @@ class TestMakeVerticalTimeSeries:
             train_horizon=train_horizon,
         )
 
-        _, frequency, _ = result  # noqa:WPS434
+        _, frequency, _ = result
 
         n_daily_time_steps = (
             60
@@ -423,7 +423,7 @@ class TestMakeRealTimeTimeSeries:
             train_horizon=train_horizon,
         )
 
-        _, frequency, _ = result  # noqa:WPS434
+        _, frequency, _ = result
 
         n_daily_time_steps = (
             60

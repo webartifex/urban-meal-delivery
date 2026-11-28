@@ -16,8 +16,8 @@ def show_version(ctx: cli_core.Context, _param: Any, value: bool) -> None:
         return
 
     # Mimic the colors of `poetry version`.
-    pkg_name = click.style(velofy.__pkg_name__, fg='green')  # noqa:WPS609
-    version = click.style(velofy.__version__, fg='blue')  # noqa:WPS609
+    pkg_name = click.style(velofy.__pkg_name__, fg='green')
+    version = click.style(velofy.__version__, fg='blue')
     # Include a warning for development versions.
     warning = click.style(' (development)', fg='red') if '.dev' in version else ''
     click.echo(f'{pkg_name}, version {version}{warning}')

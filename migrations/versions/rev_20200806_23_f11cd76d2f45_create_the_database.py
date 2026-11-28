@@ -38,7 +38,7 @@ def upgrade():
         sa.Column('initial_zoom', sa.SmallInteger(), nullable=False),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_cities')),
         *(
-            [  # noqa:WPS504
+            [
                 sa.ForeignKeyConstraint(
                     ['id'],
                     [f'{config.ORIGINAL_SCHEMA}.cities.id'],
@@ -83,7 +83,7 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_couriers')),
         *(
-            [  # noqa:WPS504
+            [
                 sa.ForeignKeyConstraint(
                     ['id'],
                     [f'{config.ORIGINAL_SCHEMA}.couriers.id'],
@@ -148,7 +148,7 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_addresses')),
         *(
-            [  # noqa:WPS504
+            [
                 sa.ForeignKeyConstraint(
                     ['id'],
                     [f'{config.ORIGINAL_SCHEMA}.addresses.id'],
@@ -210,7 +210,7 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_restaurants')),
         *(
-            [  # noqa:WPS504
+            [
                 sa.ForeignKeyConstraint(
                     ['id'],
                     [f'{config.ORIGINAL_SCHEMA}.businesses.id'],
@@ -628,7 +628,7 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint('id', name=op.f('pk_orders')),
         *(
-            [  # noqa:WPS504
+            [
                 sa.ForeignKeyConstraint(
                     ['id'],
                     [f'{config.ORIGINAL_SCHEMA}.orders.id'],

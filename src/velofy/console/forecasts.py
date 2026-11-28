@@ -24,7 +24,7 @@ from velofy.forecasts import timify
 @click.argument('time_step', default=60, type=int)
 @click.argument('train_horizon', default=8, type=int)
 @decorators.db_revision('8bfb928a31f8')
-def tactical_heuristic(  # noqa:C901,WPS213,WPS216
+def tactical_heuristic(  # noqa:C901
     city: str,
     side_length: int,
     time_step: int,
@@ -68,9 +68,7 @@ def tactical_heuristic(  # noqa:C901,WPS213,WPS216
     # Input validation.
 
     try:
-        city_obj = (
-            db.session.query(db.City).filter_by(name=city.title()).one()  # noqa:WPS221
-        )
+        city_obj = db.session.query(db.City).filter_by(name=city.title()).one()
     except orm_exc.NoResultFound:
         click.echo('NAME must be one of "Paris", "Lyon", or "Bordeaux"')
         sys.exit(1)
@@ -97,17 +95,17 @@ def tactical_heuristic(  # noqa:C901,WPS213,WPS216
     )
 
     # Load the historic order data.
-    order_history = timify.OrderHistory(grid=grid, time_step=time_step)  # noqa:WPS441
+    order_history = timify.OrderHistory(grid=grid, time_step=time_step)
     order_history.aggregate_orders()
 
     # Run the tactical heuristic.
 
-    for pixel in grid.pixels:  # noqa:WPS441
+    for pixel in grid.pixels:
         # Important: this check may need to be adapted once further
         # commands are added the make `Forecast`s without the heuristic!
         # Continue with forecasting on the day the last prediction was made ...
         last_predict_at = (
-            db.session.query(func.max(db.Forecast.start_at))  # noqa:WPS221
+            db.session.query(func.max(db.Forecast.start_at))
             .join(db.Pixel, db.Forecast.pixel_id == db.Pixel.id)
             .join(db.Grid, db.Pixel.grid_id == db.Grid.id)
             .filter(db.Forecast.pixel == pixel)

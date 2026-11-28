@@ -88,7 +88,7 @@ class RealtimeARIMAModel(base.ForecastingModelABC):
             data={
                 'actual': actuals_ts,
                 'prediction': (
-                    seasonal_predictions['prediction']  # noqa:WPS204
+                    seasonal_predictions['prediction']
                     + seasonally_adjusted_predictions['prediction']
                 ),
                 'low80': (

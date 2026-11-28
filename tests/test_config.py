@@ -38,7 +38,7 @@ def test_database_uri_set(env, monkeypatch):
         warnings.simplefilter('always')
         configuration.make_config(env)
 
-    assert len(record) == 0  # noqa:WPS441,WPS507
+    assert len(record) == 0
 
 
 @pytest.mark.parametrize('env', envs)
@@ -56,7 +56,7 @@ def test_no_database_uri_set_with_testing_env_var(env, monkeypatch):
         warnings.simplefilter('always')
         configuration.make_config(env)
 
-    assert len(record) == 0  # noqa:WPS441,WPS507
+    assert len(record) == 0
 
 
 @pytest.mark.parametrize('env', envs)
@@ -87,7 +87,7 @@ def test_r_libs_path_set(env, monkeypatch):
         warnings.simplefilter('always')
         configuration.make_config(env)
 
-    assert len(record) == 0  # noqa:WPS441,WPS507
+    assert len(record) == 0
 
 
 @pytest.mark.parametrize('env', envs)
@@ -107,7 +107,7 @@ def test_no_r_libs_path_set_with_testing_env_var(env, monkeypatch):
         warnings.simplefilter('always')
         configuration.make_config(env)
 
-    assert len(record) == 0  # noqa:WPS441,WPS507
+    assert len(record) == 0
 
 
 @pytest.mark.parametrize('env', envs)

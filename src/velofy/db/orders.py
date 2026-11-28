@@ -12,13 +12,13 @@ from velofy import db
 from velofy.db import meta
 
 
-class Order(meta.Base):  # noqa:WPS214
+class Order(meta.Base):
     """An order by a `Customer` of the UDP."""
 
     __tablename__ = 'orders'
 
     # Generic columns
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)  # noqa:WPS125
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)
     _delivery_id = sa.Column('delivery_id', sa.Integer, index=True, unique=True)
     customer_id = sa.Column(sa.Integer, nullable=False, index=True)
     placed_at = sa.Column(sa.DateTime, nullable=False, index=True)
@@ -364,7 +364,7 @@ class Order(meta.Base):  # noqa:WPS214
     def corrected(self) -> bool:
         """If any timestamp was corrected as compared to the original data."""
         return (
-            self.scheduled_delivery_at_corrected  # noqa:WPS222 => too much logic
+            self.scheduled_delivery_at_corrected  # => too much logic
             or self.cancelled_at_corrected
             or self.restaurant_notified_at_corrected
             or self.restaurant_confirmed_at_corrected

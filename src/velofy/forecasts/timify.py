@@ -70,7 +70,7 @@ class OrderHistory:
         # This happens when there is no demand in the `Pixel` in the given `time_step`.
         data = pd.read_sql_query(
             sa.text(
-                f"""  -- # noqa:WPS221
+                f"""
                 SELECT
                     pixel_id,
                     start_at,
@@ -139,7 +139,7 @@ class OrderHistory:
                     pixel_id,
                     start_at;
                 """,
-            ),  # noqa:WPS355
+            ),
             con=db.connection,
             index_col=['pixel_id', 'start_at'],
         )
@@ -240,7 +240,7 @@ class OrderHistory:
             last_order.minute,
         )
 
-    def make_horizontal_ts(  # noqa:WPS210
+    def make_horizontal_ts(
         self,
         pixel_id: int,
         predict_at: dt.datetime,
@@ -312,7 +312,7 @@ class OrderHistory:
 
         return training_ts, frequency, actuals_ts
 
-    def make_vertical_ts(  # noqa:WPS210
+    def make_vertical_ts(
         self,
         pixel_id: int,
         predict_day: dt.date,
@@ -401,7 +401,7 @@ class OrderHistory:
 
         return training_ts, frequency, actuals_ts
 
-    def make_realtime_ts(  # noqa:WPS210
+    def make_realtime_ts(
         self,
         pixel_id: int,
         predict_at: dt.datetime,
@@ -524,7 +524,7 @@ class OrderHistory:
         Returns:
             average number of orders per day
         """
-        training_ts, _, _ = self.make_vertical_ts(  # noqa:WPS434
+        training_ts, _, _ = self.make_vertical_ts(
             pixel_id=pixel_id,
             predict_day=predict_day,
             train_horizon=train_horizon,

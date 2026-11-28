@@ -33,7 +33,7 @@ def predict(
     """
     # Initialize R only if it is actually used.
     # For example, the nox session "ci-tests-fast" does not use it.
-    from velofy import init_r  # noqa:F401,WPS433
+    from velofy import init_r  # noqa:F401
 
     # Re-seed R every time it is used to ensure reproducibility.
     robjects.r('set.seed(42)')

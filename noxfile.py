@@ -293,7 +293,7 @@ def build_docs(session: Session) -> None:
     # Verify that all external links return 200 OK
     session.run('sphinx-build', '-b', 'linkcheck', DOCS_LOCATION, DOCS_BUILD)
 
-    print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')  # noqa:WPS421
+    print(f'Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html')
 
 
 @nox.session(name='venv', python=MAIN_PYTHON, venv_backend='none')

@@ -14,7 +14,7 @@ class CourierFactory(alchemy.SQLAlchemyModelFactory):
         model = db.Courier
         sqlalchemy_get_or_create = ('id',)
 
-    id = factory.Sequence(lambda num: num)  # noqa:WPS125
+    id = factory.Sequence(lambda num: num)
     created_at = factory.LazyFunction(utils.early_in_the_morning)
     vehicle = 'bicycle'
     historic_speed = 7.89

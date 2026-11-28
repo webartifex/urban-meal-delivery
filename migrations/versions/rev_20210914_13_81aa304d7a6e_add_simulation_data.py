@@ -29,7 +29,7 @@ def upgrade():
         ALTER TABLE {config.CLEAN_SCHEMA}.orders
         DROP CONSTRAINT ck_orders_on_ordered_timestamps_21;
         """,
-    )  # noqa:WPS355
+    )
 
     # Add forgotten check constraints to the `orders` table.
     op.execute(
@@ -38,7 +38,7 @@ def upgrade():
         ADD CONSTRAINT check_orders_on_ordered_timestamps_placed_at_before_pickup_at
         CHECK (placed_at < pickup_at);
         """,
-    )  # noqa:WPS355
+    )
     op.execute(
         f"""
         ALTER TABLE {config.CLEAN_SCHEMA}.orders
@@ -55,7 +55,7 @@ def upgrade():
             )
         );
         """,
-    )  # noqa:WPS355
+    )
 
     # This `UniqueConstraint` is needed by the `replayed_orders` table below.
     op.create_unique_constraint(
@@ -403,17 +403,17 @@ def downgrade():
         ALTER TABLE {config.CLEAN_SCHEMA}.orders
         DROP CONSTRAINT check_orders_on_scheduled_orders_must_be_at_quarters_of_an_hour;
         """,
-    )  # noqa:WPS355
+    )
     op.execute(
         f"""
         ALTER TABLE {config.CLEAN_SCHEMA}.orders
         DROP CONSTRAINT check_orders_on_ordered_timestamps_placed_at_before_pickup_at;
         """,
-    )  # noqa:WPS355
+    )
     op.execute(
         f"""
         ALTER TABLE {config.CLEAN_SCHEMA}.orders
         ADD CONSTRAINT ck_orders_on_ordered_timestamps_21
         CHECK (cancelled_at > delivery_at);
         """,
-    )  # noqa:WPS355
+    )

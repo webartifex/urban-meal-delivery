@@ -7,7 +7,7 @@ from typing import Optional, Tuple
 import utm
 
 
-class Location:  # noqa:WPS214
+class Location:
     """A location represented in WGS84 and UTM coordinates.
 
     WGS84:
@@ -50,7 +50,7 @@ class Location:  # noqa:WPS214
             >>> Location(43.6532, -79.3832)
             <Location: 17T 630378 4834625>
         """
-        return f'<Location: {self.zone} {self.easting} {self.northing}>'  # noqa:WPS221
+        return f'<Location: {self.zone} {self.easting} {self.northing}>'
 
     @property
     def latitude(self) -> float:
@@ -104,7 +104,7 @@ class Location:  # noqa:WPS214
         return (self.easting, self.northing) == (other.easting, other.northing)
 
     @property
-    def x(self) -> int:  # noqa:WPS111
+    def x(self) -> int:
         """The `.easting` of the location in meters, relative to some origin.
 
         The origin, which defines the `(0, 0)` coordinate, is set with `.relate_to()`.
@@ -115,7 +115,7 @@ class Location:  # noqa:WPS214
         return self._normalized_easting
 
     @property
-    def y(self) -> int:  # noqa:WPS111
+    def y(self) -> int:
         """The `.northing` of the location in meters, relative to some origin.
 
         The origin, which defines the `(0, 0)` coordinate, is set with `.relate_to()`.

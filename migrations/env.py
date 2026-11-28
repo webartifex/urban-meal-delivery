@@ -21,9 +21,9 @@ log_config.fileConfig(context.config.config_file_name)
 
 def include_object(obj, _name, type_, _reflected, _compare_to):
     """Only include the clean schema into --autogenerate migrations."""
-    if (  # noqa:WPS337
+    if (
         type_ in {'table', 'column'}
-        and hasattr(obj, 'schema')  # noqa:WPS421 => fix for rare edge case
+        and hasattr(obj, 'schema')  # => fix for rare edge case
         and obj.schema != velofy_config.CLEAN_SCHEMA
     ):
         return False

@@ -12,7 +12,7 @@ from rpy2 import robjects
 from rpy2.robjects import pandas2ri
 
 
-def stl(  # noqa:C901,WPS210,WPS211
+def stl(  # noqa:C901
     time_series: pd.Series,
     *,
     frequency: int,
@@ -26,7 +26,7 @@ def stl(  # noqa:C901,WPS210,WPS211
     jt: Optional[int] = None,
     jl: Optional[int] = None,
     ni: int = 2,
-    no: int = 0,  # noqa:WPS110
+    no: int = 0,
 ) -> pd.DataFrame:
     """Decompose a time series into seasonal, trend, and residual components.
 
@@ -157,7 +157,7 @@ def stl(  # noqa:C901,WPS210,WPS211
 
     # Initialize R only if it is actually used.
     # For example, the nox session "ci-tests-fast" does not use it.
-    from velofy import init_r  # noqa:F401,WPS433
+    from velofy import init_r  # noqa:F401
 
     # Re-seed R every time it is used to ensure reproducibility.
     robjects.r('set.seed(42)')
@@ -177,7 +177,7 @@ def stl(  # noqa:C901,WPS210,WPS211
         jl,
         robust,
         ni,
-        no,  # noqa:WPS221
+        no,
     )
 
     # Unpack the result to a `pd.DataFrame`.
