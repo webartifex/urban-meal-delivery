@@ -19,7 +19,7 @@ from velofy.forecasts.models import base
 class HorizontalETSModel(base.ForecastingModelABC):
     """The ETS model applied on a horizontal time series."""
 
-    name = 'hets'
+    name = "hets"
 
     def predict(
         self,
@@ -51,7 +51,7 @@ class HorizontalETSModel(base.ForecastingModelABC):
 
         # Sanity check.
         if frequency != 7:  # pragma: no cover
-            raise RuntimeError('`frequency` should be `7`')
+            raise RuntimeError("`frequency` should be `7`")
 
         # Make `predictions` with the seasonal ETS method ("ZZZ" model).
         predictions = methods.ets.predict(
@@ -61,13 +61,13 @@ class HorizontalETSModel(base.ForecastingModelABC):
             seasonal_fit=True,  # because there was no decomposition before
         )
 
-        predictions.insert(loc=0, column='actual', value=actuals_ts)
+        predictions.insert(loc=0, column="actual", value=actuals_ts)
 
         # Sanity checks.
         if predictions.isnull().sum().any():  # pragma: no cover
-            raise RuntimeError('missing predictions in hets model')
+            raise RuntimeError("missing predictions in hets model")
         if predict_at not in predictions.index:  # pragma: no cover
-            raise RuntimeError('missing prediction for `predict_at`')
+            raise RuntimeError("missing prediction for `predict_at`")
 
         return predictions
 
@@ -75,7 +75,7 @@ class HorizontalETSModel(base.ForecastingModelABC):
 class HorizontalSMAModel(base.ForecastingModelABC):
     """A simple moving average model applied on a horizontal time series."""
 
-    name = 'hsma'
+    name = "hsma"
 
     def predict(
         self,
@@ -107,10 +107,10 @@ class HorizontalSMAModel(base.ForecastingModelABC):
 
         # Sanity checks.
         if frequency != 7:  # pragma: no cover
-            raise RuntimeError('`frequency` should be `7`')
+            raise RuntimeError("`frequency` should be `7`")
         if len(actuals_ts) != 1:  # pragma: no cover
             raise RuntimeError(
-                'the hsma model can only predict one step into the future',
+                "the hsma model can only predict one step into the future",
             )
 
         # The "prediction" is calculated as the `np.mean()`.
@@ -118,23 +118,23 @@ class HorizontalSMAModel(base.ForecastingModelABC):
         # no adjustment regarding the weekly seasonality is needed.
         predictions = pd.DataFrame(
             data={
-                'actual': actuals_ts,
-                'prediction': training_ts.values.mean(),
-                'low80': float('NaN'),
-                'high80': float('NaN'),
-                'low95': float('NaN'),
-                'high95': float('NaN'),
+                "actual": actuals_ts,
+                "prediction": training_ts.values.mean(),
+                "low80": float("NaN"),
+                "high80": float("NaN"),
+                "low95": float("NaN"),
+                "high95": float("NaN"),
             },
             index=actuals_ts.index,
         )
 
         # Sanity checks.
         if (
-            predictions[['actual', 'prediction']].isnull().any().any()
+            predictions[["actual", "prediction"]].isnull().any().any()
         ):  # pragma: no cover
 
-            raise RuntimeError('missing predictions in hsma model')
+            raise RuntimeError("missing predictions in hsma model")
         if predict_at not in predictions.index:  # pragma: no cover
-            raise RuntimeError('missing prediction for `predict_at`')
+            raise RuntimeError("missing prediction for `predict_at`")
 
         return predictions

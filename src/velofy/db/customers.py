@@ -14,20 +14,20 @@ from velofy.db import meta
 class Customer(meta.Base):
     """A customer of the UDP."""
 
-    __tablename__ = 'customers'
+    __tablename__ = "customers"
 
     # Columns
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=False)
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}(#{customer_id})>'.format(
+        return "<{cls}(#{customer_id})>".format(
             cls=self.__class__.__name__,
             customer_id=self.id,
         )
 
     # Relationships
-    orders = orm.relationship('Order', back_populates='customer')
+    orders = orm.relationship("Order", back_populates="customer")
 
     def clear_map(self) -> Customer:  # pragma: no cover
         """Shortcut to the `...city.clear_map()` method.
@@ -108,7 +108,7 @@ class Customer(meta.Base):
                     color=config.CUSTOMER_COLOR,
                     fill_color=config.CUSTOMER_COLOR,
                     fill_opacity=0.3,
-                    tooltip=f'n_orders={n_orders}',
+                    tooltip=f"n_orders={n_orders}",
                 )
 
             else:
@@ -144,11 +144,11 @@ class Customer(meta.Base):
                 )
                 if len(restaurants) == 1:  # type:ignore
                     tooltip = (
-                        f'{restaurants[0].name} (#{restaurants[0].id})'  # type:ignore
+                        f"{restaurants[0].name} (#{restaurants[0].id})"  # type:ignore
                     )
                 else:
-                    tooltip = 'Restaurants ' + ', '.join(
-                        f'#{restaurant.id}' for restaurant in restaurants  # type:ignore
+                    tooltip = "Restaurants " + ", ".join(
+                        f"#{restaurant.id}" for restaurant in restaurants  # type:ignore
                     )
 
                 if order_counts:
@@ -170,7 +170,7 @@ class Customer(meta.Base):
                     else:
                         radius = 1
 
-                    tooltip += f' | n_orders={n_orders}'
+                    tooltip += f" | n_orders={n_orders}"
 
                     address.draw(
                         radius=radius,

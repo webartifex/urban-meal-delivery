@@ -25,7 +25,7 @@ class Pixel(meta.Base):
     Every `Pixel` has a unique `n_x`-`n_y` coordinate within the `Grid`.
     """
 
-    __tablename__ = 'pixels'
+    __tablename__ = "pixels"
 
     # Columns
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -36,27 +36,27 @@ class Pixel(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['grid_id'],
-            ['grids.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["grid_id"],
+            ["grids.id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
-        sa.CheckConstraint('0 <= n_x', name='n_x_is_positive'),
-        sa.CheckConstraint('0 <= n_y', name='n_y_is_positive'),
+        sa.CheckConstraint("0 <= n_x", name="n_x_is_positive"),
+        sa.CheckConstraint("0 <= n_y", name="n_y_is_positive"),
         # Needed by a `ForeignKeyConstraint` in `AddressPixelAssociation`.
-        sa.UniqueConstraint('id', 'grid_id'),
+        sa.UniqueConstraint("id", "grid_id"),
         # Each coordinate within the same `grid` is used at most once.
-        sa.UniqueConstraint('grid_id', 'n_x', 'n_y'),
+        sa.UniqueConstraint("grid_id", "n_x", "n_y"),
     )
 
     # Relationships
-    grid = orm.relationship('Grid', back_populates='pixels')
-    addresses = orm.relationship('AddressPixelAssociation', back_populates='pixel')
-    forecasts = orm.relationship('Forecast', back_populates='pixel')
+    grid = orm.relationship("Grid", back_populates="pixels")
+    addresses = orm.relationship("AddressPixelAssociation", back_populates="pixel")
+    forecasts = orm.relationship("Forecast", back_populates="pixel")
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}: ({x}|{y})>'.format(
+        return "<{cls}: ({x}|{y})>".format(
             cls=self.__class__.__name__,
             x=self.n_x,
             y=self.n_y,
@@ -163,17 +163,17 @@ class Pixel(meta.Base):
             (self.southwest.latitude, self.southwest.longitude),
             (self.northeast.latitude, self.northeast.longitude),
         )
-        info_text = f'Pixel({self.n_x}|{self.n_y})'
+        info_text = f"Pixel({self.n_x}|{self.n_y})"
 
         # Make the `Pixel`s look like a checkerboard.
         if (self.n_x + self.n_y) % 2:
-            color = '#808000'
+            color = "#808000"
         else:
-            color = '#ff8c00'
+            color = "#ff8c00"
 
         marker = folium.Rectangle(
             bounds=bounds,
-            color='gray',
+            color="gray",
             opacity=0.2,
             weight=5,
             fill_color=color,
@@ -220,11 +220,11 @@ class Pixel(meta.Base):
                 )
                 if len(restaurants) == 1:  # type:ignore
                     tooltip = (
-                        f'{restaurants[0].name} (#{restaurants[0].id})'  # type:ignore
+                        f"{restaurants[0].name} (#{restaurants[0].id})"  # type:ignore
                     )
                 else:
-                    tooltip = 'Restaurants ' + ', '.join(
-                        f'#{restaurant.id}' for restaurant in restaurants  # type:ignore
+                    tooltip = "Restaurants " + ", ".join(
+                        f"#{restaurant.id}" for restaurant in restaurants  # type:ignore
                     )
 
                 if order_counts:
@@ -247,7 +247,7 @@ class Pixel(meta.Base):
                     else:
                         radius = 1
 
-                    tooltip += f' | n_orders={n_orders}'
+                    tooltip += f" | n_orders={n_orders}"
 
                     address.draw(
                         radius=radius,

@@ -141,8 +141,6 @@ target-version = ["py313"]
 
 line-length = 88
 
-skip-string-normalization = true  # `wemake-python-styleguide` enforces single quotes
-
 
 
 [tool.coverage]

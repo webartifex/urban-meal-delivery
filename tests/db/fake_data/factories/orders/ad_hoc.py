@@ -26,7 +26,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
 
     class Meta:
         model = db.Order
-        sqlalchemy_get_or_create = ('id',)
+        sqlalchemy_get_or_create = ("id",)
 
     class Params:
         """Define flags that overwrite some attributes.

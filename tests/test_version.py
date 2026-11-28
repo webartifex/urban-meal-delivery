@@ -46,7 +46,7 @@ class TestSemanticVersioning:
     """Packaged version follows a strict subset of semantic versioning."""
 
     version_pattern = re.compile(
-        r'^(0|([1-9]\d*))\.(0|([1-9]\d*))\.(0|([1-9]\d*))(\.dev(0|([1-9]\d*)))?$',
+        r"^(0|([1-9]\d*))\.(0|([1-9]\d*))\.(0|([1-9]\d*))(\.dev(0|([1-9]\d*)))?$",
     )
 
     def test_version_is_semantic(self):
@@ -58,17 +58,17 @@ class TestSemanticVersioning:
     # The next two test cases are sanity checks to validate the version_pattern.
 
     @pytest.mark.parametrize(
-        'version',
+        "version",
         [
-            '0.1.0',
-            '1.0.0',
-            '1.2.3',
-            '1.23.456',
-            '123.4.56',
-            '10.11.12',
-            '1.2.3.dev0',
-            '1.2.3.dev1',
-            '1.2.3.dev10',
+            "0.1.0",
+            "1.0.0",
+            "1.2.3",
+            "1.23.456",
+            "123.4.56",
+            "10.11.12",
+            "1.2.3.dev0",
+            "1.2.3.dev1",
+            "1.2.3.dev10",
         ],
     )
     def test_valid_semantic_versioning(self, version):
@@ -78,27 +78,27 @@ class TestSemanticVersioning:
         assert result is not None
 
     @pytest.mark.parametrize(
-        'version',
+        "version",
         [
-            '1',
-            '1.2',
-            '-1.2.3',
-            '01.2.3',
-            '1.02.3',
-            '1.2.03',
-            '1.2.3.4',
-            '1.2.3.abc',
-            '1.2.3-dev0',
-            '1.2.3+dev0',
-            '1.2.3.d0',
-            '1.2.3.develop0',
-            '1.2.3.dev-1',
-            '1.2.3.dev01',
-            '1.2.3..dev0',
-            '1-2-3',
-            '1,2,3',
-            '1..2.3',
-            '1.2..3',
+            "1",
+            "1.2",
+            "-1.2.3",
+            "01.2.3",
+            "1.02.3",
+            "1.2.03",
+            "1.2.3.4",
+            "1.2.3.abc",
+            "1.2.3-dev0",
+            "1.2.3+dev0",
+            "1.2.3.d0",
+            "1.2.3.develop0",
+            "1.2.3.dev-1",
+            "1.2.3.dev01",
+            "1.2.3..dev0",
+            "1-2-3",
+            "1,2,3",
+            "1..2.3",
+            "1.2..3",
         ],
     )
     def test_invalid_semantic_versioning(self, version):

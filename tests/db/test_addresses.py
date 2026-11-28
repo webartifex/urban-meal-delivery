@@ -19,7 +19,7 @@ class TestSpecialMethods:
         """`Address` has a non-literal text representation."""
         result = repr(address)
 
-        assert result == f'<Address({address.street} in {address.city_name})>'
+        assert result == f"<Address({address.street} in {address.city_name})>"
 
 
 @pytest.mark.db
@@ -47,7 +47,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_to_addresses_via_primary_id',
+            match="fk_addresses_to_addresses_via_primary_id",
         ):
             db_session.commit()
 
@@ -61,11 +61,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_to_cities_via_city_id',
+            match="fk_addresses_to_cities_via_city_id",
         ):
             db_session.execute(stmt)
 
-    @pytest.mark.parametrize('latitude', [-91, 91])
+    @pytest.mark.parametrize("latitude", [-91, 91])
     def test_invalid_latitude(self, db_session, address, latitude):
         """Insert an instance with invalid data."""
         address.latitude = latitude
@@ -73,11 +73,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='latitude_between_90_degrees',
+            match="latitude_between_90_degrees",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('longitude', [-181, 181])
+    @pytest.mark.parametrize("longitude", [-181, 181])
     def test_invalid_longitude(self, db_session, address, longitude):
         """Insert an instance with invalid data."""
         address.longitude = longitude
@@ -85,26 +85,26 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='longitude_between_180_degrees',
+            match="longitude_between_180_degrees",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('zip_code', [-1, 0, 9999, 100000])
+    @pytest.mark.parametrize("zip_code", [-1, 0, 9999, 100000])
     def test_invalid_zip_code(self, db_session, address, zip_code):
         """Insert an instance with invalid data."""
         address.zip_code = zip_code
         db_session.add(address)
 
-        with pytest.raises(sa_exc.IntegrityError, match='valid_zip_code'):
+        with pytest.raises(sa_exc.IntegrityError, match="valid_zip_code"):
             db_session.commit()
 
-    @pytest.mark.parametrize('floor', [-1, 41])
+    @pytest.mark.parametrize("floor", [-1, 41])
     def test_invalid_floor(self, db_session, address, floor):
         """Insert an instance with invalid data."""
         address.floor = floor
         db_session.add(address)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_floor'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_floor"):
             db_session.commit()
 
 

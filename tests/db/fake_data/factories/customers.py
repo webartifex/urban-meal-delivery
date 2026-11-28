@@ -11,6 +11,6 @@ class CustomerFactory(alchemy.SQLAlchemyModelFactory):
 
     class Meta:
         model = db.Customer
-        sqlalchemy_get_or_create = ('id',)
+        sqlalchemy_get_or_create = ("id",)
 
     id = factory.Sequence(lambda num: num)

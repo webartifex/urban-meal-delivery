@@ -49,7 +49,7 @@ def bad_predict_at():
 class TestMakeHorizontalTimeSeries:
     """Test the `OrderHistory.make_horizontal_ts()` method."""
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_wrong_pixel(self, order_history, good_predict_at, train_horizon):
         """A `pixel_id` that is not in the `grid`."""
         with pytest.raises(LookupError):
@@ -59,7 +59,7 @@ class TestMakeHorizontalTimeSeries:
                 train_horizon=train_horizon,
             )
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_time_series_are_series(
         self,
         order_history,
@@ -77,11 +77,11 @@ class TestMakeHorizontalTimeSeries:
         training_ts, _, actuals_ts = result
 
         assert isinstance(training_ts, pd.Series)
-        assert training_ts.name == 'n_orders'
+        assert training_ts.name == "n_orders"
         assert isinstance(actuals_ts, pd.Series)
-        assert actuals_ts.name == 'n_orders'
+        assert actuals_ts.name == "n_orders"
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length(
         self,
         order_history,
@@ -104,7 +104,7 @@ class TestMakeHorizontalTimeSeries:
         assert len(training_ts) == 7 * train_horizon
         assert len(actuals_ts) == 1
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_of_weekdays(
         self,
         order_history,
@@ -123,7 +123,7 @@ class TestMakeHorizontalTimeSeries:
 
         assert frequency == 7
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_no_long_enough_history1(
         self,
         order_history,
@@ -163,7 +163,7 @@ class TestMakeHorizontalTimeSeries:
 class TestMakeVerticalTimeSeries:
     """Test the `OrderHistory.make_vertical_ts()` method."""
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_wrong_pixel(self, order_history, good_predict_at, train_horizon):
         """A `pixel_id` that is not in the `grid`."""
         with pytest.raises(LookupError):
@@ -173,7 +173,7 @@ class TestMakeVerticalTimeSeries:
                 train_horizon=train_horizon,
             )
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_time_series_are_series(
         self,
         order_history,
@@ -191,11 +191,11 @@ class TestMakeVerticalTimeSeries:
         training_ts, _, actuals_ts = result
 
         assert isinstance(training_ts, pd.Series)
-        assert training_ts.name == 'n_orders'
+        assert training_ts.name == "n_orders"
         assert isinstance(actuals_ts, pd.Series)
-        assert actuals_ts.name == 'n_orders'
+        assert actuals_ts.name == "n_orders"
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length(
         self,
         order_history,
@@ -228,7 +228,7 @@ class TestMakeVerticalTimeSeries:
         assert len(training_ts) == 7 * n_daily_time_steps * train_horizon
         assert len(actuals_ts) == n_daily_time_steps
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_number_of_weekly_time_steps(
         self,
         order_history,
@@ -253,7 +253,7 @@ class TestMakeVerticalTimeSeries:
 
         assert frequency == 7 * n_daily_time_steps
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_no_long_enough_history1(
         self,
         order_history,
@@ -293,7 +293,7 @@ class TestMakeVerticalTimeSeries:
 class TestMakeRealTimeTimeSeries:
     """Test the `OrderHistory.make_realtime_ts()` method."""
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_wrong_pixel(self, order_history, good_predict_at, train_horizon):
         """A `pixel_id` that is not in the `grid`."""
         with pytest.raises(LookupError):
@@ -303,7 +303,7 @@ class TestMakeRealTimeTimeSeries:
                 train_horizon=train_horizon,
             )
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_time_series_are_series(
         self,
         order_history,
@@ -321,11 +321,11 @@ class TestMakeRealTimeTimeSeries:
         training_ts, _, actuals_ts = result
 
         assert isinstance(training_ts, pd.Series)
-        assert training_ts.name == 'n_orders'
+        assert training_ts.name == "n_orders"
         assert isinstance(actuals_ts, pd.Series)
-        assert actuals_ts.name == 'n_orders'
+        assert actuals_ts.name == "n_orders"
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length1(
         self,
         order_history,
@@ -365,7 +365,7 @@ class TestMakeRealTimeTimeSeries:
         assert len(training_ts) == 7 * n_daily_time_steps * train_horizon
         assert len(actuals_ts) == 1
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_time_series_have_correct_length2(
         self,
         order_history,
@@ -408,7 +408,7 @@ class TestMakeRealTimeTimeSeries:
         )
         assert len(actuals_ts) == 1
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_frequency_is_number_number_of_weekly_time_steps(
         self,
         order_history,
@@ -433,7 +433,7 @@ class TestMakeRealTimeTimeSeries:
 
         assert frequency == 7 * n_daily_time_steps
 
-    @pytest.mark.parametrize('train_horizon', test_config.TRAIN_HORIZONS)
+    @pytest.mark.parametrize("train_horizon", test_config.TRAIN_HORIZONS)
     def test_no_long_enough_history1(
         self,
         order_history,

@@ -19,7 +19,7 @@ class TrivialModel(base.ForecastingModelABC):
     "real-time" model here as all give the same prediction for all time steps.
     """
 
-    name = 'trivial'
+    name = "trivial"
 
     def predict(
         self,
@@ -52,29 +52,29 @@ class TrivialModel(base.ForecastingModelABC):
 
         # Sanity checks.
         if frequency != 7:  # pragma: no cover
-            raise RuntimeError('`frequency` should be `7`')
+            raise RuntimeError("`frequency` should be `7`")
         if len(actuals_ts) != 1:  # pragma: no cover
             raise RuntimeError(
-                'the trivial model can only predict one step into the future',
+                "the trivial model can only predict one step into the future",
             )
 
         # The "prediction" is simply `0.0`.
         predictions = pd.DataFrame(
             data={
-                'actual': actuals_ts,
-                'prediction': 0.0,
-                'low80': float('NaN'),
-                'high80': float('NaN'),
-                'low95': float('NaN'),
-                'high95': float('NaN'),
+                "actual": actuals_ts,
+                "prediction": 0.0,
+                "low80": float("NaN"),
+                "high80": float("NaN"),
+                "low95": float("NaN"),
+                "high95": float("NaN"),
             },
             index=actuals_ts.index,
         )
 
         # Sanity checks.
-        if predictions['actual'].isnull().any():  # pragma: no cover
-            raise RuntimeError('missing actuals in trivial model')
+        if predictions["actual"].isnull().any():  # pragma: no cover
+            raise RuntimeError("missing actuals in trivial model")
         if predict_at not in predictions.index:  # pragma: no cover
-            raise RuntimeError('missing prediction for `predict_at`')
+            raise RuntimeError("missing prediction for `predict_at`")
 
         return predictions

@@ -118,5 +118,5 @@ class ForecastingModelABC(abc.ABC):
 
         # ..., however, we put in a loud error, just in case.
         raise RuntimeError(  # pragma: no cover
-            '`Forecast` for `predict_at` was not returned by `*Model.predict()`',
+            "`Forecast` for `predict_at` was not returned by `*Model.predict()`",
         )

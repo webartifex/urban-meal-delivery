@@ -11,7 +11,7 @@ from tests import config as test_config
 from velofy import db
 
 
-MODEL = 'hets'
+MODEL = "hets"
 
 
 @pytest.fixture
@@ -52,7 +52,7 @@ class TestSpecialMethods:
 
         assert (
             result
-            == f'<Forecast: {forecast.prediction} for pixel ({forecast.pixel.n_x}|{forecast.pixel.n_y}) at {forecast.start_at}>'  # noqa:E501
+            == f"<Forecast: {forecast.prediction} for pixel ({forecast.pixel.n_x}|{forecast.pixel.n_y}) at {forecast.start_at}>"  # noqa:E501
         )
 
 
@@ -80,11 +80,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_forecasts_to_pixels_via_pixel_id',
+            match="fk_forecasts_to_pixels_via_pixel_id",
         ):
             db_session.execute(stmt)
 
-    @pytest.mark.parametrize('hour', [10, 23])
+    @pytest.mark.parametrize("hour", [10, 23])
     def test_invalid_start_at_outside_operating_hours(
         self,
         db_session,
@@ -102,7 +102,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='within_operating_hours',
+            match="within_operating_hours",
         ):
             db_session.commit()
 
@@ -113,7 +113,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='must_be_quarters_of_the_hour',
+            match="must_be_quarters_of_the_hour",
         ):
             db_session.commit()
 
@@ -124,7 +124,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='no_seconds',
+            match="no_seconds",
         ):
             db_session.commit()
 
@@ -135,11 +135,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='no_microseconds',
+            match="no_microseconds",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('value', [-1, 0])
+    @pytest.mark.parametrize("value", [-1, 0])
     def test_positive_time_step(self, db_session, forecast, value):
         """Insert an instance with invalid data."""
         forecast.time_step = value
@@ -147,11 +147,11 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='time_step_must_be_positive',
+            match="time_step_must_be_positive",
         ):
             db_session.commit()
 
-    @pytest.mark.parametrize('value', [-1, 0])
+    @pytest.mark.parametrize("value", [-1, 0])
     def test_positive_train_horizon(self, db_session, forecast, value):
         """Insert an instance with invalid data."""
         forecast.train_horizon = value
@@ -159,7 +159,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='training_horizon_must_be_positive',
+            match="training_horizon_must_be_positive",
         ):
             db_session.commit()
 
@@ -170,7 +170,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='actuals_must_be_non_negative',
+            match="actuals_must_be_non_negative",
         ):
             db_session.commit()
 
@@ -196,7 +196,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ci_upper_and_lower_bounds',
+            match="ci_upper_and_lower_bounds",
         ):
             db_session.commit()
 
@@ -209,7 +209,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ci_upper_and_lower_bounds',
+            match="ci_upper_and_lower_bounds",
         ):
             db_session.commit()
 
@@ -222,7 +222,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ci_upper_and_lower_bounds',
+            match="ci_upper_and_lower_bounds",
         ):
             db_session.commit()
 
@@ -235,7 +235,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ci_upper_and_lower_bounds',
+            match="ci_upper_and_lower_bounds",
         ):
             db_session.commit()
 
@@ -249,7 +249,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='prediction_must_be_within_ci',
+            match="prediction_must_be_within_ci",
         ):
             db_session.commit()
 
@@ -267,7 +267,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='prediction_must_be_within_ci',
+            match="prediction_must_be_within_ci",
         ):
             db_session.commit()
 
@@ -281,7 +281,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='prediction_must_be_within_ci',
+            match="prediction_must_be_within_ci",
         ):
             db_session.commit()
 
@@ -299,7 +299,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='prediction_must_be_within_ci',
+            match="prediction_must_be_within_ci",
         ):
             db_session.commit()
 
@@ -313,7 +313,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='prediction_must_be_within_ci',
+            match="prediction_must_be_within_ci",
         ):
             db_session.commit()
 
@@ -331,7 +331,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='prediction_must_be_within_ci',
+            match="prediction_must_be_within_ci",
         ):
             db_session.commit()
 
@@ -345,7 +345,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='prediction_must_be_within_ci',
+            match="prediction_must_be_within_ci",
         ):
             db_session.commit()
 
@@ -363,7 +363,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='prediction_must_be_within_ci',
+            match="prediction_must_be_within_ci",
         ):
             db_session.commit()
 
@@ -385,7 +385,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ci_upper_bound_greater_than_lower_bound',
+            match="ci_upper_bound_greater_than_lower_bound",
         ):
             db_session.commit()
 
@@ -407,7 +407,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ci_upper_bound_greater_than_lower_bound',
+            match="ci_upper_bound_greater_than_lower_bound",
         ):
             db_session.commit()
 
@@ -422,7 +422,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ci95_must_be_wider_than_ci80',
+            match="ci95_must_be_wider_than_ci80",
         ):
             db_session.commit()
 
@@ -440,7 +440,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='ci95_must_be_wider_than_ci80',
+            match="ci95_must_be_wider_than_ci80",
         ):
             db_session.commit()
 
@@ -464,7 +464,7 @@ class TestConstraints:
         )
         db_session.add(another_forecast)
 
-        with pytest.raises(sa_exc.IntegrityError, match='duplicate key value'):
+        with pytest.raises(sa_exc.IntegrityError, match="duplicate key value"):
             db_session.commit()
 
 
@@ -495,16 +495,16 @@ class TestFromDataFrameConstructor:
                 noon_start_at + dt.timedelta(minutes=test_config.LONG_TIME_STEP),
             ],
         )
-        index.name = 'start_at'
+        index.name = "start_at"
 
         return pd.DataFrame(
             data={
-                'actual': (11, 12, 13),
-                'prediction': (11.3, 12.3, 13.3),
-                'low80': (1.123, 1.23, 1.323),
-                'high80': (112.34, 123.4, 132.34),
-                'low95': (0.1123, 0.123, 0.1323),
-                'high95': (1123.45, 1234.5, 1323.45),
+                "actual": (11, 12, 13),
+                "prediction": (11.3, 12.3, 13.3),
+                "low80": (1.123, 1.23, 1.323),
+                "high80": (112.34, 123.4, 132.34),
+                "low95": (0.1123, 0.123, 0.1323),
+                "high95": (1123.45, 1234.5, 1323.45),
             },
             index=index,
         )

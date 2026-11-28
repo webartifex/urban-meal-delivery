@@ -19,7 +19,7 @@ class TestSpecialMethods:
 class TestProperties:
     """Test the properties in `OrderHistory`."""
 
-    @pytest.mark.parametrize('time_step', test_config.TIME_STEPS)
+    @pytest.mark.parametrize("time_step", test_config.TIME_STEPS)
     def test_time_step(self, grid, time_step):
         """Test `OrderHistory.time_step` property."""
         order_history = timify.OrderHistory(grid=grid, time_step=time_step)
@@ -50,9 +50,9 @@ class TestProperties:
         Note: We make `OrderHistory.aggregate_orders()` return a `sentinel`
         that is cached into `OrderHistory._data`, which must be unset first.
         """
-        monkeypatch.setattr(order_history, '_data', None)
+        monkeypatch.setattr(order_history, "_data", None)
         sentinel = object()
-        monkeypatch.setattr(order_history, 'aggregate_orders', lambda: sentinel)
+        monkeypatch.setattr(order_history, "aggregate_orders", lambda: sentinel)
 
         result1 = order_history.totals
         result2 = order_history.totals
@@ -74,7 +74,7 @@ class TestMethods:
         """Test `OrderHistory.first_order_at()` with bad input."""
         with pytest.raises(
             LookupError,
-            match='`pixel_id` is not in the `grid`',
+            match="`pixel_id` is not in the `grid`",
         ):
             order_history.first_order_at(-1)
 
@@ -89,6 +89,6 @@ class TestMethods:
         """Test `OrderHistory.last_order_at()` with bad input."""
         with pytest.raises(
             LookupError,
-            match='`pixel_id` is not in the `grid`',
+            match="`pixel_id` is not in the `grid`",
         ):
             order_history.last_order_at(-1)

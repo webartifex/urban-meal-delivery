@@ -17,7 +17,7 @@ class ReplayedOrderFactory(alchemy.SQLAlchemyModelFactory):
 
     class Meta:
         model = db.ReplayedOrder
-        sqlalchemy_get_or_create = ('simulation_id', 'order_id')
+        sqlalchemy_get_or_create = ("simulation_id", "order_id")
 
     # Generic columns
     # simulation -> set by the `make_replay_order` fixture for better control

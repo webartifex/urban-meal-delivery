@@ -37,7 +37,7 @@ class OrderHistory:
             60 * (config.SERVICE_END - config.SERVICE_START) / time_step
         )
         if n_daily_time_steps != int(n_daily_time_steps):  # pragma: no cover
-            raise RuntimeError('Internal error: configuration has invalid TIME_STEPS')
+            raise RuntimeError("Internal error: configuration has invalid TIME_STEPS")
         self._n_daily_time_steps = int(n_daily_time_steps)
 
         # The `_data` are populated by `.aggregate_orders()`.
@@ -141,7 +141,7 @@ class OrderHistory:
                 """,
             ),
             con=db.connection,
-            index_col=['pixel_id', 'start_at'],
+            index_col=["pixel_id", "start_at"],
         )
 
         if data.empty:
@@ -162,13 +162,13 @@ class OrderHistory:
         gen = (
             (pixel_id, start_at)
             for pixel_id in sorted(data.index.levels[0])
-            for start_at in pd.date_range(start, end, freq=f'{self._time_step}min')
+            for start_at in pd.date_range(start, end, freq=f"{self._time_step}min")
             if config.SERVICE_START <= start_at.hour < config.SERVICE_END
         )
 
         # Re-index `data` filling in `0`s where there is no demand.
         index = pd.MultiIndex.from_tuples(gen)
-        index.names = ['pixel_id', 'start_at']
+        index.names = ["pixel_id", "start_at"]
 
         return data.reindex(index, fill_value=0)
 
@@ -189,13 +189,13 @@ class OrderHistory:
         try:
             intra_pixel = self.totals.loc[pixel_id]
         except KeyError:
-            raise LookupError('The `pixel_id` is not in the `grid`') from None
+            raise LookupError("The `pixel_id` is not in the `grid`") from None
 
-        first_order = intra_pixel[intra_pixel['n_orders'] > 0].index.min()
+        first_order = intra_pixel[intra_pixel["n_orders"] > 0].index.min()
 
         # Sanity check: without an `Order`, the `Pixel` should not exist.
         if first_order is pd.NaT:  # pragma: no cover
-            raise RuntimeError('no orders in the pixel')
+            raise RuntimeError("no orders in the pixel")
 
         # Return a proper `datetime.datetime` object.
         return dt.datetime(
@@ -223,13 +223,13 @@ class OrderHistory:
         try:
             intra_pixel = self.totals.loc[pixel_id]
         except KeyError:
-            raise LookupError('The `pixel_id` is not in the `grid`') from None
+            raise LookupError("The `pixel_id` is not in the `grid`") from None
 
-        last_order = intra_pixel[intra_pixel['n_orders'] > 0].index.max()
+        last_order = intra_pixel[intra_pixel["n_orders"] > 0].index.max()
 
         # Sanity check: without an `Order`, the `Pixel` should not exist.
         if last_order is pd.NaT:  # pragma: no cover
-            raise RuntimeError('no orders in the pixel')
+            raise RuntimeError("no orders in the pixel")
 
         # Return a proper `datetime.datetime` object.
         return dt.datetime(
@@ -270,10 +270,10 @@ class OrderHistory:
         try:
             intra_pixel = self.totals.loc[pixel_id]
         except KeyError:
-            raise LookupError('The `pixel_id` is not in the `grid`') from None
+            raise LookupError("The `pixel_id` is not in the `grid`") from None
 
         if predict_at >= config.CUTOFF_DAY:  # pragma: no cover
-            raise RuntimeError('Internal error: cannot predict beyond the given data')
+            raise RuntimeError("Internal error: cannot predict beyond the given data")
 
         # The first and last training day are just before the `predict_at` day
         # and span exactly `train_horizon` weeks covering only the times of the
@@ -301,14 +301,14 @@ class OrderHistory:
         # Take only the counts at the `predict_at` time.
         training_ts = intra_pixel.loc[
             first_start_at : last_start_at : self._n_daily_time_steps,  # type:ignore
-            'n_orders',
+            "n_orders",
         ]
         if len(training_ts) != frequency * train_horizon:
-            raise RuntimeError('Not enough historic data for `predict_at`')
+            raise RuntimeError("Not enough historic data for `predict_at`")
 
-        actuals_ts = intra_pixel.loc[[predict_at], 'n_orders']
+        actuals_ts = intra_pixel.loc[[predict_at], "n_orders"]
         if not len(actuals_ts):  # pragma: no cover
-            raise LookupError('`predict_at` is not in the order history')
+            raise LookupError("`predict_at` is not in the order history")
 
         return training_ts, frequency, actuals_ts
 
@@ -342,10 +342,10 @@ class OrderHistory:
         try:
             intra_pixel = self.totals.loc[pixel_id]
         except KeyError:
-            raise LookupError('The `pixel_id` is not in the `grid`') from None
+            raise LookupError("The `pixel_id` is not in the `grid`") from None
 
         if predict_day >= config.CUTOFF_DAY.date():  # pragma: no cover
-            raise RuntimeError('Internal error: cannot predict beyond the given data')
+            raise RuntimeError("Internal error: cannot predict beyond the given data")
 
         # The first and last training day are just before the `predict_day`
         # and span exactly `train_horizon` weeks covering all times of the day.
@@ -372,10 +372,10 @@ class OrderHistory:
         # Take all the counts between `first_train_day` and `last_train_day`.
         training_ts = intra_pixel.loc[
             first_start_at:last_start_at,  # type:ignore
-            'n_orders',
+            "n_orders",
         ]
         if len(training_ts) != frequency * train_horizon:
-            raise RuntimeError('Not enough historic data for `predict_day`')
+            raise RuntimeError("Not enough historic data for `predict_day`")
 
         first_prediction_at = dt.datetime(
             predict_day.year,
@@ -394,10 +394,10 @@ class OrderHistory:
 
         actuals_ts = intra_pixel.loc[
             first_prediction_at:last_prediction_at,  # type:ignore
-            'n_orders',
+            "n_orders",
         ]
         if not len(actuals_ts):  # pragma: no cover
-            raise LookupError('`predict_day` is not in the order history')
+            raise LookupError("`predict_day` is not in the order history")
 
         return training_ts, frequency, actuals_ts
 
@@ -431,10 +431,10 @@ class OrderHistory:
         try:
             intra_pixel = self.totals.loc[pixel_id]
         except KeyError:
-            raise LookupError('The `pixel_id` is not in the `grid`') from None
+            raise LookupError("The `pixel_id` is not in the `grid`") from None
 
         if predict_at >= config.CUTOFF_DAY:  # pragma: no cover
-            raise RuntimeError('Internal error: cannot predict beyond the given data')
+            raise RuntimeError("Internal error: cannot predict beyond the given data")
 
         # The first and last training day are just before the `predict_at` day
         # and span exactly `train_horizon` weeks covering all times of the day,
@@ -472,7 +472,7 @@ class OrderHistory:
         # including the ones on the `predict_at` day prior to `predict_at`.
         training_ts = intra_pixel.loc[
             first_start_at:last_start_at,  # type:ignore
-            'n_orders',
+            "n_orders",
         ]
         n_time_steps_on_predict_day = (
             (
@@ -489,11 +489,11 @@ class OrderHistory:
             // self._time_step
         )
         if len(training_ts) != frequency * train_horizon + n_time_steps_on_predict_day:
-            raise RuntimeError('Not enough historic data for `predict_day`')
+            raise RuntimeError("Not enough historic data for `predict_day`")
 
-        actuals_ts = intra_pixel.loc[[predict_at], 'n_orders']
+        actuals_ts = intra_pixel.loc[[predict_at], "n_orders"]
         if not len(actuals_ts):  # pragma: no cover
-            raise LookupError('`predict_at` is not in the order history')
+            raise LookupError("`predict_at` is not in the order history")
 
         return training_ts, frequency, actuals_ts
 
@@ -587,5 +587,5 @@ class OrderHistory:
             return models.TrivialModel(order_history=self)
 
         raise RuntimeError(
-            'no rule for the given average daily demand and training horizon',
+            "no rule for the given average daily demand and training horizon",
         )

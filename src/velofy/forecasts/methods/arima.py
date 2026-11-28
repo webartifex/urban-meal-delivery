@@ -36,18 +36,18 @@ def predict(
     from velofy import init_r  # noqa:F401
 
     # Re-seed R every time it is used to ensure reproducibility.
-    robjects.r('set.seed(42)')
+    robjects.r("set.seed(42)")
 
     if training_ts.isnull().any():
-        raise ValueError('`training_ts` must not contain `NaN` values')
+        raise ValueError("`training_ts` must not contain `NaN` values")
 
     # Copy the data from Python to R.
-    robjects.globalenv['data'] = robjects.r['ts'](
+    robjects.globalenv["data"] = robjects.r["ts"](
         pandas2ri.py2rpy(training_ts),
         frequency=frequency,
     )
 
-    seasonal = 'TRUE' if bool(seasonal_fit) else 'FALSE'
+    seasonal = "TRUE" if bool(seasonal_fit) else "FALSE"
     n_steps_ahead = len(forecast_interval)
 
     # Make the predictions in R.
@@ -68,10 +68,10 @@ def predict(
 
     return forecasts.round(5).rename(
         columns={
-            'Point Forecast': 'prediction',
-            'Lo 80': 'low80',
-            'Hi 80': 'high80',
-            'Lo 95': 'low95',
-            'Hi 95': 'high95',
+            "Point Forecast": "prediction",
+            "Lo 80": "low80",
+            "Hi 80": "high80",
+            "Lo 95": "low95",
+            "Hi 95": "high95",
         },
     )

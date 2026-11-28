@@ -16,18 +16,18 @@ def show_version(ctx: cli_core.Context, _param: Any, value: bool) -> None:
         return
 
     # Mimic the colors of `poetry version`.
-    pkg_name = click.style(velofy.__pkg_name__, fg='green')
-    version = click.style(velofy.__version__, fg='blue')
+    pkg_name = click.style(velofy.__pkg_name__, fg="green")
+    version = click.style(velofy.__version__, fg="blue")
     # Include a warning for development versions.
-    warning = click.style(' (development)', fg='red') if '.dev' in version else ''
-    click.echo(f'{pkg_name}, version {version}{warning}')
+    warning = click.style(" (development)", fg="red") if ".dev" in version else ""
+    click.echo(f"{pkg_name}, version {version}{warning}")
     ctx.exit()
 
 
 @click.group()
 @click.option(
-    '--version',
-    '-V',
+    "--version",
+    "-V",
     is_flag=True,
     callback=show_version,
     is_eager=True,

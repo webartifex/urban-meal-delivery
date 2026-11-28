@@ -19,7 +19,7 @@ class Grid(meta.Base):
     That is configures via the `Grid.side_length` attribute.
     """
 
-    __tablename__ = 'grids'
+    __tablename__ = "grids"
 
     # Columns
     id = sa.Column(
@@ -33,25 +33,25 @@ class Grid(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['city_id'],
-            ['cities.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["city_id"],
+            ["cities.id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         # Each `Grid`, characterized by its `.side_length`,
         # may only exists once for a given `.city`.
-        sa.UniqueConstraint('city_id', 'side_length'),
+        sa.UniqueConstraint("city_id", "side_length"),
         # Needed by a `ForeignKeyConstraint` in `address_pixel_association`.
-        sa.UniqueConstraint('id', 'city_id'),
+        sa.UniqueConstraint("id", "city_id"),
     )
 
     # Relationships
-    city = orm.relationship('City', back_populates='grids')
-    pixels = orm.relationship('Pixel', back_populates='grid')
+    city = orm.relationship("City", back_populates="grids")
+    pixels = orm.relationship("Pixel", back_populates="grid")
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}: {area} sqr. km>'.format(
+        return "<{cls}: {area} sqr. km>".format(
             cls=self.__class__.__name__,
             area=self.pixel_area,
         )

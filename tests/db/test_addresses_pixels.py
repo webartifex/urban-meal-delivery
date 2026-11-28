@@ -60,7 +60,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_pixels_to_addresses_via_address_id_city_id',
+            match="fk_addresses_pixels_to_addresses_via_address_id_city_id",
         ):
             db_session.execute(stmt)
 
@@ -81,7 +81,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_pixels_to_addresses_via_address_id_city_id',
+            match="fk_addresses_pixels_to_addresses_via_address_id_city_id",
         ):
             db_session.execute(stmt)
 
@@ -102,7 +102,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_pixels_to_grids_via_grid_id_city_id',
+            match="fk_addresses_pixels_to_grids_via_grid_id_city_id",
         ):
             db_session.execute(stmt)
 
@@ -116,7 +116,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_addresses_pixels_to_pixels_via_pixel_id_grid_id',
+            match="fk_addresses_pixels_to_pixels_via_pixel_id_grid_id",
         ):
             db_session.execute(stmt)
 
@@ -131,5 +131,5 @@ class TestConstraints:
 
         db_session.add(another_assoc)
 
-        with pytest.raises(sa_exc.IntegrityError, match='duplicate key value'):
+        with pytest.raises(sa_exc.IntegrityError, match="duplicate key value"):
             db_session.commit()

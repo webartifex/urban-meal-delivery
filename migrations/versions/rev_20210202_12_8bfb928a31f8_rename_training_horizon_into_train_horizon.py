@@ -11,13 +11,13 @@ from alembic import op
 from velofy import configuration
 
 
-revision = '8bfb928a31f8'
-down_revision = 'c2af85bada01'
+revision = "8bfb928a31f8"
+down_revision = "c2af85bada01"
 branch_labels = None
 depends_on = None
 
 
-config = configuration.make_config('testing' if os.getenv('TESTING') else 'production')
+config = configuration.make_config("testing" if os.getenv("TESTING") else "production")
 
 
 def upgrade():

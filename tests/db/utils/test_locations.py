@@ -8,7 +8,7 @@ from velofy.db import utils
 # All tests take place in Paris.
 MIN_EASTING, MAX_EASTING = 443_100, 461_200
 MIN_NORTHING, MAX_NORTHING = 5_407_200, 5_416_800
-ZONE = '31U'
+ZONE = "31U"
 
 
 @pytest.fixture
@@ -52,8 +52,8 @@ class TestSpecialMethods:
         """The text representation is a non-literal."""
         result = repr(location)
 
-        assert result.startswith('<Location:')
-        assert result.endswith('>')
+        assert result.startswith("<Location:")
+        assert result.endswith(">")
 
     @pytest.mark.e2e
     def test_coordinates_in_the_text_representation(self, location):
@@ -64,7 +64,7 @@ class TestSpecialMethods:
         """
         result = repr(location)
 
-        parts = result.split(' ')
+        parts = result.split(" ")
         zone = parts[1]
         easting = int(parts[2])
         northing = int(parts[3][:-1])  # strip the ending ">"
@@ -85,7 +85,7 @@ class TestSpecialMethods:
         faraway_location,
     ):
         """Test `Location.__eq__()`."""
-        with pytest.raises(ValueError, match='must be in the same zone'):
+        with pytest.raises(ValueError, match="must be in the same zone"):
             bool(location == faraway_location)
 
     def test_compare_utm_coordinates_to_equal_coordinates(self, location, address):
@@ -156,7 +156,7 @@ class TestProperties:
         result = location.zone_details
 
         zone, band = result
-        assert ZONE == f'{zone}{band}'
+        assert ZONE == f"{zone}{band}"
 
 
 class TestRelateTo:
@@ -166,12 +166,12 @@ class TestRelateTo:
         """The `.relate_to()` method must only be run once."""
         location.relate_to(origin)
 
-        with pytest.raises(RuntimeError, match='once'):
+        with pytest.raises(RuntimeError, match="once"):
             location.relate_to(origin)
 
     def test_call_relate_to_with_wrong_other_type(self, location):
         """`other` must be another `Location`."""
-        with pytest.raises(TypeError, match='Location'):
+        with pytest.raises(TypeError, match="Location"):
             location.relate_to(object())
 
     def test_call_relate_to_with_far_away_other(
@@ -180,17 +180,17 @@ class TestRelateTo:
         faraway_location,
     ):
         """The `other` origin must be in the same UTM zone."""
-        with pytest.raises(ValueError, match='must be in the same zone'):
+        with pytest.raises(ValueError, match="must be in the same zone"):
             location.relate_to(faraway_location)
 
     def test_access_x_without_origin(self, location):
         """`.relate_to()` must be called before `.x` can be accessed."""
-        with pytest.raises(RuntimeError, match='origin to relate to must be set'):
+        with pytest.raises(RuntimeError, match="origin to relate to must be set"):
             int(location.x)
 
     def test_access_y_without_origin(self, location):
         """`.relate_to()` must be called before `.y` can be accessed."""
-        with pytest.raises(RuntimeError, match='origin to relate to must be set'):
+        with pytest.raises(RuntimeError, match="origin to relate to must be set"):
             int(location.y)
 
     def test_origin_must_be_lower_left_when_relating_to_oneself(self, location):

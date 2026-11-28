@@ -12,7 +12,7 @@ from velofy import db
 
 # Disable the --sql option, a.k.a, the "offline mode".
 if context.is_offline_mode():
-    raise NotImplementedError('The --sql option is not implemented in this project')
+    raise NotImplementedError("The --sql option is not implemented in this project")
 
 
 # Set up the default Python logger from the alembic.ini file.
@@ -22,8 +22,8 @@ log_config.fileConfig(context.config.config_file_name)
 def include_object(obj, _name, type_, _reflected, _compare_to):
     """Only include the clean schema into --autogenerate migrations."""
     if (
-        type_ in {'table', 'column'}
-        and hasattr(obj, 'schema')  # => fix for rare edge case
+        type_ in {"table", "column"}
+        and hasattr(obj, "schema")  # => fix for rare edge case
         and obj.schema != velofy_config.CLEAN_SCHEMA
     ):
         return False
@@ -38,10 +38,10 @@ with engine.connect() as connection:
         connection=connection,
         include_object=include_object,
         target_metadata=db.Base.metadata,
-        version_table='{alembic_table}{test_schema}'.format(
+        version_table="{alembic_table}{test_schema}".format(
             alembic_table=velofy_config.ALEMBIC_TABLE,
             test_schema=(
-                f'_{velofy_config.CLEAN_SCHEMA}' if os.getenv('TESTING') else ''
+                f"_{velofy_config.CLEAN_SCHEMA}" if os.getenv("TESTING") else ""
             ),
         ),
         version_table_schema=velofy_config.ALEMBIC_TABLE_SCHEMA,

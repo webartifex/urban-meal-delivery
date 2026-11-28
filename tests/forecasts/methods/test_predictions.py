@@ -38,7 +38,7 @@ def forecast_interval():
     start_ats = pd.date_range(
         first_start_at,
         end_of_day,
-        freq=f'{test_config.LONG_TIME_STEP}min',
+        freq=f"{test_config.LONG_TIME_STEP}min",
     )
     gen = (
         start_at
@@ -47,7 +47,7 @@ def forecast_interval():
     )
 
     index = pd.Index(gen)
-    index.name = 'start_at'
+    index.name = "start_at"
 
     return index
 
@@ -66,14 +66,14 @@ def forecast_time_step():
     )
 
     index = pd.Index([start_at])
-    index.name = 'start_at'
+    index.name = "start_at"
 
     return index
 
 
 @pytest.mark.r
 @pytest.mark.parametrize(
-    'func',
+    "func",
     [arima.predict, ets.predict, extrapolate_season.predict],
 )
 class TestMakePredictions:
@@ -88,7 +88,7 @@ class TestMakePredictions:
         """`training_ts` must not contain `NaN` values."""
         vertical_no_demand.iloc[0] = pd.NA
 
-        with pytest.raises(ValueError, match='must not contain `NaN`'):
+        with pytest.raises(ValueError, match="must not contain `NaN`"):
             func(
                 training_ts=vertical_no_demand,
                 forecast_interval=forecast_interval,
@@ -110,11 +110,11 @@ class TestMakePredictions:
 
         assert isinstance(result, pd.DataFrame)
         assert list(result.columns) == [
-            'prediction',
-            'low80',
-            'high80',
-            'low95',
-            'high95',
+            "prediction",
+            "low80",
+            "high80",
+            "low95",
+            "high95",
         ]
 
     def test_predict_horizontal_time_series_with_no_demand(

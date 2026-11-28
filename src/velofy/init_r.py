@@ -20,8 +20,8 @@ rcallbacks.consolewrite_warnerror = lambda msg: None  # pragma: no cover
 # For clarity and convenience, re-raise the error that results from missing R
 # dependencies with clearer instructions as to how to deal with it.
 try:
-    rpackages.importr('forecast')
-    rpackages.importr('zoo')
+    rpackages.importr("forecast")
+    rpackages.importr("zoo")
 
 except rpackages.PackageNotInstalledError:  # pragma: no cover
     msg = 'See the "research/00_r_dependencies.ipynb" notebook!'

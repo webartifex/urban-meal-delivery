@@ -16,8 +16,8 @@ import warnings
 
 def random_schema_name() -> str:
     """Generate a random PostgreSQL schema name for testing."""
-    return 'temp_{name}'.format(
-        name=''.join(
+    return "temp_{name}".format(
+        name="".join(
             (random.choice(string.ascii_lowercase) for _ in range(10)),  # noqa:S311
         ),
     )
@@ -54,33 +54,33 @@ class Config:
     TRAIN_HORIZONS = [7, 8]
 
     # The demand forecasting methods used in the simulations.
-    FORECASTING_METHODS = ['hets', 'rtarima']
+    FORECASTING_METHODS = ["hets", "rtarima"]
 
     # Colors for the visualizations ins `folium`.
-    RESTAURANT_COLOR = 'red'
-    CUSTOMER_COLOR = 'blue'
-    NEUTRAL_COLOR = 'black'
+    RESTAURANT_COLOR = "red"
+    CUSTOMER_COLOR = "blue"
+    NEUTRAL_COLOR = "black"
 
     # Implementation-specific settings
     # --------------------------------
 
-    DATABASE_URI = os.getenv('DATABASE_URI')
-    GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
+    DATABASE_URI = os.getenv("DATABASE_URI")
+    GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
     # The PostgreSQL schema that holds the tables with the original data.
-    ORIGINAL_SCHEMA = os.getenv('ORIGINAL_SCHEMA') or 'public'
+    ORIGINAL_SCHEMA = os.getenv("ORIGINAL_SCHEMA") or "public"
 
     # The PostgreSQL schema that holds the tables with the cleaned data.
-    CLEAN_SCHEMA = os.getenv('CLEAN_SCHEMA') or 'clean'
+    CLEAN_SCHEMA = os.getenv("CLEAN_SCHEMA") or "clean"
 
-    ALEMBIC_TABLE = 'alembic_version'
-    ALEMBIC_TABLE_SCHEMA = 'public'
+    ALEMBIC_TABLE = "alembic_version"
+    ALEMBIC_TABLE_SCHEMA = "public"
 
-    R_LIBS_PATH = os.getenv('R_LIBS')
+    R_LIBS_PATH = os.getenv("R_LIBS")
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<configuration>'
+        return "<configuration>"
 
 
 class ProductionConfig(Config):
@@ -94,11 +94,11 @@ class TestingConfig(Config):
 
     TESTING = True
 
-    DATABASE_URI = os.getenv('DATABASE_URI_TESTING') or Config.DATABASE_URI
-    CLEAN_SCHEMA = os.getenv('CLEAN_SCHEMA_TESTING') or random_schema_name()
+    DATABASE_URI = os.getenv("DATABASE_URI_TESTING") or Config.DATABASE_URI
+    CLEAN_SCHEMA = os.getenv("CLEAN_SCHEMA_TESTING") or random_schema_name()
 
 
-def make_config(env: str = 'production') -> Config:
+def make_config(env: str = "production") -> Config:
     """Create a new `Config` object.
 
     Args:
@@ -112,9 +112,9 @@ def make_config(env: str = 'production') -> Config:
     """  # noqa:DAR203
     config: Config  # otherwise mypy is confused
 
-    if env.strip().lower() == 'production':
+    if env.strip().lower() == "production":
         config = ProductionConfig()
-    elif env.strip().lower() == 'testing':
+    elif env.strip().lower() == "testing":
         config = TestingConfig()
     else:
         raise ValueError("Must be either 'production' or 'testing'")
@@ -123,22 +123,22 @@ def make_config(env: str = 'production') -> Config:
     # As pytest sets the "TESTING" environment variable explicitly,
     # the warning is only emitted if the code is not run by pytest.
     # We see the bad configuration immediately as all "db" tests fail.
-    if config.DATABASE_URI is None and not os.getenv('TESTING'):
+    if config.DATABASE_URI is None and not os.getenv("TESTING"):
         warnings.warn(
-            'Bad configuration: no DATABASE_URI set in the environment',
+            "Bad configuration: no DATABASE_URI set in the environment",
             stacklevel=2,
         )
 
     # Some functionalities require R and some packages installed.
     # To ensure isolation and reproducibility, the projects keeps the R dependencies
     # in a project-local folder that must be set in the environment.
-    if config.R_LIBS_PATH is None and not os.getenv('TESTING'):
+    if config.R_LIBS_PATH is None and not os.getenv("TESTING"):
         warnings.warn(
-            'Bad configuration: no R_LIBS set in the environment',
+            "Bad configuration: no R_LIBS set in the environment",
             stacklevel=2,
         )
 
     return config
 
 
-config = make_config('testing' if os.getenv('TESTING') else 'production')
+config = make_config("testing" if os.getenv("TESTING") else "production")

@@ -9,16 +9,16 @@ from velofy import db
 def city_data():
     """The data for the one and only `City` object as a `dict`."""
     return {
-        'id': 1,
-        'name': 'Paris',
-        'kml': "<?xml version='1.0' encoding='UTF-8'?> ...",
-        'center_latitude': 48.856614,
-        'center_longitude': 2.3522219,
-        'northeast_latitude': 48.9021449,
-        'northeast_longitude': 2.4699208,
-        'southwest_latitude': 48.815573,
-        'southwest_longitude': 2.225193,
-        'initial_zoom': 12,
+        "id": 1,
+        "name": "Paris",
+        "kml": "<?xml version='1.0' encoding='UTF-8'?> ...",
+        "center_latitude": 48.856614,
+        "center_longitude": 2.3522219,
+        "northeast_latitude": 48.9021449,
+        "northeast_longitude": 2.4699208,
+        "southwest_latitude": 48.815573,
+        "southwest_longitude": 2.225193,
+        "initial_zoom": 12,
     }
 
 
@@ -86,10 +86,10 @@ def pixel(grid):
 def simulation_data(city):
     """The data for the one and only `ReplaySimulation` object as a `dict`."""
     return {
-        'id': 1,
-        'city': city,
-        'strategy': 'best_possible_routing',
-        'run': 0,
+        "id": 1,
+        "city": city,
+        "strategy": "best_possible_routing",
+        "run": 0,
     }
 
 

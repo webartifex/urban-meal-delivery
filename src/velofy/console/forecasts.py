@@ -19,11 +19,11 @@ from velofy.forecasts import timify
 
 
 @click.command()
-@click.argument('city', default='Paris', type=str)
-@click.argument('side_length', default=1000, type=int)
-@click.argument('time_step', default=60, type=int)
-@click.argument('train_horizon', default=8, type=int)
-@decorators.db_revision('8bfb928a31f8')
+@click.argument("city", default="Paris", type=str)
+@click.argument("side_length", default=1000, type=int)
+@click.argument("time_step", default=60, type=int)
+@click.argument("train_horizon", default=8, type=int)
+@decorators.db_revision("8bfb928a31f8")
 def tactical_heuristic(  # noqa:C901
     city: str,
     side_length: int,
@@ -77,21 +77,21 @@ def tactical_heuristic(  # noqa:C901
         if grid.side_length == side_length:
             break
     else:
-        click.echo(f'SIDE_LENGTH must be in {config.GRID_SIDE_LENGTHS}')
+        click.echo(f"SIDE_LENGTH must be in {config.GRID_SIDE_LENGTHS}")
         sys.exit(1)
 
     if time_step not in config.TIME_STEPS:
-        click.echo(f'TIME_STEP must be in {config.TIME_STEPS}')
+        click.echo(f"TIME_STEP must be in {config.TIME_STEPS}")
         sys.exit(1)
 
     if train_horizon not in config.TRAIN_HORIZONS:
-        click.echo(f'TRAIN_HORIZON must be in {config.TRAIN_HORIZONS}')
+        click.echo(f"TRAIN_HORIZON must be in {config.TRAIN_HORIZONS}")
         sys.exit(1)
 
     click.echo(
-        'Parameters: '
-        + f'city={city}, grid.side_length={side_length}, '
-        + f'time_step={time_step}, train_horizon={train_horizon}',
+        "Parameters: "
+        + f"city={city}, grid.side_length={side_length}, "
+        + f"time_step={time_step}, train_horizon={train_horizon}",
     )
 
     # Load the historic order data.
@@ -131,8 +131,8 @@ def tactical_heuristic(  # noqa:C901
                 train_horizon=train_horizon,
             )
             click.echo(
-                f'Predicting pixel #{pixel.id} in {city} '
-                + f'for {predict_day} with {model.name}',
+                f"Predicting pixel #{pixel.id} in {city} "
+                + f"for {predict_day} with {model.name}",
             )
 
             # Only loop over the time steps corresponding to working hours.

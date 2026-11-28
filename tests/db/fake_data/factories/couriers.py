@@ -12,11 +12,11 @@ class CourierFactory(alchemy.SQLAlchemyModelFactory):
 
     class Meta:
         model = db.Courier
-        sqlalchemy_get_or_create = ('id',)
+        sqlalchemy_get_or_create = ("id",)
 
     id = factory.Sequence(lambda num: num)
     created_at = factory.LazyFunction(utils.early_in_the_morning)
-    vehicle = 'bicycle'
+    vehicle = "bicycle"
     historic_speed = 7.89
     capacity = 100
     pay_per_hour = 750

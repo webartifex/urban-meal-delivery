@@ -17,7 +17,7 @@ class TestSpecialMethods:
         """`Courier` has a non-literal text representation."""
         result = repr(courier)
 
-        assert result == f'<Courier(#{courier.id})>'
+        assert result == f"<Courier(#{courier.id})>"
 
 
 @pytest.mark.db
@@ -36,10 +36,10 @@ class TestConstraints:
 
     def test_invalid_vehicle(self, db_session, courier):
         """Insert an instance with invalid data."""
-        courier.vehicle = 'invalid'
+        courier.vehicle = "invalid"
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='available_vehicle_types'):
+        with pytest.raises(sa_exc.IntegrityError, match="available_vehicle_types"):
             db_session.commit()
 
     def test_negative_speed(self, db_session, courier):
@@ -47,7 +47,7 @@ class TestConstraints:
         courier.historic_speed = -1
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_speed'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_speed"):
             db_session.commit()
 
     def test_unrealistic_speed(self, db_session, courier):
@@ -55,7 +55,7 @@ class TestConstraints:
         courier.historic_speed = 999
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_speed'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_speed"):
             db_session.commit()
 
     def test_negative_capacity(self, db_session, courier):
@@ -63,7 +63,7 @@ class TestConstraints:
         courier.capacity = -1
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='capacity_under_200_liters'):
+        with pytest.raises(sa_exc.IntegrityError, match="capacity_under_200_liters"):
             db_session.commit()
 
     def test_too_much_capacity(self, db_session, courier):
@@ -71,7 +71,7 @@ class TestConstraints:
         courier.capacity = 999
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='capacity_under_200_liters'):
+        with pytest.raises(sa_exc.IntegrityError, match="capacity_under_200_liters"):
             db_session.commit()
 
     def test_negative_pay_per_hour(self, db_session, courier):
@@ -79,7 +79,7 @@ class TestConstraints:
         courier.pay_per_hour = -1
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_pay_per_hour'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_pay_per_hour"):
             db_session.commit()
 
     def test_too_much_pay_per_hour(self, db_session, courier):
@@ -87,7 +87,7 @@ class TestConstraints:
         courier.pay_per_hour = 9999
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_pay_per_hour'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_pay_per_hour"):
             db_session.commit()
 
     def test_negative_pay_per_order(self, db_session, courier):
@@ -95,7 +95,7 @@ class TestConstraints:
         courier.pay_per_order = -1
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_pay_per_order'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_pay_per_order"):
             db_session.commit()
 
     def test_too_much_pay_per_order(self, db_session, courier):
@@ -103,5 +103,5 @@ class TestConstraints:
         courier.pay_per_order = 999
         db_session.add(courier)
 
-        with pytest.raises(sa_exc.IntegrityError, match='realistic_pay_per_order'):
+        with pytest.raises(sa_exc.IntegrityError, match="realistic_pay_per_order"):
             db_session.commit()

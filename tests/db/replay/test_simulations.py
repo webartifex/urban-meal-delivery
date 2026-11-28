@@ -12,6 +12,6 @@ class TestSpecialMethods:
         """`ReplaySimulation` has a non-literal text representation."""
         result = repr(simulation)
 
-        assert result.startswith('<ReplaySimulation(')
+        assert result.startswith("<ReplaySimulation(")
         assert simulation.city.name in result
         assert simulation.strategy in result

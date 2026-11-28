@@ -20,7 +20,7 @@ class Forecast(meta.Base):
     the `.model` and `.actual` hold redundant values.
     """
 
-    __tablename__ = 'forecasts'
+    __tablename__ = "forecasts"
 
     # Columns
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -46,10 +46,10 @@ class Forecast(meta.Base):
     # Constraints
     __table_args__ = (
         sa.ForeignKeyConstraint(
-            ['pixel_id'],
-            ['pixels.id'],
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["pixel_id"],
+            ["pixels.id"],
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.CheckConstraint(
             """
@@ -59,26 +59,26 @@ class Forecast(meta.Base):
                     EXTRACT(HOUR FROM start_at) > 22
                 )
             """,
-            name='start_at_must_be_within_operating_hours',
+            name="start_at_must_be_within_operating_hours",
         ),
         sa.CheckConstraint(
-            'CAST(EXTRACT(MINUTES FROM start_at) AS INTEGER) % 15 = 0',
-            name='start_at_minutes_must_be_quarters_of_the_hour',
+            "CAST(EXTRACT(MINUTES FROM start_at) AS INTEGER) % 15 = 0",
+            name="start_at_minutes_must_be_quarters_of_the_hour",
         ),
         sa.CheckConstraint(
-            'EXTRACT(SECONDS FROM start_at) = 0',
-            name='start_at_allows_no_seconds',
+            "EXTRACT(SECONDS FROM start_at) = 0",
+            name="start_at_allows_no_seconds",
         ),
         sa.CheckConstraint(
-            'CAST(EXTRACT(MICROSECONDS FROM start_at) AS INTEGER) % 1000000 = 0',
-            name='start_at_allows_no_microseconds',
+            "CAST(EXTRACT(MICROSECONDS FROM start_at) AS INTEGER) % 1000000 = 0",
+            name="start_at_allows_no_microseconds",
         ),
-        sa.CheckConstraint('time_step > 0', name='time_step_must_be_positive'),
+        sa.CheckConstraint("time_step > 0", name="time_step_must_be_positive"),
         sa.CheckConstraint(
-            'train_horizon > 0',
-            name='training_horizon_must_be_positive',
+            "train_horizon > 0",
+            name="training_horizon_must_be_positive",
         ),
-        sa.CheckConstraint('actual >= 0', name='actuals_must_be_non_negative'),
+        sa.CheckConstraint("actual >= 0", name="actuals_must_be_non_negative"),
         sa.CheckConstraint(
             """
                 NOT (
@@ -91,7 +91,7 @@ class Forecast(meta.Base):
                     low95 IS NOT NULL AND high95 IS NULL
                )
             """,
-            name='ci_upper_and_lower_bounds',
+            name="ci_upper_and_lower_bounds",
         ),
         sa.CheckConstraint(
             """
@@ -105,7 +105,7 @@ class Forecast(meta.Base):
                     prediction > high95
                 )
             """,
-            name='prediction_must_be_within_ci',
+            name="prediction_must_be_within_ci",
         ),
         sa.CheckConstraint(
             """
@@ -115,7 +115,7 @@ class Forecast(meta.Base):
                     low95 > high95
                 )
             """,
-            name='ci_upper_bound_greater_than_lower_bound',
+            name="ci_upper_bound_greater_than_lower_bound",
         ),
         sa.CheckConstraint(
             """
@@ -125,24 +125,24 @@ class Forecast(meta.Base):
                     high80 > high95
                 )
             """,
-            name='ci95_must_be_wider_than_ci80',
+            name="ci95_must_be_wider_than_ci80",
         ),
         # There can be only one prediction per forecasting setting.
         sa.UniqueConstraint(
-            'pixel_id',
-            'start_at',
-            'time_step',
-            'train_horizon',
-            'model',
+            "pixel_id",
+            "start_at",
+            "time_step",
+            "train_horizon",
+            "model",
         ),
     )
 
     # Relationships
-    pixel = orm.relationship('Pixel', back_populates='forecasts')
+    pixel = orm.relationship("Pixel", back_populates="forecasts")
 
     def __repr__(self) -> str:
         """Non-literal text representation."""
-        return '<{cls}: {prediction} for pixel ({n_x}|{n_y}) at {start_at}>'.format(
+        return "<{cls}: {prediction} for pixel ({n_x}|{n_y}) at {start_at}>".format(
             cls=self.__class__.__name__,
             prediction=self.prediction,
             n_x=self.pixel.n_x,
@@ -187,16 +187,16 @@ class Forecast(meta.Base):
 
         for timestamp_idx in data.index:
             start_at = timestamp_idx.to_pydatetime()
-            actual = int(data.loc[timestamp_idx, 'actual'])
-            prediction = float(round(data.loc[timestamp_idx, 'prediction'], 5))
+            actual = int(data.loc[timestamp_idx, "actual"])
+            prediction = float(round(data.loc[timestamp_idx, "prediction"], 5))
 
             # Explicit type casting. SQLAlchemy does not convert
             # `float('NaN')`s into plain `None`s.
 
-            low80 = data.loc[timestamp_idx, 'low80']
-            high80 = data.loc[timestamp_idx, 'high80']
-            low95 = data.loc[timestamp_idx, 'low95']
-            high95 = data.loc[timestamp_idx, 'high95']
+            low80 = data.loc[timestamp_idx, "low80"]
+            high80 = data.loc[timestamp_idx, "high80"]
+            low95 = data.loc[timestamp_idx, "low95"]
+            high95 = data.loc[timestamp_idx, "high95"]
 
             if math.isnan(low80):
                 low80 = None

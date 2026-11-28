@@ -15,7 +15,7 @@ class AddressFactory(alchemy.SQLAlchemyModelFactory):
 
     class Meta:
         model = db.Address
-        sqlalchemy_get_or_create = ('id',)
+        sqlalchemy_get_or_create = ("id",)
 
     id = factory.Sequence(lambda num: num)
     created_at = factory.LazyFunction(utils.early_in_the_morning)
@@ -28,13 +28,13 @@ class AddressFactory(alchemy.SQLAlchemyModelFactory):
 
     # Mimic a Google Maps Place ID with just random characters.
     place_id = factory.LazyFunction(
-        lambda: ''.join(random.choice(string.ascii_lowercase) for _ in range(20)),
+        lambda: "".join(random.choice(string.ascii_lowercase) for _ in range(20)),
     )
 
     # Place the addresses somewhere in downtown Paris.
-    latitude = factory.Faker('coordinate', center=48.855, radius=0.01)
-    longitude = factory.Faker('coordinate', center=2.34, radius=0.03)
+    latitude = factory.Faker("coordinate", center=48.855, radius=0.01)
+    longitude = factory.Faker("coordinate", center=2.34, radius=0.03)
     # city -> set by the `make_address` fixture as there is only one `city`
-    city_name = 'Paris'
+    city_name = "Paris"
     zip_code = factory.LazyFunction(lambda: random.randint(75001, 75020))
-    street = factory.Faker('street_address', locale='fr_FR')
+    street = factory.Faker("street_address", locale="fr_FR")

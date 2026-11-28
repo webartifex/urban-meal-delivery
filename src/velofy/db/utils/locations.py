@@ -50,7 +50,7 @@ class Location:
             >>> Location(43.6532, -79.3832)
             <Location: 17T 630378 4834625>
         """
-        return f'<Location: {self.zone} {self.easting} {self.northing}>'
+        return f"<Location: {self.zone} {self.easting} {self.northing}>"
 
     @property
     def latitude(self) -> float:
@@ -86,7 +86,7 @@ class Location:
     @property
     def zone(self) -> str:
         """The UTM zone of the location."""
-        return f'{self._zone}{self._band}'
+        return f"{self._zone}{self._band}"
 
     @property
     def zone_details(self) -> Tuple[int, str]:
@@ -99,7 +99,7 @@ class Location:
             return NotImplemented
 
         if self.zone != other.zone:
-            raise ValueError('locations must be in the same zone, including the band')
+            raise ValueError("locations must be in the same zone, including the band")
 
         return (self.easting, self.northing) == (other.easting, other.northing)
 
@@ -110,7 +110,7 @@ class Location:
         The origin, which defines the `(0, 0)` coordinate, is set with `.relate_to()`.
         """
         if self._normalized_easting is None:
-            raise RuntimeError('an origin to relate to must be set first')
+            raise RuntimeError("an origin to relate to must be set first")
 
         return self._normalized_easting
 
@@ -121,7 +121,7 @@ class Location:
         The origin, which defines the `(0, 0)` coordinate, is set with `.relate_to()`.
         """
         if self._normalized_northing is None:
-            raise RuntimeError('an origin to relate to must be set first')
+            raise RuntimeError("an origin to relate to must be set first")
 
         return self._normalized_northing
 
@@ -136,13 +136,13 @@ class Location:
         properties, the `other` origin may only be set once!
         """
         if self._normalized_easting is not None:
-            raise RuntimeError('the `other` origin may only be set once')
+            raise RuntimeError("the `other` origin may only be set once")
 
         if not isinstance(other, Location):
-            raise TypeError('`other` is not a `Location` object')
+            raise TypeError("`other` is not a `Location` object")
 
         if self.zone != other.zone:
-            raise ValueError('`other` must be in the same zone, including the band')
+            raise ValueError("`other` must be in the same zone, including the band")
 
         self._normalized_easting = self.easting - other.easting
         self._normalized_northing = self.northing - other.northing

@@ -12,13 +12,13 @@ from alembic import op
 from velofy import configuration
 
 
-revision = '81aa304d7a6e'
-down_revision = 'b4dd0b8903a5'
+revision = "81aa304d7a6e"
+down_revision = "b4dd0b8903a5"
 branch_labels = None
 depends_on = None
 
 
-config = configuration.make_config('testing' if os.getenv('TESTING') else 'production')
+config = configuration.make_config("testing" if os.getenv("TESTING") else "production")
 
 
 def upgrade():
@@ -59,88 +59,88 @@ def upgrade():
 
     # This `UniqueConstraint` is needed by the `replayed_orders` table below.
     op.create_unique_constraint(
-        'uq_orders_on_id_ad_hoc',
-        'orders',
-        ['id', 'ad_hoc'],
+        "uq_orders_on_id_ad_hoc",
+        "orders",
+        ["id", "ad_hoc"],
         schema=config.CLEAN_SCHEMA,
     )
 
     op.create_table(
-        'replay_simulations',
-        sa.Column('id', sa.Integer, autoincrement=True),
-        sa.Column('city_id', sa.SmallInteger, nullable=False),
-        sa.Column('strategy', sa.Unicode(length=100), nullable=False),
-        sa.Column('run', sa.SmallInteger, nullable=False),
-        sa.PrimaryKeyConstraint('id', name=op.f('pk_replay_simulations')),
+        "replay_simulations",
+        sa.Column("id", sa.Integer, autoincrement=True),
+        sa.Column("city_id", sa.SmallInteger, nullable=False),
+        sa.Column("strategy", sa.Unicode(length=100), nullable=False),
+        sa.Column("run", sa.SmallInteger, nullable=False),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_replay_simulations")),
         sa.ForeignKeyConstraint(
-            ['city_id'],
-            [f'{config.CLEAN_SCHEMA}.cities.id'],
-            name=op.f('fk_replay_simulations_to_cities_via_city_id'),
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["city_id"],
+            [f"{config.CLEAN_SCHEMA}.cities.id"],
+            name=op.f("fk_replay_simulations_to_cities_via_city_id"),
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.UniqueConstraint(
-            'city_id',
-            'strategy',
-            'run',
-            name=op.f('uq_replay_simulations_on_city_id_strategy_run'),
+            "city_id",
+            "strategy",
+            "run",
+            name=op.f("uq_replay_simulations_on_city_id_strategy_run"),
         ),
-        sa.CheckConstraint('run >= 0', name=op.f('run_is_a_count')),
+        sa.CheckConstraint("run >= 0", name=op.f("run_is_a_count")),
         schema=config.CLEAN_SCHEMA,
     )
 
     op.create_table(
-        'replayed_orders',
-        sa.Column('simulation_id', sa.Integer, primary_key=True),
-        sa.Column('actual_order_id', sa.Integer, primary_key=True),
-        sa.Column('ad_hoc', sa.Boolean, nullable=False),
-        sa.Column('placed_at', sa.DateTime, nullable=False),
-        sa.Column('scheduled_delivery_at', sa.DateTime),
-        sa.Column('cancelled_at', sa.DateTime),
-        sa.Column('estimated_prep_duration', sa.SmallInteger),
-        sa.Column('restaurant_notified_at', sa.DateTime),
-        sa.Column('restaurant_confirmed_at', sa.DateTime),
-        sa.Column('restaurant_ready_at', sa.DateTime),
-        sa.Column('dispatch_at', sa.DateTime),
-        sa.Column('first_estimated_delivery_at', sa.DateTime),
-        sa.Column('courier_id', sa.Integer),
-        sa.Column('courier_notified_at', sa.DateTime),
-        sa.Column('courier_accepted_at', sa.DateTime),
-        sa.Column('utilization', sa.SmallInteger),
-        sa.Column('reached_pickup_at', sa.DateTime),
-        sa.Column('pickup_at', sa.DateTime),
-        sa.Column('left_pickup_at', sa.DateTime),
-        sa.Column('reached_delivery_at', sa.DateTime),
-        sa.Column('delivery_at', sa.DateTime),
+        "replayed_orders",
+        sa.Column("simulation_id", sa.Integer, primary_key=True),
+        sa.Column("actual_order_id", sa.Integer, primary_key=True),
+        sa.Column("ad_hoc", sa.Boolean, nullable=False),
+        sa.Column("placed_at", sa.DateTime, nullable=False),
+        sa.Column("scheduled_delivery_at", sa.DateTime),
+        sa.Column("cancelled_at", sa.DateTime),
+        sa.Column("estimated_prep_duration", sa.SmallInteger),
+        sa.Column("restaurant_notified_at", sa.DateTime),
+        sa.Column("restaurant_confirmed_at", sa.DateTime),
+        sa.Column("restaurant_ready_at", sa.DateTime),
+        sa.Column("dispatch_at", sa.DateTime),
+        sa.Column("first_estimated_delivery_at", sa.DateTime),
+        sa.Column("courier_id", sa.Integer),
+        sa.Column("courier_notified_at", sa.DateTime),
+        sa.Column("courier_accepted_at", sa.DateTime),
+        sa.Column("utilization", sa.SmallInteger),
+        sa.Column("reached_pickup_at", sa.DateTime),
+        sa.Column("pickup_at", sa.DateTime),
+        sa.Column("left_pickup_at", sa.DateTime),
+        sa.Column("reached_delivery_at", sa.DateTime),
+        sa.Column("delivery_at", sa.DateTime),
         sa.PrimaryKeyConstraint(
-            'simulation_id',
-            'actual_order_id',
-            name=op.f('pk_replayed_orders'),
+            "simulation_id",
+            "actual_order_id",
+            name=op.f("pk_replayed_orders"),
         ),
         sa.ForeignKeyConstraint(
-            ['simulation_id'],
-            [f'{config.CLEAN_SCHEMA}.replay_simulations.id'],
-            name=op.f('fk_replayed_orders_to_replay_simulations_via_simulation_id'),
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["simulation_id"],
+            [f"{config.CLEAN_SCHEMA}.replay_simulations.id"],
+            name=op.f("fk_replayed_orders_to_replay_simulations_via_simulation_id"),
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.ForeignKeyConstraint(
             # Needs the `UniqueConstraint` from above.
-            ['actual_order_id', 'ad_hoc'],
+            ["actual_order_id", "ad_hoc"],
             [
-                f'{config.CLEAN_SCHEMA}.orders.id',
-                f'{config.CLEAN_SCHEMA}.orders.ad_hoc',
+                f"{config.CLEAN_SCHEMA}.orders.id",
+                f"{config.CLEAN_SCHEMA}.orders.ad_hoc",
             ],
-            name=op.f('fk_replayed_orders_to_orders_via_actual_order_id_ad_hoc'),
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            name=op.f("fk_replayed_orders_to_orders_via_actual_order_id_ad_hoc"),
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.ForeignKeyConstraint(
-            ['courier_id'],
-            [f'{config.CLEAN_SCHEMA}.couriers.id'],
-            name=op.f('fk_replayed_orders_to_couriers_via_courier_id'),
-            onupdate='RESTRICT',
-            ondelete='RESTRICT',
+            ["courier_id"],
+            [f"{config.CLEAN_SCHEMA}.couriers.id"],
+            name=op.f("fk_replayed_orders_to_couriers_via_courier_id"),
+            onupdate="RESTRICT",
+            ondelete="RESTRICT",
         ),
         sa.CheckConstraint(
             """
@@ -156,7 +156,7 @@ def upgrade():
                 scheduled_delivery_at IS NOT NULL
             )
             """,
-            name=op.f('either_ad_hoc_or_scheduled_order'),
+            name=op.f("either_ad_hoc_or_scheduled_order"),
         ),
         sa.CheckConstraint(
             """
@@ -169,7 +169,7 @@ def upgrade():
                 )
             )
             """,
-            name=op.f('ad_hoc_orders_within_business_hours'),
+            name=op.f("ad_hoc_orders_within_business_hours"),
         ),
         sa.CheckConstraint(
             """
@@ -190,7 +190,7 @@ def upgrade():
                 )
             )
             """,
-            name=op.f('scheduled_orders_within_business_hours'),
+            name=op.f("scheduled_orders_within_business_hours"),
         ),
         sa.CheckConstraint(
             """
@@ -204,7 +204,7 @@ def upgrade():
                 = 0
             )
             """,
-            name=op.f('scheduled_orders_must_be_at_quarters_of_an_hour'),
+            name=op.f("scheduled_orders_must_be_at_quarters_of_an_hour"),
         ),
         sa.CheckConstraint(
             """
@@ -212,7 +212,7 @@ def upgrade():
                 EXTRACT(EPOCH FROM scheduled_delivery_at - placed_at) < 1800
             )
             """,
-            name=op.f('scheduled_orders_not_within_30_minutes'),
+            name=op.f("scheduled_orders_not_within_30_minutes"),
         ),
         sa.CheckConstraint(
             """
@@ -244,7 +244,7 @@ def upgrade():
                 delivery_at IS NOT NULL
             )
             """,
-            name=op.f('orders_must_be_either_cancelled_or_fully_simulated'),
+            name=op.f("orders_must_be_either_cancelled_or_fully_simulated"),
         ),
         sa.CheckConstraint(
             """
@@ -272,19 +272,19 @@ def upgrade():
                 delivery_at IS NOT NULL
             )
             """,
-            name=op.f('cancellations_may_only_occur_before_pickup'),
+            name=op.f("cancellations_may_only_occur_before_pickup"),
         ),
         sa.CheckConstraint(
-            '0 <= estimated_prep_duration AND estimated_prep_duration <= 3600',
-            name=op.f('estimated_prep_duration_between_0_and_3600'),
+            "0 <= estimated_prep_duration AND estimated_prep_duration <= 3600",
+            name=op.f("estimated_prep_duration_between_0_and_3600"),
         ),
         sa.CheckConstraint(
-            'estimated_prep_duration % 60 = 0',
-            name=op.f('estimated_prep_duration_must_be_whole_minutes'),
+            "estimated_prep_duration % 60 = 0",
+            name=op.f("estimated_prep_duration_must_be_whole_minutes"),
         ),
         sa.CheckConstraint(
-            '0 <= utilization AND utilization <= 100',
-            name=op.f('utilization_between_0_and_100'),
+            "0 <= utilization AND utilization <= 100",
+            name=op.f("utilization_between_0_and_100"),
         ),
         sa.CheckConstraint(
             """
@@ -294,71 +294,71 @@ def upgrade():
                 EXTRACT(HOUR FROM dispatch_at) < 11
             )
             """,
-            name=op.f('orders_dispatched_in_business_hours'),
+            name=op.f("orders_dispatched_in_business_hours"),
         ),
         *(
             sa.CheckConstraint(
                 constraint,
-                name='ordered_timestamps_{index}'.format(index=index),
+                name="ordered_timestamps_{index}".format(index=index),
             )
             for index, constraint in enumerate(
                 (
-                    'placed_at < scheduled_delivery_at',
-                    'placed_at < cancelled_at',
-                    'placed_at < restaurant_notified_at',
-                    'placed_at < restaurant_confirmed_at',
-                    'placed_at < restaurant_ready_at',
-                    'placed_at < dispatch_at',
-                    'placed_at < first_estimated_delivery_at',
-                    'placed_at < courier_notified_at',
-                    'placed_at < courier_accepted_at',
-                    'placed_at < reached_pickup_at',
-                    'placed_at < pickup_at',
-                    'placed_at < left_pickup_at',
-                    'placed_at < reached_delivery_at',
-                    'placed_at < delivery_at',
-                    'cancelled_at > restaurant_notified_at',
-                    'cancelled_at > restaurant_confirmed_at',
-                    'cancelled_at > restaurant_ready_at',
-                    'cancelled_at > dispatch_at',
-                    'cancelled_at > courier_notified_at',
-                    'cancelled_at > courier_accepted_at',
-                    'cancelled_at > reached_pickup_at',
-                    'restaurant_notified_at < restaurant_confirmed_at',
-                    'restaurant_notified_at < restaurant_ready_at',
-                    'restaurant_notified_at < pickup_at',
-                    'restaurant_confirmed_at < restaurant_ready_at',
-                    'restaurant_confirmed_at < pickup_at',
-                    'restaurant_ready_at < pickup_at',
-                    'dispatch_at < first_estimated_delivery_at',
-                    'dispatch_at < courier_notified_at',
-                    'dispatch_at < courier_accepted_at',
-                    'dispatch_at < reached_pickup_at',
-                    'dispatch_at < pickup_at',
-                    'dispatch_at < left_pickup_at',
-                    'dispatch_at < reached_delivery_at',
-                    'dispatch_at < delivery_at',
-                    'courier_notified_at < courier_accepted_at',
-                    'courier_notified_at < reached_pickup_at',
-                    'courier_notified_at < pickup_at',
-                    'courier_notified_at < left_pickup_at',
-                    'courier_notified_at < reached_delivery_at',
-                    'courier_notified_at < delivery_at',
-                    'courier_accepted_at < reached_pickup_at',
-                    'courier_accepted_at < pickup_at',
-                    'courier_accepted_at < left_pickup_at',
-                    'courier_accepted_at < reached_delivery_at',
-                    'courier_accepted_at < delivery_at',
-                    'reached_pickup_at < pickup_at',
-                    'reached_pickup_at < left_pickup_at',
-                    'reached_pickup_at < reached_delivery_at',
-                    'reached_pickup_at < delivery_at',
-                    'pickup_at < left_pickup_at',
-                    'pickup_at < reached_delivery_at',
-                    'pickup_at < delivery_at',
-                    'left_pickup_at < reached_delivery_at',
-                    'left_pickup_at < delivery_at',
-                    'reached_delivery_at < delivery_at',
+                    "placed_at < scheduled_delivery_at",
+                    "placed_at < cancelled_at",
+                    "placed_at < restaurant_notified_at",
+                    "placed_at < restaurant_confirmed_at",
+                    "placed_at < restaurant_ready_at",
+                    "placed_at < dispatch_at",
+                    "placed_at < first_estimated_delivery_at",
+                    "placed_at < courier_notified_at",
+                    "placed_at < courier_accepted_at",
+                    "placed_at < reached_pickup_at",
+                    "placed_at < pickup_at",
+                    "placed_at < left_pickup_at",
+                    "placed_at < reached_delivery_at",
+                    "placed_at < delivery_at",
+                    "cancelled_at > restaurant_notified_at",
+                    "cancelled_at > restaurant_confirmed_at",
+                    "cancelled_at > restaurant_ready_at",
+                    "cancelled_at > dispatch_at",
+                    "cancelled_at > courier_notified_at",
+                    "cancelled_at > courier_accepted_at",
+                    "cancelled_at > reached_pickup_at",
+                    "restaurant_notified_at < restaurant_confirmed_at",
+                    "restaurant_notified_at < restaurant_ready_at",
+                    "restaurant_notified_at < pickup_at",
+                    "restaurant_confirmed_at < restaurant_ready_at",
+                    "restaurant_confirmed_at < pickup_at",
+                    "restaurant_ready_at < pickup_at",
+                    "dispatch_at < first_estimated_delivery_at",
+                    "dispatch_at < courier_notified_at",
+                    "dispatch_at < courier_accepted_at",
+                    "dispatch_at < reached_pickup_at",
+                    "dispatch_at < pickup_at",
+                    "dispatch_at < left_pickup_at",
+                    "dispatch_at < reached_delivery_at",
+                    "dispatch_at < delivery_at",
+                    "courier_notified_at < courier_accepted_at",
+                    "courier_notified_at < reached_pickup_at",
+                    "courier_notified_at < pickup_at",
+                    "courier_notified_at < left_pickup_at",
+                    "courier_notified_at < reached_delivery_at",
+                    "courier_notified_at < delivery_at",
+                    "courier_accepted_at < reached_pickup_at",
+                    "courier_accepted_at < pickup_at",
+                    "courier_accepted_at < left_pickup_at",
+                    "courier_accepted_at < reached_delivery_at",
+                    "courier_accepted_at < delivery_at",
+                    "reached_pickup_at < pickup_at",
+                    "reached_pickup_at < left_pickup_at",
+                    "reached_pickup_at < reached_delivery_at",
+                    "reached_pickup_at < delivery_at",
+                    "pickup_at < left_pickup_at",
+                    "pickup_at < reached_delivery_at",
+                    "pickup_at < delivery_at",
+                    "left_pickup_at < reached_delivery_at",
+                    "left_pickup_at < delivery_at",
+                    "reached_delivery_at < delivery_at",
                 ),
             )
         ),
@@ -366,23 +366,23 @@ def upgrade():
     )
 
     op.create_index(
-        op.f('ix_replay_simulations_on_city_id'),
-        'replay_simulations',
-        ['city_id'],
+        op.f("ix_replay_simulations_on_city_id"),
+        "replay_simulations",
+        ["city_id"],
         unique=False,
         schema=config.CLEAN_SCHEMA,
     )
     op.create_index(
-        op.f('ix_replay_simulations_on_strategy'),
-        'replay_simulations',
-        ['strategy'],
+        op.f("ix_replay_simulations_on_strategy"),
+        "replay_simulations",
+        ["strategy"],
         unique=False,
         schema=config.CLEAN_SCHEMA,
     )
     op.create_index(
-        op.f('ix_replayed_orders_on_courier_id'),
-        'replayed_orders',
-        ['courier_id'],
+        op.f("ix_replayed_orders_on_courier_id"),
+        "replayed_orders",
+        ["courier_id"],
         unique=False,
         schema=config.CLEAN_SCHEMA,
     )
@@ -390,11 +390,11 @@ def upgrade():
 
 def downgrade():
     """Downgrade to revision b4dd0b8903a5."""
-    op.drop_table('replayed_orders', schema=config.CLEAN_SCHEMA)
-    op.drop_table('replay_simulations', schema=config.CLEAN_SCHEMA)
+    op.drop_table("replayed_orders", schema=config.CLEAN_SCHEMA)
+    op.drop_table("replay_simulations", schema=config.CLEAN_SCHEMA)
     op.drop_constraint(
-        'uq_orders_on_id_ad_hoc',
-        'orders',
+        "uq_orders_on_id_ad_hoc",
+        "orders",
         type_=None,
         schema=config.CLEAN_SCHEMA,
     )

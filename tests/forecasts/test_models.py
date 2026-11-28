@@ -17,7 +17,7 @@ MODELS = (
 )
 
 
-@pytest.mark.parametrize('model_cls', MODELS)
+@pytest.mark.parametrize("model_cls", MODELS)
 class TestGenericForecastingModelProperties:
     """Test everything all concrete `*Model`s have in common.
 
@@ -81,12 +81,12 @@ class TestGenericForecastingModelProperties:
 
         assert isinstance(result, pd.DataFrame)
         assert list(result.columns) == [
-            'actual',
-            'prediction',
-            'low80',
-            'high80',
-            'low95',
-            'high95',
+            "actual",
+            "prediction",
+            "low80",
+            "high80",
+            "low95",
+            "high95",
         ]
 
     @pytest.mark.r
@@ -131,8 +131,8 @@ class TestGenericForecastingModelProperties:
             train_horizon=test_config.LONG_TRAIN_HORIZON,
         )
 
-        assert not result['actual'].isnull().any()
-        assert not result['prediction'].isnull().any()
+        assert not result["actual"].isnull().any()
+        assert not result["prediction"].isnull().any()
 
     @pytest.mark.db
     @pytest.mark.r

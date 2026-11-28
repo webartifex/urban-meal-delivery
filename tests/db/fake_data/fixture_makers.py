@@ -130,7 +130,7 @@ def make_replay_order(make_order, simulation):
         """
         if scheduled:
             if order and order.ad_hoc is False:
-                raise RuntimeError('`order` must be scheduled')
+                raise RuntimeError("`order` must be scheduled")
             elif order is None:
                 order = make_order(scheduled=True)
         elif order is None:

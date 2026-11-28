@@ -129,13 +129,13 @@ from alembic import op
 from velofy import configuration
 
 
-revision = 'e86290e7305e'
-down_revision = '26711cd3f9b9'
+revision = "e86290e7305e"
+down_revision = "26711cd3f9b9"
 branch_labels = None
 depends_on = None
 
 
-config = configuration.make_config('testing' if os.getenv('TESTING') else 'production')
+config = configuration.make_config("testing" if os.getenv("TESTING") else "production")
 
 
 def upgrade():
@@ -347,26 +347,26 @@ def upgrade():
         """,
     )
     op.create_unique_constraint(
-        'uq_restaurants_on_id_address_id',
-        'restaurants',
-        ['id', 'address_id'],
+        "uq_restaurants_on_id_address_id",
+        "restaurants",
+        ["id", "address_id"],
         schema=config.CLEAN_SCHEMA,
     )
     op.create_foreign_key(
-        op.f('fk_orders_to_restaurants_via_restaurant_id_pickup_address_id'),
-        'orders',
-        'restaurants',
-        ['restaurant_id', 'pickup_address_id'],
-        ['id', 'address_id'],
+        op.f("fk_orders_to_restaurants_via_restaurant_id_pickup_address_id"),
+        "orders",
+        "restaurants",
+        ["restaurant_id", "pickup_address_id"],
+        ["id", "address_id"],
         source_schema=config.CLEAN_SCHEMA,
         referent_schema=config.CLEAN_SCHEMA,
-        onupdate='RESTRICT',
-        ondelete='RESTRICT',
+        onupdate="RESTRICT",
+        ondelete="RESTRICT",
     )
     op.drop_constraint(
-        'fk_orders_to_restaurants_via_restaurant_id',
-        'orders',
-        type_='foreignkey',
+        "fk_orders_to_restaurants_via_restaurant_id",
+        "orders",
+        type_="foreignkey",
         schema=config.CLEAN_SCHEMA,
     )
 
@@ -374,25 +374,25 @@ def upgrade():
 def downgrade():
     """Downgrade to revision 26711cd3f9b9."""
     op.create_foreign_key(
-        op.f('fk_orders_to_restaurants_via_restaurant_id'),
-        'orders',
-        'restaurants',
-        ['restaurant_id'],
-        ['id'],
+        op.f("fk_orders_to_restaurants_via_restaurant_id"),
+        "orders",
+        "restaurants",
+        ["restaurant_id"],
+        ["id"],
         source_schema=config.CLEAN_SCHEMA,
         referent_schema=config.CLEAN_SCHEMA,
-        onupdate='RESTRICT',
-        ondelete='RESTRICT',
+        onupdate="RESTRICT",
+        ondelete="RESTRICT",
     )
     op.drop_constraint(
-        'fk_orders_to_restaurants_via_restaurant_id_pickup_address_id',
-        'orders',
-        type_='foreignkey',
+        "fk_orders_to_restaurants_via_restaurant_id_pickup_address_id",
+        "orders",
+        type_="foreignkey",
         schema=config.CLEAN_SCHEMA,
     )
     op.drop_constraint(
-        'uq_restaurants_on_id_address_id',
-        'restaurants',
-        type_='unique',
+        "uq_restaurants_on_id_address_id",
+        "restaurants",
+        type_="unique",
         schema=config.CLEAN_SCHEMA,
     )

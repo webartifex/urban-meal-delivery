@@ -18,7 +18,7 @@ class TestSpecialMethods:
         """`Grid` has a non-literal text representation."""
         result = repr(grid)
 
-        assert result == f'<Grid: {grid.pixel_area} sqr. km>'
+        assert result == f"<Grid: {grid.pixel_area} sqr. km>"
 
 
 @pytest.mark.db
@@ -45,7 +45,7 @@ class TestConstraints:
 
         with pytest.raises(
             sa_exc.IntegrityError,
-            match='fk_grids_to_cities_via_city_id',
+            match="fk_grids_to_cities_via_city_id",
         ):
             db_session.execute(stmt)
 
@@ -58,7 +58,7 @@ class TestConstraints:
         another_grid = db.Grid(city=grid.city, side_length=grid.side_length)
         db_session.add(another_grid)
 
-        with pytest.raises(sa_exc.IntegrityError, match='duplicate key value'):
+        with pytest.raises(sa_exc.IntegrityError, match="duplicate key value"):
             db_session.commit()
 
 
@@ -86,7 +86,7 @@ class TestGridification:
         query = (
             mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501
         )
-        monkeypatch.setattr(db, 'session', mock)
+        monkeypatch.setattr(db, "session", mock)
 
         return query
 
@@ -205,7 +205,7 @@ class TestGridification:
 
     @pytest.mark.db
     @pytest.mark.no_cover
-    @pytest.mark.parametrize('side_length', [250, 500, 1_000, 2_000, 4_000, 8_000])
+    @pytest.mark.parametrize("side_length", [250, 500, 1_000, 2_000, 4_000, 8_000])
     def test_make_random_grids(
         self,
         db_session,

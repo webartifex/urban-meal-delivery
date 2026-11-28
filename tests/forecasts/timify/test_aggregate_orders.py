@@ -29,7 +29,7 @@ class TestAggregateOrders:
         query = (
             mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501
         )
-        monkeypatch.setattr(db, 'session', mock)
+        monkeypatch.setattr(db, "session", mock)
 
         return query
 
@@ -95,9 +95,9 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 12 rows holding `1`s.
         assert len(result) == 12
-        assert result['n_orders'].min() == 1
-        assert result['n_orders'].max() == 1
-        assert result['n_orders'].sum() == 12
+        assert result["n_orders"].min() == 1
+        assert result["n_orders"].max() == 1
+        assert result["n_orders"].sum() == 12
 
     def test_evenly_distributed_ad_hoc_orders_with_no_demand_late(
         self,
@@ -130,10 +130,10 @@ class TestAggregateOrders:
         # Even though there are only 10 orders, there are 12 rows in the `DataFrame`.
         # That is so as `0`s are filled in for hours without any demand at the end.
         assert len(result) == 12
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result.iloc[:10]['n_orders'].sum() == 10
-        assert result.iloc[10:]['n_orders'].sum() == 0
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result.iloc[:10]["n_orders"].sum() == 10
+        assert result.iloc[10:]["n_orders"].sum() == 0
 
     def test_one_ad_hoc_order_every_other_hour(
         self,
@@ -165,9 +165,9 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 12 rows, 6 holding `0`s, and 6 holding `1`s.
         assert len(result) == 12
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result['n_orders'].sum() == 6
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result["n_orders"].sum() == 6
 
     def test_one_ad_hoc_and_one_pre_order(
         self,
@@ -208,9 +208,9 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 12 rows, 11 holding `0`s, and one holding a `1`.
         assert len(result) == 12
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result['n_orders'].sum() == 1
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result["n_orders"].sum() == 1
 
     def test_evenly_distributed_ad_hoc_orders_with_half_hour_time_steps(
         self,
@@ -246,10 +246,10 @@ class TestAggregateOrders:
         # The resulting `DataFrame` has 24 rows for the 24 30-minute time steps.
         # The rows' values are `0` and `1` alternating.
         assert len(result) == 24
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result.iloc[::2]['n_orders'].sum() == 12
-        assert result.iloc[1::2]['n_orders'].sum() == 0
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result.iloc[::2]["n_orders"].sum() == 12
+        assert result.iloc[1::2]["n_orders"].sum() == 0
 
     def test_ad_hoc_orders_over_two_days(
         self,
@@ -300,9 +300,9 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 24 rows, 12 for each day.
         assert len(result) == 24
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 1
-        assert result['n_orders'].sum() == 18
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 1
+        assert result["n_orders"].sum() == 18
 
     @pytest.fixture
     def two_pixel_grid(
@@ -403,6 +403,6 @@ class TestAggregateOrders:
 
         # The resulting `DataFrame` has 24 rows, 12 for each pixel.
         assert len(result) == 24
-        assert result['n_orders'].min() == 0
-        assert result['n_orders'].max() == 2
-        assert result['n_orders'].sum() == 30
+        assert result["n_orders"].min() == 0
+        assert result["n_orders"].max() == 2
+        assert result["n_orders"].sum() == 30
