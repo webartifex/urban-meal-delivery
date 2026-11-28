@@ -40,7 +40,7 @@ class Customer(meta.Base):
         """Shortcut to the `...city.map` object."""
         return self.orders[0].pickup_address.city.map
 
-    def draw(  # noqa:C901
+    def draw(  # noqa:C901,PLR0912
         self,
         restaurants: bool = True,
         order_counts: bool = False,  # pragma: no cover
@@ -140,13 +140,11 @@ class Customer(meta.Base):
                     .all()
                 )
                 if len(restaurants) == 1:  # type:ignore
-                    tooltip = (
-                        f"{restaurants[0].name} (#{restaurants[0].id})"  # type:ignore
-                    )
+                    restaurant = restaurants[0]  # type:ignore
+                    tooltip = f"{restaurant.name} (#{restaurant.id})"
                 else:
-                    tooltip = "Restaurants " + ", ".join(
-                        f"#{restaurant.id}" for restaurant in restaurants  # type:ignore
-                    )
+                    ids = ", ".join(f"#{r.id}" for r in restaurants)  # type:ignore
+                    tooltip = f"Restaurants {ids}"
 
                 if order_counts:
                     n_orders = (

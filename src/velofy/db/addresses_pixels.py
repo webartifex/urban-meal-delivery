@@ -13,7 +13,7 @@ class AddressPixelAssociation(meta.Base):
     updates the `city_id` and `grid_id` columns.
 
     Further info:
-        https://docs.sqlalchemy.org/en/stable/orm/basic_relationships.html#association-object  # noqa:E501
+        https://docs.sqlalchemy.org/en/stable/orm/basic_relationships.html#association-object
     """
 
     __tablename__ = "addresses_pixels"

@@ -134,7 +134,6 @@ class HorizontalSMAModel(base.ForecastingModelABC):
         if (
             predictions[["actual", "prediction"]].isnull().any().any()
         ):  # pragma: no cover
-
             raise RuntimeError("missing predictions in hsma model")
         if predict_at not in predictions.index:  # pragma: no cover
             raise RuntimeError("missing prediction for `predict_at`")

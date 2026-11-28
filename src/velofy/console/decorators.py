@@ -20,7 +20,7 @@ def db_revision(
             """Do not execute the `func` if the revision does not match."""
             if not os.getenv("TESTING"):
                 result = subprocess.run(  # noqa:S603,S607
-                    ["alembic", "current"],
+                    ["alembic", "current"],  # noqa:S607
                     capture_output=True,
                     check=False,
                     encoding="utf8",

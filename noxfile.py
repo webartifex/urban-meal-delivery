@@ -2,8 +2,8 @@
 
 By default, `uv run nox` runs the sessions that assure code quality:
 
-- "format": Format the source files with `autoflake`, `black`, and `isort`
-- "lint": Lint the source files with `flake8` and `isort`
+- "format": Format source files with `autoflake`, `black`, `flynt`, `isort`, and `ruff`
+- "lint": Lint source files with `flake8`, `isort`, and `ruff`
 - "test": Run the test suite with `pytest`
 - "doctest": Check if code snippets in the docstrings run
 
@@ -141,7 +141,7 @@ os.makedirs(tempfile.tempdir, exist_ok=True)
 
 @nox.session(name="format", python=MAIN_PYTHON)
 def format_code(session: Session) -> None:
-    """Format source files with `autoflake`, `black`, and `isort`.
+    """Format source files with `autoflake`, `black`, `flynt`, `isort`, and `ruff`.
 
     If no extra arguments are provided, all source files are formatted.
     Otherwise, they are interpreted as paths the formatters work on recursively.
@@ -150,7 +150,7 @@ def format_code(session: Session) -> None:
 
     # The formatters do not need `velofy` installed
     # because they work on the source files directly
-    install_pinned(session, "autoflake", "black", "isort")
+    install_pinned(session, "autoflake", "black", "flynt", "isort", "ruff")
 
     # Interpret extra arguments as `locations` of source files
     locations = session.posargs or SRC_LOCATIONS
@@ -160,16 +160,23 @@ def format_code(session: Session) -> None:
     session.run("autoflake", "--version")
     session.run("autoflake", *locations)
 
+    session.run("flynt", "--version")
+    session.run("flynt", *locations)
+
     session.run("black", "--version")
     session.run("black", *locations)
 
     session.run("isort", "--version")
     session.run("isort", *locations)
 
+    session.run("ruff", "--version")
+    session.run("ruff", "check", "--fix-only", *locations)
+    session.run("ruff", "format", *locations)
+
 
 @nox.session(name="lint", python=MAIN_PYTHON)
 def lint_code(session: Session) -> None:
-    """Lint source files with `flake8` and `isort`.
+    """Lint source files with `flake8`, `isort`, and `ruff`.
 
     If no extra arguments are provided, all source files are linted.
     Otherwise, they are interpreted as paths the linters work on recursively.
@@ -201,6 +208,7 @@ def lint_code(session: Session) -> None:
         # 'mypy',
         "pep8-naming",
         "pydoclint[flake8]",
+        "ruff",
     )
 
     # Interpret extra arguments as `locations` of source files
@@ -214,12 +222,15 @@ def lint_code(session: Session) -> None:
     session.run("isort", "--version")
     session.run("isort", "--check-only", *locations)
 
+    session.run("ruff", "--version")
+    session.run("ruff", "check", *locations)
+
     # TODO: Include `mypy` once it passes
     #  - Only for the *.py files to be packaged
     #  - It then needs the developed package and its dependencies installed
     #    as it treats missing packages as `Any` and reports false successes
-    # session.run('mypy', '--version')
-    # session.run('mypy', PACKAGE_LOCATION)
+    # session.run('mypy', '--version')  # noqa:ERA001
+    # session.run('mypy', PACKAGE_LOCATION)  # noqa:ERA001
 
 
 @nox.session(name="test", python=MAIN_PYTHON)
@@ -306,7 +317,7 @@ def build_docs(session: Session) -> None:
     # Verify that all external links return 200 OK
     session.run("sphinx-build", "-b", "linkcheck", DOCS_LOCATION, DOCS_BUILD)
 
-    print(f"Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html")
+    session.log(f"Docs are available at {os.getcwd()}/{DOCS_BUILD}index.html")
 
 
 @nox.session(name="venv", python=MAIN_PYTHON, venv_backend="none")

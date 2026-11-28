@@ -216,14 +216,14 @@ class City(meta.Base):
             row[0]
             for row in db.session.execute(
                 sa.text(
-                    f"""  -- # noqa:S608
+                    f"""
                     SELECT DISTINCT
                         {config.CLEAN_SCHEMA}.addresses.zip_code
                     FROM
                         {config.CLEAN_SCHEMA}.addresses AS addresses
                     WHERE
                         {config.CLEAN_SCHEMA}.addresses.city_id = {self.id};
-                    """,
+                    """,  # noqa:S608
                 ),
             )
         )

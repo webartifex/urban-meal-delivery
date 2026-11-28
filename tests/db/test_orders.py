@@ -1097,7 +1097,6 @@ def test_make_random_orders(  # noqa:C901
     """
     # Generate a large number of `Order`s to obtain a large variance of data.
     for _ in range(1_000):
-
         # Ad-hoc `Order`s are far more common than pre-orders.
         scheduled = random.choice([True, False, False, False, False])
 
