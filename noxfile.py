@@ -229,8 +229,8 @@ def lint_code(session: Session) -> None:
     #  - Only for the *.py files to be packaged
     #  - It then needs the developed package and its dependencies installed
     #    as it treats missing packages as `Any` and reports false successes
-    # session.run('mypy', '--version')
-    # session.run('mypy', PACKAGE_LOCATION)
+    # session.run('mypy', '--version')  # noqa:ERA001
+    # session.run('mypy', PACKAGE_LOCATION)  # noqa:ERA001
 
 
 @nox.session(name="test", python=MAIN_PYTHON)

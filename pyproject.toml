@@ -478,6 +478,8 @@ select = [
     # =======================================
     # Violations not covered by `flake8` above
     # =======================================
+    # eradicate => no commented-out code
+    "ERA",
     # isort => imports are sorted
     "I",
     # flake8-print => no `print()`
