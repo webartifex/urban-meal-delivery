@@ -124,13 +124,19 @@ def make_config(env: str = 'production') -> Config:
     # the warning is only emitted if the code is not run by pytest.
     # We see the bad configuration immediately as all "db" tests fail.
     if config.DATABASE_URI is None and not os.getenv('TESTING'):
-        warnings.warn('Bad configuration: no DATABASE_URI set in the environment')
+        warnings.warn(
+            'Bad configuration: no DATABASE_URI set in the environment',
+            stacklevel=2,
+        )
 
     # Some functionalities require R and some packages installed.
     # To ensure isolation and reproducibility, the projects keeps the R dependencies
     # in a project-local folder that must be set in the environment.
     if config.R_LIBS_PATH is None and not os.getenv('TESTING'):
-        warnings.warn('Bad configuration: no R_LIBS set in the environment')
+        warnings.warn(
+            'Bad configuration: no R_LIBS set in the environment',
+            stacklevel=2,
+        )
 
     return config
 

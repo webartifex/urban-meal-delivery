@@ -56,7 +56,7 @@ def predict(
         f"""
         as.data.frame(
             forecast(
-                ets(data, model = "{model:s}"),
+                ets(data, model = "{model:s}"),  # noqa:B907
                 h = {n_steps_ahead:d}
             )
         )

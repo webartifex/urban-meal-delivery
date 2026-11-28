@@ -185,6 +185,7 @@ def lint_code(session: Session) -> None:
         'flake8-bandit',
         'flake8-black',
         'flake8-broken-line',
+        'flake8-bugbear',
         'flake8-pyproject',
         'flake8-pytest-style',
         'isort',

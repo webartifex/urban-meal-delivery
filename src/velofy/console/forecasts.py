@@ -90,7 +90,7 @@ def tactical_heuristic(  # noqa:C901
 
     click.echo(
         'Parameters: '
-        + f'city="{city}", grid.side_length={side_length}, '
+        + f'city={city}, grid.side_length={side_length}, '
         + f'time_step={time_step}, train_horizon={train_horizon}',
     )
 
