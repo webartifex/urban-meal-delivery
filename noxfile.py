@@ -91,7 +91,7 @@ SRC_LOCATIONS = (
     f"{DOCS_LOCATION}conf.py",
     "migrations/env.py",
     "migrations/versions/",
-    "noxfile.py",
+    "./noxfile.py",  # The "./" keeps `bandit` from warning about its module name
     "scripts/",
     PACKAGE_LOCATION,
     TESTS_LOCATION,
