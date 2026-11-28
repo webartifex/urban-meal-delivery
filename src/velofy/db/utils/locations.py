@@ -46,6 +46,9 @@ class Location:
 
         Convention is {ZONE} {EASTING} {NORTHING}.
 
+        Returns:
+            text representation in the UTM system
+
         Example:
             >>> Location(43.6532, -79.3832)
             <Location: 17T 630378 4834625>

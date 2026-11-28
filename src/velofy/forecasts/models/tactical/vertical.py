@@ -42,7 +42,8 @@ class VerticalARIMAModel(base.ForecastingModelABC):
                 confidence intervals (i.e, the four "low/high/80/95" columns);
                 contains several rows, including one for the `predict_at` time step
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: an internal consistency check fails
         """
         # Generate the historic (and vertical) order time series.
         training_ts, frequency, actuals_ts = self._order_history.make_vertical_ts(

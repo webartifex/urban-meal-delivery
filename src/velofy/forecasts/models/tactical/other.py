@@ -40,7 +40,8 @@ class TrivialModel(base.ForecastingModelABC):
                 this model does not support confidence intervals;
                 contains one row for the `predict_at` time step
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: an internal consistency check fails
         """
         # Generate the historic order time series mainly to check if a valid
         # `training_ts` exists (i.e., the demand history is long enough).

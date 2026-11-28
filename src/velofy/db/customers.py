@@ -31,7 +31,7 @@ class Customer(meta.Base):
 
         Returns:
             self: enabling method chaining
-        """  # noqa:D402,DAR203
+        """  # noqa:D402
         self.orders[0].pickup_address.city.clear_map()
         return self
 

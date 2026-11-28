@@ -107,7 +107,7 @@ def make_config(env: str = "production") -> Config:
 
     Raises:
         ValueError: if `env` is not as specified
-    """  # noqa:DAR203
+    """
     config: Config  # otherwise mypy is confused
 
     if env.strip().lower() == "production":

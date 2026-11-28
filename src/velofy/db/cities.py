@@ -101,7 +101,7 @@ class City(meta.Base):
 
         Returns:
             self: enabling method chaining
-        """  # noqa:DAR203  note:d334120e
+        """  # note:d334120e
         self._map = folium.Map(
             location=[self.center_latitude, self.center_longitude],
             zoom_start=self.initial_zoom,

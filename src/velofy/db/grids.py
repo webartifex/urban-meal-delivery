@@ -116,7 +116,7 @@ class Grid(meta.Base):
 
         Returns:
             self: enabling method chaining
-        """  # noqa:D402,DAR203
+        """  # noqa:D402
         self.city.clear_map()
         return self
 

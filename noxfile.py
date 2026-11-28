@@ -200,6 +200,7 @@ def lint_code(session: Session) -> None:
         # TODO: See comment on `mypy` below
         # 'mypy',
         "pep8-naming",
+        "pydoclint[flake8]",
     )
 
     # Interpret extra arguments as `locations` of source files

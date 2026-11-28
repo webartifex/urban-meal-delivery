@@ -107,6 +107,7 @@ dev = [
     "flake8-unused-arguments (>=0.0.14,<0.1.0)",
     "mypy (>=2.4.1,<3.0.0)",
     "pep8-naming (>=0.15.1,<0.16.0)",
+    "pydoclint[flake8] (>=0.12.0,<0.13.0)",
 ]
 
 test = [
@@ -193,12 +194,8 @@ select = [
     "E", "W",
     # pyflakes => basic errors
     "F4", "F5", "F6", "F7", "F8", "F9",
-    # ========================
-    # wemake-python-styleguide
-    # Source: https://wemake-python-stylegui.de/en/latest/pages/usage/violations/index.html
-    # ========================
-    # darglint => docstring matches implementation
-    "DAR0", "DAR1", "DAR2", "DAR3", "DAR4", "DAR5",
+    # pydoclint => docstring matches implementation
+    "DOC",
     # flake8-bandit => common security issues
     "S1", "S2", "S3", "S4", "S5", "S6", "S7",
     # flake8-broken-line => no \ to end a line
@@ -243,6 +240,8 @@ ignore = []
 extend-ignore = [
     # Too long line => duplicate with E501.
     "B950",
+    # PEP 257 documents the arguments of `__init__()` in its own docstring.
+    "DOC301",
     # Comply with black's style.
     # Source: https://github.com/psf/black/blob/master/docs/compatible_configs.md#flake8
     "E203", "W503",
@@ -264,11 +263,11 @@ per-file-ignores = [
     "migrations/versions/*.py:ANN0,ANN2,S608",
     # Type annotations are not strictly enforced.
     "noxfile.py:ANN0,ANN2",
-    # - ANN0, ANN2 => Type annotations are not strictly enforced.
+    # - ANN0, ANN2, DOC106, DOC107 => Type annotations are not strictly enforced.
     # - D106 => The `Meta` class inside the factory_boy models do not need a docstring.
     # - S101 => `assert` statements are ok in the test suite.
     # - S311 => The `random` module is not used for cryptography.
-    "tests/*.py:ANN0,ANN2,D106,S101,S311",
+    "tests/*.py:ANN0,ANN2,D106,DOC106,DOC107,S101,S311",
 ]
 
 # Explicitly set mccabe's maximum complexity to 10 as recommended by
@@ -283,8 +282,11 @@ max-line-length = 88
 # Preview the code lines that cause errors.
 show-source = true
 
-# darglint
-strictness = "long"
+# pydoclint
+style = "google"
+arg-type-hints-in-docstring = false
+check-return-types = false
+check-yield-types = false
 # flake8-docstrings
 docstring-convention = "google"
 # flake8-quotes

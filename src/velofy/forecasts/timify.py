@@ -27,7 +27,8 @@ class OrderHistory:
             grid: pixel grid used to aggregate orders spatially
             time_step: interval length (in minutes) into which orders are aggregated
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: the configuration has invalid `TIME_STEPS`
         """
         self._grid = grid
         self._time_step = time_step
@@ -183,8 +184,7 @@ class OrderHistory:
 
         Raises:
             LookupError: `pixel_id` not in `grid`
-
-        # noqa:DAR401 RuntimeError
+            RuntimeError: no orders in the pixel
         """
         try:
             intra_pixel = self.totals.loc[pixel_id]
@@ -217,8 +217,7 @@ class OrderHistory:
 
         Raises:
             LookupError: `pixel_id` not in `grid`
-
-        # noqa:DAR401 RuntimeError
+            RuntimeError: no orders in the pixel
         """
         try:
             intra_pixel = self.totals.loc[pixel_id]
@@ -565,7 +564,8 @@ class OrderHistory:
         Returns:
             most promising forecasting `*Model`
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: no rule for the average daily demand and training horizon
         """
         add = self.avg_daily_demand(
             pixel_id=pixel_id,

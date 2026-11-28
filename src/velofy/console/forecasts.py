@@ -24,7 +24,7 @@ from velofy.forecasts import timify
 @click.argument("time_step", default=60, type=int)
 @click.argument("train_horizon", default=8, type=int)
 @decorators.db_revision("8bfb928a31f8")
-def tactical_heuristic(  # noqa:C901
+def tactical_heuristic(  # noqa:C901,DOC001
     city: str,
     side_length: int,
     time_step: int,

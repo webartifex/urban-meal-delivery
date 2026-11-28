@@ -40,7 +40,8 @@ class HorizontalETSModel(base.ForecastingModelABC):
                 confidence intervals (i.e, the four "low/high/80/95" columns);
                 contains one row for the `predict_at` time step
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: an internal consistency check fails
         """
         # Generate the historic (and horizontal) order time series.
         training_ts, frequency, actuals_ts = self._order_history.make_horizontal_ts(
@@ -96,7 +97,8 @@ class HorizontalSMAModel(base.ForecastingModelABC):
                 this model does not support confidence intervals;
                 contains one row for the `predict_at` time step
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: an internal consistency check fails
         """
         # Generate the historic (and horizontal) order time series.
         training_ts, frequency, actuals_ts = self._order_history.make_horizontal_ts(

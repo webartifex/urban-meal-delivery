@@ -802,6 +802,15 @@ wheels = [
 ]
 
 [[package]]
+name = "docstring-parser-fork"
+version = "0.0.16"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/04/ce/48b17c6c24d0af112f73721a90fac245450e548b82b53169260720f60d07/docstring_parser_fork-0.0.16.tar.gz", hash = "sha256:9ecf861ceab8b87d1297a71001c15a1956ad02e87434ee6473643a5988094f7c", size = 36360, upload-time = "2026-07-03T07:27:46.668Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c1/69/427c34e61827818942b48ececd7c892b8f58ba4ce4cfc89ba9fd8dbe8a8d/docstring_parser_fork-0.0.16-py3-none-any.whl", hash = "sha256:c024c97af582d6acf85a14f0b332b3a2ab08626648d251c25e47191f33064386", size = 25253, upload-time = "2026-07-03T07:27:45.591Z" },
+]
+
+[[package]]
 name = "docutils"
 version = "0.23"
 source = { registry = "https://pypi.org/simple" }
@@ -2649,6 +2658,24 @@ wheels = [
 ]
 
 [[package]]
+name = "pydoclint"
+version = "0.12.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "docstring-parser-fork" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9b/f7/ae03ad83f47dfee8a468544e4b77b254940299b15f9710e00450a5034729/pydoclint-0.12.0.tar.gz", hash = "sha256:ac061ae24381547e41d5a45044a1f88c87a54541b67ec959bd5160c69256482c", size = 255216, upload-time = "2026-10-28T06:48:34.428Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6e/45/9aea4898fcfbb3ed973eb23f6b83c677bb8bcecb59e9681fae6da82bb3be/pydoclint-0.12.0-py3-none-any.whl", hash = "sha256:28f5763a865cb19b54883dfe68b05b01d2c2fc2e8d59dcf424cc345bc976a689", size = 99545, upload-time = "2026-10-28T06:48:33.34Z" },
+]
+
+[package.optional-dependencies]
+flake8 = [
+    { name = "flake8" },
+]
+
+[[package]]
 name = "pydocstyle"
 version = "6.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3737,6 +3764,7 @@ dev = [
     { name = "nox" },
     { name = "pep8-naming" },
     { name = "pre-commit" },
+    { name = "pydoclint", extra = ["flake8"] },
 ]
 docs = [
     { name = "sphinx" },
@@ -3800,6 +3828,7 @@ dev = [
     { name = "nox", specifier = ">=2026.10.20" },
     { name = "pep8-naming", specifier = ">=0.15.1,<0.16.0" },
     { name = "pre-commit", specifier = ">=4.7.0,<5.0.0" },
+    { name = "pydoclint", extras = ["flake8"], specifier = ">=0.12.0,<0.13.0" },
 ]
 docs = [
     { name = "sphinx", specifier = ">=9.2.0,<10.0.0" },

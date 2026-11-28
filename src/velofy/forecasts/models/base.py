@@ -52,7 +52,7 @@ class ForecastingModelABC(abc.ABC):
             actuals, predictions, and possibly 80%/95% confidence intervals;
                 includes a row for the time step starting at `predict_at` and
                 may contain further rows for other time steps on the same day
-        """  # noqa:DAR202
+        """
 
     def make_forecast(
         self,
@@ -78,7 +78,8 @@ class ForecastingModelABC(abc.ABC):
             actual, prediction, and possibly 80%/95% confidence intervals
                 for the time step starting at `predict_at`
 
-        # noqa:DAR401 RuntimeError
+        Raises:
+            RuntimeError: `*Model.predict()` misses the prediction for `predict_at`
         """
         if (
             cached_forecast := db.session.query(db.Forecast)
