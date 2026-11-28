@@ -203,8 +203,6 @@ select = [
     "T100",
     # flake8-docstrings => PEP257 compliance
     "D1", "D2", "D3", "D4",
-    # flake8-rst-docstrings => valid rst in docstrings
-    "RST2", "RST3", "RST4",
     # flake8-string-format => unify usage of str.format()
     "P1", "P2", "P3",
     # flake8-quotes => use double quotes everywhere (complying with black)
@@ -236,10 +234,6 @@ extend-ignore = [
     "E203", "W503",
     # Let's not do `@pytest.mark.no_cover()` instead of `@pytest.mark.no_cover`.
     "PT023",
-    # Google's Python Style Guide is not reStructuredText
-    # until after being processed by Sphinx Napoleon.
-    # Source: https://github.com/peterjc/flake8-rst-docstrings/issues/17
-    "RST201", "RST203", "RST210", "RST213", "RST301",
 ]
 
 per-file-ignores = [

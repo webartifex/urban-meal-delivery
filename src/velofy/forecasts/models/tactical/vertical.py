@@ -7,7 +7,7 @@ Thus, the training time series have a `frequency` of the number of weekdays,
 steps, the `frequency` becomes `7 * 12` (= operating hours from 11 am to 11 pm),
 which is `84`. Vertical `*Model`s train the forecasting `methods` on a seasonally
 decomposed time series internally.
-"""  # noqa:RST215
+"""
 
 import datetime as dt
 

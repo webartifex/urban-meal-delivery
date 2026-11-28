@@ -182,7 +182,7 @@ class Forecast(meta.Base):
 
         Returns:
             forecasts: the `data` as `Forecast` objects
-        """  # noqa:RST215
+        """
         forecasts = []
 
         for timestamp_idx in data.index:

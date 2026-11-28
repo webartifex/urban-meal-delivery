@@ -150,7 +150,7 @@ class TestChooseTacticalModel:
         self,
         order_history,
         good_pixel_id,
-        predict_at,  # noqa:RST215
+        predict_at,
     ):
         """For `train_horizon` values not included in the rule-based system ...
 

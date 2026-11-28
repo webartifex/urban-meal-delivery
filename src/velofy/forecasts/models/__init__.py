@@ -27,7 +27,7 @@ predictive routing strategy employed by the UDP.
 
 A future `planning` sub-package will contain the `*Model`s used to plan the
 `Courier`'s shifts a week ahead.
-"""  # noqa:RST215
+"""
 
 from velofy.forecasts.models.base import ForecastingModelABC
 from velofy.forecasts.models.tactical.horizontal import HorizontalETSModel

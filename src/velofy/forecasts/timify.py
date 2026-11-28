@@ -566,7 +566,7 @@ class OrderHistory:
             most promising forecasting `*Model`
 
         # noqa:DAR401 RuntimeError
-        """  # noqa:RST215
+        """
         add = self.avg_daily_demand(
             pixel_id=pixel_id,
             predict_day=predict_day,

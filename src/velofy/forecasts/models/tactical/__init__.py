@@ -13,4 +13,4 @@ Urban Delivery Platform".
 For the paper check:
     https://code.webartifex.de/alexander/velofy-forecasting/src/branch/main/paper.pdf
     https://www.sciencedirect.com/science/article/pii/S1366554520307936
-"""  # noqa:RST215
+"""

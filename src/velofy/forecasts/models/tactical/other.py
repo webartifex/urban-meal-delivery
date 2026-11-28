@@ -2,7 +2,7 @@
 
 ... that cannot be classified into either "horizontal", "vertical",
 or "real-time".
-"""  # noqa:RST215
+"""
 
 import datetime as dt
 

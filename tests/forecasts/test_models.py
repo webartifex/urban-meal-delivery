@@ -29,7 +29,7 @@ class TestGenericForecastingModelProperties:
     So, these test cases are more like integration tests conceptually.
 
     Also, note that some `methods.*.predict()` functions use R behind the scenes.
-    """  # noqa:RST215
+    """
 
     def test_create_model(self, model_cls, order_history):
         """Test instantiation of a new and concrete `*Model` object."""
@@ -52,7 +52,7 @@ class TestGenericForecastingModelProperties:
 
         Important: this test case has a side effect that is visible
         across the different parametrized versions of this case!
-        """  # noqa:RST215
+        """
         model = model_cls(order_history=order_history)
 
         assert model.name not in self.unique_model_names
@@ -70,7 +70,7 @@ class TestGenericForecastingModelProperties:
         """`*Model.predict()` returns a `pd.DataFrame` ...
 
         ... with known columns.
-        """  # noqa:RST215
+        """
         model = model_cls(order_history=order_history)
 
         result = model.predict(
@@ -100,7 +100,7 @@ class TestGenericForecastingModelProperties:
         """`*Model.predict()` returns a row for ...
 
         ... the time step starting at `predict_at`.
-        """  # noqa:RST215
+        """
         model = model_cls(order_history=order_history)
 
         result = model.predict(
@@ -122,7 +122,7 @@ class TestGenericForecastingModelProperties:
         """`*Model.predict()` returns a `pd.DataFrame` ...
 
         ... where the "actual" and "prediction" columns must not be empty.
-        """  # noqa:RST215
+        """
         model = model_cls(order_history=order_history)
 
         result = model.predict(
@@ -144,7 +144,7 @@ class TestGenericForecastingModelProperties:
         pixel,
         predict_at,
     ):
-        """`*Model.make_forecast()` returns a `Forecast` object."""  # noqa:RST215
+        """`*Model.make_forecast()` returns a `Forecast` object."""
         model = model_cls(order_history=order_history)
 
         result = model.make_forecast(
@@ -168,7 +168,7 @@ class TestGenericForecastingModelProperties:
         pixel,
         predict_at,
     ):
-        """`*Model.make_forecast()` caches the `Forecast` object."""  # noqa:RST215
+        """`*Model.make_forecast()` caches the `Forecast` object."""
         model = model_cls(order_history=order_history)
 
         assert db_session.query(db.Forecast).count() == 0

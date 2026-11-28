@@ -64,7 +64,7 @@ def tactical_heuristic(  # noqa:C901
     TIME_STEP: length of one time step in minutes; defaults to `60`
 
     TRAIN_HORIZON: length of the training horizon; defaults to `8`
-    """  # noqa:D412,D417,RST215
+    """  # noqa:D412,D417
     # Input validation.
 
     try:

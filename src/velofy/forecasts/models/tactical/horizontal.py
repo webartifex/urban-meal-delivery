@@ -5,7 +5,7 @@ corresponding to the same time of day as the one to be predicted (i.e., the
 one starting at `predict_at`). Then, they make a prediction for only one day
 into the future. Thus, the training time series have a `frequency` of `7`, the
 number of days in a week.
-"""  # noqa:RST215
+"""
 
 import datetime as dt
 

@@ -7,7 +7,7 @@ the one starting at `predict_at`). Thus, the training time series have a
 day. For example, for 60-minute time steps, the `frequency` becomes `7 * 12`
 (= operating hours from 11 am to 11 pm), which is `84`. Real-time `*Model`s
 train the forecasting `methods` on a seasonally decomposed time series internally.
-"""  # noqa:RST215
+"""
 
 import datetime as dt
 
