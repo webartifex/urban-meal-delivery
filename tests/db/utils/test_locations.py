@@ -98,7 +98,7 @@ class TestSpecialMethods:
 
     def test_compare_utm_coordinates_to_themselves(self, location):
         """Test `Location.__eq__()`."""
-        result = location == location
+        result = location == location  # noqa:PLR0124
 
         assert result is True
 

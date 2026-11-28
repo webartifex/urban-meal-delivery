@@ -254,7 +254,7 @@ class Path(meta.Base):
 
         return points
 
-    def draw(
+    def draw(  # noqa:PLR0913
         self,
         *,
         reverse: bool = False,

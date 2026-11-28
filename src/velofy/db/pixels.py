@@ -141,7 +141,7 @@ class Pixel(meta.Base):
         """Shortcut to the `.city.map` object."""
         return self.grid.city.map
 
-    def draw(  # noqa:C901
+    def draw(  # noqa:C901,PLR0912
         self,
         restaurants: bool = True,
         order_counts: bool = False,  # pragma: no cover

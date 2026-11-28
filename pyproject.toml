@@ -482,6 +482,8 @@ select = [
     "ERA",
     # isort => imports are sorted
     "I",
+    # Pylint's refactoring rules => simpler and smaller functions
+    "PLR",
     # flake8-print => no `print()`
     "T20",
 ]
@@ -489,6 +491,8 @@ select = [
 extend-ignore = [
     # Let the formatter handle trailing commas.
     "COM812",
+    # Thresholds like the ones in the maps read better as literals.
+    "PLR2004",
     # Let's not do `@pytest.mark.no_cover()` instead of `@pytest.mark.no_cover`.
     "PT023",
     # TODOs need neither an author nor an issue.
@@ -511,9 +515,10 @@ extend-ignore = [
 "scripts/**" = ["T20"]
 # - ANN0, ANN2 => Type annotations are not strictly enforced.
 # - D106 => The `Meta` class inside the factory_boy models do not need a docstring.
+# - PLR0913, PLR0917 => `pytest` passes fixtures as arguments.
 # - S101 => `assert` statements are ok in the test suite.
 # - S311 => The `random` module is not used for cryptography.
-"tests/**/*.py" = ["ANN0", "ANN2", "D106", "S101", "S311"]
+"tests/**/*.py" = ["ANN0", "ANN2", "D106", "PLR0913", "PLR0917", "S101", "S311"]
 
 
 [tool.ruff.lint.flake8-pytest-style]  # aligned with [tool.flake8] above
