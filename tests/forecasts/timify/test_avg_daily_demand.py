@@ -105,17 +105,17 @@ class TestChooseTacticalModel:
         data.loc[:, 'n_orders'] = 1
 
         # ... and we set three additional time steps per day to `0`.
-        data.loc[  # noqa:ECE001
+        data.loc[
             # all `Pixel`s, all `Order`s in time steps starting at 11 am
             (slice(None), slice(data.index.levels[1][0], None, 12)),
             'n_orders',
         ] = 0
-        data.loc[  # noqa:ECE001
+        data.loc[
             # all `Pixel`s, all `Order`s in time steps starting at 12 am
             (slice(None), slice(data.index.levels[1][1], None, 12)),
             'n_orders',
         ] = 0
-        data.loc[  # noqa:ECE001
+        data.loc[
             # all `Pixel`s, all `Order`s in time steps starting at 1 pm
             (slice(None), slice(data.index.levels[1][2], None, 12)),
             'n_orders',

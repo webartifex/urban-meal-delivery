@@ -393,7 +393,7 @@ class TestSyncWithGoogleMaps:
     @pytest.fixture
     def api_response(self):
         """A typical (shortened) response by the Google Maps Directions API."""
-        return [  # noqa:ECE001
+        return [
             {
                 'bounds': {
                     'northeast': {'lat': 44.8554284, 'lng': -0.5652398},

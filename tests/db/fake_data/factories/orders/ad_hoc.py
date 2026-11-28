@@ -187,7 +187,7 @@ class AdHocOrderFactory(alchemy.SQLAlchemyModelFactory):
             (obj.delivery_address.latitude, obj.delivery_address.longitude),
         ).meters,
     )
-    logged_avg_speed = factory.LazyAttribute(  # noqa:ECE001
+    logged_avg_speed = factory.LazyAttribute(
         lambda obj: round(
             (
                 obj.logged_avg_speed_distance

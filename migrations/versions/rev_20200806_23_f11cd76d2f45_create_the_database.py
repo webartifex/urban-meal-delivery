@@ -24,7 +24,7 @@ config = configuration.make_config('testing' if os.getenv('TESTING') else 'produ
 def upgrade():
     """Upgrade to revision f11cd76d2f45."""
     op.execute(f'CREATE SCHEMA {config.CLEAN_SCHEMA};')
-    op.create_table(  # noqa:ECE001
+    op.create_table(
         'cities',
         sa.Column('id', sa.SmallInteger(), autoincrement=False, nullable=False),
         sa.Column('name', sa.Unicode(length=10), nullable=False),
@@ -52,7 +52,7 @@ def upgrade():
         ),
         schema=config.CLEAN_SCHEMA,
     )
-    op.create_table(  # noqa:ECE001
+    op.create_table(
         'couriers',
         sa.Column('id', sa.Integer(), autoincrement=False, nullable=False),
         sa.Column('created_at', sa.DateTime(), nullable=False),
@@ -103,7 +103,7 @@ def upgrade():
         sa.PrimaryKeyConstraint('id', name=op.f('pk_customers')),
         schema=config.CLEAN_SCHEMA,
     )
-    op.create_table(  # noqa:ECE001
+    op.create_table(
         'addresses',
         sa.Column('id', sa.Integer(), autoincrement=False, nullable=False),
         sa.Column('primary_id', sa.Integer(), nullable=False),
@@ -190,7 +190,7 @@ def upgrade():
         unique=False,
         schema=config.CLEAN_SCHEMA,
     )
-    op.create_table(  # noqa:ECE001
+    op.create_table(
         'restaurants',
         sa.Column('id', sa.SmallInteger(), autoincrement=False, nullable=False),
         sa.Column('created_at', sa.DateTime(), nullable=False),
@@ -231,7 +231,7 @@ def upgrade():
         unique=False,
         schema=config.CLEAN_SCHEMA,
     )
-    op.create_table(  # noqa:ECE001
+    op.create_table(
         'orders',
         sa.Column('id', sa.Integer(), autoincrement=False, nullable=False),
         sa.Column('delivery_id', sa.Integer(), nullable=True),

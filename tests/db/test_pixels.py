@@ -121,7 +121,7 @@ class TestProperties:
     def _restaurants_mock(self, mocker, monkeypatch, restaurant):
         """A `Mock` whose `.return_value` is `[restaurant]`."""
         mock = mocker.Mock()
-        query = (  # noqa:ECE001
+        query = (
             mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501
         )
         query.return_value = [restaurant]

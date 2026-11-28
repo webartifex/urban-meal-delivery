@@ -83,7 +83,7 @@ class TestGridification:
         all considered `Order.pickup_address` attributes for some orders.
         """
         mock = mocker.Mock()
-        query = (  # noqa:ECE001
+        query = (
             mock.query.return_value.join.return_value.filter.return_value.all  # noqa:E501
         )
         monkeypatch.setattr(db, 'session', mock)
