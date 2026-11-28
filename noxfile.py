@@ -187,6 +187,7 @@ def lint_code(session: Session) -> None:
         'flake8-broken-line',
         'flake8-bugbear',
         'flake8-commas',
+        'flake8-comprehensions',
         'flake8-pyproject',
         'flake8-pytest-style',
         'isort',
