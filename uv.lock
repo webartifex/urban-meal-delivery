@@ -1021,6 +1021,16 @@ wheels = [
 ]
 
 [[package]]
+name = "flake8-quotes"
+version = "3.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+    { name = "setuptools" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/dd/57/a173e3eb86072b7ee77650aca496b15d6886367d257f58ea9de5276e330a/flake8-quotes-3.4.0.tar.gz", hash = "sha256:aad8492fb710a2d3eabe68c5f86a1428de650c8484127e14c43d0504ba30276c", size = 14107, upload-time = "2024-02-10T21:58:22.357Z" }
+
+[[package]]
 name = "folium"
 version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3157,6 +3167,15 @@ wheels = [
 ]
 
 [[package]]
+name = "setuptools"
+version = "84.2.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/70/b3/c19426f783614d625699a4b247faf628ea9ab1db228674491767b417f9e1/setuptools-84.2.1.tar.gz", hash = "sha256:3ff8b3b5492a0aa66960f4419365a86b84e013070d4313e4d4a6894f5d64d6bc", size = 1230289, upload-time = "2026-10-20T19:01:37.742Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ef/55/6dc6d6bb953bdfc52519a0059592c52b6e3b8ad51cf8256dffceb55b0610/setuptools-84.2.1-py3-none-any.whl", hash = "sha256:ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2", size = 876263, upload-time = "2026-10-20T19:01:35.678Z" },
+]
+
+[[package]]
 name = "shapely"
 version = "2.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3660,6 +3679,7 @@ dev = [
     { name = "flake8-docstrings" },
     { name = "flake8-pyproject" },
     { name = "flake8-pytest-style" },
+    { name = "flake8-quotes" },
     { name = "isort" },
     { name = "mypy" },
     { name = "nox" },
@@ -3718,6 +3738,7 @@ dev = [
     { name = "flake8-docstrings", specifier = ">=1.7.0,<2.0.0" },
     { name = "flake8-pyproject", specifier = ">=1.2.4,<2.0.0" },
     { name = "flake8-pytest-style", specifier = ">=2.2.0,<3.0.0" },
+    { name = "flake8-quotes", specifier = ">=3.4.0,<4.0.0" },
     { name = "isort", specifier = ">=9.0.2,<10.0.0" },
     { name = "mypy", specifier = ">=2.4.1,<3.0.0" },
     { name = "nox", specifier = ">=2026.10.20" },
