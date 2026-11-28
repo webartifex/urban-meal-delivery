@@ -203,8 +203,6 @@ select = [
     "T100",
     # flake8-docstrings => PEP257 compliance
     "D1", "D2", "D3", "D4",
-    # flake8-eradicate => no commented out code
-    "E800",
     # flake8-isort => isort would make changes
     "I0",
     # flake8-rst-docstrings => valid rst in docstrings
@@ -281,8 +279,6 @@ show-source = true
 strictness = "long"
 # flake8-docstrings
 docstring-convention = "google"
-# flake8-eradicate
-eradicate-aggressive = true
 
 # ==============================
 # flake8-pytest-style's settings
