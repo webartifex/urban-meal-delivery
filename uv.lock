@@ -1043,6 +1043,19 @@ wheels = [
 ]
 
 [[package]]
+name = "flake8-todos"
+version = "0.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+    { name = "pycodestyle" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/88/69/e4ecde7f50c3c874046f03dc7bda67d7be8e7cc28380f3f44c07456b45ad/flake8_todos-0.3.1.tar.gz", hash = "sha256:942101a08f831d7d9f7d864d86169f3bcfaf8b6d56a004c0280eb51725266b16", size = 7851, upload-time = "2024-02-09T08:50:45.907Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ba/8e/805907f920d171eda033ac825d23595072a1c04dd716106c8bc8ec9eec9e/flake8_todos-0.3.1-py3-none-any.whl", hash = "sha256:0b4faca80bec49be7bf8e5dd46eec12f619e09cecac8a84a87775272300222b2", size = 7358, upload-time = "2024-02-09T08:50:43.66Z" },
+]
+
+[[package]]
 name = "folium"
 version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3693,6 +3706,7 @@ dev = [
     { name = "flake8-pytest-style" },
     { name = "flake8-quotes" },
     { name = "flake8-sfs" },
+    { name = "flake8-todos" },
     { name = "isort" },
     { name = "mypy" },
     { name = "nox" },
@@ -3753,6 +3767,7 @@ dev = [
     { name = "flake8-pytest-style", specifier = ">=2.2.0,<3.0.0" },
     { name = "flake8-quotes", specifier = ">=3.4.0,<4.0.0" },
     { name = "flake8-sfs", specifier = ">=1.0.1,<2.0.0" },
+    { name = "flake8-todos", specifier = ">=0.3.1,<0.4.0" },
     { name = "isort", specifier = ">=9.0.2,<10.0.0" },
     { name = "mypy", specifier = ">=2.4.1,<3.0.0" },
     { name = "nox", specifier = ">=2026.10.20" },

@@ -194,6 +194,7 @@ def lint_code(session: Session) -> None:
         "flake8-pytest-style",
         "flake8-quotes",
         "flake8-sfs",
+        "flake8-todos",
         "isort",
         # TODO: See comment on `mypy` below
         # 'mypy',

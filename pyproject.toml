@@ -103,6 +103,7 @@ dev = [
     "flake8-pytest-style (>=2.2.0,<3.0.0)",
     "flake8-quotes (>=3.4.0,<4.0.0)",
     "flake8-sfs (>=1.0.1,<2.0.0)",
+    "flake8-todos (>=0.3.1,<0.4.0)",
     "mypy (>=2.4.1,<3.0.0)",
 ]
 
@@ -225,6 +226,8 @@ select = [
     "PT0",
     # flake8-sfs => use f-strings as the only type of string formatting
     "SFS",
+    # flake8-todos => unify TODOs
+    "T00",
 ]
 
 # By default, flake8 ignores some errors.
@@ -243,6 +246,8 @@ extend-ignore = [
     "PT023",
     # Allow f-strings as the only type of string formatting.
     "SFS301",
+    # TODOs need neither an author nor an issue.
+    "T002", "T003",
 ]
 
 per-file-ignores = [
