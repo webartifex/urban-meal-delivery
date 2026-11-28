@@ -19,7 +19,10 @@ def random_timespan(
     total_min_seconds = min_hours * 3600 + min_minutes * 60 + min_seconds
     total_max_seconds = max_hours * 3600 + max_minutes * 60 + max_seconds
     return dt.timedelta(
-        seconds=random.randint(int(total_min_seconds), int(total_max_seconds))
+        seconds=random.randint(
+            int(total_min_seconds),
+            int(total_max_seconds),
+        ),
     )
 
 
