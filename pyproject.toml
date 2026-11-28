@@ -194,10 +194,15 @@ select = [
     "E", "W",
     # pyflakes => basic errors
     "F4", "F5", "F6", "F7", "F8", "F9",
-    # pydoclint => docstring matches implementation
-    "DOC",
+    # =======
+    # plugins
+    # =======
+    # flake8-annotations => enforce type checking for functions
+    "ANN0", "ANN2", "ANN3",
     # flake8-bandit => common security issues
     "S1", "S2", "S3", "S4", "S5", "S6", "S7",
+    # flake8-black => complain if black would make changes
+    "BLK1", "BLK9",
     # flake8-broken-line => no \ to end a line
     "N400",
     # flake8-bugbear => opinionated bugs and design flaws
@@ -210,25 +215,20 @@ select = [
     "T100",
     # flake8-docstrings => PEP257 compliance
     "D1", "D2", "D3", "D4",
-    # flake8-quotes => use double quotes everywhere (complying with black)
-    "Q0",
-    # pep8-naming
-    "N8",
-    # =====
-    # other
-    # =====
-    # flake8-annotations => enforce type checking for functions
-    "ANN0", "ANN2", "ANN3",
-    # flake8-black => complain if black would make changes
-    "BLK1", "BLK9",
     # flake8-pytest-style => enforce a consistent style with pytest
     "PT0",
+    # flake8-quotes => use double quotes everywhere (complying with black)
+    "Q0",
     # flake8-sfs => use f-strings as the only type of string formatting
     "SFS",
     # flake8-todos => unify TODOs
     "T00",
     # flake8-unused-arguments => declared function arguments must be used
     "U100",
+    # pep8-naming => PEP8 naming conventions
+    "N8",
+    # pydoclint => docstring matches implementation
+    "DOC",
 ]
 
 # By default, flake8 ignores some errors.
